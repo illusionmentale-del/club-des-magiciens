@@ -1,14 +1,19 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: var(--font-inter);
-  --font-serif: var(--font-cinzel);
-  
-  --color-magic-bg: #0a0510;
-  --color-magic-card: #130a20;
+  --font-sans: var(--font-poppins);
+  --font-serif: var(--font-poppins);
+
+  /* Brand Palette from jeremymarouani.com (Modernized) */
+  --color-magic-bg: #030014;
+  /* Deep Space Blue/Black */
+  --color-magic-card: #0f0a1e;
+  /* Slightly lighter for cards */
   --color-magic-purple: #7c3aed;
+  /* Electric Purple (Accent) */
   --color-magic-gold: #fbbf24;
-  
+  /* Amber Gold (Highlights) */
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
 }

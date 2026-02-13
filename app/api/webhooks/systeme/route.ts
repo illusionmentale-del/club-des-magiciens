@@ -1,93 +1,61 @@
+import { createClient } from "@supabase/supabase-js";
 import { NextResponse } from "next/server";
-import { createAdminClient } from "@/lib/supabase/admin";
+
+// Initialize Supabase Admin Client (Service Role)
+// We need this to bypass RLS and manage users
+const supabaseAdmin = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.SUPABASE_SERVICE_ROLE_KEY!,
+  {
+    auth: {
+      autoRefreshToken: false,
+      persistSession: false,
+    },
+  }
+);
 
 export async function POST(request: Request) {
-  // 1. Verify the secret token
-  const { searchParams } = new URL(request.url);
-  const secret = searchParams.get("secret");
-
-  if (secret !== process.env.SYSTEME_WEBHOOK_SECRET) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
-
   try {
-    // 2. Parse the body
-    const body = await request.json();
-    const email = body.email; // Adapt this based on actual Systeme.io payload
+    const payload = await request.json();
 
-    if (!email) {
-      return NextResponse.json({ error: "Missing email" }, { status: 400 });
-    }
-
-    const supabaseAdmin = createAdminClient();
-
-    // 3. Check if user exists, or create them
-    let userId;
-
-    // Try to create the user with a random password (they will use magic link anyway)
-    // We verify their email automatically since they paid.
-    // Note: We use a random password placeholder.
-    const { data: newUser, error: createError } = await supabaseAdmin.auth.admin.createUser({
-      email: email,
-      email_confirm: true,
-      user_metadata: { source: 'systeme_io' }
+    // DEBUG: Log payload to Supabase
+    await supabaseAdmin.from("webhook_logs").insert({
+      payload: payload
     });
 
-    if (createError) {
-      // If error is "User already registered", we need to find their ID.
-      // We can query the public profiles table which should verify existence.
-      if (createError.message.includes("already registered") || createError.status === 422) {
-        const { data: profile } = await supabaseAdmin
-          .from('profiles')
-          .select('id')
-          .eq('email', email)
-          .single();
+    // Systeme.io payload usually contains 'data' object with 'contact'
+    const email = payload.data?.customer?.email || payload.data?.contact?.email || payload.email || payload.contact?.email;
 
-        if (profile) {
-          userId = profile.id;
-        } else {
-          console.error("User exists in Auth but not in Profiles?", email);
-          return NextResponse.json({ error: "User state inconsistency" }, { status: 500 });
-        }
-      } else {
-        throw createError;
-      }
-    } else {
-      userId = newUser.user.id;
+    if (!email) {
+      await supabaseAdmin.from("webhook_logs").insert({ payload: { error: "No email found", received: payload } });
+      return NextResponse.json({ error: "No email found in payload" }, { status: 400 });
     }
 
-    // 4. Enroll them in the course
-    // We get the course ID for "Mentalisme Pro"
-    const { data: course } = await supabaseAdmin
-      .from('courses')
-      .select('id')
-      .ilike('title', 'Mentalisme Pro')
-      .single();
+    // Check if user exists
+    const { data: existingUser } = await supabaseAdmin.auth.admin.listUsers();
+    const userExists = existingUser.users.find((u) => u.email === email);
 
-    if (!course) {
-      return NextResponse.json({ error: "Course not found" }, { status: 500 });
+    if (userExists) {
+      console.log(`User ${email} already exists.`);
+      await supabaseAdmin.from("webhook_logs").insert({ payload: { status: "User already exists", email } });
+      return NextResponse.json({ message: "User already exists", userId: userExists.id });
     }
 
-    // Insert enrollment
-    const { error: enrollmentError } = await supabaseAdmin
-      .from('enrollments')
-      .insert({
-        user_id: userId,
-        course_id: course.id,
-        purchased_at: new Date().toISOString()
-      })
-      .select()
-      .single();
+    // Invite User via Supabase Native Email (Magic Link)
+    const { data: newUser, error: inviteError } = await supabaseAdmin.auth.admin.inviteUserByEmail(email);
 
-    // Ignore "duplicate key" error if they are already enrolled
-    if (enrollmentError && !enrollmentError.code?.includes("23505")) { // 23505 is unique violation
-      throw enrollmentError;
+    if (inviteError) {
+      console.error("Error inviting user:", inviteError);
+      await supabaseAdmin.from("webhook_logs").insert({ payload: { error: inviteError.message, email } });
+      return NextResponse.json({ error: inviteError.message }, { status: 500 });
     }
 
-    return NextResponse.json({ success: true, userId, enrolled: true });
+    console.log(`User ${email} invited successfully.`);
+    await supabaseAdmin.from("webhook_logs").insert({ payload: { status: "User invited successfully", email, userId: newUser.user.id } });
+    return NextResponse.json({ message: "User invited successfully", userId: newUser.user.id });
 
   } catch (error: any) {
-    console.error("Webhook Error:", error);
+    console.error("Webhook error:", error);
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }

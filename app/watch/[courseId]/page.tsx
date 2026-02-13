@@ -3,6 +3,7 @@ import { redirect, notFound } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, PlayCircle, Lock } from "lucide-react";
 import { cn } from "@/lib/utils";
+import CommentsSection from "@/components/Comments";
 
 interface WatchPageProps {
     params: Promise<{ courseId: string }>;
@@ -10,9 +11,6 @@ interface WatchPageProps {
 }
 
 export default async function WatchPage(props: WatchPageProps) {
-    // Awaiting params/searchParams because they are promises in Next.js 15+ (if user is on latest)
-    // But standard Next 14 they are not. Assuming Next 15 based on "create-next-app@latest"
-    // If it errors we can adjust.
     const params = await props.params;
     const searchParams = await props.searchParams;
 
@@ -40,6 +38,16 @@ export default async function WatchPage(props: WatchPageProps) {
         .select("*")
         .eq("course_id", course.id)
         .order("position", { ascending: true });
+
+    // Fetch comments
+    const { data: comments } = await supabase
+        .from("comments")
+        .select(`
+            *,
+            profiles (username, magic_level)
+        `)
+        .eq("course_id", course.id)
+        .order("created_at", { ascending: false });
 
     // Determine current video
     const currentVideoId = searchParams.v;
@@ -69,13 +77,27 @@ export default async function WatchPage(props: WatchPageProps) {
                 <div className="lg:col-span-2 space-y-6">
                     <div className="aspect-video bg-black rounded-xl overflow-hidden shadow-2xl border border-white/10 relative group">
                         {currentVideo ? (
-                            <iframe
-                                src={`https://player.vimeo.com/video/${currentVideo.video_url}?h=0&title=0&byline=0&portrait=0`}
-                                className="absolute inset-0 w-full h-full"
-                                frameBorder="0"
-                                allow="autoplay; fullscreen; picture-in-picture"
-                                allowFullScreen
-                            ></iframe>
+                            <>
+                                {/^\d+$/.test(currentVideo.video_url) ? (
+                                    // Vimeo Player (IDs are numbers)
+                                    <iframe
+                                        src={`https://player.vimeo.com/video/${currentVideo.video_url}?h=0&title=0&byline=0&portrait=0`}
+                                        className="absolute inset-0 w-full h-full"
+                                        frameBorder="0"
+                                        allow="autoplay; fullscreen; picture-in-picture"
+                                        allowFullScreen
+                                    ></iframe>
+                                ) : (
+                                    // YouTube Player (IDs are alphanumeric, usually 11 chars)
+                                    <iframe
+                                        src={`https://www.youtube-nocookie.com/embed/${currentVideo.video_url}?rel=0&modestbranding=1`}
+                                        className="absolute inset-0 w-full h-full"
+                                        frameBorder="0"
+                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                        allowFullScreen
+                                    ></iframe>
+                                )}
+                            </>
                         ) : (
                             <div className="absolute inset-0 flex items-center justify-center text-gray-500">
                                 Select a video to start watching
@@ -89,6 +111,9 @@ export default async function WatchPage(props: WatchPageProps) {
                             <p>{currentVideo?.description}</p>
                         </div>
                     </div>
+
+                    {/* Comments Section */}
+                    {comments && <CommentsSection courseId={course.id} comments={comments} userId={user.id} />}
                 </div>
 
                 {/* Sidebar (Playlist) */}

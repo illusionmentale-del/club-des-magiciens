@@ -1,34 +1,108 @@
-import { Button } from "@/components/ui/button"
-import { login } from "./actions"
+"use client";
+
+import { useFormState, useFormStatus } from "react-dom";
+import Link from "next/link";
+import Image from "next/image"; // Added import
+import { Loader2, Lock, User, ArrowRight, AlertCircle } from "lucide-react"; // Added AlertCircle
+import { loginWithPassword } from "./actions";
+
+// Submit Button Component
+function SubmitButton() {
+    const { pending } = useFormStatus();
+    return (
+        <button
+            type="submit"
+            disabled={pending}
+            className="w-full py-3 bg-magic-purple hover:bg-magic-purple/80 text-white font-bold rounded-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed flex justify-center items-center gap-2"
+        >
+            {pending ? <Loader2 className="w-5 h-5 animate-spin" /> : <span className="flex items-center gap-2">Se connecter <ArrowRight className="w-4 h-4" /></span>}
+        </button>
+    );
+}
 
 export default function LoginPage() {
+    // Server Action State for Password Login
+    // @ts-ignore
+    const [state, formAction] = useFormState(loginWithPassword, null);
+
     return (
-        <div className="min-h-screen flex items-center justify-center p-8 bg-magic-bg relative overflow-hidden">
-            <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 pointer-events-none"></div>
+        <div className="min-h-screen bg-magic-bg text-white flex flex-col items-center justify-center p-4 relative overflow-hidden">
+            {/* Background noise */}
+            <div className="absolute inset-0 bg-[url('/noise.svg')] opacity-20 pointer-events-none"></div>
 
-            <div className="w-full max-w-md space-y-8 z-10 bg-magic-card/50 backdrop-blur-xl p-8 rounded-2xl border border-white/10 shadow-2xl">
-                <div className="text-center space-y-2">
-                    <h1 className="font-serif text-3xl text-white">Connexion</h1>
-                    <p className="text-gray-400 font-sans text-sm">Entre ton email pour recevoir ton lien magique.</p>
-                </div>
-
-                <form className="space-y-6">
-                    <div className="space-y-2">
-                        <label htmlFor="email" className="text-sm font-medium text-gray-300">Email</label>
-                        <input
-                            id="email"
-                            name="email"
-                            type="email"
-                            placeholder="houdini@magic.com"
-                            required
-                            className="w-full px-3 py-2 bg-black/40 border border-white/10 rounded-md text-white placeholder:text-gray-600 focus:outline-none focus:ring-2 focus:ring-magic-purple/50 focus:border-magic-purple transition-all"
+            <div className="w-full max-w-md z-10">
+                <div className="text-center mb-10">
+                    <div className="relative w-40 h-20 mx-auto mb-6">
+                        <Image
+                            src="/logo.png"
+                            alt="Club des Magiciens"
+                            fill
+                            className="object-contain"
+                            priority
                         />
                     </div>
-                    <Button formAction={login} variant="magical" className="w-full">
-                        Envoyer le lien magique
-                    </Button>
-                </form>
+                </div>
+
+                <div className="bg-magic-card border border-white/10 rounded-2xl p-8 shadow-2xl backdrop-blur-sm">
+                    <h2 className="text-2xl font-serif font-bold text-center mb-8">Connexion</h2>
+
+                    <form action={formAction} className="space-y-6">
+                        <div>
+                            <label className="block text-sm font-medium text-gray-300 mb-2">Identifiant ou Email</label>
+                            <div className="relative">
+                                <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
+                                <input
+                                    name="identifier"
+                                    type="text"
+                                    className="w-full pl-10 pr-4 py-3 bg-black/40 border border-white/10 rounded-xl focus:ring-2 focus:ring-magic-purple focus:outline-none transition-all placeholder:text-gray-600 focus:bg-black/60"
+                                    placeholder="lemagicien"
+                                    required
+                                />
+                            </div>
+                        </div>
+
+                        <div>
+                            <div className="flex justify-between mb-2">
+                                <label className="block text-sm font-medium text-gray-300">Mot de passe</label>
+                                <Link href="/forgot-password" className="text-xs text-magic-purple hover:text-magic-purple/80 transition-colors">
+                                    Mot de passe oublié ?
+                                </Link>
+                            </div>
+                            <div className="relative">
+                                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
+                                <input
+                                    name="password"
+                                    type="password"
+                                    className="w-full pl-10 pr-4 py-3 bg-black/40 border border-white/10 rounded-xl focus:ring-2 focus:ring-magic-purple focus:outline-none transition-all placeholder:text-gray-600 focus:bg-black/60"
+                                    placeholder="••••••••"
+                                    required
+                                />
+                            </div>
+                        </div>
+
+                        <div className="flex items-center gap-2">
+                            <input
+                                type="checkbox"
+                                id="remember"
+                                name="remember"
+                                className="w-4 h-4 rounded border-white/20 bg-black/40 text-magic-purple focus:ring-magic-purple"
+                            />
+                            <label htmlFor="remember" className="text-sm text-gray-300 select-none cursor-pointer">
+                                Rester connecté
+                            </label>
+                        </div>
+
+                        {state?.error && (
+                            <div className="p-3 bg-red-500/10 text-red-400 rounded-lg text-sm border border-red-500/20 flex items-center gap-2">
+                                <AlertCircle className="w-4 h-4" />
+                                {state.error}
+                            </div>
+                        )}
+
+                        <SubmitButton />
+                    </form>
+                </div>
             </div>
         </div>
-    )
+    );
 }
