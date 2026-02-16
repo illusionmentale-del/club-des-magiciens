@@ -55,7 +55,7 @@ export default async function KidsAccountPage({
                                 <Shield className="w-5 h-5 text-brand-blue" />
                                 Informations Personnelles
                             </h2>
-                            <AccountForm user={user} profile={profile} theme="dark" />
+                            <AccountForm user={user} profile={profile} theme="dark" isKidProfile={true} />
 
                             {/* Additional settings could go here (e.g. Subscription status) */}
                             <div className="mt-8 pt-8 border-t border-white/10 text-center">

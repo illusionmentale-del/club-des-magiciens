@@ -23,7 +23,7 @@ function SubmitButton({ theme }: { theme: 'light' | 'dark' }) {
     );
 }
 
-export default function AccountForm({ user, profile, theme = 'dark' }: { user: any, profile: any, theme?: 'light' | 'dark' }) {
+export default function AccountForm({ user, profile, theme = 'dark', isKidProfile = false }: { user: any, profile: any, theme?: 'light' | 'dark', isKidProfile?: boolean }) {
     // @ts-ignore
     const [state, formAction] = useFormState(updateProfile, null);
     const [level, setLevel] = useState(profile?.magic_level || "Apprenti");
@@ -66,11 +66,12 @@ export default function AccountForm({ user, profile, theme = 'dark' }: { user: a
                     <div className="shrink-0 mx-auto md:mx-0">
                         <AvatarUpload
                             theme={theme}
-                            currentAvatarUrl={theme === 'light' ? profile?.avatar_url_kids : profile?.avatar_url}
+                            currentAvatarUrl={isKidProfile ? profile?.avatar_url_kids : profile?.avatar_url}
                             onUpload={(url) => setAvatarUrl(url)}
                         />
                         <input type="hidden" name="avatarUrl" value={avatarUrl || ""} />
                         <input type="hidden" name="theme" value={theme} />
+                        <input type="hidden" name="targetProfile" value={isKidProfile ? 'kid' : 'adult'} />
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 flex-1 w-full">

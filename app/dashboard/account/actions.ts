@@ -28,10 +28,13 @@ export async function updateProfile(prevState: any, formData: FormData) {
     if (bio) updates.bio = bio;
     if (magic_level) updates.magic_level = magic_level;
 
-    // Avatar Logic: Separate fields based on theme
+    const targetProfile = formData.get("targetProfile") as string; // 'kid' or 'adult'
+
+    // Avatar Logic: Separate fields based on targetProfile
     if (avatarUrl) {
-        if (theme === 'light') {
+        if (targetProfile === 'kid') {
             updates.avatar_url_kids = avatarUrl;
+            // Also ensure we update the main one if it's empty? No, keep separate.
         } else {
             updates.avatar_url = avatarUrl;
         }

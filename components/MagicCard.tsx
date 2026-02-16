@@ -98,7 +98,7 @@ export default function MagicCard({ user, profile, isKid = false }: MagicCardPro
                                 <div className={`relative w-32 h-32 rounded-full p-1 ${isKid ? "bg-gradient-to-tr from-blue-600 to-purple-600" : "bg-gradient-to-tr from-magic-gold to-purple-600"} shadow-[0_0_20px_rgba(168,85,247,0.3)] animate-pulse-slow`}>
                                     <div className="w-full h-full rounded-full overflow-hidden bg-black relative">
                                         <Image
-                                            src={isKid ? (profile?.avatar_url_kids || "/avatars/rabbit.png") : (profile?.avatar_url || "/default-avatar.png")}
+                                            src={isKid ? (profile?.avatar_url_kids || "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='50' fill='%23FFD1DC'/><path d='M30 60h40v30H30z' fill='%23333'/><path d='M20 85h60v5H20z' fill='%23333'/><circle cx='50' cy='60' r='15' fill='%23FFF'/><path d='M40 30c-5-15-15-15-15 0s10 20 15 0zM60 30c5-15 15-15 15 0s-10 20-15 0z' fill='%23FFF'/></svg>") : (profile?.avatar_url || "/default-avatar.png")}
                                             alt="Avatar"
                                             fill
                                             className="object-cover"
