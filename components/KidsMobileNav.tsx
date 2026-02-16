@@ -64,37 +64,57 @@ export default function KidsMobileNav({ logoUrl, hasPurchases, isAdmin }: { logo
                         </div>
 
                         <nav className="space-y-2 flex-1">
-                            {/* 1. Le Club (Home) */}
+                            {/* 1. 🏰 Le Club (Home) */}
                             <Link
                                 href="/kids"
                                 onClick={close}
-                                className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${isActive('/kids') ? 'bg-magic-purple/20 text-magic-purple border border-magic-purple/20' : 'text-gray-400 hover:bg-white/5 hover:text-white'}`}
+                                className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${isActive('/kids') && !window.location.hash ? 'bg-magic-purple/20 text-magic-purple border border-magic-purple/20' : 'text-gray-400 hover:bg-white/5 hover:text-white'}`}
                             >
                                 <Wand2 className="w-5 h-5" />
                                 Le Club
                             </Link>
 
-                            {/* 2. Les Missions (Archive) */}
+                            {/* 2. 🎩 L’Atelier de la Semaine (Anchor) */}
+                            <Link
+                                href="/kids#atelier"
+                                onClick={close}
+                                className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all text-gray-400 hover:bg-white/5 hover:text-white`}
+                            >
+                                <span className="text-xl">🎩</span>
+                                L'Atelier
+                            </Link>
+
+                            {/* 3. 📖 Le Grimoire (Archives) */}
                             <Link
                                 href="/kids/program"
                                 onClick={close}
                                 className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${isActive('/kids/program') ? 'bg-magic-purple/20 text-magic-purple border border-magic-purple/20' : 'text-gray-400 hover:bg-white/5 hover:text-white'}`}
                             >
                                 <BookOpen className="w-5 h-5" />
-                                Les Missions
+                                Le Grimoire
                             </Link>
 
-                            {/* 3. La Boutique (Shop) */}
+                            {/* 4. 🏅 Mon Parcours (Profile/Stats) */}
                             <Link
-                                href="/kids/courses"
+                                href="/kids/account"
                                 onClick={close}
-                                className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${isActive('/kids/courses') ? 'bg-magic-purple/20 text-magic-purple border border-magic-purple/20' : 'text-gray-400 hover:bg-white/5 hover:text-white'}`}
+                                className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${isActive('/kids/account') && !pathname.includes('view=settings') ? 'bg-magic-purple/20 text-magic-purple border border-magic-purple/20' : 'text-gray-400 hover:bg-white/5 hover:text-white'}`}
                             >
-                                <ShoppingBag className="w-5 h-5" />
-                                La Boutique
+                                <Trophy className="w-5 h-5" />
+                                Mon Parcours
                             </Link>
 
-                            {/* 4. Mes Coffres */}
+                            {/* 5. 👤 Mon Compte (Settings) */}
+                            <Link
+                                href="/kids/account?view=settings"
+                                onClick={close}
+                                className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${isActive('/kids/account') && pathname.includes('view=settings') ? 'bg-magic-cyan/20 text-magic-cyan border border-magic-cyan/20' : 'text-gray-400 hover:bg-white/5 hover:text-white'}`}
+                            >
+                                <Settings className="w-5 h-5" />
+                                Mon Compte
+                            </Link>
+
+                            {/* 📦 Mes Coffres */}
                             {hasPurchases && (
                                 <Link
                                     href="/kids/courses?filter=owned"
@@ -105,17 +125,6 @@ export default function KidsMobileNav({ logoUrl, hasPurchases, isAdmin }: { logo
                                     Mes Coffres
                                 </Link>
                             )}
-
-                            {/* 5. Mon Compte */}
-                            <Link
-                                href="/kids/account"
-                                onClick={close}
-                                className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${isActive('/kids/account') ? 'bg-magic-cyan/20 text-magic-cyan border border-magic-cyan/20' : 'text-gray-400 hover:bg-white/5 hover:text-white'}`}
-                            >
-                                <Settings className="w-5 h-5" />
-                                Mon Compte
-                            </Link>
-
                             {isAdmin && (
                                 <>
                                     <div className="my-2 border-t border-white/10"></div>

@@ -62,10 +62,10 @@ export default async function KidsProgramPage() {
             <header className="max-w-4xl mx-auto mb-12 pt-4 text-center">
                 <div className="inline-flex items-center gap-2 px-4 py-1 rounded-full border border-brand-purple/30 bg-brand-purple/10 text-brand-purple text-xs font-bold uppercase tracking-widest mb-4">
                     <BookOpen className="w-4 h-4" />
-                    Archives du Club
+                    Le Grimoire
                 </div>
                 <h1 className="text-4xl md:text-5xl font-black text-white uppercase tracking-tight mb-2">
-                    Les Missions
+                    Tes Secrets
                 </h1>
                 <p className="text-brand-text-muted">Retrouve ici tous les secrets que tu as débloqués.</p>
             </header>

@@ -2,7 +2,7 @@ import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { Play, CheckCircle, Lock, Trophy, Map, Star, ArrowRight, Sparkles, Bell, PartyPopper } from "lucide-react";
+import { Play, CheckCircle, Lock, Trophy, Map, Star, ArrowRight, Sparkles, Bell, PartyPopper, ShoppingBag, Package } from "lucide-react";
 
 export default async function KidsHomePage() {
     const supabase = await createClient();
@@ -15,7 +15,7 @@ export default async function KidsHomePage() {
     // 1. Fetch Profile & Tenure
     const { data: profile } = await supabase
         .from("profiles")
-        .select("created_at, display_name, first_name")
+        .select("created_at, display_name, first_name, magic_level, xp") // Added magic_level, xp
         .eq("id", user.id)
         .single();
 
@@ -29,14 +29,15 @@ export default async function KidsHomePage() {
     const TOTAL_WEEKS = 24;
     const progressPercentage = Math.min((currentWeek / TOTAL_WEEKS) * 100, 100);
 
-    // 2. Fetch Content
-    // We need:
-    // - Current Week (Main Item) -> Block 2
-    // - Recent Items (News) -> Block 3
-    // - Past/Validated Items -> Block 5
+    // Fetch Purchase Count for Block 6
+    const { count: purchaseCount } = await supabase
+        .from("purchases")
+        .select("*", { count: 'exact', head: true })
+        .eq("user_id", user.id)
+        .eq("status", "paid");
+    const hasPurchases = (purchaseCount || 0) > 0;
 
-    // Fetch all relevant items to filter in memory (efficient for small dataset) 
-    // or separate queries. Let's do one query for now as dataset is small < 100 items.
+    // 2. Fetch Content
     const { data: allItems } = await supabase
         .from("library_items")
         .select("*")
@@ -48,18 +49,12 @@ export default async function KidsHomePage() {
     const currentItems = allItems?.filter(i => i.week_number === currentWeek) || [];
     const mainItem = currentItems.find(i => i.is_main) || currentItems[0];
 
-    // Block 3: Nouveautés (Recent unlocked items, excluding current main if possible to avoid dupes, or just mix)
-    // Actually, "Nouveautés" might be the latest added things. 
-    // Let's use the last 3 unlocked items (including current week bonuses or previous week if new).
-    // Filtering out the main item of current week to avoid redundancy if it's in the hero.
+    // Block 3: Nouveautés
+    // Filter out the main item of current week to avoid redundancy
     const recentItems = allItems?.filter(i => i.id !== mainItem?.id).slice(0, 3) || [];
 
-    // Block 5: Dernières Réussites (Validated = Previous Weeks)
-    // We assume anything from previous weeks is "done" or at least "conquered".
-    // Let's take the main item of the previous 2 weeks.
-    const previousWeeksItems = allItems?.filter(i => i.week_number < currentWeek && i.is_main).slice(0, 3) || [];
-
     const userName = profile.first_name || profile.display_name?.split(' ')[0] || "Jeune Magicien";
+    const userGrade = profile.magic_level || "Apprenti";
 
     return (
         <div className="min-h-screen bg-brand-bg text-brand-text p-4 md:p-8 pb-32 font-sans overflow-hidden relative selection:bg-brand-purple/30">
@@ -70,7 +65,7 @@ export default async function KidsHomePage() {
 
             <div className="max-w-5xl mx-auto relative z-10 space-y-12">
 
-                {/* BLOC 1: BIENVENUE (Personnalisé & Chaleureux) */}
+                {/* BLOC 1: BIENVENUE */}
                 <header className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 pt-4">
                     <div>
                         <div className="flex items-center gap-2 text-brand-gold mb-2">
@@ -81,14 +76,13 @@ export default async function KidsHomePage() {
                             Bienvenue, <span className="text-brand-purple">{userName}</span> ! ✨
                         </h1>
                         <p className="text-brand-text-muted mt-2 text-lg">
-                            Une nouvelle mission t'attend cette semaine. Prêt à relever le défi ?
+                            Prêt à découvrir les secrets de la semaine ?
                         </p>
                     </div>
-                    {/* Visual Badge or Avatar could go here */}
                 </header>
 
-                {/* BLOC 2: ATELIER DE LA SEMAINE (Héro - Prioritaire) */}
-                <section className="relative group">
+                {/* BLOC 2: ATELIER DE LA SEMAINE (ID for Anchor) */}
+                <section id="atelier" className="relative group scroll-mt-24">
                     <div className="absolute -inset-1 bg-gradient-to-r from-brand-purple to-brand-blue rounded-3xl opacity-30 blur-lg group-hover:opacity-50 transition duration-1000"></div>
 
                     <div className="relative bg-brand-card border border-brand-purple/50 rounded-2xl overflow-hidden shadow-2xl flex flex-col md:flex-row">
@@ -183,33 +177,30 @@ export default async function KidsHomePage() {
                             </div>
                         </section>
 
-                        {/* BLOC 5: DERNIÈRES RÉUSSITES */}
-                        <section>
-                            <h3 className="text-lg font-bold text-white uppercase tracking-wider mb-6 flex items-center gap-2">
-                                <Trophy className="w-5 h-5 text-brand-gold" />
-                                Tes Dernières Réussites
-                            </h3>
-
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                {previousWeeksItems.length > 0 ? (
-                                    previousWeeksItems.map(item => (
-                                        <div key={item.id} className="bg-brand-surface/30 border border-brand-border/50 rounded-xl p-4 flex items-center gap-3">
-                                            <div className="w-10 h-10 rounded-full bg-brand-green/20 flex items-center justify-center border border-brand-green/30 text-brand-green">
-                                                <CheckCircle className="w-5 h-5" />
-                                            </div>
-                                            <div>
-                                                <div className="text-[10px] text-brand-text-muted uppercase font-bold">Semaine {item.week_number}</div>
-                                                <div className="font-bold text-white text-sm">{item.title}</div>
-                                            </div>
-                                        </div>
-                                    ))
-                                ) : (
-                                    <div className="col-span-2 text-center py-6 border border-dashed border-brand-border rounded-xl text-brand-text-muted text-sm">
-                                        Termine ta première semaine pour voir tes trophées ici !
+                        {/* BLOC 6: MES COFFRES (Conditional) */}
+                        {hasPurchases && (
+                            <section>
+                                <h3 className="text-lg font-bold text-white uppercase tracking-wider mb-6 flex items-center gap-2">
+                                    <Package className="w-5 h-5 text-brand-gold" />
+                                    Mes Coffres Secrets
+                                </h3>
+                                <div className="bg-gradient-to-r from-brand-gold/10 to-transparent border border-brand-gold/20 rounded-2xl p-6 flex flex-col sm:flex-row items-center gap-6">
+                                    <div className="w-16 h-16 bg-brand-gold/20 rounded-full flex items-center justify-center shrink-0">
+                                        <Package className="w-8 h-8 text-brand-gold" />
                                     </div>
-                                )}
-                            </div>
-                        </section>
+                                    <div className="flex-1 text-center sm:text-left">
+                                        <h4 className="text-xl font-bold text-brand-gold mb-1">Tu as {purchaseCount || 0} coffre{(purchaseCount || 0) > 1 ? 's' : ''} à ouvrir !</h4>
+                                        <p className="text-brand-text-muted text-sm">Tes packs magiques t'attendent dans ta réserve secrète.</p>
+                                    </div>
+                                    <Link
+                                        href="/kids/courses?filter=owned"
+                                        className="bg-brand-gold hover:bg-brand-gold/80 text-black font-bold py-3 px-6 rounded-xl transition-colors whitespace-nowrap"
+                                    >
+                                        Ouvrir mes coffres
+                                    </Link>
+                                </div>
+                            </section>
+                        )}
 
                     </div>
 
@@ -224,8 +215,11 @@ export default async function KidsHomePage() {
                             </h3>
 
                             <div className="text-center mb-6">
+                                <div className="inline-block px-3 py-1 rounded-full bg-brand-purple/20 border border-brand-purple/30 text-brand-purple text-xs font-bold uppercase tracking-widest mb-2">
+                                    Grade Actuel: {userGrade}
+                                </div>
                                 <div className="text-4xl font-black text-white mb-1">{currentWeek} <span className="text-lg text-brand-text-muted font-medium">/ {TOTAL_WEEKS}</span></div>
-                                <div className="text-xs font-bold text-brand-purple uppercase tracking-widest">Semaines Complétées</div>
+                                <div className="text-xs font-bold text-brand-text-muted uppercase tracking-widest">Semaines Complétées</div>
                             </div>
 
                             <div className="relative h-3 w-full bg-brand-bg rounded-full overflow-hidden mb-4">
@@ -235,12 +229,37 @@ export default async function KidsHomePage() {
                                 ></div>
                             </div>
 
-                            <div className="bg-brand-purple/10 border border-brand-purple/20 rounded-xl p-4 flex gap-3 items-start">
+                            <div className="bg-brand-purple/10 border border-brand-purple/20 rounded-xl p-4 flex gap-3 items-start mb-6">
                                 <PartyPopper className="w-5 h-5 text-brand-purple shrink-0 mt-0.5" />
                                 <p className="text-sm text-brand-text leading-relaxed">
-                                    "Tu avances comme un vrai magicien ! Continue tes efforts, le prochain Secret est incroyable !"
+                                    "Continue comme ça ! Chaque semaine te rapproche du grade de Grand Magicien."
                                 </p>
                             </div>
+
+                            <Link href="/kids/account" className="block w-full text-center py-2 text-xs font-bold text-brand-text-muted hover:text-white transition-colors uppercase tracking-widest border border-white/10 rounded-lg hover:bg-white/5">
+                                Voir mon parcours complet
+                            </Link>
+                        </section>
+
+                        {/* BLOC 5: DÉCOUVRIR LA BOUTIQUE */}
+                        <section className="bg-gradient-to-br from-brand-card to-brand-bg border border-white/5 rounded-2xl p-6 relative overflow-hidden group">
+                            <div className="absolute top-0 right-0 w-32 h-32 bg-brand-purple/10 blur-2xl rounded-full -translate-y-1/2 translate-x-1/2 group-hover:bg-brand-purple/20 transition-colors"></div>
+
+                            <h3 className="text-lg font-bold text-white uppercase tracking-tight mb-4 flex items-center gap-2 relative z-10">
+                                <ShoppingBag className="w-5 h-5 text-brand-purple" />
+                                La Boutique
+                            </h3>
+
+                            <p className="text-sm text-brand-text-muted mb-6 relative z-10">
+                                Envie d'aller plus loin ? Découvre les packs spéciaux pour enrichir ta magie.
+                            </p>
+
+                            <Link
+                                href="/kids/courses"
+                                className="block w-full text-center bg-white/5 hover:bg-white/10 border border-white/10 text-white font-bold py-3 rounded-xl transition-all relative z-10 uppercase tracking-wide text-xs group-hover:border-brand-purple/30 group-hover:text-brand-purple"
+                            >
+                                Visiter la Boutique
+                            </Link>
                         </section>
 
                     </div>
