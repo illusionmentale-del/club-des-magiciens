@@ -25,17 +25,22 @@ export default function KidsMobileNav({ logoUrl }: { logoUrl?: string }) {
     };
 
     return (
-        <div className="md:hidden bg-brand-card border-b border-brand-border sticky top-0 z-50 shadow-lg shadow-black/50">
+        <div className="md:hidden bg-magic-card border-b border-white/10 sticky top-0 z-50">
             <div className="flex items-center justify-between p-4">
-                <Link href="/kids" className="flex items-center gap-2">
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-brand-blue to-brand-purple flex items-center justify-center text-brand-text font-bold text-xs ring-2 ring-brand-border">
-                        CM
+                <Link href="/kids">
+                    <div className="relative w-32 h-10">
+                        <Image
+                            src="/logo.png"
+                            alt="Club des Magiciens"
+                            fill
+                            className="object-contain"
+                            priority
+                        />
                     </div>
-                    <span className="font-bold text-brand-text uppercase tracking-widest text-xs">Club des Magiciens</span>
                 </Link>
                 <button
                     onClick={() => setIsOpen(true)}
-                    className="p-2 text-brand-text-muted hover:text-brand-text hover:bg-white/5 rounded-lg transition-colors border border-brand-border"
+                    className="p-2 text-white hover:bg-white/10 rounded-lg"
                 >
                     <Menu className="w-6 h-6" />
                 </button>
@@ -46,93 +51,74 @@ export default function KidsMobileNav({ logoUrl }: { logoUrl?: string }) {
                 <div className="fixed inset-0 z-50 flex">
                     {/* Backdrop */}
                     <div
-                        className="fixed inset-0 bg-black/80 backdrop-blur-sm animate-in fade-in duration-200"
+                        className="fixed inset-0 bg-black/80 backdrop-blur-sm"
                         onClick={close}
                     />
 
                     {/* Menu Content */}
-                    <div className="relative w-72 h-full bg-brand-card border-r border-brand-border flex flex-col p-6 animate-in slide-in-from-left duration-300 shadow-2xl">
-                        {/* Geometric Accent Line */}
-                        <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-brand-blue via-brand-purple to-transparent opacity-50"></div>
-
-                        <div className="flex justify-between items-center mb-8 border-b border-brand-border pb-6">
-                            <div className="flex flex-col">
-                                <span className="text-[10px] text-brand-text-muted uppercase tracking-widest font-bold">Menu Principal</span>
-                                <span className="text-brand-text font-bold text-lg uppercase tracking-tight">Navigation</span>
-                            </div>
-                            <button onClick={close} className="p-2 text-brand-text-muted hover:text-brand-text bg-white/5 rounded-full hover:bg-white/10 transition-colors border border-brand-border">
-                                <X className="w-5 h-5" />
+                    <div className="relative w-64 h-full bg-magic-card border-r border-white/10 flex flex-col p-4 animate-in slide-in-from-left duration-200">
+                        <div className="flex justify-end mb-4">
+                            <button onClick={close} className="p-2 text-gray-400 hover:text-white">
+                                <X className="w-6 h-6" />
                             </button>
                         </div>
 
-                        <nav className="space-y-4 flex-1">
-                            <Link
-                                href="/kids"
-                                onClick={close}
-                                className={`flex items-center gap-4 px-4 py-3 border-l-2 transition-all group ${isActive('/kids')
-                                    ? 'border-brand-blue bg-brand-blue/10 text-brand-text'
-                                    : 'border-transparent text-brand-text-muted hover:text-brand-text hover:bg-white/5'}`}
-                            >
-                                <Star className={`w-5 h-5 ${isActive('/kids') ? 'text-brand-blue fill-brand-blue/20' : 'text-brand-text-muted group-hover:text-brand-blue'}`} />
-                                <span className="font-bold text-sm tracking-wide uppercase">Quartier Général</span>
-                            </Link>
-
+                        <nav className="space-y-2 flex-1">
                             <Link
                                 href="/kids/program"
                                 onClick={close}
-                                className={`flex items-center gap-4 px-4 py-3 border-l-2 transition-all group ${isActive('/kids/program')
-                                    ? 'border-brand-cyan bg-brand-cyan/10 text-brand-text'
-                                    : 'border-transparent text-brand-text-muted hover:text-brand-text hover:bg-white/5'}`}
+                                className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${isActive('/kids/program') ? 'bg-magic-purple/20 text-magic-purple border border-magic-purple/20' : 'text-gray-400 hover:bg-white/5 hover:text-white'}`}
                             >
-                                <Play className={`w-5 h-5 ${isActive('/kids/program') ? 'text-brand-cyan' : 'text-brand-text-muted group-hover:text-brand-cyan'}`} />
-                                <span className="font-bold text-sm tracking-wide uppercase">Programme</span>
+                                <Play className="w-5 h-5" />
+                                Mon Programme
                             </Link>
 
                             <Link
                                 href="/kids/courses"
                                 onClick={close}
-                                className={`flex items-center gap-4 px-4 py-3 border-l-2 transition-all group ${isActive('/kids/courses')
-                                    ? 'border-brand-blue bg-brand-blue/10 text-brand-text'
-                                    : 'border-transparent text-brand-text-muted hover:text-brand-text hover:bg-white/5'}`}
+                                className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${isActive('/kids/courses') ? 'bg-magic-purple/20 text-magic-purple border border-magic-purple/20' : 'text-gray-400 hover:bg-white/5 hover:text-white'}`}
                             >
-                                <BookOpen className={`w-5 h-5 ${isActive('/kids/courses') ? 'text-brand-blue' : 'text-brand-text-muted group-hover:text-brand-blue'}`} />
-                                <span className="font-bold text-sm tracking-wide uppercase">Grimoire</span>
+                                <BookOpen className="w-5 h-5" />
+                                Mes tours de magie
+                            </Link>
+
+                            <Link
+                                href="/kids"
+                                onClick={close}
+                                className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${isActive('/kids') ? 'bg-magic-purple/20 text-magic-purple border border-magic-purple/20' : 'text-gray-400 hover:bg-white/5 hover:text-white'}`}
+                            >
+                                <Star className="w-5 h-5" />
+                                Le QG
                             </Link>
 
                             <Link
                                 href="/kids/live"
                                 onClick={close}
-                                className={`flex items-center gap-4 px-4 py-3 border-l-2 transition-all group ${isActive('/kids/live')
-                                    ? 'border-brand-purple bg-brand-purple/10 text-brand-text'
-                                    : 'border-transparent text-brand-text-muted hover:text-brand-text hover:bg-white/5'}`}
+                                className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${isActive('/kids/live') ? 'bg-magic-purple/20 text-magic-purple border border-magic-purple/20' : 'text-gray-400 hover:bg-white/5 hover:text-white'}`}
                             >
-                                <Video className={`w-5 h-5 ${isActive('/kids/live') ? 'text-brand-purple animate-pulse' : 'text-brand-text-muted group-hover:text-brand-purple'}`} />
-                                <span className="font-bold text-sm tracking-wide uppercase">Live & Replay</span>
+                                <Video className="w-5 h-5" />
+                                Live Magique
                             </Link>
-
-                            <div className="w-full h-[1px] bg-white/5 my-4"></div>
 
                             <Link
                                 href="/kids/account"
                                 onClick={close}
-                                className={`flex items-center gap-4 px-4 py-3 border-l-2 transition-all group ${isActive('/kids/account')
-                                    ? 'border-brand-blue bg-brand-blue/10 text-brand-text'
-                                    : 'border-transparent text-brand-text-muted hover:text-brand-text hover:bg-white/5'}`}
+                                className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${isActive('/kids/account') ? 'bg-magic-cyan/20 text-magic-cyan border border-magic-cyan/20' : 'text-gray-400 hover:bg-white/5 hover:text-white'}`}
                             >
-                                <Settings className={`w-5 h-5 ${isActive('/kids/account') ? 'text-brand-blue' : 'text-brand-text-muted group-hover:text-brand-blue'}`} />
-                                <span className="font-bold text-sm tracking-wide uppercase">Mon Espace</span>
+                                <Settings className="w-5 h-5" />
+                                Mon Compte
                             </Link>
-                        </nav>
 
-                        <div className="pt-6 border-t border-brand-border mt-auto">
-                            <button
-                                onClick={handleLogout}
-                                className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-brand-error/10 hover:bg-brand-error/20 text-brand-error hover:text-red-400 transition-colors border border-brand-error/20 text-xs font-bold uppercase tracking-widest"
-                            >
-                                <LogOut className="w-4 h-4" />
-                                Déconnexion
-                            </button>
-                        </div>
+                            <div className="pt-4 border-t border-white/10">
+                                <button
+                                    onClick={handleLogout}
+                                    className="w-full flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-red-500/10 hover:bg-red-500/20 text-red-400 transition-colors border border-red-500/20 text-sm font-medium"
+                                >
+                                    <LogOut className="w-4 h-4" />
+                                    Déconnexion
+                                </button>
+                            </div>
+                        </nav>
                     </div>
                 </div>
             )}

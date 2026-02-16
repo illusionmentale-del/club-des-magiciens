@@ -66,19 +66,18 @@ export default async function KidsProgramPage() {
     return (
         <div className="min-h-screen bg-brand-bg text-brand-text p-4 md:p-8 pb-32 font-sans overflow-hidden relative">
 
-            {/* Ambient Background */}
-            <div className="absolute top-0 left-0 w-full h-full bg-[url('/images/noise.png')] opacity-5 pointer-events-none"></div>
-            <div className="absolute top-[-10%] right-[-10%] w-[50%] h-[50%] bg-brand-cyan/10 blur-[150px] rounded-full pointer-events-none"></div>
+            {/* Ambient Background - Adult Style (Clean or Subtle Gradient) */}
+            <div className="absolute top-[-10%] right-[-10%] w-[50%] h-[50%] bg-brand-purple/10 blur-[150px] rounded-full pointer-events-none"></div>
 
             {/* Header */}
             <header className="max-w-4xl mx-auto mb-16 relative z-10 pt-8 text-center">
-                <div className="inline-block px-4 py-1 rounded-full border border-brand-cyan/30 bg-brand-cyan/10 text-brand-cyan text-xs font-bold uppercase tracking-widest mb-4">
+                <div className="inline-block px-4 py-1 rounded-full border border-brand-purple/30 bg-brand-purple/10 text-brand-purple text-xs font-bold uppercase tracking-widest mb-4">
                     Mon Parcours Magique
                 </div>
                 <h1 className="text-4xl md:text-6xl font-black uppercase tracking-tight mb-4">
-                    Semaine <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-cyan to-brand-blue">{currentWeek}</span>
+                    Semaine <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-purple to-brand-gold">{currentWeek}</span>
                 </h1>
-                <div className="w-24 h-1 bg-gradient-to-r from-transparent via-brand-border to-transparent mx-auto"></div>
+                <div className="w-24 h-1 bg-gradient-to-r from-transparent via-brand-purple/50 to-transparent mx-auto"></div>
             </header>
 
             {/* Timeline */}
@@ -90,17 +89,17 @@ export default async function KidsProgramPage() {
                     const bonusItems = items.filter(i => i.id !== mainItem?.id);
 
                     return (
-                        <div key={week} className={`relative pt-8 pl-8 md:pl-0 border-l-2 md:border-l-0 ${isLocked ? 'border-brand-border/30 opacity-60 grayscale' : 'border-brand-cyan'}`}>
+                        <div key={week} className={`relative pt-8 pl-8 md:pl-0 border-l-2 md:border-l-0 ${isLocked ? 'border-brand-border/30 opacity-60 grayscale' : 'border-brand-purple'}`}>
 
                             {/* Mobile Line Dot */}
-                            <div className={`md:hidden absolute left-[-9px] top-8 w-4 h-4 rounded-full border-2 ${isLocked ? 'bg-brand-bg border-brand-border' : 'bg-brand-cyan border-brand-bg shadow-[0_0_10px_#06b6d4]'}`}></div>
+                            <div className={`md:hidden absolute left-[-9px] top-8 w-4 h-4 rounded-full border-2 ${isLocked ? 'bg-brand-bg border-brand-border' : 'bg-brand-purple border-brand-bg shadow-[0_0_10px_#a855f7]'}`}></div>
 
                             {/* Content */}
                             <div className="flex flex-col md:flex-row md:items-start gap-8 group">
 
                                 {/* Week Indicator (Desktop) */}
                                 <div className="hidden md:flex flex-col items-end w-32 shrink-0 pt-2">
-                                    <span className={`text-3xl font-black ${isLocked ? 'text-brand-text-muted' : 'text-brand-cyan'}`}>
+                                    <span className={`text-3xl font-black ${isLocked ? 'text-brand-text-muted' : 'text-brand-purple'}`}>
                                         S.{week.toString().padStart(2, '0')}
                                     </span>
                                     {week === currentWeek && (
@@ -126,7 +125,7 @@ export default async function KidsProgramPage() {
                                         <div className="space-y-4">
                                             {/* Main Content Card */}
                                             {mainItem ? (
-                                                <div className="bg-brand-card border border-brand-border rounded-2xl overflow-hidden hover:border-brand-cyan/50 transition-all group/card shadow-xl relative">
+                                                <div className="bg-brand-card border border-brand-border rounded-2xl overflow-hidden hover:border-brand-purple/50 transition-all group/card shadow-xl relative">
                                                     <div className="aspect-video relative bg-black">
                                                         {mainItem.thumbnail_url ? (
                                                             <Image src={mainItem.thumbnail_url} alt={mainItem.title} fill className="object-cover opacity-80 group-hover/card:opacity-100 transition-opacity" />
@@ -138,14 +137,14 @@ export default async function KidsProgramPage() {
 
                                                         {/* Play Button Overlay */}
                                                         <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover/card:opacity-100 transition-all scale-90 group-hover/card:scale-100 duration-300">
-                                                            <div className="bg-brand-cyan text-brand-bg w-16 h-16 rounded-full flex items-center justify-center shadow-[0_0_30px_rgba(6,182,212,0.6)]">
+                                                            <div className="bg-brand-purple text-brand-bg w-16 h-16 rounded-full flex items-center justify-center shadow-[0_0_30px_rgba(6,182,212,0.6)]">
                                                                 <Play className="w-6 h-6 fill-current ml-1" />
                                                             </div>
                                                         </div>
 
                                                         {/* Labels */}
                                                         <div className="absolute top-4 left-4 flex gap-2">
-                                                            <span className="px-2 py-1 bg-brand-cyan/90 text-brand-bg text-[10px] font-bold uppercase tracking-widest rounded shadow-lg">
+                                                            <span className="px-2 py-1 bg-brand-purple/90 text-brand-bg text-[10px] font-bold uppercase tracking-widest rounded shadow-lg">
                                                                 Mission Principale
                                                             </span>
                                                         </div>
@@ -183,7 +182,7 @@ export default async function KidsProgramPage() {
                                                             </div>
                                                             <div>
                                                                 <div className="text-[10px] text-brand-gold font-bold uppercase tracking-wider mb-0.5">Bonus</div>
-                                                                <h4 className="text-sm font-bold text-brand-text leading-tight group-hover/bonus:text-brand-cyan transition-colors">{bonus.title}</h4>
+                                                                <h4 className="text-sm font-bold text-brand-text leading-tight group-hover/bonus:text-brand-purple transition-colors">{bonus.title}</h4>
                                                             </div>
                                                         </div>
                                                     ))}
