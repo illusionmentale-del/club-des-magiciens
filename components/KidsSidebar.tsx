@@ -58,60 +58,76 @@ export default function KidsSidebar({ socialLinks, logoUrl, isAdmin, hasPurchase
 
             {/* Navigation */}
             {/* Navigation */}
-            <nav className="flex-1 p-4 space-y-2 overflow-y-auto">
+            <nav className="flex-1 p-4 space-y-4 overflow-y-auto">
                 {/* 1. 🏰 Le Club (Home) */}
                 <Link
                     href="/kids"
-                    className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${isActive('/kids') && !window.location.hash ? 'bg-magic-purple/20 text-magic-purple border border-magic-purple/20' : 'text-gray-400 hover:bg-white/5 hover:text-white'}`}
+                    className={`group flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${isActive('/kids') && !window.location.hash ? 'bg-magic-purple/20 border border-magic-purple/20' : 'hover:bg-white/5'}`}
                 >
-                    <Wand2 className="w-5 h-5" />
-                    Le Club
+                    <div className={`p-2 rounded-lg ${isActive('/kids') && !window.location.hash ? 'bg-magic-purple text-white' : 'bg-white/5 text-gray-400 group-hover:text-white'}`}>
+                        <Wand2 className="w-5 h-5" />
+                    </div>
+                    <div>
+                        <div className={`font-bold ${isActive('/kids') && !window.location.hash ? 'text-magic-purple' : 'text-gray-300 group-hover:text-white'}`}>Le Club</div>
+                        <div className="text-[10px] text-gray-500 font-medium group-hover:text-gray-400 hidden xl:block">Retrouve toutes les dernières actualités</div>
+                    </div>
                 </Link>
 
-                {/* 2. 🎩 L’Atelier de la Semaine (Anchor) */}
-                <Link
-                    href="/kids#atelier"
-                    className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all text-gray-400 hover:bg-white/5 hover:text-white`}
-                >
-                    <span className="text-xl">🎩</span>
-                    L'Atelier
-                </Link>
-
-                {/* 3. 📖 Le Grimoire (Archives) */}
+                {/* 2. 📖 Le Grimoire (Archives) */}
                 <Link
                     href="/kids/program"
-                    className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${isActive('/kids/program') ? 'bg-magic-purple/20 text-magic-purple border border-magic-purple/20' : 'text-gray-400 hover:bg-white/5 hover:text-white'}`}
+                    className={`group flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${isActive('/kids/program') ? 'bg-magic-purple/20 border border-magic-purple/20' : 'hover:bg-white/5'}`}
                 >
-                    <BookOpen className="w-5 h-5" />
-                    Le Grimoire
+                    <div className={`p-2 rounded-lg ${isActive('/kids/program') ? 'bg-magic-purple text-white' : 'bg-white/5 text-gray-400 group-hover:text-white'}`}>
+                        <BookOpen className="w-5 h-5" />
+                    </div>
+                    <div>
+                        <div className={`font-bold ${isActive('/kids/program') ? 'text-magic-purple' : 'text-gray-300 group-hover:text-white'}`}>Le Grimoire</div>
+                        <div className="text-[10px] text-gray-500 font-medium group-hover:text-gray-400 hidden xl:block">Archives de tous les tours</div>
+                    </div>
                 </Link>
 
-                {/* 4. 🏅 Mon Parcours (Profile/Stats) */}
+                {/* 3. 🎩 Ma Carte Magique (Ex-Parcours) */}
                 <Link
                     href="/kids/account"
-                    className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${isActive('/kids/account') && !pathname.includes('view=settings') ? 'bg-magic-purple/20 text-magic-purple border border-magic-purple/20' : 'text-gray-400 hover:bg-white/5 hover:text-white'}`}
+                    className={`group flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${isActive('/kids/account') && !pathname.includes('view=settings') ? 'bg-magic-purple/20 border border-magic-purple/20' : 'hover:bg-white/5'}`}
                 >
-                    <Trophy className="w-5 h-5" />
-                    Mon Parcours
+                    <div className={`p-2 rounded-lg ${isActive('/kids/account') && !pathname.includes('view=settings') ? 'bg-magic-purple text-white' : 'bg-white/5 text-gray-400 group-hover:text-white'}`}>
+                        <Trophy className="w-5 h-5" />
+                    </div>
+                    <div>
+                        <div className={`font-bold ${isActive('/kids/account') && !pathname.includes('view=settings') ? 'text-magic-purple' : 'text-gray-300 group-hover:text-white'}`}>Ma Carte Magique</div>
+                        <div className="text-[10px] text-gray-500 font-medium group-hover:text-gray-400 hidden xl:block">Ton grade et ta progression</div>
+                    </div>
                 </Link>
 
-                {/* 5. 👤 Mon Compte (Settings) */}
+                {/* 4. 👤 Mon Compte (Settings) */}
                 <Link
                     href="/kids/account?view=settings"
-                    className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${isActive('/kids/account') && pathname.includes('view=settings') ? 'bg-magic-purple/20 text-magic-purple border border-magic-purple/20' : 'text-gray-400 hover:bg-white/5 hover:text-white'}`}
+                    className={`group flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${isActive('/kids/account') && pathname.includes('view=settings') ? 'bg-magic-purple/20 border border-magic-purple/20' : 'hover:bg-white/5'}`}
                 >
-                    <Settings className="w-5 h-5" />
-                    Mon Compte
+                    <div className={`p-2 rounded-lg ${isActive('/kids/account') && pathname.includes('view=settings') ? 'bg-magic-purple text-white' : 'bg-white/5 text-gray-400 group-hover:text-white'}`}>
+                        <Settings className="w-5 h-5" />
+                    </div>
+                    <div>
+                        <div className={`font-bold ${isActive('/kids/account') && pathname.includes('view=settings') ? 'text-magic-purple' : 'text-gray-300 group-hover:text-white'}`}>Mon Compte</div>
+                        <div className="text-[10px] text-gray-500 font-medium group-hover:text-gray-400 hidden xl:block">Gère tes infos secrètes</div>
+                    </div>
                 </Link>
 
                 {/* 📦 Mes Coffres (Dynamic) */}
                 {hasPurchases && (
                     <Link
                         href="/kids/courses?filter=owned"
-                        className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all text-brand-gold hover:bg-white/5 hover:text-white`}
+                        className={`group flex items-center gap-3 px-4 py-3 rounded-xl transition-all hover:bg-white/5`}
                     >
-                        <Package className="w-5 h-5" />
-                        Mes Coffres
+                        <div className="p-2 rounded-lg bg-brand-gold/10 text-brand-gold">
+                            <Package className="w-5 h-5" />
+                        </div>
+                        <div>
+                            <div className="font-bold text-brand-gold">Mes Coffres</div>
+                            <div className="text-[10px] text-gray-500 font-medium group-hover:text-gray-400 hidden xl:block">Tes trésors magiques</div>
+                        </div>
                     </Link>
                 )}    {isAdmin && (
                     <>
