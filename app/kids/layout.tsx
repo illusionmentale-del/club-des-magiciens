@@ -31,10 +31,20 @@ export default async function KidsLayout({
 
     let isLoading = true; // Not used but good for structure if we add loading state
     let isAdmin = false;
+    let hasPurchases = false;
 
     if (user) {
         const { data: profile } = await supabase.from('profiles').select('role').eq('id', user.id).single();
         isAdmin = profile?.role === 'admin';
+
+        // Check for purchases (Mes Coffres)
+        const { count: purchaseCount } = await supabase
+            .from("purchases")
+            .select("*", { count: 'exact', head: true })
+            .eq("user_id", user.id)
+            .eq("status", "paid");
+
+        hasPurchases = (purchaseCount || 0) > 0;
 
         const { data: settings } = await supabase.from("settings").select("*");
 
@@ -59,9 +69,9 @@ export default async function KidsLayout({
 
     return (
         <div className="flex h-screen bg-brand-bg overflow-hidden text-brand-text font-sans">
-            <KidsSidebar socialLinks={socialLinks} logoUrl={siteLogo} isAdmin={isAdmin} />
+            <KidsSidebar socialLinks={socialLinks} logoUrl={siteLogo} isAdmin={isAdmin} hasPurchases={hasPurchases} />
             <div className="flex-1 flex flex-col md:pl-0">
-                <KidsMobileNav logoUrl={siteLogo} />
+                <KidsMobileNav logoUrl={siteLogo} hasPurchases={hasPurchases} />
                 <main className="flex-1 overflow-y-auto bg-brand-bg p-4 md:p-8 text-brand-text">
                     {children}
                 </main>

@@ -4,12 +4,13 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
-import { LogOut, BookOpen, Settings, Video, Star, Youtube, Instagram, Facebook, LayoutDashboard, Shield, Wand2, ShoppingBag, Trophy, Map } from "lucide-react";
+import { LogOut, BookOpen, Settings, Video, Star, Youtube, Instagram, Facebook, LayoutDashboard, Shield, Wand2, ShoppingBag, Trophy, Map, Package } from "lucide-react";
 
-export default function KidsSidebar({ socialLinks, logoUrl, isAdmin }: {
+export default function KidsSidebar({ socialLinks, logoUrl, isAdmin, hasPurchases }: {
     socialLinks?: { youtube: string; instagram: string; facebook: string; tiktok: string };
     logoUrl?: string;
     isAdmin?: boolean;
+    hasPurchases?: boolean;
 }) {
     const pathname = usePathname();
     const router = useRouter();
@@ -58,34 +59,48 @@ export default function KidsSidebar({ socialLinks, logoUrl, isAdmin }: {
             {/* Navigation */}
             {/* Navigation */}
             <nav className="flex-1 p-4 space-y-2 overflow-y-auto">
-                {/* 1. Mon Parcours (Home) */}
+                {/* 1. Le Club (Home) */}
                 <Link
                     href="/kids"
                     className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${isActive('/kids') ? 'bg-magic-purple/20 text-magic-purple border border-magic-purple/20' : 'text-gray-400 hover:bg-white/5 hover:text-white'}`}
                 >
-                    <Map className="w-5 h-5" />
-                    Mon Parcours
+                    <Wand2 className="w-5 h-5" />
+                    Le Club
                 </Link>
 
-                {/* 2. Mes Défis (Previous Weeks / Program) */}
+                {/* 2. Les Missions (Archive) */}
                 <Link
                     href="/kids/program"
                     className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${isActive('/kids/program') ? 'bg-magic-purple/20 text-magic-purple border border-magic-purple/20' : 'text-gray-400 hover:bg-white/5 hover:text-white'}`}
                 >
-                    <Trophy className="w-5 h-5" />
-                    Mes Défis
+                    <BookOpen className="w-5 h-5" />
+                    Les Missions
                 </Link>
 
-                {/* 3. Bonus (Shop) */}
+                {/* 3. La Boutique (Shop) */}
                 <Link
                     href="/kids/courses"
                     className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${isActive('/kids/courses') ? 'bg-magic-purple/20 text-magic-purple border border-magic-purple/20' : 'text-gray-400 hover:bg-white/5 hover:text-white'}`}
                 >
                     <ShoppingBag className="w-5 h-5" />
-                    Bonus
+                    La Boutique
                 </Link>
 
-                {/* 4. Mon Compte */}
+                {/* 4. Mes Coffres (Purchases) - Dynamic */}
+                {hasPurchases && (
+                    <Link
+                        href="/kids/courses?filter=owned" // Or just /kids/purchases if we create it, staying with query param or just main details page for now 
+                        // Actually, standardizing: maybe link to the Shop but emphasizing owned? 
+                        // Let's link to /kids/courses for now as user didn't ask for a new route logic yet, but "Mes Coffres" implies a different view. 
+                        // I will stick to /kids/courses and ensure the page handles it or just distinct item.
+                        className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all text-brand-gold hover:bg-white/5 hover:text-white`}
+                    >
+                        <Package className="w-5 h-5" />
+                        Mes Coffres
+                    </Link>
+                )}
+
+                {/* 5. Mon Compte */}
                 <Link
                     href="/kids/account"
                     className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${isActive('/kids/account') ? 'bg-magic-purple/20 text-magic-purple border border-magic-purple/20' : 'text-gray-400 hover:bg-white/5 hover:text-white'}`}
@@ -94,28 +109,6 @@ export default function KidsSidebar({ socialLinks, logoUrl, isAdmin }: {
                     Mon Compte
                 </Link>
 
-                {isAdmin && (
-                    <>
-                        <div className="my-2 border-t border-white/10"></div>
-                        <p className="px-4 text-xs font-bold text-gray-400 uppercase tracking-widest mb-1">Admin</p>
-
-                        <Link
-                            href="/dashboard"
-                            className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all text-gray-400 hover:bg-white/5 hover:text-white`}
-                        >
-                            <LayoutDashboard className="w-5 h-5" />
-                            Espace Adulte
-                        </Link>
-
-                        <Link
-                            href="/admin"
-                            className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${isActive('/admin') ? 'bg-red-500/20 text-red-400 border border-red-500/20' : 'text-gray-400 hover:bg-white/5 hover:text-white'}`}
-                        >
-                            <Shield className="w-5 h-5" />
-                            Accès Admin
-                        </Link>
-                    </>
-                )}
             </nav>
 
             {/* User Footer */}
@@ -128,6 +121,6 @@ export default function KidsSidebar({ socialLinks, logoUrl, isAdmin }: {
                     Déconnexion
                 </button>
             </div>
-        </aside>
+        </aside >
     );
 }
