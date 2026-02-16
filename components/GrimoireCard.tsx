@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
-import { PlayCircle, Star, Sparkles, Square, Circle } from "lucide-react";
+import { PlayCircle, Star, Sparkles, Square, Circle, ShoppingBag } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface GrimoireCardProps {
@@ -50,12 +50,16 @@ export default function GrimoireCard({ course, index }: GrimoireCardProps) {
                         </div>
 
                         {/* Status Badge */}
-                        <div className="absolute top-4 right-4 z-20">
+                        <div className="absolute top-4 right-4 z-20 flex flex-col gap-2 items-end">
                             {index === 0 && (
-                                <span className="text-[10px] font-bold tracking-widest uppercase text-white bg-blue-600/20 backdrop-blur-md px-3 py-1 border border-blue-500/30">
+                                <span className="text-[10px] font-bold tracking-widest uppercase text-white bg-blue-600/20 backdrop-blur-md px-3 py-1 border border-blue-500/30 rounded">
                                     Nouveau
                                 </span>
                             )}
+                            <div className="flex items-center gap-1.5 text-[10px] font-bold tracking-widest uppercase text-[#f59e0b] bg-[#f59e0b]/10 backdrop-blur-md px-3 py-1 border border-[#f59e0b]/30 rounded-full shadow-[0_0_10px_rgba(245,158,11,0.2)]">
+                                <ShoppingBag className="w-3 h-3" />
+                                Pack Premium
+                            </div>
                         </div>
 
                         {/* Play Button - Ghost Style */}

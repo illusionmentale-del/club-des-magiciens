@@ -1,7 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import { BookOpen, Search, Star } from "lucide-react";
+import { BookOpen, Search, Star, ShoppingBag } from "lucide-react";
 import Image from "next/image";
 import GrimoireCard from "@/components/GrimoireCard";
 
@@ -44,14 +44,30 @@ export default async function KidsCoursesPage() {
                     <div>
                         <div className="flex items-center gap-3 mb-3">
                             <div className="w-12 h-1 bg-brand-purple"></div>
-                            <span className="text-brand-purple text-xs font-bold tracking-[0.2em] uppercase">Base de Données</span>
+                            <span className="text-brand-purple text-xs font-bold tracking-[0.2em] uppercase">Accès Exclusif</span>
                         </div>
-                        <h1 className="text-5xl md:text-7xl font-black text-brand-text uppercase tracking-tight leading-none mb-2">
-                            Grimoire<br />Secrets
+                        <h1 className="text-5xl md:text-7xl font-black text-brand-text uppercase tracking-tight leading-none mb-4">
+                            La Boutique<br />Secrète
                         </h1>
-                        <p className="text-xl text-brand-text-muted font-light flex items-center gap-2">
-                            <span className="text-brand-text font-bold">{coursesWithStats?.length || 0}</span> protocoles magiques identifiés.
-                        </p>
+                        <div className="flex flex-col gap-4">
+                            <p className="text-xl text-brand-text-muted font-light flex items-center gap-2">
+                                <span className="text-brand-text font-bold">{coursesWithStats?.length || 0}</span> coffrets magiques disponibles.
+                            </p>
+
+                            {/* Explanatory Banner */}
+                            <div className="bg-brand-purple/10 border border-brand-purple/20 rounded-xl p-4 flex items-start gap-3 max-w-xl">
+                                <div className="p-2 bg-brand-purple/20 rounded-lg shrink-0">
+                                    <ShoppingBag className="w-5 h-5 text-brand-purple" />
+                                </div>
+                                <div>
+                                    <h3 className="text-sm font-bold text-brand-text uppercase tracking-wide mb-1">Packs Spéciaux</h3>
+                                    <p className="text-xs text-brand-text-muted leading-relaxed">
+                                        Ici, tu peux débloquer des <strong>coffrets secrets complets</strong> pour aller encore plus loin !
+                                        Ces packs contiennent des tours inédits qui ne sont pas dans ton programme hebdomadaire.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     <div className="flex items-center gap-4">

@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
-import { LogOut, BookOpen, Settings, Video, Star, Youtube, Instagram, Facebook, LayoutDashboard, Shield, Wand2 } from "lucide-react";
+import { LogOut, BookOpen, Settings, Video, Star, Youtube, Instagram, Facebook, LayoutDashboard, Shield, Wand2, ShoppingBag } from "lucide-react";
 
 export default function KidsSidebar({ socialLinks, logoUrl, isAdmin }: {
     socialLinks?: { youtube: string; instagram: string; facebook: string; tiktok: string };
@@ -68,8 +68,8 @@ export default function KidsSidebar({ socialLinks, logoUrl, isAdmin }: {
                     href="/kids/courses"
                     className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${isActive('/kids/courses') ? 'bg-magic-purple/20 text-magic-purple border border-magic-purple/20' : 'text-gray-400 hover:bg-white/5 hover:text-white'}`}
                 >
-                    <BookOpen className="w-5 h-5" />
-                    Mes tours de magie
+                    <ShoppingBag className="w-5 h-5" />
+                    La Boutique Secrète
                 </Link>
 
                 <Link

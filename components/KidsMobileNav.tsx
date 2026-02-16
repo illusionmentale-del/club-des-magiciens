@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { Menu, X, BookOpen, Settings, Video, LogOut, Star, Play } from "lucide-react";
+import { Menu, X, BookOpen, Settings, Video, LogOut, Star, Play, ShoppingBag } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 
@@ -78,8 +78,8 @@ export default function KidsMobileNav({ logoUrl }: { logoUrl?: string }) {
                                 onClick={close}
                                 className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${isActive('/kids/courses') ? 'bg-magic-purple/20 text-magic-purple border border-magic-purple/20' : 'text-gray-400 hover:bg-white/5 hover:text-white'}`}
                             >
-                                <BookOpen className="w-5 h-5" />
-                                Mes tours de magie
+                                <ShoppingBag className="w-5 h-5" />
+                                La Boutique Secrète
                             </Link>
 
                             <Link
