@@ -76,7 +76,7 @@ export default function AdminLibraryPage() {
                         <p className="text-gray-400">Gestion des Ateliers et Contenus</p>
                     </div>
                     <Link
-                        href="/admin/library/new"
+                        href="/admin/kids/library/new"
                         className="bg-purple-600 hover:bg-purple-500 text-white px-6 py-3 rounded-xl font-bold flex items-center gap-2 transition-all shadow-lg shadow-purple-900/50"
                     >
                         <Plus className="w-5 h-5" />
@@ -174,7 +174,7 @@ export default function AdminLibraryPage() {
 
                                     <div className="h-8 w-px bg-white/10 mx-2"></div>
 
-                                    <Link href={`/admin/library/${item.id}`} className="p-2 bg-blue-500/20 text-blue-400 rounded-lg hover:bg-blue-500/30 transition-colors">
+                                    <Link href={`/admin/kids/library/${item.id}`} className="p-2 bg-blue-500/20 text-blue-400 rounded-lg hover:bg-blue-500/30 transition-colors">
                                         <Edit className="w-4 h-4" />
                                     </Link>
                                     <button

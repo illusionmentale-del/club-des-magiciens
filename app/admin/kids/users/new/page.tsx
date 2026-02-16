@@ -1,6 +1,6 @@
 "use client";
 
-import { createUserManually } from "../../actions";
+import { createUserManually } from "@/app/admin/actions";
 import Link from "next/link";
 import { ArrowLeft, UserPlus } from "lucide-react";
 
@@ -9,7 +9,7 @@ export default function NewUserPage() {
         <div className="min-h-screen bg-magic-bg text-white p-8">
             <div className="max-w-2xl mx-auto">
                 <header className="flex items-center gap-4 mb-8">
-                    <Link href="/admin/users" className="p-2 bg-white/5 rounded-lg hover:bg-white/10"><ArrowLeft /></Link>
+                    <Link href="/admin/kids/users" className="p-2 bg-white/5 rounded-lg hover:bg-white/10"><ArrowLeft /></Link>
                     <h1 className="text-3xl font-bold">Ajouter un Membre</h1>
                 </header>
 

@@ -109,7 +109,7 @@ export default function LibraryItemForm({ initialData }: { initialData?: Library
                 if (error) throw error;
             }
 
-            router.push("/admin/library");
+            router.push("/admin/kids/library");
             router.refresh();
         } catch (error) {
             console.error("Error saving item:", error);
@@ -123,7 +123,7 @@ export default function LibraryItemForm({ initialData }: { initialData?: Library
         <form onSubmit={handleSubmit} className="max-w-4xl mx-auto space-y-8 pb-32">
             {/* Header / Actions */}
             <div className="flex items-center justify-between sticky top-4 z-50 bg-brand-bg/95 backdrop-blur-md p-4 rounded-2xl border border-brand-border shadow-2xl">
-                <Link href="/admin/library" className="flex items-center gap-2 text-brand-text-muted hover:text-brand-text transition-colors">
+                <Link href="/admin/kids/library" className="flex items-center gap-2 text-brand-text-muted hover:text-brand-text transition-colors">
                     <ArrowLeft className="w-5 h-5" />
                     <span className="font-bold uppercase tracking-wider text-xs">Retour</span>
                 </Link>

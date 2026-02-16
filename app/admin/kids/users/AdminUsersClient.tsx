@@ -1,6 +1,6 @@
 "use client";
 
-import { useAdmin } from "../AdminContext";
+import { useAdmin } from "@/app/admin/AdminContext";
 import { ArrowLeft, UserPlus, Trash2 } from "lucide-react";
 import Link from "next/link";
 import UserRow from "@/components/admin/UserRow";
@@ -56,7 +56,7 @@ export default function AdminUsersClient({ profiles }: AdminUsersClientProps) {
                             </div>
                         </div>
                     </div>
-                    <Link href="/admin/users/new" className={`${btnColor} text-white px-4 py-2 rounded-xl font-bold flex items-center gap-2 transition-colors`}>
+                    <Link href="/admin/kids/users/new" className={`${btnColor} text-white px-4 py-2 rounded-xl font-bold flex items-center gap-2 transition-colors`}>
                         <UserPlus className="w-4 h-4" />
                         Ajouter
                     </Link>

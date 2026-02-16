@@ -4,7 +4,7 @@ import Link from "next/link";
 import { ArrowLeft, Save, ShoppingBag, Info, AlertTriangle } from "lucide-react";
 import { createProduct } from "../actions";
 import { useSearchParams } from "next/navigation";
-import { useAdmin } from "../../AdminContext";
+import { useAdmin } from "@/app/admin/AdminContext";
 
 export default function NewProductPage() {
     const searchParams = useSearchParams();
@@ -16,7 +16,7 @@ export default function NewProductPage() {
     return (
         <div className="min-h-screen bg-magic-bg text-white p-8 font-sans">
             <header className="flex items-center justify-between mb-8 max-w-3xl mx-auto">
-                <Link href="/admin/products" className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors">
+                <Link href="/admin/adults/products" className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors">
                     <ArrowLeft className="w-5 h-5" />
                     Annuler
                 </Link>

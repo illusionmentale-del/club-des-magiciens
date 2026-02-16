@@ -4,7 +4,7 @@ import { createClient } from "@/lib/supabase/client";
 import Link from "next/link";
 import { ArrowLeft, ShoppingBag, Plus, Trash2, CheckCircle, XCircle, Tag, Euro } from "lucide-react";
 import { deleteProduct, toggleProductStatus } from "./actions";
-import { useAdmin } from "../AdminContext";
+import { useAdmin } from "@/app/admin/AdminContext";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 
@@ -73,7 +73,7 @@ export default function AdminProductsPage() {
                 {/* Actions */}
                 <div className="flex justify-end">
                     <Link
-                        href={`/admin/products/new?space=${audience}`}
+                        href={`/admin/adults/products/new?space=${audience}`}
                         className={`px-6 py-3 ${themeColor} hover:opacity-90 rounded-xl font-bold flex items-center gap-2 transition-colors shadow-lg shadow-black/40`}
                     >
                         <Plus className="w-5 h-5" />

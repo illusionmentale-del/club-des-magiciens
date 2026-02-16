@@ -30,7 +30,7 @@ export default async function CoursesIndexPage(props: { searchParams: Promise<{ 
                     <h1 className="text-3xl font-serif text-brand-text">Gestion des Formations</h1>
                     <p className="text-brand-text-muted">Créez et modifiez vos cours pour Adultes et Enfants.</p>
                 </div>
-                <Link href="/admin/courses/new" className="bg-brand-purple hover:bg-brand-purple/90 text-white px-6 py-3 rounded-xl font-bold flex items-center gap-2 transition-all shadow-lg shadow-brand-purple/20">
+                <Link href="/admin/adults/courses/new" className="bg-brand-purple hover:bg-brand-purple/90 text-white px-6 py-3 rounded-xl font-bold flex items-center gap-2 transition-all shadow-lg shadow-brand-purple/20">
                     <Plus className="w-5 h-5" />
                     Nouveau Cours
                 </Link>
@@ -38,20 +38,20 @@ export default async function CoursesIndexPage(props: { searchParams: Promise<{ 
 
             {/* Filter Tabs */}
             <div className="flex gap-2">
-                <Link href="/admin/courses?audience=all" className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${filterAudience === 'all' ? 'bg-white text-black' : 'text-gray-400 hover:text-white hover:bg-white/5'}`}>
+                <Link href="/admin/adults/courses?audience=all" className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${filterAudience === 'all' ? 'bg-white text-black' : 'text-gray-400 hover:text-white hover:bg-white/5'}`}>
                     Tout
                 </Link>
-                <Link href="/admin/courses?audience=adults" className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${filterAudience === 'adults' ? 'bg-magic-purple text-white' : 'text-gray-400 hover:text-white hover:bg-white/5'}`}>
+                <Link href="/admin/adults/courses?audience=adults" className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${filterAudience === 'adults' ? 'bg-magic-purple text-white' : 'text-gray-400 hover:text-white hover:bg-white/5'}`}>
                     Adultes
                 </Link>
-                <Link href="/admin/courses?audience=kids" className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${filterAudience === 'kids' ? 'bg-white text-purple-600' : 'text-gray-400 hover:text-white hover:bg-white/5'}`}>
+                <Link href="/admin/adults/courses?audience=kids" className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${filterAudience === 'kids' ? 'bg-white text-purple-600' : 'text-gray-400 hover:text-white hover:bg-white/5'}`}>
                     Kids
                 </Link>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {courses?.map((course) => (
-                    <Link key={course.id} href={`/admin/courses/${course.id}`} className="group bg-brand-card border border-brand-border rounded-xl overflow-hidden hover:border-brand-purple/50 transition-all hover:shadow-lg hover:-translate-y-1 block relative">
+                    <Link key={course.id} href={`/admin/adults/courses/${course.id}`} className="group bg-brand-card border border-brand-border rounded-xl overflow-hidden hover:border-brand-purple/50 transition-all hover:shadow-lg hover:-translate-y-1 block relative">
                         {/* Audience Badge */}
                         <div className="absolute top-3 right-3 z-10">
                             <span className={`px-2 py-1 rounded text-[10px] font-bold uppercase shadow-sm ${course.audience === 'kids' ? 'bg-white text-purple-600' : 'bg-brand-purple text-white'}`}>

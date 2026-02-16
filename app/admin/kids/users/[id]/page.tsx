@@ -141,7 +141,7 @@ export default function AdminUserDetailPage() {
         <div className="min-h-screen bg-gray-900 text-white p-8 font-sans">
             <div className="max-w-6xl mx-auto">
                 <header className="mb-8 flex items-center justify-between">
-                    <Link href="/admin/users" className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors">
+                    <Link href="/admin/kids/users" className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors">
                         <ArrowLeft className="w-5 h-5" /> Retour
                     </Link>
                     <div className="text-right">

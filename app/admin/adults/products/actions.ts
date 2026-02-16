@@ -33,10 +33,10 @@ export async function createProduct(formData: FormData) {
         throw new Error("Failed to create product");
     }
 
-    revalidatePath("/admin/products");
+    revalidatePath("/admin/adults/products");
     revalidatePath("/dashboard/catalog");
     revalidatePath("/pricing");
-    redirect("/admin/products");
+    redirect("/admin/adults/products");
 }
 
 export async function deleteProduct(id: string) {
@@ -49,7 +49,7 @@ export async function deleteProduct(id: string) {
         throw new Error("Failed to delete product");
     }
 
-    revalidatePath("/admin/products");
+    revalidatePath("/admin/adults/products");
 }
 
 export async function toggleProductStatus(id: string, currentStatus: boolean) {
@@ -65,7 +65,7 @@ export async function toggleProductStatus(id: string, currentStatus: boolean) {
         throw new Error("Failed to update product status");
     }
 
-    revalidatePath("/admin/products");
+    revalidatePath("/admin/adults/products");
     revalidatePath("/dashboard/catalog");
     revalidatePath("/pricing");
 }

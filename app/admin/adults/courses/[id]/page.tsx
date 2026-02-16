@@ -33,7 +33,7 @@ export default async function AdminCoursePage(props: { params: Promise<{ id: str
     return (
         <div className="space-y-8 max-w-5xl mx-auto">
             <header className="flex flex-col gap-4 border-b border-brand-border pb-6">
-                <Link href="/admin/courses" className="inline-flex items-center gap-2 text-brand-text-muted hover:text-white mb-2">
+                <Link href="/admin/adults/courses" className="inline-flex items-center gap-2 text-brand-text-muted hover:text-white mb-2">
                     <ArrowLeft className="w-4 h-4" />
                     Retour aux cours
                 </Link>
