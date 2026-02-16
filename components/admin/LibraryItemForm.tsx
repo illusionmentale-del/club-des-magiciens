@@ -19,6 +19,7 @@ type LibraryItem = {
     type: string;
     week_number?: number | null;
     is_main?: boolean;
+    show_in_news?: boolean;
     published_at?: string;
 };
 
@@ -39,6 +40,7 @@ export default function LibraryItemForm({ initialData }: { initialData?: Library
         type: "routine",
         week_number: 1,
         is_main: false,
+        show_in_news: false,
         published_at: new Date().toISOString().split('T')[0]
     });
 
@@ -238,6 +240,17 @@ export default function LibraryItemForm({ initialData }: { initialData?: Library
                                         id="is_main"
                                     />
                                     <label htmlFor="is_main" className="text-brand-text text-sm font-bold uppercase tracking-wide cursor-pointer select-none">Contenu Principal</label>
+                                </div>
+                                <div className="flex items-center gap-4 pt-4">
+                                    <input
+                                        type="checkbox"
+                                        name="show_in_news"
+                                        checked={formData.show_in_news || false}
+                                        onChange={handleCheckboxChange}
+                                        className="w-6 h-6 rounded border-brand-border bg-brand-bg text-brand-cyan focus:ring-brand-cyan"
+                                        id="show_in_news"
+                                    />
+                                    <label htmlFor="show_in_news" className="text-brand-text text-sm font-bold uppercase tracking-wide cursor-pointer select-none">Afficher dans Nouveautés</label>
                                 </div>
                             </div>
                         </div>

@@ -1,139 +1,197 @@
-import { createClient } from "@/lib/supabase/server";
+"use client";
+
+import { createClient } from "@/lib/supabase/client";
 import Link from "next/link";
-import { Plus, Search, Filter, Video, FileText, LayoutGrid } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Plus, Edit, Trash2, Search, Filter, Eye, Star, Newspaper } from "lucide-react";
 import Image from "next/image";
 
-export default async function AdminLibraryPage({
-    searchParams,
-}: {
-    searchParams: Promise<{ [key: string]: string | string[] | undefined }>
-}) {
-    const supabase = await createClient();
-    const resolvedParams = await searchParams;
-    const audienceFilter = typeof resolvedParams.audience === 'string' ? resolvedParams.audience : 'all';
+type LibraryItem = {
+    id: string;
+    title: string;
+    description: string;
+    thumbnail_url: string;
+    week_number: number;
+    audience: 'kids' | 'adults';
+    type: string;
+    is_main: boolean;
+    show_in_news: boolean;
+    is_highlighted: boolean;
+};
 
-    let query = supabase
-        .from("library_items")
-        .select("*")
-        .order("created_at", { ascending: false });
+export default function AdminLibraryPage() {
+    const supabase = createClient();
+    const [items, setItems] = useState<LibraryItem[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [filter, setFilter] = useState<'all' | 'kids' | 'adults'>('kids');
+    const [search, setSearch] = useState("");
 
-    if (audienceFilter !== 'all') {
-        query = query.eq('audience', audienceFilter);
-    }
+    const fetchItems = async () => {
+        setLoading(true);
+        let query = supabase
+            .from("library_items")
+            .select("*")
+            .order("week_number", { ascending: true })
+            .order("created_at", { ascending: false });
 
-    const { data: items } = await query;
+        if (filter !== 'all') {
+            query = query.eq("audience", filter);
+        }
+
+        const { data, error } = await query;
+        if (error) console.error("Error fetching items:", error);
+        else setItems(data || []);
+        setLoading(false);
+    };
+
+    useEffect(() => {
+        fetchItems();
+    }, [filter]);
+
+    const handleDelete = async (id: string) => {
+        if (!confirm("Supprimer cet atelier ?")) return;
+        const { error } = await supabase.from("library_items").delete().eq("id", id);
+        if (error) alert("Erreur lors de la suppression");
+        else fetchItems();
+    };
+
+    const toggleFlag = async (id: string, field: 'show_in_news' | 'is_highlighted', currentValue: boolean) => {
+        const { error } = await supabase.from("library_items").update({ [field]: !currentValue }).eq("id", id);
+        if (error) alert("Erreur lors de la mise à jour");
+        else fetchItems();
+    };
+
+    const filteredItems = items.filter(item =>
+        item.title.toLowerCase().includes(search.toLowerCase())
+    );
 
     return (
-        <div className="space-y-8">
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                <div>
-                    <h1 className="text-3xl font-bold text-brand-text uppercase tracking-tight">Médiathèque</h1>
-                    <p className="text-brand-text-muted mt-2">Gérez les contenus du feed Kids et Adultes.</p>
+        <div className="min-h-screen bg-magic-bg text-white p-8">
+            <div className="max-w-6xl mx-auto">
+                <header className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+                    <div>
+                        <h1 className="text-3xl font-bold flex items-center gap-2">
+                            <span className="text-purple-400">📚</span> Bibliothèque
+                        </h1>
+                        <p className="text-gray-400">Gestion des Ateliers et Contenus</p>
+                    </div>
+                    <Link
+                        href="/admin/library/new"
+                        className="bg-purple-600 hover:bg-purple-500 text-white px-6 py-3 rounded-xl font-bold flex items-center gap-2 transition-all shadow-lg shadow-purple-900/50"
+                    >
+                        <Plus className="w-5 h-5" />
+                        Nouveau Contenu
+                    </Link>
+                </header>
+
+                {/* Filters */}
+                <div className="flex flex-col md:flex-row gap-4 mb-8 bg-black/20 p-4 rounded-xl border border-white/5">
+                    <div className="relative flex-1">
+                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 w-5 h-5" />
+                        <input
+                            type="text"
+                            placeholder="Rechercher un titre..."
+                            value={search}
+                            onChange={(e) => setSearch(e.target.value)}
+                            className="w-full bg-black/40 border border-white/10 rounded-lg pl-10 pr-4 py-2 text-white focus:outline-none focus:border-purple-500"
+                        />
+                    </div>
+                    <div className="flex bg-black/40 rounded-lg p-1 border border-white/10">
+                        <button
+                            onClick={() => setFilter('kids')}
+                            className={`px-4 py-1.5 rounded-md text-sm font-bold transition-colors ${filter === 'kids' ? 'bg-purple-600 text-white' : 'text-gray-400 hover:text-white'}`}
+                        >
+                            Kids
+                        </button>
+                        <button
+                            onClick={() => setFilter('adults')}
+                            className={`px-4 py-1.5 rounded-md text-sm font-bold transition-colors ${filter === 'adults' ? 'bg-blue-600 text-white' : 'text-gray-400 hover:text-white'}`}
+                        >
+                            Adultes
+                        </button>
+                        <button
+                            onClick={() => setFilter('all')}
+                            className={`px-4 py-1.5 rounded-md text-sm font-bold transition-colors ${filter === 'all' ? 'bg-gray-700 text-white' : 'text-gray-400 hover:text-white'}`}
+                        >
+                            Tout
+                        </button>
+                    </div>
                 </div>
-                <Link
-                    href="/admin/library/new"
-                    className="inline-flex items-center gap-2 bg-brand-blue hover:bg-blue-600 text-white px-6 py-3 rounded-xl font-bold transition-all shadow-[0_0_20px_rgba(59,130,246,0.5)] hover:shadow-[0_0_30px_rgba(59,130,246,0.7)]"
-                >
-                    <Plus className="w-5 h-5" />
-                    Nouveau Contenu
-                </Link>
-            </div>
 
-            {/* Filters */}
-            <div className="flex items-center gap-4 bg-brand-card border border-brand-border p-4 rounded-xl overflow-x-auto">
-                <Filter className="w-5 h-5 text-brand-text-muted shrink-0" />
-                <div className="h-6 w-[1px] bg-brand-border mx-2"></div>
-                <Link
-                    href="/admin/library"
-                    className={`px-4 py-2 rounded-lg text-sm font-bold uppercase tracking-wider transition-colors ${audienceFilter === 'all' ? 'bg-brand-surface text-brand-text border border-brand-border' : 'text-brand-text-muted hover:text-brand-text'}`}
-                >
-                    Tous
-                </Link>
-                <Link
-                    href="/admin/library?audience=kids"
-                    className={`px-4 py-2 rounded-lg text-sm font-bold uppercase tracking-wider transition-colors ${audienceFilter === 'kids' ? 'bg-brand-surface text-brand-cyan border border-brand-cyan/30' : 'text-brand-text-muted hover:text-brand-cyan'}`}
-                >
-                    Kids
-                </Link>
-                <Link
-                    href="/admin/library?audience=adults"
-                    className={`px-4 py-2 rounded-lg text-sm font-bold uppercase tracking-wider transition-colors ${audienceFilter === 'adults' ? 'bg-brand-surface text-brand-gold border border-brand-gold/30' : 'text-brand-text-muted hover:text-brand-gold'}`}
-                >
-                    Adultes
-                </Link>
-            </div>
-
-            {/* Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {items && items.length > 0 ? (
-                    items.map((item) => (
-                        <Link
-                            key={item.id}
-                            href={`/admin/library/${item.id}`}
-                            className="group bg-brand-card border border-brand-border hover:border-brand-blue/50 rounded-2xl overflow-hidden transition-all hover:shadow-2xl hover:shadow-brand-blue/10 flex flex-col h-full"
-                        >
-                            <div className="aspect-video relative bg-brand-bg">
-                                {item.thumbnail_url ? (
-                                    <Image src={item.thumbnail_url} alt={item.title} fill className="object-cover group-hover:scale-105 transition-transform duration-500" />
-                                ) : (
-                                    <div className="w-full h-full flex items-center justify-center text-brand-text-muted">
-                                        <LayoutGrid className="w-10 h-10 opacity-20" />
-                                    </div>
-                                )}
-                                <div className="absolute top-3 right-3 px-2 py-1 bg-black/80 backdrop-blur-md rounded border border-brand-border text-[10px] uppercase font-bold text-brand-text tracking-widest">
-                                    {item.type}
-                                </div>
-                                <div className={`absolute top-3 left-3 px-2 py-1 rounded border text-[10px] uppercase font-bold tracking-widest ${item.audience === 'kids'
-                                        ? 'bg-brand-cyan/20 border-brand-cyan/50 text-brand-cyan'
-                                        : 'bg-brand-gold/20 border-brand-gold/50 text-brand-gold'
-                                    }`}>
-                                    {item.audience}
-                                </div>
-                            </div>
-
-                            <div className="p-6 flex-1 flex flex-col">
-                                <h3 className="text-xl font-bold text-brand-text mb-2 line-clamp-2 group-hover:text-brand-blue transition-colors">
-                                    {item.title}
-                                </h3>
-
-                                {item.audience === 'kids' && (
-                                    <div className="flex items-center gap-2 mb-4">
-                                        <span className="px-2 py-0.5 rounded bg-brand-surface border border-brand-border text-xs text-brand-text-muted font-mono">
-                                            Semaine {item.week_number}
-                                        </span>
-                                        {item.is_main && (
-                                            <span className="px-2 py-0.5 rounded bg-brand-purple/20 border border-brand-purple/50 text-xs text-brand-purple font-bold uppercase">
-                                                Principal
-                                            </span>
-                                        )}
-                                    </div>
-                                )}
-
-                                {item.audience === 'adults' && item.subtitle && (
-                                    <p className="text-sm text-brand-text-muted mb-4 line-clamp-1 italic">
-                                        "{item.subtitle}"
-                                    </p>
-                                )}
-
-                                <div className="mt-auto pt-4 border-t border-brand-border flex items-center justify-between text-xs text-brand-text-muted font-mono">
-                                    <span>{new Date(item.created_at).toLocaleDateString()}</span>
-                                    <div className="flex items-center gap-2">
-                                        {item.video_url && <Video className="w-3 h-3" />}
-                                        {item.resource_url && <FileText className="w-3 h-3" />}
-                                    </div>
-                                </div>
-                            </div>
-                        </Link>
-                    ))
+                {/* List */}
+                {loading ? (
+                    <div className="text-center py-12 text-gray-500">Chargement...</div>
                 ) : (
-                    <div className="col-span-full py-20 text-center border border-dashed border-brand-border rounded-3xl bg-brand-card/30">
-                        <p className="text-brand-text-muted mb-4 uppercase tracking-widest">Aucun contenu trouvé</p>
-                        <Link
-                            href="/admin/library/new"
-                            className="text-brand-blue hover:text-brand-text border-b border-brand-blue hover:border-brand-text transition-colors pb-0.5 uppercase tracking-wider font-bold text-sm"
-                        >
-                            Créer le premier item
-                        </Link>
+                    <div className="grid grid-cols-1 gap-4">
+                        {filteredItems.map((item) => (
+                            <div key={item.id} className="bg-magic-card border border-white/5 rounded-xl p-4 flex flex-col md:flex-row items-center gap-6 hover:border-white/20 transition-colors group">
+                                {/* Thumbnail */}
+                                <div className="w-full md:w-32 aspect-video bg-black/50 rounded-lg overflow-hidden relative shrink-0">
+                                    {item.thumbnail_url ? (
+                                        <Image src={item.thumbnail_url} alt={item.title} fill className="object-cover" />
+                                    ) : (
+                                        <div className="flex items-center justify-center h-full text-gray-600 text-xs">No Image</div>
+                                    )}
+                                    {item.is_main && (
+                                        <div className="absolute top-1 left-1 bg-yellow-500 text-black text-[10px] font-bold px-1.5 rounded">STAR</div>
+                                    )}
+                                </div>
+
+                                {/* Info */}
+                                <div className="flex-1 text-center md:text-left">
+                                    <div className="flex items-center gap-2 justify-center md:justify-start mb-1">
+                                        <h3 className="font-bold text-lg text-white group-hover:text-purple-400 transition-colors">{item.title}</h3>
+                                        <span className={`text-[10px] px-2 py-0.5 rounded border ${item.audience === 'kids' ? 'border-purple-500/30 text-purple-400' : 'border-blue-500/30 text-blue-400'}`}>
+                                            {item.audience.toUpperCase()}
+                                        </span>
+                                    </div>
+                                    <div className="text-sm text-gray-400 flex flex-wrap gap-4 justify-center md:justify-start">
+                                        {item.audience === 'kids' && (
+                                            <span className="flex items-center gap-1"><span className="text-gray-500">Semaine:</span> <span className="text-white font-mono">{item.week_number}</span></span>
+                                        )}
+                                        <span className="flex items-center gap-1"><span className="text-gray-500">Type:</span> <span className="text-white capitalize">{item.type}</span></span>
+                                    </div>
+                                </div>
+
+                                {/* Actions / Flags */}
+                                <div className="flex items-center gap-3">
+                                    <button
+                                        onClick={() => toggleFlag(item.id, 'show_in_news', item.show_in_news)}
+                                        className={`p-2 rounded-lg transition-colors border ${item.show_in_news ? 'bg-green-500/20 border-green-500/30 text-green-400' : 'bg-white/5 border-white/10 text-gray-600 hover:text-white'}`}
+                                        title="Afficher dans les Nouveautés"
+                                    >
+                                        <Newspaper className="w-4 h-4" />
+                                    </button>
+
+                                    {/* Only pertinent for Kids mainly, or if we want manual highlight */}
+                                    {/* <button
+                                        onClick={() => toggleFlag(item.id, 'is_highlighted', item.is_highlighted)}
+                                        className={`p-2 rounded-lg transition-colors border ${item.is_highlighted ? 'bg-yellow-500/20 border-yellow-500/30 text-yellow-400' : 'bg-white/5 border-white/10 text-gray-600 hover:text-white'}`}
+                                        title="Mettre en avant"
+                                    >
+                                        <Star className="w-4 h-4" />
+                                    </button> */}
+
+                                    <div className="h-8 w-px bg-white/10 mx-2"></div>
+
+                                    <Link href={`/admin/library/${item.id}`} className="p-2 bg-blue-500/20 text-blue-400 rounded-lg hover:bg-blue-500/30 transition-colors">
+                                        <Edit className="w-4 h-4" />
+                                    </Link>
+                                    <button
+                                        onClick={() => handleDelete(item.id)}
+                                        className="p-2 bg-red-500/20 text-red-400 rounded-lg hover:bg-red-500/30 transition-colors"
+                                    >
+                                        <Trash2 className="w-4 h-4" />
+                                    </button>
+                                </div>
+                            </div>
+                        ))}
+
+                        {filteredItems.length === 0 && (
+                            <div className="text-center py-12 text-gray-500 bg-white/5 rounded-xl border border-dashed border-white/10">
+                                Aucun contenu trouvé via les filtres actuels.
+                            </div>
+                        )}
                     </div>
                 )}
             </div>

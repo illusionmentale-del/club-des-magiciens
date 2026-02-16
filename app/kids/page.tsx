@@ -21,13 +21,31 @@ export default async function KidsHomePage() {
 
     if (!profile) return null;
 
+    // Time-based unlocking logic (Keep this for content availability)
     const createdAt = new Date(profile.created_at);
     const now = new Date();
     const diffTime = Math.abs(now.getTime() - createdAt.getTime());
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
     const currentWeek = Math.floor(diffDays / 7) + 1;
-    const TOTAL_WEEKS = 24;
-    const progressPercentage = Math.min((currentWeek / TOTAL_WEEKS) * 100, 100);
+
+    // Item-based progression logic (For visual Rank/XP)
+    const { count: validatedCount } = await supabase
+        .from("user_progress")
+        .select("*", { count: 'exact', head: true })
+        .eq("user_id", user.id);
+
+    // Progression Logic: 1 Level every 5 validated items
+    const validatedItems = validatedCount || 0;
+    const TOTAL_ITEMS_TO_MAX = 50; // Example target
+    const currentLevel = Math.floor(validatedItems / 5) + 1;
+    const progressPercentage = Math.min((validatedItems / TOTAL_ITEMS_TO_MAX) * 100, 100);
+
+    // Optional: Auto-update profile level if changed (Side-effect in render is bad practice usually, 
+    // but useful for quick sync if no background job. Better: Compute on fly or update via action.)
+    // For now we just display calculated values.
+
+    // Override profile values for display if we rely on calculation
+    // const userGrade = `Niveau ${currentLevel}`;
 
     // Fetch Purchase Count for Block 6
     const { count: purchaseCount } = await supabase
@@ -216,10 +234,10 @@ export default async function KidsHomePage() {
 
                             <div className="text-center mb-6">
                                 <div className="inline-block px-3 py-1 rounded-full bg-brand-purple/20 border border-brand-purple/30 text-brand-purple text-xs font-bold uppercase tracking-widest mb-2">
-                                    Grade Actuel: {userGrade}
+                                    Grade Actuel: {userGrade} (Niv. {currentLevel})
                                 </div>
-                                <div className="text-4xl font-black text-white mb-1">{currentWeek} <span className="text-lg text-brand-text-muted font-medium">/ {TOTAL_WEEKS}</span></div>
-                                <div className="text-xs font-bold text-brand-text-muted uppercase tracking-widest">Semaines Complétées</div>
+                                <div className="text-4xl font-black text-white mb-1">{validatedItems} <span className="text-lg text-brand-text-muted font-medium">/ {TOTAL_ITEMS_TO_MAX}</span></div>
+                                <div className="text-xs font-bold text-brand-text-muted uppercase tracking-widest">Ateliers Validés</div>
                             </div>
 
                             <div className="relative h-3 w-full bg-brand-bg rounded-full overflow-hidden mb-4">

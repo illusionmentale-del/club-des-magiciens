@@ -1,7 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect, notFound } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft, PlayCircle, Lock, CheckCircle } from "lucide-react";
+import { ArrowLeft, PlayCircle, Lock, CheckCircle, Trophy, Star } from "lucide-react";
 import { cn } from "@/lib/utils";
 import CommentsSection from "@/components/Comments";
 import VideoPlayerControls from "@/components/VideoPlayerControls";
@@ -22,16 +22,138 @@ export default async function WatchPage(props: WatchPageProps) {
         redirect("/login");
     }
 
-    // Fetch course details
+    // 1. Try Fetching Course (Adults)
     const { data: course } = await supabase
         .from("courses")
         .select("*")
         .eq("id", params.courseId)
         .single();
 
+    // 2. If no course, try Fetching Library Item (Kids)
+    let libraryItem = null;
     if (!course) {
+        const { data: item } = await supabase
+            .from("library_items")
+            .select("*")
+            .eq("id", params.courseId)
+            .single();
+        libraryItem = item;
+    }
+
+    if (!course && !libraryItem) {
         notFound();
     }
+
+    // --- CASE A: LIBRARY ITEM (KIDS) ---
+    if (libraryItem) {
+        // Check Validation Status
+        const { data: progress } = await supabase
+            .from("user_progress")
+            .select("*")
+            .eq("user_id", user.id)
+            .eq("item_id", libraryItem.id)
+            .single();
+        const isValidated = !!progress;
+
+        return (
+            <div className="min-h-screen bg-magic-bg text-white flex flex-col font-sans">
+                <header className="border-b border-white/10 bg-magic-card/50 backdrop-blur-md sticky top-0 z-50">
+                    <div className="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
+                        <Link href="/kids" className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors">
+                            <ArrowLeft className="w-5 h-5" />
+                            <span className="font-bold uppercase tracking-wider text-xs">Retour au Club</span>
+                        </Link>
+                        <div className="flex items-center gap-2">
+                            <div className="px-3 py-1 bg-purple-500/20 text-purple-400 rounded-full text-[10px] font-bold uppercase tracking-widest border border-purple-500/30">
+                                Semaine {libraryItem.week_number}
+                            </div>
+                        </div>
+                    </div>
+                </header>
+
+                <div className="flex-1 max-w-4xl mx-auto w-full p-4 md:p-8 space-y-8">
+                    {/* Video Player */}
+                    <div className="aspect-video bg-black rounded-2xl overflow-hidden shadow-2xl border border-white/10 relative group">
+                        {libraryItem.video_url ? (
+                            <>
+                                {/^\d+$/.test(libraryItem.video_url) ? (
+                                    <iframe
+                                        src={`https://player.vimeo.com/video/${libraryItem.video_url}?h=0&title=0&byline=0&portrait=0`}
+                                        className="absolute inset-0 w-full h-full"
+                                        frameBorder="0"
+                                        allow="autoplay; fullscreen; picture-in-picture"
+                                        allowFullScreen
+                                    ></iframe>
+                                ) : (
+                                    <iframe
+                                        src={`https://www.youtube-nocookie.com/embed/${libraryItem.video_url}?rel=0&modestbranding=1`}
+                                        className="absolute inset-0 w-full h-full"
+                                        frameBorder="0"
+                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                        allowFullScreen
+                                    ></iframe>
+                                )}
+                            </>
+                        ) : (
+                            <div className="absolute inset-0 flex items-center justify-center text-gray-500">
+                                <p>Pas de vidéo pour cet atelier.</p>
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Content & Validation */}
+                    <div className="flex flex-col md:flex-row gap-8 items-start">
+                        <div className="flex-1 space-y-4">
+                            <h1 className="text-3xl md:text-4xl font-black text-white">{libraryItem.title}</h1>
+                            <div className="prose prose-invert prose-p:text-gray-300 max-w-none">
+                                <p>{libraryItem.description}</p>
+                            </div>
+                        </div>
+
+                        {/* Validation Card */}
+                        <div className="w-full md:w-72 shrink-0">
+                            <div className="bg-magic-card border border-white/10 rounded-2xl p-6 sticky top-24 space-y-6 text-center">
+                                <div className="w-16 h-16 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full mx-auto flex items-center justify-center shadow-lg shadow-orange-500/20">
+                                    <Trophy className="w-8 h-8 text-black" />
+                                </div>
+                                <div>
+                                    <h3 className="font-bold text-white uppercase tracking-tight mb-1">Mission Magique</h3>
+                                    <p className="text-xs text-gray-400">Valide cet atelier pour gagner de l'XP et débloquer des badges !</p>
+                                </div>
+
+                                {isValidated ? (
+                                    <div className="bg-green-500/20 border border-green-500/50 rounded-xl p-4 flex flex-col items-center gap-2 animate-in zoom-in duration-300">
+                                        <CheckCircle className="w-8 h-8 text-green-500" />
+                                        <span className="font-bold text-green-400 uppercase tracking-widest text-sm">Atelier Validé !</span>
+                                    </div>
+                                ) : (
+                                    <form action={async () => {
+                                        "use server";
+                                        const supabase = await createClient();
+                                        const { data: { user } } = await supabase.auth.getUser();
+                                        if (!user) return;
+                                        await supabase.from("user_progress").insert({
+                                            user_id: user.id,
+                                            item_id: libraryItem.id
+                                        });
+                                        // TODO: Check for badges logic here if needed, or DB Trigger
+                                        redirect(`/watch/${libraryItem.id}`);
+                                    }}>
+                                        <button className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 text-white font-bold py-4 rounded-xl transition-all shadow-lg hover:shadow-purple-500/30 active:scale-95 flex items-center justify-center gap-2 group">
+                                            <Star className="w-5 h-5 group-hover:rotate-12 transition-transform" />
+                                            JE VALIDE !
+                                        </button>
+                                    </form>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        )
+    }
+
+    // --- CASE B: COURSE (ADULTS) - EXISTING LOGIC ---
 
     // Fetch videos for this course
     const { data: videos } = await supabase
