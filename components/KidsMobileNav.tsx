@@ -94,33 +94,18 @@ export default function KidsMobileNav({ logoUrl, hasPurchases, isAdmin }: { logo
                                 </div>
                             </Link>
 
-                            {/* 3. 🎩 Ma Carte Magique (Ex-Parcours) */}
+                            {/* 3. 👤 Mes Informations (Combined) */}
                             <Link
                                 href="/kids/account"
                                 onClick={close}
-                                className={`group flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${isActive('/kids/account') && !pathname.includes('view=settings') ? 'bg-magic-purple/20 border border-magic-purple/20' : 'hover:bg-white/5'}`}
+                                className={`group flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${isActive('/kids/account') ? 'bg-magic-purple/20 border border-magic-purple/20' : 'hover:bg-white/5'}`}
                             >
-                                <div className={`p-2 rounded-lg ${isActive('/kids/account') && !pathname.includes('view=settings') ? 'bg-magic-purple text-white' : 'bg-white/5 text-gray-400 group-hover:text-white'}`}>
+                                <div className={`p-2 rounded-lg ${isActive('/kids/account') ? 'bg-magic-purple text-white' : 'bg-white/5 text-gray-400 group-hover:text-white'}`}>
                                     <Trophy className="w-5 h-5" />
                                 </div>
                                 <div>
-                                    <div className={`font-bold ${isActive('/kids/account') && !pathname.includes('view=settings') ? 'text-magic-purple' : 'text-gray-300 group-hover:text-white'}`}>Ma Carte Magique</div>
-                                    <div className="text-[10px] text-gray-500 font-medium group-hover:text-gray-400">Ton grade et ta progression</div>
-                                </div>
-                            </Link>
-
-                            {/* 4. 👤 Mon Compte (Settings) */}
-                            <Link
-                                href="/kids/account?view=settings"
-                                onClick={close}
-                                className={`group flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${isActive('/kids/account') && pathname.includes('view=settings') ? 'bg-magic-purple/20 border border-magic-purple/20' : 'hover:bg-white/5'}`}
-                            >
-                                <div className={`p-2 rounded-lg ${isActive('/kids/account') && pathname.includes('view=settings') ? 'bg-magic-purple text-white' : 'bg-white/5 text-gray-400 group-hover:text-white'}`}>
-                                    <Settings className="w-5 h-5" />
-                                </div>
-                                <div>
-                                    <div className={`font-bold ${isActive('/kids/account') && pathname.includes('view=settings') ? 'text-magic-purple' : 'text-gray-300 group-hover:text-white'}`}>Mon Compte</div>
-                                    <div className="text-[10px] text-gray-500 font-medium group-hover:text-gray-400">Gère tes infos secrètes</div>
+                                    <div className={`font-bold ${isActive('/kids/account') ? 'text-magic-purple' : 'text-gray-300 group-hover:text-white'}`}>Mes Informations</div>
+                                    <div className="text-[10px] text-gray-500 font-medium group-hover:text-gray-400">Ma carte, ma progression et mes secrets</div>
                                 </div>
                             </Link>
 
