@@ -48,7 +48,7 @@ export default async function WatchPage(props: WatchPageProps) {
     if (libraryItem) {
         // Check Validation Status
         const { data: progress } = await supabase
-            .from("user_progress")
+            .from("library_progress")
             .select("*")
             .eq("user_id", user.id)
             .eq("item_id", libraryItem.id)
@@ -132,7 +132,7 @@ export default async function WatchPage(props: WatchPageProps) {
                                         const supabase = await createClient();
                                         const { data: { user } } = await supabase.auth.getUser();
                                         if (!user) return;
-                                        await supabase.from("user_progress").insert({
+                                        await supabase.from("library_progress").insert({
                                             user_id: user.id,
                                             item_id: libraryItem.id
                                         });

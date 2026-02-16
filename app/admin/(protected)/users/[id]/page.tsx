@@ -76,7 +76,7 @@ export default function AdminUserDetailPage() {
 
         // Progress
         const { data: pr } = await supabase
-            .from("user_progress")
+            .from("library_progress")
             .select("*, library_items(title, week_number)")
             .eq("user_id", id)
             .order("completed_at", { ascending: false });
@@ -107,14 +107,14 @@ export default function AdminUserDetailPage() {
     // Actions
     const handleValidateItem = async (itemId: string) => {
         if (!itemId) return;
-        const { error } = await supabase.from("user_progress").insert({ user_id: id, item_id: itemId });
+        const { error } = await supabase.from("library_progress").insert({ user_id: id, item_id: itemId });
         if (error) alert("Erreur (déjà validé ?)");
         else fetchData();
     };
 
     const handleRevokeItem = async (progressId: string) => {
         if (!confirm("Annuler cette validation ?")) return;
-        const { error } = await supabase.from("user_progress").delete().eq("id", progressId);
+        const { error } = await supabase.from("library_progress").delete().eq("id", progressId);
         if (error) alert("Erreur");
         else fetchData();
     };

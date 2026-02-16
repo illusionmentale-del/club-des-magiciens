@@ -28,11 +28,9 @@ CREATE POLICY "Admins can insert/update/delete progress" ON user_progress
     FOR ALL USING (
         EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND role = 'admin')
     );
--- Allow users to insert progress (validation) if we want client-side validation, 
--- but usually secure validation goes through server action. 
--- For now, let's allow inserts for authenticated users for their own id, but maybe restricted?
--- Better to use Server Actions with admin privilege or specific logic. 
--- So we keep standard RLS: only admins ALL, users SELECT.
+-- Allow users to mark items as complete (insert only)
+CREATE POLICY "Users can insert their own progress" ON user_progress
+    FOR INSERT WITH CHECK (auth.uid() = user_id);
 
 
 -- Create badges table

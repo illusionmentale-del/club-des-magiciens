@@ -30,7 +30,7 @@ export default async function KidsHomePage() {
 
     // Item-based progression logic (For visual Rank/XP)
     const { count: validatedCount } = await supabase
-        .from("user_progress")
+        .from("library_progress")
         .select("*", { count: 'exact', head: true })
         .eq("user_id", user.id);
 
