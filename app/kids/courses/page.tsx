@@ -47,7 +47,7 @@ export default async function KidsCoursesPage() {
                             <span className="text-brand-purple text-xs font-bold tracking-[0.2em] uppercase">Accès Exclusif</span>
                         </div>
                         <h1 className="text-5xl md:text-7xl font-black text-brand-text uppercase tracking-tight leading-none mb-4">
-                            La Boutique<br />Secrète
+                            Zone Bonus
                         </h1>
                         <div className="flex flex-col gap-4">
                             <p className="text-xl text-brand-text-muted font-light flex items-center gap-2">
@@ -63,7 +63,7 @@ export default async function KidsCoursesPage() {
                                     <h3 className="text-sm font-bold text-brand-text uppercase tracking-wide mb-1">Packs Spéciaux</h3>
                                     <p className="text-xs text-brand-text-muted leading-relaxed">
                                         Ici, tu peux débloquer des <strong>coffrets secrets complets</strong> pour aller encore plus loin !
-                                        Ces packs contiennent des tours inédits qui ne sont pas dans ton programme hebdomadaire.
+                                        Ces bonus contiennent des tours inédits qui ne sont pas dans tes défis hebdomadaires.
                                     </p>
                                 </div>
                             </div>

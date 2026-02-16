@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
-import { LogOut, BookOpen, Settings, Video, Star, Youtube, Instagram, Facebook, LayoutDashboard, Shield, Wand2, ShoppingBag } from "lucide-react";
+import { LogOut, BookOpen, Settings, Video, Star, Youtube, Instagram, Facebook, LayoutDashboard, Shield, Wand2, ShoppingBag, Trophy, Map } from "lucide-react";
 
 export default function KidsSidebar({ socialLinks, logoUrl, isAdmin }: {
     socialLinks?: { youtube: string; instagram: string; facebook: string; tiktok: string };
@@ -56,38 +56,36 @@ export default function KidsSidebar({ socialLinks, logoUrl, isAdmin }: {
             </div>
 
             {/* Navigation */}
+            {/* Navigation */}
             <nav className="flex-1 p-4 space-y-2 overflow-y-auto">
+                {/* 1. Mon Parcours (Home) */}
+                <Link
+                    href="/kids"
+                    className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${isActive('/kids') ? 'bg-magic-purple/20 text-magic-purple border border-magic-purple/20' : 'text-gray-400 hover:bg-white/5 hover:text-white'}`}
+                >
+                    <Map className="w-5 h-5" />
+                    Mon Parcours
+                </Link>
+
+                {/* 2. Mes Défis (Previous Weeks / Program) */}
                 <Link
                     href="/kids/program"
                     className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${isActive('/kids/program') ? 'bg-magic-purple/20 text-magic-purple border border-magic-purple/20' : 'text-gray-400 hover:bg-white/5 hover:text-white'}`}
                 >
-                    <Wand2 className="w-5 h-5" />
-                    Mon Programme
+                    <Trophy className="w-5 h-5" />
+                    Mes Défis
                 </Link>
+
+                {/* 3. Bonus (Shop) */}
                 <Link
                     href="/kids/courses"
                     className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${isActive('/kids/courses') ? 'bg-magic-purple/20 text-magic-purple border border-magic-purple/20' : 'text-gray-400 hover:bg-white/5 hover:text-white'}`}
                 >
                     <ShoppingBag className="w-5 h-5" />
-                    La Boutique Secrète
+                    Bonus
                 </Link>
 
-                <Link
-                    href="/kids"
-                    className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${isActive('/kids') ? 'bg-magic-purple/20 text-magic-purple border border-magic-purple/20' : 'text-gray-400 hover:bg-white/5 hover:text-white'}`}
-                >
-                    <Star className="w-5 h-5" />
-                    Le QG
-                </Link>
-
-                <Link
-                    href="/kids/live"
-                    className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${isActive('/kids/live') ? 'bg-magic-purple/20 text-magic-purple border border-magic-purple/20' : 'text-gray-400 hover:bg-white/5 hover:text-white'}`}
-                >
-                    <Video className="w-5 h-5" />
-                    Live Magique <span className="text-[10px] bg-red-500 text-white px-1.5 py-0.5 rounded-full animate-pulse">LIVE</span>
-                </Link>
-
+                {/* 4. Mon Compte */}
                 <Link
                     href="/kids/account"
                     className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${isActive('/kids/account') ? 'bg-magic-purple/20 text-magic-purple border border-magic-purple/20' : 'text-gray-400 hover:bg-white/5 hover:text-white'}`}

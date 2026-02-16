@@ -74,8 +74,8 @@ export default async function KidsProgramPage() {
                 <div className="inline-block px-4 py-1 rounded-full border border-brand-purple/30 bg-brand-purple/10 text-brand-purple text-xs font-bold uppercase tracking-widest mb-4">
                     Mon Parcours Magique
                 </div>
-                <h1 className="text-4xl md:text-6xl font-black uppercase tracking-tight mb-4">
-                    Semaine <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-purple to-brand-gold">{currentWeek}</span>
+                <h1 className="text-4xl md:text-6xl font-black uppercase tracking-tight mb-4 text-brand-text">
+                    Mes Défis
                 </h1>
                 <div className="w-24 h-1 bg-gradient-to-r from-transparent via-brand-purple/50 to-transparent mx-auto"></div>
             </header>
