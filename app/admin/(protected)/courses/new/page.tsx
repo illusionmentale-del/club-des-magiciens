@@ -36,6 +36,33 @@ export default function NewCoursePage() {
                 </div>
 
                 <div className="space-y-2">
+                    <label className="text-sm font-medium text-white mb-2 block">Audience Cible</label>
+                    <div className="grid grid-cols-3 gap-4">
+                        <label className="cursor-pointer">
+                            <input type="radio" name="audience" value="adults" defaultChecked className="hidden peer" />
+                            <div className="bg-black/40 border border-white/10 rounded-lg p-4 text-center peer-checked:bg-magic-purple peer-checked:border-magic-purple peer-checked:text-white transition-all hover:bg-white/5">
+                                <span className="block text-2xl mb-1">👨‍👩‍👧</span>
+                                <span className="font-bold text-sm">Adultes</span>
+                            </div>
+                        </label>
+                        <label className="cursor-pointer">
+                            <input type="radio" name="audience" value="kids" className="hidden peer" />
+                            <div className="bg-black/40 border border-white/10 rounded-lg p-4 text-center peer-checked:bg-white peer-checked:text-purple-600 peer-checked:border-white transition-all hover:bg-white/5">
+                                <span className="block text-2xl mb-1">👶</span>
+                                <span className="font-bold text-sm">Kids</span>
+                            </div>
+                        </label>
+                        <label className="cursor-pointer">
+                            <input type="radio" name="audience" value="all" className="hidden peer" />
+                            <div className="bg-black/40 border border-white/10 rounded-lg p-4 text-center peer-checked:bg-gradient-to-r peer-checked:from-magic-purple peer-checked:to-pink-500 peer-checked:text-white peer-checked:border-transparent transition-all hover:bg-white/5">
+                                <span className="block text-2xl mb-1">🌍</span>
+                                <span className="font-bold text-sm">Tous</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <div className="space-y-2">
                     <label className="text-sm font-medium text-white">Image de couverture (URL)</label>
                     <input
                         name="imageUrl"

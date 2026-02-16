@@ -4,11 +4,12 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
-import { LogOut, BookOpen, Settings, Video, Star, Youtube, Instagram, Facebook } from "lucide-react";
+import { LogOut, BookOpen, Settings, Video, Star, Youtube, Instagram, Facebook, LayoutDashboard, Shield } from "lucide-react";
 
-export default function KidsSidebar({ socialLinks, logoUrl }: {
+export default function KidsSidebar({ socialLinks, logoUrl, isAdmin }: {
     socialLinks?: { youtube: string; instagram: string; facebook: string; tiktok: string };
     logoUrl?: string;
+    isAdmin?: boolean;
 }) {
     const pathname = usePathname();
     const router = useRouter();
@@ -23,32 +24,32 @@ export default function KidsSidebar({ socialLinks, logoUrl }: {
     const isActive = (path: string) => pathname === path;
 
     return (
-        <aside className="w-64 bg-white border-r border-gray-200 hidden md:flex flex-col flex-shrink-0 h-full shadow-sm text-gray-800">
+        <aside className="w-64 bg-[#1e293b] border-r border-[#334155] hidden md:flex flex-col flex-shrink-0 h-full shadow-xl text-gray-100">
             {/* Logo Area */}
-            <div className="p-6 border-b border-gray-200 flex flex-col items-center gap-4 text-center">
+            <div className="p-6 border-b border-[#334155] flex flex-col items-center gap-4 text-center">
                 <Link href="/kids">
                     <div className="relative w-32 h-32 hover:scale-105 transition-transform">
                         <Image
                             src={logoUrl || "/logo.png"}
                             alt="Club des Magiciens"
                             fill
-                            className="object-contain filter brightness-110" // Make colors pop on white
+                            className="object-contain"
                             priority
                         />
                     </div>
                 </Link>
 
                 <div>
-                    <h2 className="font-bold text-gray-900 text-sm">Jérémy Marouani</h2>
-                    <p className="text-xs text-magic-purple font-mono font-bold">@LeMagicienPOV</p>
+                    <h2 className="font-bold text-white text-sm">Jérémy Marouani</h2>
+                    <p className="text-xs text-cyan-400 font-mono font-bold">@LeMagicienPOV</p>
                 </div>
 
-                <div className="flex items-center gap-3 text-gray-500">
+                <div className="flex items-center gap-3 text-gray-400">
                     <a href={socialLinks?.youtube || "#"} target="_blank" className="hover:text-red-500 transition-colors"><Youtube className="w-4 h-4" /></a>
                     <a href={socialLinks?.instagram || "#"} target="_blank" className="hover:text-pink-500 transition-colors"><Instagram className="w-4 h-4" /></a>
                     <a href={socialLinks?.facebook || "#"} target="_blank" className="hover:text-blue-500 transition-colors"><Facebook className="w-4 h-4" /></a>
                     {/* SVG for TikTok - Black/Dark for light theme */}
-                    <a href={socialLinks?.tiktok || "#"} target="_blank" className="hover:text-black transition-colors">
+                    <a href={socialLinks?.tiktok || "#"} target="_blank" className="hover:text-white transition-colors">
                         <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z" /></svg>
                     </a>
                 </div>
@@ -57,43 +58,66 @@ export default function KidsSidebar({ socialLinks, logoUrl }: {
             {/* Navigation */}
             <nav className="flex-1 p-4 space-y-2 overflow-y-auto">
                 <Link
+                    href="/kids/courses"
+                    className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${isActive('/kids/courses') ? 'bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 shadow-[0_0_10px_rgba(34,211,238,0.1)]' : 'text-gray-400 hover:bg-white/5 hover:text-white'}`}
+                >
+                    <BookOpen className="w-5 h-5" />
+                    Mes tours de magie
+                </Link>
+
+                <Link
                     href="/kids"
-                    className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${isActive('/kids') ? 'bg-magic-purple/10 text-magic-purple border border-magic-purple/20 shadow-sm' : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'}`}
+                    className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${isActive('/kids') ? 'bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 shadow-[0_0_10px_rgba(34,211,238,0.1)]' : 'text-gray-400 hover:bg-white/5 hover:text-white'}`}
                 >
                     <Star className="w-5 h-5" />
                     Le QG
                 </Link>
 
                 <Link
-                    href="/kids/courses"
-                    className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${isActive('/kids/courses') ? 'bg-magic-purple/10 text-magic-purple border border-magic-purple/20 shadow-sm' : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'}`}
+                    href="/kids/live"
+                    className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${isActive('/kids/live') ? 'bg-purple-500/10 text-purple-400 border border-purple-500/20 shadow-[0_0_10px_rgba(168,85,247,0.1)]' : 'text-gray-400 hover:bg-white/5 hover:text-white'}`}
                 >
-                    <BookOpen className="w-5 h-5" />
-                    Mes Formations
+                    <Video className="w-5 h-5" />
+                    Live Magique <span className="text-[10px] bg-red-500 text-white px-1.5 py-0.5 rounded-full animate-pulse">LIVE</span>
                 </Link>
 
                 <Link
                     href="/kids/account"
-                    className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${isActive('/kids/account') ? 'bg-magic-purple/10 text-magic-purple border border-magic-purple/20 shadow-sm' : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'}`}
+                    className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${isActive('/kids/account') ? 'bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 shadow-[0_0_10px_rgba(34,211,238,0.1)]' : 'text-gray-400 hover:bg-white/5 hover:text-white'}`}
                 >
                     <Settings className="w-5 h-5" />
                     Mon Compte
                 </Link>
 
-                <Link
-                    href="/kids/live"
-                    className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${isActive('/kids/live') ? 'bg-magic-purple/10 text-magic-purple border border-magic-purple/20 shadow-sm' : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'}`}
-                >
-                    <Video className="w-5 h-5" />
-                    Live Magique <span className="text-[10px] bg-red-500 text-white px-1.5 py-0.5 rounded-full animate-pulse">LIVE</span>
-                </Link>
+                {isAdmin && (
+                    <>
+                        <div className="my-2 border-t border-[#334155]"></div>
+                        <p className="px-4 text-xs font-bold text-gray-500 uppercase tracking-widest mb-1">Admin</p>
+
+                        <Link
+                            href="/dashboard"
+                            className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all text-gray-400 hover:bg-white/5 hover:text-white`}
+                        >
+                            <LayoutDashboard className="w-5 h-5" />
+                            Espace Adulte
+                        </Link>
+
+                        <Link
+                            href="/admin"
+                            className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${isActive('/admin') ? 'bg-red-500/10 text-red-400 border border-red-500/20' : 'text-gray-400 hover:bg-white/5 hover:text-white'}`}
+                        >
+                            <Shield className="w-5 h-5" />
+                            Accès Admin
+                        </Link>
+                    </>
+                )}
             </nav>
 
             {/* User Footer */}
-            <div className="p-4 border-t border-gray-200 bg-gray-50">
+            <div className="p-4 border-t border-[#334155] bg-black/20">
                 <button
                     onClick={handleLogout}
-                    className="w-full flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-red-50 hover:bg-red-100 text-red-600 transition-colors border border-red-200 text-sm font-medium"
+                    className="w-full flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-red-500/10 hover:bg-red-500/20 text-red-400 transition-colors border border-red-500/20 text-sm font-medium"
                 >
                     <LogOut className="w-4 h-4" />
                     Déconnexion

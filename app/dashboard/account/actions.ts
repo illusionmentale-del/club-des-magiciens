@@ -16,6 +16,8 @@ export async function updateProfile(prevState: any, formData: FormData) {
     const magic_level = formData.get("magic_level") as string;
     const password = formData.get("password") as string;
     const confirmPassword = formData.get("confirmPassword") as string;
+    const avatarUrl = formData.get("avatarUrl") as string;
+    const theme = formData.get("theme") as string;
 
     // 1. Update Profile Info
     const updates: any = {
@@ -25,6 +27,15 @@ export async function updateProfile(prevState: any, formData: FormData) {
     if (city) updates.city = city;
     if (bio) updates.bio = bio;
     if (magic_level) updates.magic_level = magic_level;
+
+    // Avatar Logic: Separate fields based on theme
+    if (avatarUrl) {
+        if (theme === 'light') {
+            updates.avatar_url_kids = avatarUrl;
+        } else {
+            updates.avatar_url = avatarUrl;
+        }
+    }
 
     const { error: profileError } = await supabase
         .from("profiles")
@@ -51,5 +62,6 @@ export async function updateProfile(prevState: any, formData: FormData) {
     }
 
     revalidatePath("/dashboard/account");
+    revalidatePath("/kids/account");
     return { success: "Profil mis à jour avec succès !" };
 }

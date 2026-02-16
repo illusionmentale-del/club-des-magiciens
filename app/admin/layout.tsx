@@ -2,6 +2,7 @@ import Sidebar from "@/components/Sidebar";
 import MobileNav from "@/components/MobileNav";
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
+import { AdminProvider } from "./AdminContext";
 
 export default async function AdminLayout({
     children,
@@ -26,24 +27,26 @@ export default async function AdminLayout({
     const isAdmin = true;
 
     return (
-        <div className="flex bg-magic-bg min-h-screen">
-            {/* Desktop Sidebar */}
-            <div className="hidden md:block w-64 fixed h-full z-10 transition-all duration-300">
-                <Sidebar isAdmin={isAdmin} />
-            </div>
-
-            {/* Mobile Nav */}
-            <div className="md:hidden fixed top-0 w-full z-50">
-                <MobileNav isAdmin={isAdmin} />
-            </div>
-
-            {/* Main Content Area */}
-            <main className="flex-1 md:ml-64 relative min-h-screen">
-                {/* Add top padding for mobile to account for fixed header */}
-                <div className="md:p-0 pt-20">
-                    {children}
+        <AdminProvider>
+            <div className="flex bg-brand-bg min-h-screen">
+                {/* Desktop Sidebar */}
+                <div className="hidden md:block w-64 fixed h-full z-10 transition-all duration-300">
+                    <Sidebar isAdmin={isAdmin} />
                 </div>
-            </main>
-        </div>
+
+                {/* Mobile Nav */}
+                <div className="md:hidden fixed top-0 w-full z-50">
+                    <MobileNav isAdmin={isAdmin} />
+                </div>
+
+                {/* Main Content Area */}
+                <main className="flex-1 md:ml-64 relative min-h-screen">
+                    {/* Add top padding for mobile to account for fixed header */}
+                    <div className="md:p-0 pt-20">
+                        {children}
+                    </div>
+                </main>
+            </div>
+        </AdminProvider>
     );
 }

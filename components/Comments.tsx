@@ -2,9 +2,8 @@
 
 import { useFormState, useFormStatus } from "react-dom";
 import { addComment } from "@/app/watch/[courseId]/actions";
-import { User, MessageSquare, AlertCircle } from "lucide-react";
-import { formatDistanceToNow } from "date-fns";
-import { fr } from "date-fns/locale";
+import { User, MessageCircle, Send } from "lucide-react";
+import { useRef } from "react";
 
 function SubmitButton() {
     const { pending } = useFormStatus();
@@ -12,81 +11,90 @@ function SubmitButton() {
         <button
             type="submit"
             disabled={pending}
-            className="px-6 py-3 bg-magic-purple hover:bg-magic-purple/80 text-white font-bold rounded-xl transition-all disabled:opacity-50"
+            className="bg-magic-purple text-white px-4 py-2 rounded-xl font-bold hover:bg-magic-purple/90 transition-all disabled:opacity-50 flex items-center gap-2"
         >
-            {pending ? "Envoi..." : "Poster le commentaire"}
+            <Send className="w-4 h-4" />
+            {pending ? "..." : "Envoyer"}
         </button>
     );
 }
 
-export default function CommentsSection({ courseId, comments, userId }: { courseId: string, comments: any[], userId: string }) {
-    // @ts-ignore
-    const [state, formAction] = useFormState(addComment.bind(null, courseId), null);
+export default function CommentsSection({ courseId, comments, user }: { courseId: string, comments: any[], user: any }) {
+    const formRef = useRef<HTMLFormElement>(null);
 
     return (
-        <div className="space-y-8 mt-12 bg-magic-card border border-white/10 rounded-2xl p-8">
-            <h3 className="text-2xl font-serif text-white flex items-center gap-3">
-                <MessageSquare className="w-6 h-6 text-magic-purple" />
-                Discussion ({comments.length})
+        <div className="space-y-8 mt-12 bg-white p-6 md:p-8 rounded-3xl border border-gray-100 shadow-sm">
+            <h3 className="text-xl font-bold flex items-center gap-2 text-gray-800">
+                <MessageCircle className="w-6 h-6 text-magic-purple" />
+                Questions & Commentaires ({comments.length})
             </h3>
 
             {/* Comment Form */}
-            <form action={formAction} className="flex flex-col gap-4">
-                <div className="flex gap-4">
-                    <div className="flex-shrink-0">
-                        <div className="w-10 h-10 rounded-full bg-magic-purple/20 flex items-center justify-center text-magic-purple border border-magic-purple/30">
-                            <User className="w-6 h-6" />
-                        </div>
-                    </div>
-                    <div className="flex-1 space-y-3">
-                        <textarea
-                            name="content"
-                            placeholder="Partagez votre avis, vos difficultés ou vos réussites..."
-                            rows={3}
-                            className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 focus:ring-2 focus:ring-magic-purple focus:outline-none text-white resize-none"
-                            required
-                        />
-                    </div>
+            <div className="flex gap-4">
+                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-white font-bold shrink-0">
+                    {user?.user_metadata?.username?.[0]?.toUpperCase() || <User className="w-5 h-5" />}
                 </div>
-
-                {state?.error && (
-                    <div className="ml-14 p-3 bg-red-500/10 border border-red-500/20 rounded-lg text-red-400 text-sm flex items-center gap-2">
-                        <AlertCircle className="w-4 h-4" />
-                        {state.error}
-                    </div>
-                )}
-
-                <div className="flex justify-end">
+                <form
+                    ref={formRef}
+                    action={async (formData) => {
+                        await addComment(courseId, formData.get("content") as string);
+                        formRef.current?.reset();
+                    }}
+                    className="flex-1 flex gap-2"
+                >
+                    <input
+                        name="content"
+                        placeholder="Pose ta question ou dis ce que tu penses..."
+                        className="flex-1 bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-magic-purple/50 transition-all"
+                        required
+                    />
                     <SubmitButton />
-                </div>
-            </form>
+                </form>
+            </div>
 
             {/* Comments List */}
             <div className="space-y-6">
                 {comments.map((comment) => (
-                    <div key={comment.id} className="flex gap-4 p-4 rounded-xl bg-white/5 border border-white/5">
-                        <div className="flex-shrink-0">
-                            <div className="w-10 h-10 rounded-full bg-gray-700 flex items-center justify-center text-gray-400">
-                                <span className="font-bold text-sm">
-                                    {comment.profiles?.username ? comment.profiles.username.substring(0, 2).toUpperCase() : <User className="w-5 h-5" />}
-                                </span>
-                            </div>
+                    <div key={comment.id} className="flex gap-4 group">
+                        <div className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 font-bold shrink-0 border border-gray-200 overflow-hidden relative">
+                            {/* @ts-ignore */}
+                            {(comment.profiles?.avatar_url || comment.profiles?.avatar_url_kids) ? (
+                                <img
+                                    /* @ts-ignore */
+                                    src={comment.profiles.avatar_url || comment.profiles.avatar_url_kids}
+                                    alt="Avatar"
+                                    className="object-cover w-full h-full"
+                                />
+                            ) : (
+                                /* @ts-ignore */
+                                comment.profiles?.username ? (
+                                    /* @ts-ignore */
+                                    <span className="text-sm">{comment.profiles.username.substring(0, 2).toUpperCase()}</span>
+                                ) : (
+                                    <User className="w-5 h-5" />
+                                )
+                            )}
                         </div>
                         <div className="flex-1">
-                            <div className="flex items-center gap-2 mb-1">
-                                <span className="font-bold text-magic-gold">
-                                    {comment.profiles?.username || "Apprenti Anonyme"}
-                                </span>
-                                {comment.profiles?.magic_level && (
-                                    <span className="text-xs px-2 py-0.5 rounded-full bg-white/10 text-gray-400">
-                                        {comment.profiles.magic_level}
+                            <div className="bg-gray-50 rounded-2xl rounded-tl-none px-4 py-3 border border-gray-100">
+                                <div className="flex items-center justify-between mb-1">
+                                    <span className="font-bold text-gray-800 text-sm">
+                                        {/* @ts-ignore */}
+                                        {comment.profiles?.username || "Magicien Mystère"}
                                     </span>
+                                    <span className="text-xs text-gray-400">
+                                        {new Date(comment.created_at).toLocaleDateString()}
+                                    </span>
+                                </div>
+                                {/* @ts-ignore */}
+                                {comment.profiles?.magic_level && (
+                                    <div className="text-[10px] text-magic-purple font-bold mb-1 uppercase tracking-wider">
+                                        {/* @ts-ignore */}
+                                        {comment.profiles.magic_level}
+                                    </div>
                                 )}
-                                <span className="text-xs text-gray-500">
-                                    {formatDistanceToNow(new Date(comment.created_at), { addSuffix: true, locale: fr })}
-                                </span>
+                                <p className="text-gray-700">{comment.content}</p>
                             </div>
-                            <p className="text-gray-300 leading-relaxed">{comment.content}</p>
                         </div>
                     </div>
                 ))}

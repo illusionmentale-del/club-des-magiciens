@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { Menu, X, BookOpen, Settings, Video, LogOut, Shield, Star } from "lucide-react";
+import { Menu, X, BookOpen, Settings, Video, LogOut, Shield, Star, GraduationCap, ShoppingBag } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 
@@ -74,12 +74,21 @@ export default function MobileNav({ isAdmin }: { isAdmin: boolean }) {
                             </Link>
 
                             <Link
-                                href="/dashboard/courses"
+                                href="/dashboard/program"
                                 onClick={close}
-                                className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${isActive('/dashboard/courses') ? 'bg-magic-purple/20 text-magic-purple border border-magic-purple/20' : 'text-gray-400 hover:bg-white/5 hover:text-white'}`}
+                                className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${isActive('/dashboard/program') ? 'bg-magic-purple/20 text-magic-purple border border-magic-purple/20' : 'text-gray-400 hover:bg-white/5 hover:text-white'}`}
                             >
-                                <BookOpen className="w-5 h-5" />
-                                Mes Formations
+                                <GraduationCap className="w-5 h-5" />
+                                Mon Programme
+                            </Link>
+
+                            <Link
+                                href="/dashboard/catalog"
+                                onClick={close}
+                                className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${isActive('/dashboard/catalog') ? 'bg-magic-purple/20 text-magic-purple border border-magic-purple/20' : 'text-gray-400 hover:bg-white/5 hover:text-white'}`}
+                            >
+                                <ShoppingBag className="w-5 h-5" />
+                                Catalogue
                             </Link>
 
                             <Link
@@ -97,7 +106,7 @@ export default function MobileNav({ isAdmin }: { isAdmin: boolean }) {
                                 className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${isActive('/dashboard/live') ? 'bg-magic-purple/20 text-magic-purple border border-magic-purple/20' : 'text-gray-400 hover:bg-white/5 hover:text-white'}`}
                             >
                                 <Video className="w-5 h-5" />
-                                Live Magique <span className="text-[10px] bg-red-500 text-white px-1.5 py-0.5 rounded-full animate-pulse">LIVE</span>
+                                Replays / Lives
                             </Link>
 
                             {isAdmin && (

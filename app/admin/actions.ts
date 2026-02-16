@@ -47,8 +47,12 @@ export async function deleteNews(id: string) {
 
 // --- SETTINGS ACTIONS ---
 
-export async function updateSettings(currentState: any, formData: FormData) {
+export async function updateSettings(formData: FormData) {
     const supabase = await createClient();
+    const context = formData.get("context") as string; // 'adult' | 'kid'
+    const isKid = context === 'kid';
+    const prefix = isKid ? 'kid_' : '';
+
     const keys = ["featured_video", "shop_link", "welcome_message", "dashboard_title", "news_title", "instagram_title", "social_youtube", "social_instagram", "social_facebook", "social_tiktok"];
 
     // Handle File Upload (Logo)
@@ -56,22 +60,25 @@ export async function updateSettings(currentState: any, formData: FormData) {
     if (logoFile && logoFile.size > 0) {
         // Create unique name
         const fileExt = logoFile.name.split('.').pop();
-        const fileName = `logo-${Date.now()}.${fileExt}`;
+        const fileName = `logo-${isKid ? 'kid-' : ''}${Date.now()}.${fileExt}`;
         const { data, error } = await supabase.storage.from('assets').upload(fileName, logoFile);
 
         if (!error && data) {
             const { data: { publicUrl } } = supabase.storage.from('assets').getPublicUrl(fileName);
-            await supabase.from("settings").upsert({ key: "site_logo", value: publicUrl });
+            // Save with correct key
+            await supabase.from("settings").upsert({ key: `${prefix}site_logo`, value: publicUrl });
         }
     }
 
     for (const key of keys) {
         const value = formData.get(key) as string;
         // Only update if value is provided (even empty string is a value), ignore nulls
-        if (value !== null) await supabase.from("settings").upsert({ key, value });
+        // Note: We save with the prefix
+        if (value !== null) await supabase.from("settings").upsert({ key: `${prefix}${key}`, value });
     }
 
     revalidatePath("/dashboard");
+    revalidatePath("/kids"); // Revalidate kids path too
     revalidatePath("/admin/settings");
     // return { success: "Paramètres mis à jour !" }; 
 }
@@ -110,15 +117,15 @@ export async function createLive(formData: FormData) {
     const start_date = formData.get("start_date") as string;
     const platform_id = formData.get("platform_id") as string; // Jitsi room name
     const vimeo_id = formData.get("vimeo_id") as string; // Optional replay ID
-    const audience = formData.get("audience") as string || 'adults';
+    const platform = formData.get("platform") as string || 'jitsi';
+    const audience = formData.get("audience_override") as string || formData.get("audience") as string || 'adults';
 
     await supabase.from("lives").insert({
         title,
         start_date,
-        platform_id, // Jitsi Room
-        platform: 'jitsi', // Hardcoded for now
+        platform_id,
+        platform,
         status: 'programmé',
-        description: vimeo_id ? `Replay: ${vimeo_id}` : null, // Hacking description to store vimeo_id for replay if needed, or we can add column. 
         audience
     });
 
@@ -158,9 +165,10 @@ export async function createCourse(formData: FormData) {
     const title = formData.get("title") as string;
     const description = formData.get("description") as string;
     const imageUrl = formData.get("imageUrl") as string;
+    const audience = formData.get("audience") as string || 'adults';
 
     const { error } = await supabase.from("courses").insert({
-        title, description, image_url: imageUrl,
+        title, description, image_url: imageUrl, audience
     });
 
     if (error) {
@@ -287,8 +295,10 @@ export async function createInstagramPost(formData: FormData) {
 
     const link_url = formData.get("link_url") as string;
     const image_url = formData.get("image_url") as string || "https://placehold.co/400x400/png";
+    // Check override first, then hidden audience field, default to adults
+    const audience = (formData.get("audience_override") as string) || (formData.get("audience") as string) || 'adults';
 
-    await supabase.from("instagram_posts").insert({ link_url, image_url });
+    await supabase.from("instagram_posts").insert({ link_url, image_url, audience });
     revalidatePath("/admin/instagram");
     revalidatePath("/dashboard");
     redirect("/admin/instagram");

@@ -3,7 +3,7 @@
 import { useFormStatus } from "react-dom";
 import { Save, Loader2 } from "lucide-react";
 
-export function SubmitButton() {
+export function SubmitButton({ label = "Enregistrer les modifications" }: { label?: string }) {
     const { pending } = useFormStatus();
 
     return (
@@ -20,7 +20,7 @@ export function SubmitButton() {
             ) : (
                 <>
                     <Save className="w-5 h-5" />
-                    Enregistrer les modifications
+                    {label}
                 </>
             )}
         </button>

@@ -45,3 +45,4 @@ Si tu n'as pas encore configuré de dépôt distant (GitHub), c'est la première
 ## 4. Pour Reprendre Demain
 Il suffira de dire à l'IA :
 > "Reprends le projet Club des Magiciens. Lis le fichier `session_recap.md` pour voir où on en est. On doit commencer par nettoyer les accès Systeme.io et personnaliser les emails."
+Global Design Harmonization - First Pass Complete

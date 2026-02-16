@@ -5,6 +5,7 @@ import { createClient } from "@/lib/supabase/client";
 import Link from "next/link";
 import { ArrowLeft, ShieldCheck, Users, Lock, Mic, Video } from "lucide-react";
 import { useParams } from "next/navigation";
+import LiveChat from "@/components/LiveChat";
 
 export default function LiveControlRoom() {
     const { id } = useParams();
@@ -79,61 +80,25 @@ export default function LiveControlRoom() {
                     </p>
                 </div>
 
-                {/* Sidebar Controls (Instructions for free workflow) */}
-                <div className="w-80 bg-white/5 border-l border-white/10 p-6 overflow-y-auto hidden md:block">
-                    <h3 className="text-xl font-bold mb-6 flex items-center gap-2">
-                        <Lock className="w-5 h-5 text-magic-gold" />
-                        Commandes
-                    </h3>
+                {/* Sidebar Controls (Chat & Quick Actions) */}
+                <div className="w-96 bg-gray-900 border-l border-white/10 flex flex-col h-full z-10">
+                    <div className="flex-1 overflow-hidden flex flex-col">
+                        <LiveChat liveId={live.id} isAdmin={true} />
+                    </div>
 
-                    <div className="space-y-6">
-                        <div className="bg-white/5 p-4 rounded-xl border border-white/5">
-                            <h4 className="font-bold mb-2 flex items-center gap-2 text-sm">
-                                <Users className="w-4 h-4 text-blue-400" />
-                                1. Devenir Modérateur
-                            </h4>
-                            <p className="text-gray-400 text-xs leading-relaxed mb-3">
-                                Sur Jitsi gratuit, le premier arrivé est admin, ou vous devez vous authentifier.
-                                Cliquez sur votre avatar dans la fenêtre vidéo &gt; "S'authentifier" si besoin.
-                            </p>
-                        </div>
-
-                        <div className="bg-white/5 p-4 rounded-xl border border-white/5">
-                            <h4 className="font-bold mb-2 flex items-center gap-2 text-sm">
-                                <ShieldCheck className="w-4 h-4 text-green-400" />
-                                2. Activer la Salle d'Attente
-                            </h4>
-                            <p className="text-gray-400 text-xs leading-relaxed">
-                                Une fois modérateur, cliquez sur l'icône <strong>Bouclier (Sécutité)</strong> en bas de la vidéo, puis activez <strong>"Lobby Mode"</strong>.
-                            </p>
-                        </div>
-
-                        <div className="bg-white/5 p-4 rounded-xl border border-white/5">
-                            <h4 className="font-bold mb-2 flex items-center gap-2 text-sm">
-                                <Mic className="w-4 h-4 text-red-400" />
-                                3. Couper les micros
-                            </h4>
-                            <p className="text-gray-400 text-xs leading-relaxed">
-                                Dans les options des participants (les 3 points sur un utilisateur), vous pouvez "Mute everyone" (Couper tous les micros).
-                            </p>
-                        </div>
-
-                        <div className="bg-white/5 p-4 rounded-xl border border-white/5">
-                            <h4 className="font-bold mb-2 flex items-center gap-2 text-sm">
-                                <Video className="w-4 h-4 text-pink-500" />
-                                4. Enregistrement (Secret)
-                            </h4>
-                            <p className="text-gray-400 text-xs leading-relaxed mb-2">
-                                Jitsi (gratuit) nécessite un compte <strong>Dropbox</strong> pour enregistrer.
-                            </p>
-                            <ol className="list-decimal list-inside text-gray-400 text-xs space-y-1">
-                                <li>Cliquez sur les 3 points &gt; "Start Recording".</li>
-                                <li>Liez votre compte Dropbox.</li>
-                                <li>L'enregistrement file direct dans votre Dropbox.</li>
-                                <li>Ensuite : Téléchargez-le et mettez-le sur Vimeo.</li>
-                            </ol>
-                            <div className="mt-2 p-2 bg-red-500/10 border border-red-500/20 rounded text-[10px] text-red-300">
-                                ⚠️ <strong>IMPORTANT :</strong> Seul le Modérateur peut lancer l'enregistrement interne. Les membres ne peuvent pas (bouton grisé). Par contre, impossible d'empêcher quelqu'un de filmer son écran (OBS, téléphone...).
+                    <div className="p-4 border-t border-white/10 bg-white/5 overflow-y-auto max-h-[200px]">
+                        <h3 className="text-xs font-bold mb-3 flex items-center gap-2 text-gray-400 uppercase tracking-widest">
+                            <Lock className="w-3 h-3" />
+                            Mémo Admin
+                        </h3>
+                        <div className="space-y-3">
+                            <div className="bg-black/20 p-3 rounded-lg border border-white/5">
+                                <h4 className="font-bold text-xs mb-1 text-blue-400">Moderateur Jitsi</h4>
+                                <p className="text-[10px] text-gray-500">Connectez-vous via l'interface Jitsi (Avatar &gt; Auth) pour gérer la salle.</p>
+                            </div>
+                            <div className="bg-black/20 p-3 rounded-lg border border-white/5">
+                                <h4 className="font-bold text-xs mb-1 text-red-400">Enregistrement</h4>
+                                <p className="text-[10px] text-gray-500">Utilisez l'option "Start Recording" (Dropbox requis) ou OBS.</p>
                             </div>
                         </div>
                     </div>

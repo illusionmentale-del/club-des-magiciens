@@ -1,9 +1,10 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect, notFound } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft, PlayCircle, Lock } from "lucide-react";
+import { ArrowLeft, PlayCircle, Lock, CheckCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import CommentsSection from "@/components/Comments";
+import VideoPlayerControls from "@/components/VideoPlayerControls";
 
 interface WatchPageProps {
     params: Promise<{ courseId: string }>;
@@ -41,13 +42,25 @@ export default async function WatchPage(props: WatchPageProps) {
 
     // Fetch comments
     const { data: comments } = await supabase
-        .from("comments")
+        .from("course_comments")
         .select(`
             *,
-            profiles (username, magic_level)
+            profiles (username, magic_level, avatar_url, avatar_url_kids)
         `)
         .eq("course_id", course.id)
         .order("created_at", { ascending: false });
+
+    // Fetch progress
+    const { data: progressData } = await supabase
+        .from("user_progress")
+        .select("video_id, is_completed")
+        .eq("user_id", user.id)
+        .eq("course_id", course.id);
+
+    const completedVideoIds = new Set(progressData?.map(p => p.video_id) || []);
+    const progressPercentage = videos && videos.length > 0
+        ? Math.round((completedVideoIds.size / videos.length) * 100)
+        : 0;
 
     // Determine current video
     const currentVideoId = searchParams.v;
@@ -105,45 +118,84 @@ export default async function WatchPage(props: WatchPageProps) {
                         )}
                     </div>
 
-                    <div className="space-y-4">
-                        <h2 className="text-3xl font-serif text-white">{currentVideo?.title}</h2>
-                        <div className="prose prose-invert max-w-none text-gray-400">
-                            <p>{currentVideo?.description}</p>
+                    {currentVideo && (
+                        <div className="space-y-4">
+                            <div className="flex justify-between items-start">
+                                <h2 className="text-3xl font-serif text-white">{currentVideo.title}</h2>
+                            </div>
+
+                            <VideoPlayerControls
+                                videoId={currentVideo.id}
+                                courseId={course.id}
+                                isCompleted={completedVideoIds.has(currentVideo.id)}
+                            />
+
+                            <div className="prose prose-invert max-w-none text-gray-400">
+                                <p>{currentVideo.description}</p>
+                            </div>
                         </div>
-                    </div>
+                    )}
 
                     {/* Comments Section */}
-                    {comments && <CommentsSection courseId={course.id} comments={comments} userId={user.id} />}
+                    {comments && <CommentsSection courseId={course.id} comments={comments} user={user} />}
                 </div>
 
                 {/* Sidebar (Playlist) */}
                 <div className="space-y-6">
                     <div className="bg-magic-card border border-white/5 rounded-xl p-6 lg:sticky lg:top-24">
-                        <h3 className="font-serif text-xl mb-4 text-white/90">Programme du cours</h3>
-                        <div className="space-y-1">
+                        <div className="mb-6">
+                            <h3 className="font-serif text-xl mb-2 text-white/90">Programme du cours</h3>
+                            {/* Progress Bar */}
+                            <div className="flex items-center justify-between text-xs text-gray-400 mb-1">
+                                <span>Progression</span>
+                                <span>{progressPercentage}%</span>
+                            </div>
+                            <div className="h-1.5 w-full bg-white/10 rounded-full overflow-hidden">
+                                <div
+                                    className="h-full bg-magic-purple transition-all duration-500"
+                                    style={{ width: `${progressPercentage}%` }}
+                                ></div>
+                            </div>
+                        </div>
+
+                        <div className="space-y-1 max-h-[60vh] overflow-y-auto pr-2 customized-scrollbar">
                             {videos?.map((video, index) => {
                                 const isActive = video.id === currentVideo?.id;
+                                const isCompleted = completedVideoIds.has(video.id);
+
                                 return (
                                     <Link
                                         key={video.id}
                                         href={`/watch/${course.id}?v=${video.id}`}
                                         className={cn(
-                                            "flex items-start gap-3 p-3 rounded-lg transition-all group",
+                                            "flex items-center gap-3 p-3 rounded-lg transition-all group relative",
                                             isActive
                                                 ? "bg-magic-purple/20 border border-magic-purple/50"
                                                 : "hover:bg-white/5 border border-transparent"
                                         )}
                                     >
-                                        <div className={cn(
-                                            "mt-1 w-6 h-6 rounded-full flex items-center justify-center text-xs shrink-0",
-                                            isActive ? "bg-magic-purple text-white" : "bg-white/10 text-gray-400 group-hover:bg-white/20"
-                                        )}>
-                                            {index + 1}
+                                        <div className="relative shrink-0">
+                                            <div className={cn(
+                                                "w-6 h-6 rounded-full flex items-center justify-center text-xs transition-colors",
+                                                isCompleted
+                                                    ? "bg-green-500 text-white"
+                                                    : isActive
+                                                        ? "bg-magic-purple text-white"
+                                                        : "bg-white/10 text-gray-400 group-hover:bg-white/20"
+                                            )}>
+                                                {isCompleted ? (
+                                                    <CheckCircle className="w-3.5 h-3.5" />
+                                                ) : (
+                                                    index + 1
+                                                )}
+                                            </div>
                                         </div>
+
                                         <div className="flex-1 min-w-0">
                                             <p className={cn(
-                                                "text-sm font-medium leading-tight",
-                                                isActive ? "text-white" : "text-gray-300"
+                                                "text-sm font-medium leading-tight line-clamp-2",
+                                                isActive ? "text-white" : "text-gray-300",
+                                                isCompleted && !isActive && "text-gray-400"
                                             )}>
                                                 {video.title}
                                             </p>
@@ -151,7 +203,8 @@ export default async function WatchPage(props: WatchPageProps) {
                                                 {Math.floor(video.duration / 60)} min
                                             </p>
                                         </div>
-                                        {isActive && <PlayCircle className="w-4 h-4 text-magic-purple shrink-0 self-center" />}
+
+                                        {isActive && !isCompleted && <PlayCircle className="w-4 h-4 text-magic-purple shrink-0" />}
                                     </Link>
                                 )
                             })}

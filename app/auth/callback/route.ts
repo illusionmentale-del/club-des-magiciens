@@ -11,16 +11,38 @@ export async function GET(request: Request) {
     if (code) {
         const supabase = await createClient()
         const { error } = await supabase.auth.exchangeCodeForSession(code)
+
         if (!error) {
+            // Determine redirect path based on user role
+            const { data: { user } } = await supabase.auth.getUser();
+            let redirectPath = next;
+
+            if (user) {
+                const { data: profile } = await supabase
+                    .from('profiles')
+                    .select('access_level, role')
+                    .eq('id', user.id)
+                    .single();
+
+                if (profile) {
+                    if (profile.access_level === 'kid') {
+                        redirectPath = '/kids/courses';
+                    } else {
+                        // Default for adults/admins
+                        redirectPath = '/dashboard/courses';
+                    }
+                }
+            }
+
             const forwardedHost = request.headers.get('x-forwarded-host') // original origin before load balancer
             const isLocalEnv = process.env.NODE_ENV === 'development'
+
             if (isLocalEnv) {
-                // we can be sure that there is no load balancer in between, so no need to watch for X-Forwarded-Host
-                return NextResponse.redirect(`${origin}${next}`)
+                return NextResponse.redirect(`${origin}${redirectPath}`)
             } else if (forwardedHost) {
-                return NextResponse.redirect(`https://${forwardedHost}${next}`)
+                return NextResponse.redirect(`https://${forwardedHost}${redirectPath}`)
             } else {
-                return NextResponse.redirect(`${origin}${next}`)
+                return NextResponse.redirect(`${origin}${redirectPath}`)
             }
         }
     }

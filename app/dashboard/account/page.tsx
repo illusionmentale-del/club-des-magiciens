@@ -1,6 +1,8 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import AccountForm from "./AccountForm";
+import MagicCard from "@/components/MagicCard";
+import MagicParticles from "@/components/MagicParticles";
 
 export default async function AccountPage() {
     const supabase = await createClient();
@@ -18,14 +20,14 @@ export default async function AccountPage() {
         .single();
 
     return (
-        <div className="min-h-screen bg-magic-bg text-white p-8 font-sans">
-            <div className="max-w-4xl mx-auto space-y-8">
-                <header className="mb-12 border-b border-white/10 pb-8">
-                    <h1 className="text-4xl font-serif text-magic-gold mb-2">Mon Profil de Magicien</h1>
-                    <p className="text-gray-400">Personnalisez votre identité secrète.</p>
-                </header>
+        <div className="min-h-screen bg-magic-bg text-white p-4 md:p-8 font-sans relative overflow-hidden flex flex-col items-center justify-center">
+            <div className="absolute inset-0 z-0">
+                <MagicParticles count={50} color="rgba(234, 179, 8, 0.3)" />
+            </div>
 
-                <AccountForm user={user} profile={profile} />
+            <div className="relative z-10 w-full max-w-4xl mx-auto space-y-8">
+                {/* Header is now integrated or minimized as card is the Hero */}
+                <MagicCard user={user} profile={profile} />
             </div>
         </div>
     );

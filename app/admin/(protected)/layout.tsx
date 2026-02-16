@@ -28,10 +28,10 @@ export default async function AdminLayout({
     return (
         <div className="min-h-screen bg-slate-950 text-white flex">
             {/* Sidebar */}
-            <aside className="w-64 border-r border-white/10 bg-slate-900 flex flex-col fixed h-full">
-                <div className="p-6 border-b border-white/10">
-                    <h1 className="text-xl font-serif text-magic-gold">Admin Panel</h1>
-                    <p className="text-xs text-gray-500 mt-1">Le Club des Magiciens</p>
+            <aside className="w-64 border-r border-brand-border bg-brand-card flex flex-col fixed h-full">
+                <div className="p-6 border-b border-brand-border">
+                    <h1 className="text-xl font-serif text-brand-gold">Admin Panel</h1>
+                    <p className="text-xs text-brand-text-muted mt-1">Le Club des Magiciens</p>
                 </div>
 
                 <nav className="flex-1 p-4 space-y-2">
@@ -51,7 +51,7 @@ export default async function AdminLayout({
                     */}
                 </nav>
 
-                <div className="p-4 border-t border-white/10 space-y-2">
+                <div className="p-4 border-t border-brand-border space-y-2">
                     <Link href="/dashboard" className="flex items-center gap-3 px-4 py-3 rounded-lg text-magic-gold hover:bg-white/5 transition-colors">
                         <ArrowLeft className="w-5 h-5" />
                         <span>Retour au Site</span>
@@ -60,7 +60,7 @@ export default async function AdminLayout({
             </aside>
 
             {/* Main Content */}
-            <main className="flex-1 overflow-auto bg-slate-950 p-8 ml-64">
+            <main className="flex-1 overflow-auto bg-brand-bg p-8 ml-64">
                 {children}
             </main>
         </div>

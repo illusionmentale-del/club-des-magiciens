@@ -15,11 +15,11 @@ export default async function AdminDashboardPage() {
         <div className="space-y-8">
             <header className="flex justify-between items-center">
                 <div>
-                    <h2 className="text-3xl font-serif text-white">Gestion des Cours</h2>
-                    <p className="text-gray-400 mt-2">Gérez vos formations et ajoutez des vidéos.</p>
+                    <h2 className="text-3xl font-serif text-brand-text">Gestion des Cours</h2>
+                    <p className="text-brand-text-muted mt-2">Gérez vos formations et ajoutez des vidéos.</p>
                 </div>
                 <Link href="/admin/courses/new">
-                    <button className="flex items-center gap-2 bg-magic-purple hover:bg-magic-purple/80 text-white px-6 py-3 rounded-lg font-medium transition-all shadow-lg hover:shadow-magic-purple/20">
+                    <button className="flex items-center gap-2 bg-brand-purple hover:bg-brand-purple/80 text-white px-6 py-3 rounded-lg font-medium transition-all shadow-lg hover:shadow-brand-purple/20">
                         <PlusCircle className="w-5 h-5" />
                         Créer un cours
                     </button>
@@ -28,8 +28,8 @@ export default async function AdminDashboardPage() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {courses?.map((course) => (
-                    <div key={course.id} className="bg-slate-900 border border-white/10 rounded-xl overflow-hidden hover:border-magic-purple/30 transition-all group">
-                        <div className="aspect-video bg-black/50 relative">
+                    <div key={course.id} className="bg-brand-card border border-brand-border rounded-xl overflow-hidden hover:border-brand-purple/30 transition-all group">
+                        <div className="aspect-video bg-brand-surface relative">
                             {course.image_url ? (
                                 <img src={course.image_url} alt={course.title} className="w-full h-full object-cover opacity-60 group-hover:opacity-80 transition-opacity" />
                             ) : (
@@ -45,7 +45,7 @@ export default async function AdminDashboardPage() {
                                 <p className="text-sm text-gray-400 mt-2 line-clamp-2">{course.description}</p>
                             </div>
 
-                            <div className="flex gap-3 pt-4 border-t border-white/5">
+                            <div className="flex gap-3 pt-4 border-t border-brand-border">
                                 <Link href={`/admin/courses/${course.id}`} className="flex-1">
                                     <button className="w-full flex items-center justify-center gap-2 bg-white/5 hover:bg-white/10 hover:text-magic-gold text-gray-300 py-2 rounded-lg transition-colors text-sm font-medium">
                                         <Tv className="w-4 h-4" />
@@ -63,7 +63,7 @@ export default async function AdminDashboardPage() {
                 ))}
 
                 {/* Empty State / Add New Card */}
-                <Link href="/admin/courses/new" className="group flex flex-col items-center justify-center gap-4 bg-slate-900/50 border border-dashed border-white/10 rounded-xl p-8 hover:bg-white/5 hover:border-magic-purple/50 transition-all cursor-pointer min-h-[300px]">
+                <Link href="/admin/courses/new" className="group flex flex-col items-center justify-center gap-4 bg-brand-card/50 border border-dashed border-brand-border rounded-xl p-8 hover:bg-brand-surface hover:border-brand-purple/50 transition-all cursor-pointer min-h-[300px]">
                     <div className="w-16 h-16 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-magic-purple/20 transition-colors">
                         <PlusCircle className="w-8 h-8 text-gray-500 group-hover:text-magic-purple transition-colors" />
                     </div>

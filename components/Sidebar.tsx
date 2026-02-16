@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
-import { LogOut, BookOpen, Settings, Shield, Video, Star, Youtube, Instagram, Facebook } from "lucide-react";
+import { LogOut, BookOpen, Settings, Shield, Video, Star, Youtube, Instagram, Facebook, GraduationCap, ShoppingBag } from "lucide-react";
 
 export default function Sidebar({ isAdmin, socialLinks, logoUrl }: {
     isAdmin: boolean;
@@ -66,11 +66,19 @@ export default function Sidebar({ isAdmin, socialLinks, logoUrl }: {
                 </Link>
 
                 <Link
-                    href="/dashboard/courses"
-                    className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${isActive('/dashboard/courses') ? 'bg-magic-purple/20 text-magic-purple border border-magic-purple/20' : 'text-gray-400 hover:bg-white/5 hover:text-white'}`}
+                    href="/dashboard/program"
+                    className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${isActive('/dashboard/program') ? 'bg-magic-purple/20 text-magic-purple border border-magic-purple/20' : 'text-gray-400 hover:bg-white/5 hover:text-white'}`}
                 >
-                    <BookOpen className="w-5 h-5" />
-                    Mes Formations
+                    <GraduationCap className="w-5 h-5" />
+                    Mon Programme
+                </Link>
+
+                <Link
+                    href="/dashboard/catalog"
+                    className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${isActive('/dashboard/catalog') ? 'bg-magic-purple/20 text-magic-purple border border-magic-purple/20' : 'text-gray-400 hover:bg-white/5 hover:text-white'}`}
+                >
+                    <ShoppingBag className="w-5 h-5" />
+                    Catalogue
                 </Link>
 
                 <Link
@@ -86,17 +94,26 @@ export default function Sidebar({ isAdmin, socialLinks, logoUrl }: {
                     className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${isActive('/dashboard/live') ? 'bg-magic-purple/20 text-magic-purple border border-magic-purple/20' : 'text-gray-400 hover:bg-white/5 hover:text-white'}`}
                 >
                     <Video className="w-5 h-5" />
-                    Live Magique <span className="text-[10px] bg-red-500 text-white px-1.5 py-0.5 rounded-full animate-pulse">LIVE</span>
+                    Replays / Lives
                 </Link>
 
                 {isAdmin && (
-                    <Link
-                        href="/admin"
-                        className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${isActive('/admin') ? 'bg-red-500/20 text-red-400 border border-red-500/20' : 'text-gray-400 hover:bg-white/5 hover:text-white'}`}
-                    >
-                        <Shield className="w-5 h-5" />
-                        Accès Admin
-                    </Link>
+                    <>
+                        <Link
+                            href="/kids"
+                            className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all text-gray-400 hover:bg-white/5 hover:text-white`}
+                        >
+                            <div className="w-5 h-5 flex items-center justify-center">👶</div>
+                            Espace Kids
+                        </Link>
+                        <Link
+                            href="/admin"
+                            className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${isActive('/admin') ? 'bg-red-500/20 text-red-400 border border-red-500/20' : 'text-gray-400 hover:bg-white/5 hover:text-white'}`}
+                        >
+                            <Shield className="w-5 h-5" />
+                            Accès Admin
+                        </Link>
+                    </>
                 )}
             </nav>
 

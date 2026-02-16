@@ -29,7 +29,13 @@ export default async function KidsLayout({
     };
     let siteLogo = "/logo.png";
 
+    let isLoading = true; // Not used but good for structure if we add loading state
+    let isAdmin = false;
+
     if (user) {
+        const { data: profile } = await supabase.from('profiles').select('role').eq('id', user.id).single();
+        isAdmin = profile?.role === 'admin';
+
         const { data: settings } = await supabase.from("settings").select("*");
 
         const settingsMap = settings?.reduce((acc, curr) => {
@@ -37,22 +43,26 @@ export default async function KidsLayout({
             return acc;
         }, {} as Record<string, string>) || {};
 
-        socialLinks = {
-            youtube: settingsMap["social_youtube"] || "https://youtube.com/@LeMagicienPOV",
-            instagram: settingsMap["social_instagram"] || "https://instagram.com/LeMagicienPOV",
-            facebook: settingsMap["social_facebook"] || "https://facebook.com/LeMagicienPOV",
-            tiktok: settingsMap["social_tiktok"] || "https://tiktok.com/@LeMagicienPOV"
+        const getSetting = (key: string, defaultVal: string) => {
+            return settingsMap[`kid_${key}`] || settingsMap[key] || defaultVal;
         };
 
-        siteLogo = settingsMap["site_logo"] || "/logo.png";
+        socialLinks = {
+            youtube: getSetting("social_youtube", "https://youtube.com/@LeMagicienPOV"),
+            instagram: getSetting("social_instagram", "https://instagram.com/LeMagicienPOV"),
+            facebook: getSetting("social_facebook", "https://facebook.com/LeMagicienPOV"),
+            tiktok: getSetting("social_tiktok", "https://tiktok.com/@LeMagicienPOV")
+        };
+
+        siteLogo = getSetting("site_logo", "/logo.png");
     }
 
     return (
-        <div className="flex h-screen bg-gray-50 overflow-hidden text-gray-900 font-sans">
-            <KidsSidebar socialLinks={socialLinks} logoUrl={siteLogo} />
+        <div className="flex h-screen bg-[#050507] overflow-hidden text-white font-sans">
+            <KidsSidebar socialLinks={socialLinks} logoUrl={siteLogo} isAdmin={isAdmin} />
             <div className="flex-1 flex flex-col md:pl-0">
-                <KidsMobileNav />
-                <main className="flex-1 overflow-y-auto bg-gray-50 p-4 md:p-8 text-gray-900">
+                <KidsMobileNav logoUrl={siteLogo} />
+                <main className="flex-1 overflow-y-auto bg-[#050507] p-4 md:p-8 text-white">
                     {children}
                 </main>
             </div>

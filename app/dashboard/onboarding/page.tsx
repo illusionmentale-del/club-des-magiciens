@@ -74,54 +74,54 @@ export default function OnboardingPage() {
     };
 
     return (
-        <div className="min-h-screen bg-slate-950 text-white flex flex-col items-center justify-center p-4">
-            <div className="w-full max-w-lg bg-slate-900 border border-white/10 rounded-2xl p-8 shadow-2xl relative overflow-hidden">
-                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-purple-500 to-amber-500"></div>
+        <div className="min-h-screen bg-brand-bg text-brand-text flex flex-col items-center justify-center p-4">
+            <div className="w-full max-w-lg bg-brand-card border border-brand-border rounded-2xl p-8 shadow-2xl relative overflow-hidden">
+                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-brand-purple to-brand-gold"></div>
 
                 <h1 className="text-3xl font-serif font-bold mb-2">Bienvenue au Club ! 🎩</h1>
-                <p className="text-gray-400 mb-8">
+                <p className="text-brand-text-muted mb-8">
                     Pour sécuriser votre accès, veuillez choisir vos identifiants personnels.
                 </p>
 
                 <form onSubmit={handleSubmit} className="space-y-6">
                     <div>
-                        <label className="block text-sm font-medium text-gray-300 mb-2">Choisissez un Identifiant</label>
+                        <label className="block text-sm font-medium text-brand-text-muted mb-2">Choisissez un Identifiant</label>
                         <input
                             type="text"
                             value={username}
                             onChange={(e) => setUsername(e.target.value)}
-                            className="w-full px-4 py-3 bg-slate-950 border border-white/10 rounded-xl focus:ring-2 focus:ring-purple-500 focus:outline-none transition-all placeholder:text-gray-600"
+                            className="w-full px-4 py-3 bg-brand-bg border border-brand-border rounded-xl focus:ring-2 focus:ring-brand-purple focus:outline-none transition-all placeholder:text-brand-text-muted/50"
                             placeholder="ex: lemagicien"
                             required
                         />
-                        <p className="text-xs text-gray-500 mt-1">Il remplacera votre email pour la connexion.</p>
+                        <p className="text-xs text-brand-text-muted/60 mt-1">Il remplacera votre email pour la connexion.</p>
                     </div>
 
                     <div className="grid grid-cols-2 gap-4">
                         <div>
-                            <label className="block text-sm font-medium text-gray-300 mb-2">Mot de passe</label>
+                            <label className="block text-sm font-medium text-brand-text-muted mb-2">Mot de passe</label>
                             <input
                                 type="password"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
-                                className="w-full px-4 py-3 bg-slate-950 border border-white/10 rounded-xl focus:ring-2 focus:ring-purple-500 focus:outline-none transition-all"
+                                className="w-full px-4 py-3 bg-brand-bg border border-brand-border rounded-xl focus:ring-2 focus:ring-brand-purple focus:outline-none transition-all"
                                 required
                             />
                         </div>
                         <div>
-                            <label className="block text-sm font-medium text-gray-300 mb-2">Confirmation</label>
+                            <label className="block text-sm font-medium text-brand-text-muted mb-2">Confirmation</label>
                             <input
                                 type="password"
                                 value={confirmPassword}
                                 onChange={(e) => setConfirmPassword(e.target.value)}
-                                className="w-full px-4 py-3 bg-slate-950 border border-white/10 rounded-xl focus:ring-2 focus:ring-purple-500 focus:outline-none transition-all"
+                                className="w-full px-4 py-3 bg-brand-bg border border-brand-border rounded-xl focus:ring-2 focus:ring-brand-purple focus:outline-none transition-all"
                                 required
                             />
                         </div>
                     </div>
 
                     {message && (
-                        <div className={`p-4 rounded-xl flex items-start gap-3 text-sm ${message.type === 'success' ? 'bg-emerald-500/10 text-emerald-400' : 'bg-red-500/10 text-red-400'}`}>
+                        <div className={`p-4 rounded-xl flex items-start gap-3 text-sm ${message.type === 'success' ? 'bg-brand-success/10 text-brand-success' : 'bg-brand-error/10 text-brand-error'}`}>
                             {message.type === 'success' ? <Check className="w-5 h-5 shrink-0" /> : <AlertCircle className="w-5 h-5 shrink-0" />}
                             {message.text}
                         </div>
@@ -130,7 +130,7 @@ export default function OnboardingPage() {
                     <button
                         type="submit"
                         disabled={loading}
-                        className="w-full py-4 bg-purple-600 hover:bg-purple-500 text-white font-bold rounded-xl transition-all disabled:opacity-50 flex justify-center items-center gap-2 group"
+                        className="w-full py-4 bg-brand-purple hover:bg-brand-purple/90 text-brand-text font-bold rounded-xl transition-all disabled:opacity-50 flex justify-center items-center gap-2 group"
                     >
                         {loading ? "Configuration..." : (
                             <>

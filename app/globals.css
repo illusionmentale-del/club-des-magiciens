@@ -4,23 +4,44 @@
   --font-sans: var(--font-poppins);
   --font-serif: var(--font-poppins);
 
-  /* Brand Palette from jeremymarouani.com (Modernized) */
-  --color-magic-bg: #030014;
-  /* Deep Space Blue/Black */
-  --color-magic-card: #0f0a1e;
-  /* Slightly lighter for cards */
-  --color-magic-purple: #7c3aed;
-  /* Electric Purple (Accent) */
-  --color-magic-gold: #fbbf24;
-  /* Amber Gold (Highlights) */
+  /* Premium Brand Palette - Jeremy Marouani Style */
+  --color-brand-bg: #050507;
+  /* Deepest Black */
+  --color-brand-card: #0F1014;
+  /* Surface Black */
+  --color-brand-surface: #1E293B;
+  /* Secondary Surface */
+  --color-brand-border: #FFFFFF1A;
+  /* White/10% */
 
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  --color-brand-blue: #3b82f6;
+  /* Electric Blue */
+  --color-brand-purple: #a855f7;
+  /* Royal Purple */
+  --color-brand-gold: #f59e0b;
+  /* Premium Gold */
+
+  --color-brand-text: #f8fafc;
+  /* Slate 50 */
+  --color-brand-text-muted: #94a3b8;
+  /* Slate 400 */
+
+  --color-brand-success: #22c55e;
+  --color-brand-error: #ef4444;
+
+  /* Legacy Mapping for backward compatibility */
+  --color-magic-bg: var(--color-brand-bg);
+  --color-magic-card: var(--color-brand-card);
+  --color-magic-purple: var(--color-brand-purple);
+  --color-magic-gold: var(--color-brand-gold);
+
+  --color-background: var(--color-brand-bg);
+  --color-foreground: var(--color-brand-text);
 }
 
 :root {
-  --background: #0a0510;
-  --foreground: #e5e5e5;
+  --background: #050507;
+  --foreground: #f8fafc;
 }
 
 body {
