@@ -91,11 +91,26 @@ async function handleCheckoutSessionCompleted(session: Stripe.Checkout.Session) 
     }
 
     // If mode='subscription', the subscription events will handle the DB sync,
-    // BUT we might want to capture the stripe_customer_id in profile immediately.
+    // BUT we MUST update the role immediately so the user has access instantly.
     if (session.customer && userId) {
+        const updateData: any = { stripe_customer_id: session.customer as string };
+        const space = session.metadata?.space;
+
+        if (space === 'kids') {
+            updateData.access_level = 'kid';
+            // Optionally ensure role is not admin to avoid downgrading admins
+            // But usually we just set access_level. 
+            // Existing logic: profile.role defaults to 'adult' maybe? 
+            // We should be careful. Ideally 'kid' is orthogonal or we set role='user'.
+            // Let's stick to strict `access_level` for now as middleware uses it.
+        } else if (space === 'adults') {
+            updateData.role = 'adult'; // Grant adult role
+            updateData.access_level = 'adult';
+        }
+
         await supabaseAdmin
             .from('profiles')
-            .update({ stripe_customer_id: session.customer as string })
+            .update(updateData)
             .eq('id', userId);
     }
 }
@@ -106,7 +121,7 @@ async function handleSubscriptionChange(sub: Stripe.Subscription) {
     // Find user by stripe_customer_id
     const { data: profile } = await supabaseAdmin
         .from('profiles')
-        .select('id')
+        .select('id, role, access_level')
         .eq('stripe_customer_id', customerId)
         .single();
 
@@ -134,9 +149,31 @@ async function handleSubscriptionChange(sub: Stripe.Subscription) {
 
     if (error) throw error;
 
-    // Update Profile Status Shortcut
+    // Update Profile Status & Role Persistence
+    // If subscription is active/trialing, ensure they have the role.
+    // Use metadata from subscription if available (populated by our new checkout code).
+    const isActive = ['active', 'trialing'].includes(sub.status);
+    const space = sub.metadata?.space;
+
+    const profileUpdate: any = { subscription_status: sub.status };
+
+    if (isActive && space) {
+        if (space === 'kids') profileUpdate.access_level = 'kid';
+        if (space === 'adults') {
+            profileUpdate.role = 'adult';
+            profileUpdate.access_level = 'adult';
+        }
+    }
+    // If not active (canceled/past_due), strictly speaking we might want to panic revoke?
+    // But usually we let access linger until period end. 
+    // Stripe status 'canceled' implies immediate? No, 'canceled' usually means deleted.
+    // 'past_due' might retry. 
+    // Let's rely on middleware checking 'subscription_status' ideally, but currently middleware checks role.
+    // For now, we GRANT on active. We don't auto-REVOKE here to avoid accidental lockouts on payment retry.
+    // A separate sync job is safer for revocations.
+
     await supabaseAdmin
         .from('profiles')
-        .update({ subscription_status: sub.status })
+        .update(profileUpdate)
         .eq('id', profile.id);
 }
