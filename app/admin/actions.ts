@@ -99,7 +99,7 @@ export async function saveKidsHomeSettings(config: Record<string, any>) {
         value: typeof value === 'string' ? value : JSON.stringify(value)
     }));
 
-    const { error } = await supabase.from("settings").upsert(entries);
+    const { error } = await supabase.from("settings").upsert(entries, { onConflict: 'key' });
 
     if (error) {
         console.error("Error saving kids home settings:", error);
@@ -108,6 +108,7 @@ export async function saveKidsHomeSettings(config: Record<string, any>) {
 
     revalidatePath("/kids");
     revalidatePath("/admin/kids/settings");
+    revalidatePath("/", "layout"); // Force global refresh
     return { success: true };
 }
 

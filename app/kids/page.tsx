@@ -38,8 +38,13 @@ export default async function KidsHomePage() {
 
     const getJsonSetting = (key: string, fallback: any) => {
         try {
-            return settingsMap[`kid_home_${key}`] ? JSON.parse(settingsMap[`kid_home_${key}`]) : fallback;
-        } catch {
+            const val = settingsMap[`kid_home_${key}`];
+            if (!val) return fallback;
+            // Handle if Supabase auto-parsed it or if it's already an object
+            if (typeof val === 'object') return val;
+            return JSON.parse(val);
+        } catch (e) {
+            console.error(`Error parsing setting kid_home_${key}:`, e);
             return fallback;
         }
     }
@@ -65,11 +70,21 @@ export default async function KidsHomePage() {
     // WELCOME MESSAGE
     const welcomeActive = settingsMap.kid_home_welcome_active === "true";
     const weeklyMessages = getJsonSetting("weekly_messages", {});
-    const customWelcome = welcomeActive ? weeklyMessages[currentWeek] : null;
+    const customWelcome = welcomeActive ? weeklyMessages[String(currentWeek)] : null;
 
     // HERO (FEATURED)
     const featuredConfig = getJsonSetting("featured_config", { id: "", image: "", text: "" });
     let mainItem = allItems?.find(i => i.id === featuredConfig.id);
+
+    // If not found in allItems (e.g. from a future week), fetch it explicitly
+    if (featuredConfig.id && !mainItem) {
+        const { data: specificItem } = await supabase
+            .from("library_items")
+            .select("*")
+            .eq("id", featuredConfig.id)
+            .single();
+        if (specificItem) mainItem = specificItem;
+    }
 
     // Fallback hero logic
     if (!mainItem) {
@@ -80,10 +95,9 @@ export default async function KidsHomePage() {
     // NEWS (CURATION)
     const newsConfig = getJsonSetting("news_config", []);
     let recentItems: any[] = [];
-    if (newsConfig.length > 0) {
+    if (Array.isArray(newsConfig) && newsConfig.length > 0) {
         // Filter from allItems to respect week limits (LTE currentWeek)
         recentItems = allItems?.filter(i => newsConfig.includes(i.id)) || [];
-        // Re-sort to match the order in newsConfig if possible, or just keep default
     } else {
         // Fallback news logic
         recentItems = allItems?.filter(i => i.id !== mainItem?.id).slice(0, 3) || [];
