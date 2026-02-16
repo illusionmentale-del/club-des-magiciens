@@ -1,6 +1,6 @@
 "use client";
 
-import { useAdmin } from "../AdminContext";
+import { useAdmin } from "@/app/admin/AdminContext";
 import { updateSettings } from "@/app/admin/actions";
 import { SubmitButton } from "@/components/SubmitButton";
 import { LogoCropper } from "@/components/LogoCropper";

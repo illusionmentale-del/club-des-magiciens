@@ -1,10 +1,10 @@
 "use client";
 
 import { createClient } from "@/lib/supabase/client";
-import { deleteNews, createNews } from "../actions";
+import { deleteNews, createNews } from "@/app/admin/actions";
 import Link from "next/link";
 import { Plus, Trash2, ArrowLeft } from "lucide-react";
-import { useAdmin } from "../AdminContext";
+import { useAdmin } from "@/app/admin/AdminContext";
 import { useEffect, useState } from "react";
 
 // Types
