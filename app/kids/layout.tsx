@@ -58,11 +58,11 @@ export default async function KidsLayout({
     }
 
     return (
-        <div className="flex h-screen bg-[#050507] overflow-hidden text-white font-sans">
+        <div className="flex h-screen bg-brand-bg overflow-hidden text-brand-text font-sans">
             <KidsSidebar socialLinks={socialLinks} logoUrl={siteLogo} isAdmin={isAdmin} />
             <div className="flex-1 flex flex-col md:pl-0">
                 <KidsMobileNav logoUrl={siteLogo} />
-                <main className="flex-1 overflow-y-auto bg-[#050507] p-4 md:p-8 text-white">
+                <main className="flex-1 overflow-y-auto bg-brand-bg p-4 md:p-8 text-brand-text">
                     {children}
                 </main>
             </div>

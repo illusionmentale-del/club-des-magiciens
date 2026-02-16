@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
-import { LogOut, BookOpen, Settings, Video, Star, Youtube, Instagram, Facebook, LayoutDashboard, Shield } from "lucide-react";
+import { LogOut, BookOpen, Settings, Video, Star, Youtube, Instagram, Facebook, LayoutDashboard, Shield, Wand2 } from "lucide-react";
 
 export default function KidsSidebar({ socialLinks, logoUrl, isAdmin }: {
     socialLinks?: { youtube: string; instagram: string; facebook: string; tiktok: string };
@@ -24,9 +24,9 @@ export default function KidsSidebar({ socialLinks, logoUrl, isAdmin }: {
     const isActive = (path: string) => pathname === path;
 
     return (
-        <aside className="w-64 bg-[#1e293b] border-r border-[#334155] hidden md:flex flex-col flex-shrink-0 h-full shadow-xl text-gray-100">
+        <aside className="w-64 bg-brand-surface border-r border-brand-border hidden md:flex flex-col flex-shrink-0 h-full shadow-xl text-brand-text">
             {/* Logo Area */}
-            <div className="p-6 border-b border-[#334155] flex flex-col items-center gap-4 text-center">
+            <div className="p-6 border-b border-brand-border flex flex-col items-center gap-4 text-center">
                 <Link href="/kids">
                     <div className="relative w-32 h-32 hover:scale-105 transition-transform">
                         <Image
@@ -40,11 +40,11 @@ export default function KidsSidebar({ socialLinks, logoUrl, isAdmin }: {
                 </Link>
 
                 <div>
-                    <h2 className="font-bold text-white text-sm">Jérémy Marouani</h2>
-                    <p className="text-xs text-cyan-400 font-mono font-bold">@LeMagicienPOV</p>
+                    <h2 className="font-bold text-brand-text text-sm">Jérémy Marouani</h2>
+                    <p className="text-xs text-brand-cyan font-mono font-bold">@LeMagicienPOV</p>
                 </div>
 
-                <div className="flex items-center gap-3 text-gray-400">
+                <div className="flex items-center gap-3 text-brand-text-muted">
                     <a href={socialLinks?.youtube || "#"} target="_blank" className="hover:text-red-500 transition-colors"><Youtube className="w-4 h-4" /></a>
                     <a href={socialLinks?.instagram || "#"} target="_blank" className="hover:text-pink-500 transition-colors"><Instagram className="w-4 h-4" /></a>
                     <a href={socialLinks?.facebook || "#"} target="_blank" className="hover:text-blue-500 transition-colors"><Facebook className="w-4 h-4" /></a>
@@ -58,8 +58,15 @@ export default function KidsSidebar({ socialLinks, logoUrl, isAdmin }: {
             {/* Navigation */}
             <nav className="flex-1 p-4 space-y-2 overflow-y-auto">
                 <Link
+                    href="/kids/program"
+                    className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${isActive('/kids/program') ? 'bg-brand-cyan/10 text-brand-cyan border border-brand-cyan/20 shadow-[0_0_10px_rgba(6,182,212,0.1)]' : 'text-brand-text-muted hover:bg-white/5 hover:text-brand-text'}`}
+                >
+                    <Wand2 className="w-5 h-5" />
+                    Mon Programme
+                </Link>
+                <Link
                     href="/kids/courses"
-                    className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${isActive('/kids/courses') ? 'bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 shadow-[0_0_10px_rgba(34,211,238,0.1)]' : 'text-gray-400 hover:bg-white/5 hover:text-white'}`}
+                    className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${isActive('/kids/courses') ? 'bg-brand-cyan/10 text-brand-cyan border border-brand-cyan/20 shadow-[0_0_10px_rgba(6,182,212,0.1)]' : 'text-brand-text-muted hover:bg-white/5 hover:text-brand-text'}`}
                 >
                     <BookOpen className="w-5 h-5" />
                     Mes tours de magie
@@ -67,7 +74,7 @@ export default function KidsSidebar({ socialLinks, logoUrl, isAdmin }: {
 
                 <Link
                     href="/kids"
-                    className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${isActive('/kids') ? 'bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 shadow-[0_0_10px_rgba(34,211,238,0.1)]' : 'text-gray-400 hover:bg-white/5 hover:text-white'}`}
+                    className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${isActive('/kids') ? 'bg-brand-cyan/10 text-brand-cyan border border-brand-cyan/20 shadow-[0_0_10px_rgba(6,182,212,0.1)]' : 'text-brand-text-muted hover:bg-white/5 hover:text-brand-text'}`}
                 >
                     <Star className="w-5 h-5" />
                     Le QG
@@ -75,7 +82,7 @@ export default function KidsSidebar({ socialLinks, logoUrl, isAdmin }: {
 
                 <Link
                     href="/kids/live"
-                    className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${isActive('/kids/live') ? 'bg-purple-500/10 text-purple-400 border border-purple-500/20 shadow-[0_0_10px_rgba(168,85,247,0.1)]' : 'text-gray-400 hover:bg-white/5 hover:text-white'}`}
+                    className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${isActive('/kids/live') ? 'bg-brand-purple/10 text-brand-purple border border-brand-purple/20 shadow-[0_0_10px_rgba(168,85,247,0.1)]' : 'text-brand-text-muted hover:bg-white/5 hover:text-brand-text'}`}
                 >
                     <Video className="w-5 h-5" />
                     Live Magique <span className="text-[10px] bg-red-500 text-white px-1.5 py-0.5 rounded-full animate-pulse">LIVE</span>
@@ -83,7 +90,7 @@ export default function KidsSidebar({ socialLinks, logoUrl, isAdmin }: {
 
                 <Link
                     href="/kids/account"
-                    className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${isActive('/kids/account') ? 'bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 shadow-[0_0_10px_rgba(34,211,238,0.1)]' : 'text-gray-400 hover:bg-white/5 hover:text-white'}`}
+                    className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${isActive('/kids/account') ? 'bg-brand-cyan/10 text-brand-cyan border border-brand-cyan/20 shadow-[0_0_10px_rgba(6,182,212,0.1)]' : 'text-brand-text-muted hover:bg-white/5 hover:text-brand-text'}`}
                 >
                     <Settings className="w-5 h-5" />
                     Mon Compte
@@ -91,12 +98,12 @@ export default function KidsSidebar({ socialLinks, logoUrl, isAdmin }: {
 
                 {isAdmin && (
                     <>
-                        <div className="my-2 border-t border-[#334155]"></div>
-                        <p className="px-4 text-xs font-bold text-gray-500 uppercase tracking-widest mb-1">Admin</p>
+                        <div className="my-2 border-t border-brand-border"></div>
+                        <p className="px-4 text-xs font-bold text-brand-text-muted uppercase tracking-widest mb-1">Admin</p>
 
                         <Link
                             href="/dashboard"
-                            className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all text-gray-400 hover:bg-white/5 hover:text-white`}
+                            className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all text-brand-text-muted hover:bg-white/5 hover:text-brand-text`}
                         >
                             <LayoutDashboard className="w-5 h-5" />
                             Espace Adulte
@@ -104,7 +111,7 @@ export default function KidsSidebar({ socialLinks, logoUrl, isAdmin }: {
 
                         <Link
                             href="/admin"
-                            className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${isActive('/admin') ? 'bg-red-500/10 text-red-400 border border-red-500/20' : 'text-gray-400 hover:bg-white/5 hover:text-white'}`}
+                            className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${isActive('/admin') ? 'bg-brand-error/10 text-brand-error border border-brand-error/20' : 'text-brand-text-muted hover:bg-white/5 hover:text-brand-text'}`}
                         >
                             <Shield className="w-5 h-5" />
                             Accès Admin
@@ -114,10 +121,10 @@ export default function KidsSidebar({ socialLinks, logoUrl, isAdmin }: {
             </nav>
 
             {/* User Footer */}
-            <div className="p-4 border-t border-[#334155] bg-black/20">
+            <div className="p-4 border-t border-brand-border bg-black/20">
                 <button
                     onClick={handleLogout}
-                    className="w-full flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-red-500/10 hover:bg-red-500/20 text-red-400 transition-colors border border-red-500/20 text-sm font-medium"
+                    className="w-full flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-brand-error/10 hover:bg-brand-error/20 text-brand-error transition-colors border border-brand-error/20 text-sm font-medium"
                 >
                     <LogOut className="w-4 h-4" />
                     Déconnexion
