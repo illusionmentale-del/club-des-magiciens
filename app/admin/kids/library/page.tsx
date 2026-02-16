@@ -71,7 +71,7 @@ export default function AdminLibraryPage() {
                 <header className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
                     <div>
                         <h1 className="text-3xl font-bold flex items-center gap-2">
-                            <span className="text-purple-400">📚</span> Bibliothèque
+                            <span className="text-purple-400">📚</span> Le Club
                         </h1>
                         <p className="text-gray-400">Gestion des Ateliers et Contenus</p>
                     </div>

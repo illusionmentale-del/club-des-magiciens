@@ -54,7 +54,7 @@ export default async function AdminLayout({
 
                     <Link href="/admin/kids/library" className="flex items-center gap-3 px-4 py-3 text-sm font-bold uppercase tracking-widest text-brand-text-muted hover:text-white hover:bg-white/5 rounded-xl transition-all group">
                         <Film className="w-5 h-5 group-hover:text-brand-purple transition-colors" />
-                        Ateliers
+                        Le Club
                     </Link>
                     <Link href="/admin/kids/gamification" className="flex items-center gap-3 px-4 py-3 text-sm font-bold uppercase tracking-widest text-brand-text-muted hover:text-white hover:bg-white/5 rounded-xl transition-all group">
                         <Trophy className="w-5 h-5 group-hover:text-brand-purple transition-colors" />
