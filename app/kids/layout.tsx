@@ -71,7 +71,7 @@ export default async function KidsLayout({
         <div className="flex h-screen bg-brand-bg overflow-hidden text-brand-text font-sans">
             <KidsSidebar socialLinks={socialLinks} logoUrl={siteLogo} isAdmin={isAdmin} hasPurchases={hasPurchases} />
             <div className="flex-1 flex flex-col md:pl-0">
-                <KidsMobileNav logoUrl={siteLogo} hasPurchases={hasPurchases} />
+                <KidsMobileNav logoUrl={siteLogo} hasPurchases={hasPurchases} isAdmin={isAdmin} />
                 <main className="flex-1 overflow-y-auto bg-brand-bg p-4 md:p-8 text-brand-text">
                     {children}
                 </main>

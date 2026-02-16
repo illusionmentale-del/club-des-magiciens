@@ -109,6 +109,29 @@ export default function KidsSidebar({ socialLinks, logoUrl, isAdmin, hasPurchase
                     Mon Compte
                 </Link>
 
+                {isAdmin && (
+                    <>
+                        <div className="my-2 border-t border-white/10"></div>
+                        <p className="px-4 text-xs font-bold text-gray-400 uppercase tracking-widest mb-1">Admin</p>
+
+                        <Link
+                            href="/dashboard"
+                            className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all text-gray-400 hover:bg-white/5 hover:text-white`}
+                        >
+                            <LayoutDashboard className="w-5 h-5" />
+                            Espace Adulte
+                        </Link>
+
+                        <Link
+                            href="/admin"
+                            className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${isActive('/admin') ? 'bg-red-500/20 text-red-400 border border-red-500/20' : 'text-gray-400 hover:bg-white/5 hover:text-white'}`}
+                        >
+                            <Shield className="w-5 h-5" />
+                            Accès Admin
+                        </Link>
+                    </>
+                )}
+
             </nav>
 
             {/* User Footer */}
