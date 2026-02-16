@@ -3,65 +3,77 @@ import { Sparkles, Users, Lock } from "lucide-react";
 
 export default function AdminHubPage() {
     return (
-        <div className="min-h-screen bg-slate-50 flex flex-col items-center justify-center p-4">
-            <div className="max-w-4xl w-full space-y-8">
-                <div className="text-center">
-                    <h1 className="text-3xl font-black text-slate-900 mb-2">Console d'Administration</h1>
-                    <p className="text-slate-500">Choisissez l'univers que vous souhaitez gérer.</p>
+        <div className="min-h-screen bg-brand-bg flex flex-col items-center justify-center p-4 relative overflow-hidden">
+            {/* Background Glows */}
+            <div className="absolute top-0 -left-20 w-80 h-80 bg-brand-purple/20 blur-[120px] rounded-full"></div>
+            <div className="absolute bottom-0 -right-20 w-80 h-80 bg-brand-blue/10 blur-[120px] rounded-full"></div>
+
+            <div className="max-w-4xl w-full space-y-12 relative z-10">
+                <div className="text-center space-y-4">
+                    <h1 className="text-4xl md:text-5xl font-black text-white uppercase tracking-tighter">
+                        Console <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-purple to-brand-blue">Admin</span>
+                    </h1>
+                    <p className="text-brand-text-muted text-lg max-w-md mx-auto">
+                        Le poste de commande du Club des Magiciens. Choisissez votre univers.
+                    </p>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     {/* KIDS ADMIN */}
                     <Link
                         href="/admin/kids/dashboard"
-                        className="group relative bg-white border-2 border-slate-200 rounded-2xl p-8 hover:border-brand-purple transition-all shadow-xl hover:shadow-2xl hover:-translate-y-1 overflow-hidden"
+                        className="group relative bg-brand-card/50 backdrop-blur-xl border border-brand-purple/30 rounded-3xl p-8 hover:border-brand-purple transition-all shadow-2xl hover:shadow-brand-purple/20 hover:-translate-y-2 overflow-hidden"
                     >
-                        <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-                            <Sparkles className="w-32 h-32 text-brand-purple" />
+                        <div className="absolute top-0 right-0 p-6 opacity-5 group-hover:opacity-20 transition-opacity">
+                            <Sparkles className="w-40 h-40 text-brand-purple" />
                         </div>
                         <div className="relative z-10 flex flex-col h-full">
-                            <div className="w-16 h-16 bg-brand-purple/10 rounded-xl flex items-center justify-center mb-6 text-brand-purple">
-                                <Sparkles className="w-8 h-8" />
+                            <div className="w-20 h-20 bg-brand-purple/20 rounded-2xl flex items-center justify-center mb-8 text-brand-purple shadow-inner group-hover:scale-110 transition-transform">
+                                <Sparkles className="w-10 h-10" />
                             </div>
-                            <h2 className="text-2xl font-bold text-slate-900 mb-2 group-hover:text-brand-purple transition-colors">
+                            <h2 className="text-3xl font-bold text-white mb-4 group-hover:text-brand-purple transition-colors uppercase tracking-tight">
                                 Espace Kids
                             </h2>
-                            <p className="text-slate-500 mb-8 flex-1">
-                                Gestion du Club des Magiciens : Ateliers, Gamification, Progression des élèves et Contenus.
+                            <p className="text-brand-text-muted mb-10 flex-1 text-lg leading-relaxed">
+                                Gérez les ateliers, la gamification, et suivez la progression magique de vos élèves.
                             </p>
-                            <span className="inline-flex items-center text-brand-purple font-bold uppercase tracking-wider text-sm">
-                                Accéder à la console <span className="ml-2 group-hover:translate-x-1 transition-transform">→</span>
+                            <span className="inline-flex items-center text-brand-purple font-black uppercase tracking-widest text-sm group-hover:gap-3 transition-all">
+                                Entrer dans le Club <span className="ml-2 group-hover:translate-x-2 transition-transform">→</span>
                             </span>
                         </div>
+                        {/* Bottom Glow Effect */}
+                        <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-brand-purple/50 to-transparent"></div>
                     </Link>
 
                     {/* ADULTS ADMIN */}
                     <Link
                         href="/admin/adults/dashboard"
-                        className="group relative bg-white border-2 border-slate-200 rounded-2xl p-8 hover:border-slate-800 transition-all shadow-xl hover:shadow-2xl hover:-translate-y-1 overflow-hidden"
+                        className="group relative bg-brand-card/50 backdrop-blur-xl border border-brand-border rounded-3xl p-8 hover:border-brand-gold transition-all shadow-2xl hover:shadow-brand-gold/20 hover:-translate-y-2 overflow-hidden"
                     >
-                        <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-                            <Users className="w-32 h-32 text-slate-800" />
+                        <div className="absolute top-0 right-0 p-6 opacity-5 group-hover:opacity-20 transition-opacity">
+                            <Users className="w-40 h-40 text-brand-gold" />
                         </div>
                         <div className="relative z-10 flex flex-col h-full">
-                            <div className="w-16 h-16 bg-slate-100 rounded-xl flex items-center justify-center mb-6 text-slate-800">
-                                <Users className="w-8 h-8" />
+                            <div className="w-20 h-20 bg-brand-gold/10 rounded-2xl flex items-center justify-center mb-8 text-brand-gold shadow-inner group-hover:scale-110 transition-transform">
+                                <Users className="w-10 h-10" />
                             </div>
-                            <h2 className="text-2xl font-bold text-slate-900 mb-2 group-hover:text-slate-800 transition-colors">
+                            <h2 className="text-3xl font-bold text-white mb-4 group-hover:text-brand-gold transition-colors uppercase tracking-tight">
                                 Espace Adultes
                             </h2>
-                            <p className="text-slate-500 mb-8 flex-1">
-                                Gestion Business : Formations, Ventes, Abonnements, Analytics et Clients.
+                            <p className="text-brand-text-muted mb-10 flex-1 text-lg leading-relaxed">
+                                Pilotez l'activité business : formations, ventes, analytics et gestion clients.
                             </p>
-                            <span className="inline-flex items-center text-slate-800 font-bold uppercase tracking-wider text-sm">
-                                Accéder à la console <span className="ml-2 group-hover:translate-x-1 transition-transform">→</span>
+                            <span className="inline-flex items-center text-brand-gold font-black uppercase tracking-widest text-sm group-hover:gap-3 transition-all">
+                                Gérer le Business <span className="ml-2 group-hover:translate-x-2 transition-transform">→</span>
                             </span>
                         </div>
+                        {/* Bottom Glow Effect */}
+                        <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-brand-gold/50 to-transparent"></div>
                     </Link>
                 </div>
 
-                <div className="text-center mt-12">
-                    <Link href="/" className="text-slate-400 hover:text-slate-600 text-sm font-medium transition-colors">
+                <div className="text-center mt-8">
+                    <Link href="/" className="text-brand-text-muted hover:text-white text-sm font-bold uppercase tracking-widest transition-colors flex items-center justify-center gap-2">
                         ← Retour au site public
                     </Link>
                 </div>
