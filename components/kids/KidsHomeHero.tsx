@@ -10,7 +10,15 @@ type LibraryItem = {
     week_number: number;
 };
 
-export default function KidsHomeHero({ item }: { item: LibraryItem | undefined }) {
+export default function KidsHomeHero({
+    item,
+    overrideImage,
+    overrideHook
+}: {
+    item: LibraryItem | undefined,
+    overrideImage?: string,
+    overrideHook?: string
+}) {
     if (!item) {
         return (
             <div className="relative bg-brand-card border border-brand-purple/50 rounded-2xl overflow-hidden shadow-2xl p-12 text-center">
@@ -23,6 +31,11 @@ export default function KidsHomeHero({ item }: { item: LibraryItem | undefined }
         );
     }
 
+    const title = item.title;
+    const description = item.description;
+    const thumbnail = overrideImage || item.thumbnail_url;
+    const hook = overrideHook || `Semaine ${item.week_number}`;
+
     return (
         <section id="atelier" className="relative group scroll-mt-24">
             {/* Animated Glow */}
@@ -31,8 +44,8 @@ export default function KidsHomeHero({ item }: { item: LibraryItem | undefined }
             <div className="relative bg-brand-card border border-brand-purple/50 rounded-2xl overflow-hidden shadow-2xl flex flex-col md:flex-row">
                 {/* Thumbnail Side */}
                 <div className="md:w-3/5 relative aspect-video md:aspect-auto bg-black group-hover:scale-[1.01] transition-transform duration-500">
-                    {item.thumbnail_url ? (
-                        <Image src={item.thumbnail_url} alt={item.title} fill className="object-cover" />
+                    {thumbnail ? (
+                        <Image src={thumbnail} alt={title} fill className="object-cover" />
                     ) : (
                         <div className="w-full h-full flex items-center justify-center bg-brand-surface">
                             <Play className="w-16 h-16 text-white/20" />
@@ -62,13 +75,13 @@ export default function KidsHomeHero({ item }: { item: LibraryItem | undefined }
 
                     <div className="mb-auto relative z-10">
                         <div className="text-brand-purple text-xs font-bold uppercase tracking-widest mb-2">
-                            Semaine {item.week_number}
+                            {hook}
                         </div>
                         <h2 className="text-2xl md:text-3xl font-black text-white uppercase leading-tight mb-4">
-                            {item.title}
+                            {title}
                         </h2>
                         <p className="text-brand-text-muted text-sm line-clamp-3 leading-relaxed">
-                            {item.description}
+                            {description}
                         </p>
                     </div>
 

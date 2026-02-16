@@ -2,7 +2,7 @@ import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { Package, Sparkles } from "lucide-react";
+import { Package, Sparkles, ShoppingBag } from "lucide-react";
 import KidsHomeHero from "@/components/kids/KidsHomeHero";
 import KidsNewsFeed from "@/components/kids/KidsNewsFeed";
 import KidsProgression from "@/components/kids/KidsProgression";
@@ -16,33 +16,93 @@ export default async function KidsHomePage() {
         redirect("/login");
     }
 
-    // 1. Fetch Profile
-    const { data: profile } = await supabase
-        .from("profiles")
-        .select("created_at, display_name, first_name, magic_level, xp")
-        .eq("id", user.id)
-        .single();
+    // 1. Fetch Profile & Settings
+    const [{ data: profile }, { data: settings }] = await Promise.all([
+        supabase
+            .from("profiles")
+            .select("created_at, display_name, first_name, magic_level, xp")
+            .eq("id", user.id)
+            .single(),
+        supabase
+            .from("settings")
+            .select("*")
+            .like("key", "kid_home_%")
+    ]);
 
     if (!profile) return null;
 
-    // Time-based unlocking logic (Keep this for content availability)
+    const settingsMap = settings?.reduce((acc, curr) => {
+        acc[curr.key] = curr.value;
+        return acc;
+    }, {} as Record<string, string>) || {};
+
+    const getJsonSetting = (key: string, fallback: any) => {
+        try {
+            return settingsMap[`kid_home_${key}`] ? JSON.parse(settingsMap[`kid_home_${key}`]) : fallback;
+        } catch {
+            return fallback;
+        }
+    }
+
+    // Time-based unlocking logic (anchor for content availability)
     const createdAt = new Date(profile.created_at);
     const now = new Date();
     const diffTime = Math.abs(now.getTime() - createdAt.getTime());
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
     const currentWeek = Math.floor(diffDays / 7) + 1;
 
+    // 2. Fetch Content (Library Items)
+    // We fetch everything up to current week to have context
+    const { data: allItems } = await supabase
+        .from("library_items")
+        .select("*")
+        .eq("audience", "kids")
+        .lte("week_number", currentWeek)
+        .order("week_number", { ascending: false });
+
+    // --- CONFIG LOGIC ---
+
+    // WELCOME MESSAGE
+    const welcomeActive = settingsMap.kid_home_welcome_active === "true";
+    const weeklyMessages = getJsonSetting("weekly_messages", {});
+    const customWelcome = welcomeActive ? weeklyMessages[currentWeek] : null;
+
+    // HERO (FEATURED)
+    const featuredConfig = getJsonSetting("featured_config", { id: "", image: "", text: "" });
+    let mainItem = allItems?.find(i => i.id === featuredConfig.id);
+
+    // Fallback hero logic
+    if (!mainItem) {
+        const currentItems = allItems?.filter(i => i.week_number === currentWeek) || [];
+        mainItem = currentItems.find(i => i.is_main) || currentItems[0] || allItems?.[0];
+    }
+
+    // NEWS (CURATION)
+    const newsConfig = getJsonSetting("news_config", []);
+    let recentItems: any[] = [];
+    if (newsConfig.length > 0) {
+        // Filter from allItems to respect week limits (LTE currentWeek)
+        recentItems = allItems?.filter(i => newsConfig.includes(i.id)) || [];
+        // Re-sort to match the order in newsConfig if possible, or just keep default
+    } else {
+        // Fallback news logic
+        recentItems = allItems?.filter(i => i.id !== mainItem?.id).slice(0, 3) || [];
+    }
+
+    // --- END CONFIG LOGIC ---
+
     // Item-based progression logic
     const { count: validatedCount } = await supabase
-        .from("library_progress")
+        .from("user_library_progress")
         .select("*", { count: 'exact', head: true })
         .eq("user_id", user.id);
 
     // Fetch recent successes for Block 5
     const { data: recentValids } = await supabase
-        .from("library_progress")
+        .from("user_library_progress")
         .select("item_id, completed_at, library_items(title)")
         .eq("user_id", user.id)
+        .eq("is_completed", true)
         .order("completed_at", { ascending: false })
         .limit(3);
 
@@ -59,21 +119,6 @@ export default async function KidsHomePage() {
         .eq("status", "paid");
     const hasPurchases = (purchaseCount || 0) > 0;
 
-    // 2. Fetch Content
-    const { data: allItems } = await supabase
-        .from("library_items")
-        .select("*")
-        .eq("audience", "kids")
-        .lte("week_number", currentWeek)
-        .order("week_number", { ascending: false });
-
-    // Block 2: Atelier de la Semaine
-    const currentItems = allItems?.filter(i => i.week_number === currentWeek) || [];
-    const mainItem = currentItems.find(i => i.is_main) || currentItems[0];
-
-    // Block 3: Nouveautés (Filter out main item)
-    const recentItems = allItems?.filter(i => i.id !== mainItem?.id).slice(0, 3) || [];
-
     const userName = profile.first_name || profile.display_name?.split(' ')[0] || "Jeune Magicien";
     const userGrade = profile.magic_level || "Apprenti";
 
@@ -87,7 +132,7 @@ export default async function KidsHomePage() {
 
                 {/* BLOC 1: BIENVENUE */}
                 <header className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 pt-4">
-                    <div>
+                    <div className="flex-1">
                         <div className="flex items-center gap-2 text-brand-gold mb-2">
                             <Sparkles className="w-5 h-5 animate-pulse" />
                             <span className="text-xs font-bold uppercase tracking-widest">Le Club des Petits Magiciens</span>
@@ -96,13 +141,17 @@ export default async function KidsHomePage() {
                             Bienvenue, <span className="text-brand-purple">{userName}</span> ! ✨
                         </h1>
                         <p className="text-brand-text-muted mt-2 text-lg">
-                            Prêt à découvrir les secrets de la semaine ?
+                            {customWelcome || (mainItem ? "Prêt à découvrir les secrets de la semaine ?" : "Prêt pour ton aventure magique ?")}
                         </p>
                     </div>
                 </header>
 
-                {/* BLOC 2: HERO (ATELIER SEMAINE) */}
-                <KidsHomeHero item={mainItem} />
+                {/* BLOC 2: HERO (ATELIER VEDETTE) */}
+                <KidsHomeHero
+                    item={mainItem}
+                    overrideImage={featuredConfig.image}
+                    overrideHook={featuredConfig.text}
+                />
 
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                     {/* COLONNE GAUCHE (2/3) */}
@@ -111,30 +160,30 @@ export default async function KidsHomePage() {
                         {/* BLOC 3: NOUVEAUTÉS */}
                         <KidsNewsFeed items={recentItems} />
 
-                        {/* BLOC 6: MES COFFRES (Conditional) */}
-                        {hasPurchases && (
-                            <section>
-                                <h3 className="text-lg font-bold text-white uppercase tracking-wider mb-6 flex items-center gap-2">
-                                    <Package className="w-5 h-5 text-brand-gold" />
-                                    Mes Coffres Secrets
-                                </h3>
-                                <div className="bg-gradient-to-r from-brand-gold/10 to-transparent border border-brand-gold/20 rounded-2xl p-6 flex flex-col sm:flex-row items-center gap-6">
-                                    <div className="w-16 h-16 bg-brand-gold/20 rounded-full flex items-center justify-center shrink-0">
-                                        <Package className="w-8 h-8 text-brand-gold" />
-                                    </div>
-                                    <div className="flex-1 text-center sm:text-left">
-                                        <h4 className="text-xl font-bold text-brand-gold mb-1">Tu as {purchaseCount || 0} coffre{(purchaseCount || 0) > 1 ? 's' : ''} à ouvrir !</h4>
-                                        <p className="text-brand-text-muted text-sm">Tes packs magiques t'attendent dans ta réserve secrète.</p>
-                                    </div>
-                                    <Link
-                                        href="/kids/courses?filter=owned"
-                                        className="bg-brand-gold hover:bg-brand-gold/80 text-black font-bold py-3 px-6 rounded-xl transition-colors whitespace-nowrap"
-                                    >
-                                        Ouvrir mes coffres
-                                    </Link>
+                        {/* BLOC 6: MES COFFRES (Always Visible or Logic based) */}
+                        <section>
+                            <h3 className="text-lg font-bold text-white uppercase tracking-wider mb-6 flex items-center gap-2">
+                                <Package className="w-5 h-5 text-brand-gold" />
+                                La Boutique Magique
+                            </h3>
+                            <div className="bg-gradient-to-r from-brand-gold/10 to-transparent border border-brand-gold/20 rounded-2xl p-6 flex flex-col sm:flex-row items-center gap-6">
+                                <div className="w-16 h-16 bg-brand-gold/20 rounded-full flex items-center justify-center shrink-0">
+                                    <ShoppingBag className="w-8 h-8 text-brand-gold" />
                                 </div>
-                            </section>
-                        )}
+                                <div className="flex-1 text-center sm:text-left">
+                                    <h4 className="text-xl font-bold text-brand-gold mb-1">
+                                        {hasPurchases ? `Tu as déjà ${purchaseCount} coffres !` : "Découvre les secrets du Club !"}
+                                    </h4>
+                                    <p className="text-brand-text-muted text-sm">Équipe-toi avec le meilleur matériel de magicien pro.</p>
+                                </div>
+                                <Link
+                                    href="/kids/courses?filter=owned"
+                                    className="bg-brand-gold hover:bg-brand-gold/80 text-black font-bold py-3 px-6 rounded-xl transition-colors whitespace-nowrap"
+                                >
+                                    Faire un tour à la boutique
+                                </Link>
+                            </div>
+                        </section>
                     </div>
 
                     {/* COLONNE DROITE (1/3) */}
