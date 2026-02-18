@@ -31,7 +31,23 @@ export default async function KidsHomePage() {
             .like("key", "kid_home_%")
     ]);
 
-    if (!profile) return null;
+    // DEBUG: Stop silent failure
+    if (!profile) {
+        return (
+            <div className="min-h-screen flex items-center justify-center bg-black text-red-500 font-mono p-10 space-y-4">
+                <h1 className="text-2xl font-bold">⚠️ PROFIL NON TROUVÉ</h1>
+                <p>User ID: {user.id}</p>
+                <div className="p-4 bg-red-900/20 border border-red-500 rounded">
+                    <p className="font-bold mb-2">Diagnostic:</p>
+                    <ul className="list-disc ml-5 text-sm">
+                        <li>Authentifié: OUI</li>
+                        <li>Profil DB: NON (data: {JSON.stringify(profile)})</li>
+                        <li>Settings: {settings ? `${settings.length} items` : "NULL"}</li>
+                    </ul>
+                </div>
+            </div>
+        );
+    }
 
     const settingsMap = settings?.reduce((acc, curr) => {
         acc[curr.key] = curr.value;
