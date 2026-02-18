@@ -8,6 +8,8 @@ import KidsNewsFeed from "@/components/kids/KidsNewsFeed";
 import KidsProgression from "@/components/kids/KidsProgression";
 import KidsAchievements from "@/components/kids/KidsAchievements";
 
+export const dynamic = 'force-dynamic';
+
 export default async function KidsHomePage() {
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
