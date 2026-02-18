@@ -1,7 +1,21 @@
-import { type NextRequest } from 'next/server'
+import { type NextRequest, NextResponse } from 'next/server'
 import { updateSession } from '@/lib/supabase/middleware'
 
 export async function middleware(request: NextRequest) {
+    const requestUrl = new URL(request.url);
+    const hostname = request.headers.get('host');
+
+    // Domain-Based Routing for "Club des Petits Magiciens"
+    // Checks for production domain OR local subdomain/custom hosts for testing
+    const isKidsDomain = hostname?.includes('club-des-petits-magiciens') || hostname?.startsWith('kids.');
+
+    if (isKidsDomain) {
+        // Rewrite root and login paths to the kids login page
+        if (requestUrl.pathname === '/' || requestUrl.pathname === '/login') {
+            return NextResponse.rewrite(new URL('/login/kids', request.url));
+        }
+    }
+
     return await updateSession(request)
 }
 
