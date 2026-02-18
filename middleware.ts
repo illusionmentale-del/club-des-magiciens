@@ -7,7 +7,8 @@ export async function middleware(request: NextRequest) {
 
     // Domain-Based Routing for "Club des Petits Magiciens"
     // Checks for production domain OR local subdomain/custom hosts for testing
-    const isKidsDomain = hostname?.includes('club-des-petits-magiciens') || hostname?.startsWith('kids.');
+    // Support both hyphenated and non-hyphenated versions just in case
+    const isKidsDomain = hostname?.includes('clubdespetitsmagiciens') || hostname?.includes('club-des-petits-magiciens') || hostname?.startsWith('kids.');
 
     if (isKidsDomain) {
         // Rewrite root and login paths to the kids login page
