@@ -32,31 +32,43 @@ export default async function KidsHomePage() {
                 .select("*")
                 .like("key", "kid_home_%")
         ]);
+
+        // SELF-HEALING: If profile is missing but user exists, create it
+        if (!profile && user) {
+            console.log("⚠️ Missing profile for user, attempting self-healing...");
+            const { data: newProfile, error: createError } = await supabase
+                .from("profiles")
+                .insert({
+                    id: user.id,
+                    email: user.email,
+                    full_name: user.user_metadata?.full_name || "Jeune Magicien",
+                    role: 'kid', // Default role
+                    access_level: 'kid'
+                })
+                .select()
+                .single();
+
+            if (newProfile) {
+                profile = newProfile;
+            } else {
+                console.error("Failed to auto-create profile:", createError);
+            }
+        }
+
     } catch (err: any) {
-        return (
-            <div className="min-h-screen flex items-center justify-center bg-black text-red-500 font-mono p-10 space-y-4">
-                <h1 className="text-2xl font-bold">⚠️ CRASH CHARGEMENT DONNÉES</h1>
-                <p>User ID: {user.id}</p>
-                <div className="p-4 bg-red-900/20 border border-red-500 rounded text-xs whitespace-pre-wrap">
-                    {err?.message || JSON.stringify(err)}
-                </div>
-            </div>
-        );
+        console.error("Data fetch error:", err);
+        // Continue to allow error handling below if strictly needed, 
+        // or let the next check capture the missing profile.
     }
 
-    // DEBUG: Stop silent failure
+    // CRITICAL ERROR: If still no profile after self-healing, show error
     if (!profile) {
         return (
             <div className="min-h-screen flex items-center justify-center bg-black text-red-500 font-mono p-10 space-y-4">
-                <h1 className="text-2xl font-bold">⚠️ PROFIL NON TROUVÉ</h1>
-                <p>User ID: {user.id}</p>
-                <div className="p-4 bg-red-900/20 border border-red-500 rounded">
-                    <p className="font-bold mb-2">Diagnostic:</p>
-                    <ul className="list-disc ml-5 text-sm">
-                        <li>Authentifié: OUI</li>
-                        <li>Profil DB: NON (data: {JSON.stringify(profile)})</li>
-                        <li>Settings: {settings ? `${settings.length} items` : "NULL"}</li>
-                    </ul>
+                <h1 className="text-2xl font-bold">⚠️ ERREUR FATALE PROFIL</h1>
+                <p>Impossible de récupérer ou créer le profil.</p>
+                <div className="p-4 bg-red-900/20 border border-red-500 rounded text-xs whitespace-pre-wrap">
+                    User: {user.id}
                 </div>
             </div>
         );
