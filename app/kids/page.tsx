@@ -245,38 +245,8 @@ export default async function KidsHomePage() {
                         <KidsAchievements recentValids={recentValids || []} />
                     </div>
                 </div>
-                <div className="mt-20 p-6 bg-black/80 text-green-400 font-mono text-xs rounded-xl border border-green-500/30 overflow-hidden">
-                    <p className="font-bold text-lg mb-4 text-green-500">🔧 ZONE DE DEBUG (Temporaire)</p>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        <div>
-                            <p className="font-bold border-b border-green-500/30 mb-2">PROFIL & TEMPS</p>
-                            <p>User ID: {user.id}</p>
-                            <p>Created At: {profile.created_at}</p>
-                            <p>Current Date: {now.toISOString()}</p>
-                            <p>Diff Days: {diffDays}</p>
-                            <p>Calculated Week: {currentWeek}</p>
-                        </div>
-                        <div>
-                            <p className="font-bold border-b border-green-500/30 mb-2">RÉGLAGES BRUTS</p>
-                            <pre className="whitespace-pre-wrap">{JSON.stringify(settingsMap, null, 2)}</pre>
-                        </div>
-                        <div>
-                            <p className="font-bold border-b border-green-500/30 mb-2">CONFIG RÉSOLUE</p>
-                            <p>Welcome Active: {String(welcomeActive)}</p>
-                            <p>Weekly Message Key: {String(currentWeek)}</p>
-                            <p>Custom Welcome: {customWelcome || "NULL"}</p>
-                            <p>Featured Config ID: {featuredConfig.id || "NONE"}</p>
-                            <p>Main Item Found: {mainItem ? `YES (${mainItem.id})` : "NO"}</p>
-                        </div>
-                        <div>
-                            <p className="font-bold border-b border-green-500/30 mb-2">DATABASE ACCESS</p>
-                            <p>Has Profile: YES</p>
-                            <p>Items Fetched: {allItems?.length || 0}</p>
-                            <p>Filtered Recent Items: {recentItems?.length || 0}</p>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
+        </div >
     );
 }
