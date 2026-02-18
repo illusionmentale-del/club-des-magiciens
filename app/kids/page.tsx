@@ -24,7 +24,7 @@ export default async function KidsHomePage() {
         [{ data: profile }, { data: settings }] = await Promise.all([
             supabase
                 .from("profiles")
-                .select("created_at, display_name, first_name, magic_level, xp")
+                .select("*") // Use * to avoid crash if a specific column (like xp) is missing
                 .eq("id", user.id)
                 .single(),
             supabase

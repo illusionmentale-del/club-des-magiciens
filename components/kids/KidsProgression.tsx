@@ -16,8 +16,8 @@ type KidsProgressionProps = {
 export default function KidsProgression({
     validatedCount,
     totalItemsToMax = 50,
-    userGrade,
-    currentLevel
+    userGrade = "Apprenti",
+    currentLevel = 0
 }: KidsProgressionProps) {
 
     const progressPercentage = Math.min((validatedCount / totalItemsToMax) * 100, 100);
