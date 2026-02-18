@@ -259,6 +259,5 @@ export default async function KidsHomePage() {
                 </div>
             </div>
         </div>
-        </div >
     );
 }
