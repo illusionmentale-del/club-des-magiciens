@@ -19,17 +19,30 @@ export default async function KidsHomePage() {
     }
 
     // 1. Fetch Profile & Settings
-    const [{ data: profile }, { data: settings }] = await Promise.all([
-        supabase
-            .from("profiles")
-            .select("created_at, display_name, first_name, magic_level, xp")
-            .eq("id", user.id)
-            .single(),
-        supabase
-            .from("settings")
-            .select("*")
-            .like("key", "kid_home_%")
-    ]);
+    let profile, settings;
+    try {
+        [{ data: profile }, { data: settings }] = await Promise.all([
+            supabase
+                .from("profiles")
+                .select("created_at, display_name, first_name, magic_level, xp")
+                .eq("id", user.id)
+                .single(),
+            supabase
+                .from("settings")
+                .select("*")
+                .like("key", "kid_home_%")
+        ]);
+    } catch (err: any) {
+        return (
+            <div className="min-h-screen flex items-center justify-center bg-black text-red-500 font-mono p-10 space-y-4">
+                <h1 className="text-2xl font-bold">⚠️ CRASH CHARGEMENT DONNÉES</h1>
+                <p>User ID: {user.id}</p>
+                <div className="p-4 bg-red-900/20 border border-red-500 rounded text-xs whitespace-pre-wrap">
+                    {err?.message || JSON.stringify(err)}
+                </div>
+            </div>
+        );
+    }
 
     // DEBUG: Stop silent failure
     if (!profile) {
