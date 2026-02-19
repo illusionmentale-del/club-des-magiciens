@@ -14,12 +14,13 @@ export default function NewLivePage() {
     const queryAudience = searchParams.get("audience");
 
     const basePath = pathname.includes('/kids/') ? '/admin/kids' : (pathname.includes('/adults/') ? '/admin/adults' : '/admin');
+    const currentAudience = pathname.includes('/adults/') ? 'adults' : (pathname.includes('/kids/') ? 'kids' : queryAudience || 'kids');
 
     useEffect(() => {
-        if (queryAudience === 'kids' || queryAudience === 'adults') {
-            setAudience(queryAudience);
+        if (currentAudience === 'kids' || currentAudience === 'adults') {
+            setAudience(currentAudience);
         }
-    }, [queryAudience, setAudience]);
+    }, [currentAudience, setAudience]);
 
     const themeColor = audience === 'adults' ? 'bg-brand-gold text-black hover:bg-brand-gold/90' : 'bg-brand-purple text-white hover:bg-brand-purple/90';
     const textColor = audience === 'adults' ? 'text-brand-gold' : 'text-brand-purple';

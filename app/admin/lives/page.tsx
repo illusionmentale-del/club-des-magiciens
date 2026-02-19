@@ -26,18 +26,18 @@ export default function AdminLivesPage() {
     const pathname = usePathname();
     const queryAudience = searchParams.get("audience");
 
-    // Determine base path to keep the user in the right layout
     const basePath = pathname.includes('/kids/') ? '/admin/kids' : (pathname.includes('/adults/') ? '/admin/adults' : '/admin');
+    const currentAudience = pathname.includes('/adults/') ? 'adults' : (pathname.includes('/kids/') ? 'kids' : queryAudience || 'kids');
 
     const [lives, setLives] = useState<Live[]>([]);
     const supabase = createClient();
 
     // Auto-switch audience context if arrived via a sidebar link
     useEffect(() => {
-        if (queryAudience === 'kids' || queryAudience === 'adults') {
-            setAudience(queryAudience);
+        if (currentAudience === 'kids' || currentAudience === 'adults') {
+            setAudience(currentAudience);
         }
-    }, [queryAudience, setAudience]);
+    }, [currentAudience, setAudience]);
 
     useEffect(() => {
         const fetchLives = async () => {
