@@ -1,7 +1,6 @@
 "use client";
 
-import { useAdmin } from "@/app/admin/AdminContext";
-import { ArrowLeft, UserPlus, Trash2 } from "lucide-react";
+import { UserPlus, Trash2 } from "lucide-react";
 import Link from "next/link";
 import UserRow from "@/components/admin/UserRow";
 
@@ -22,41 +21,30 @@ type AdminUsersClientProps = {
 };
 
 export default function AdminUsersClient({ profiles }: AdminUsersClientProps) {
-    const { audience } = useAdmin();
-
-    // Context-based filtering
-    const isKidMode = audience === 'kids';
+    // Force Adult Mode context for this specific route
+    const isKidMode = false;
 
     // Separate Active and Deleted, and filter by audience (is_kid)
-    const filteredProfiles = profiles.filter(p => {
-        // If profile has is_kid flag, check against mode
-        // If is_kid is null/false => Adults
-        // If is_kid is true => Kids
-        const profileIsKid = !!p.is_kid;
-        return isKidMode ? profileIsKid : !profileIsKid;
-    });
+    const filteredProfiles = profiles.filter(p => !p.is_kid);
 
     const activeProfiles = filteredProfiles.filter(p => !p.deleted_at);
     const deletedProfiles = filteredProfiles.filter(p => p.deleted_at);
 
-    const themeColor = isKidMode ? 'text-purple-400' : 'text-blue-400';
-    const btnColor = isKidMode ? 'bg-purple-600 hover:bg-purple-500' : 'bg-magic-purple hover:bg-magic-purple/80';
-    const bgClass = isKidMode ? 'bg-gray-900 border-purple-500/20' : 'bg-magic-bg border-white/10';
+    const btnColor = 'bg-brand-gold text-black hover:bg-brand-gold/90';
 
     return (
-        <div className={`min-h-screen ${isKidMode ? 'bg-gray-900' : 'bg-magic-bg'} text-white p-8 transition-colors duration-500`}>
+        <div className={`w-full text-white transition-colors duration-500`}>
             <div className="max-w-6xl mx-auto">
                 <header className="flex items-center justify-between mb-8">
                     <div className="flex items-center gap-4">
-                        <Link href="/admin" className="p-2 bg-white/5 rounded-lg hover:bg-white/10"><ArrowLeft /></Link>
                         <div>
-                            <h1 className="text-3xl font-bold">Gestion des Membres ({isKidMode ? 'Enfants' : 'Adultes'})</h1>
-                            <div className={`text-sm px-2 py-0.5 rounded inline-block mt-1 uppercase font-bold tracking-wider ${isKidMode ? 'bg-purple-500/20 text-purple-400' : 'bg-blue-500/20 text-blue-400'}`}>
-                                Mode {audience === 'adults' ? 'Adulte' : 'Enfant'}
+                            <h1 className="text-3xl font-bold">Gestion des Élèves (Adultes)</h1>
+                            <div className={`text-sm px-2 py-0.5 rounded inline-block mt-1 uppercase font-bold tracking-wider bg-brand-gold/20 text-brand-gold`}>
+                                Vue Business
                             </div>
                         </div>
                     </div>
-                    <Link href="/admin/adults/users/new" className={`${btnColor} text-white px-4 py-2 rounded-xl font-bold flex items-center gap-2 transition-colors`}>
+                    <Link href="/admin/adults/users/new" className={`${btnColor} px-4 py-2 rounded-xl font-bold flex items-center gap-2 transition-colors`}>
                         <UserPlus className="w-4 h-4" />
                         Ajouter
                     </Link>
