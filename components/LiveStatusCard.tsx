@@ -4,9 +4,10 @@ import FlipClockCountdown from '@leenguyen/react-flip-clock-countdown';
 import '@leenguyen/react-flip-clock-countdown/dist/index.css';
 import { Video, Calendar, Sparkles } from "lucide-react";
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 
 // Props: live object from DB
-export function LiveStatusCard({ live }: { live: any }) {
+export function LiveStatusCard({ live, href = "/kids/live" }: { live: any, href?: string }) {
     const [isClient, setIsClient] = useState(false);
     useEffect(() => setIsClient(true), []);
 
@@ -80,13 +81,12 @@ export function LiveStatusCard({ live }: { live: any }) {
                     {isLiveNow ? (
                         <div className="flex flex-col items-center lg:items-end gap-4">
                             <p className="text-red-200/80 text-sm font-medium animate-pulse tracking-wide">La salle temporelle est ouverte !</p>
-                            <a
-                                href={`https://meet.jit.si/${live.platform_id}`}
-                                target="_blank"
+                            <Link
+                                href={href}
                                 className="w-full lg:w-auto px-8 py-5 bg-gradient-to-r from-red-600 to-red-500 text-white font-black text-lg rounded-2xl transition-all shadow-[0_0_30px_rgba(220,38,38,0.4)] hover:shadow-[0_0_40px_rgba(220,38,38,0.8)] hover:-translate-y-1 flex items-center justify-center gap-3 border border-red-400/50"
                             >
                                 <Video className="w-6 h-6" /> REJOINDRE LE LIVE
-                            </a>
+                            </Link>
                         </div>
                     ) : (
                         <div className="flex flex-col items-center lg:items-end gap-6 bg-black/40 p-6 lg:p-8 rounded-3xl border border-white/5 backdrop-blur-xl relative overflow-hidden group-hover:border-brand-purple/20 transition-colors shadow-inner shadow-white/5">
