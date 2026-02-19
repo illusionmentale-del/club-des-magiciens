@@ -566,3 +566,55 @@ export async function resendWelcomeEmail(email: string, username: string) {
         return { error: error.message };
     }
 }
+
+export async function adminChangeUserPassword(userId: string, formData: FormData) {
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+    const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
+
+    // We need service role to modify another user's password
+    const { createClient: createSupabaseAdmin } = await import("@supabase/supabase-js");
+    const supabaseAdmin = createSupabaseAdmin(supabaseUrl, supabaseServiceKey, {
+        auth: { autoRefreshToken: false, persistSession: false }
+    });
+
+    const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) throw new Error("Unauthorized");
+
+    // Only Admins can execute this action
+    const { data: profile } = await supabase.from('profiles').select('role').eq('id', user.id).single();
+    if (profile?.role !== 'admin') throw new Error("Forbidden");
+
+    // Protect Super Admins from having their passwords changed
+    const { data: targetProfile } = await supabase.from('profiles').select('username').eq('id', userId).single();
+    if (targetProfile) {
+        const { createHash } = await import('crypto');
+        const hash = createHash('sha256').update(targetProfile.username || '').digest('hex');
+        const protectedHashes = [
+            '5f4dcc3b5aa765d61d8327deb882cf99f3640244795b5c918451842b083b4b52',
+            '62c07657989f666b6c07212003504780521e405a74e50882772584109405b05a',
+            '86477bd4327421ace067406b23136208942b03f01962383049da03d2745a90d3'
+        ];
+        if (protectedHashes.includes(hash)) {
+            return { error: "Action interdite : Ce compte est protégé." };
+        }
+    }
+
+    const newPassword = formData.get("new_password") as string;
+    if (!newPassword || newPassword.length < 6) {
+        return { error: "Le mot de passe doit contenir au moins 6 caractères." };
+    }
+
+    const { error } = await supabaseAdmin.auth.admin.updateUserById(userId, {
+        password: newPassword
+    });
+
+    if (error) {
+        console.error("Error updating user password:", error);
+        return { error: error.message };
+    }
+
+    revalidatePath(`/admin/kids/users/${userId}`);
+    revalidatePath(`/admin/adults/users/${userId}`);
+    return { success: true };
+}

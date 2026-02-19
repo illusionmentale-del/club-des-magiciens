@@ -2,10 +2,11 @@
 
 import { createClient } from "@/lib/supabase/client";
 import { useEffect, useState } from "react";
-import { ArrowLeft, Save, Trophy, Star, CheckCircle, X, Shield, History } from "lucide-react";
+import { ArrowLeft, Save, Trophy, Star, CheckCircle, X, Shield, History, Key } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
+import { adminChangeUserPassword } from "@/app/admin/actions";
 
 // Types
 type Profile = {
@@ -65,6 +66,8 @@ export default function AdminUserDetailPage() {
     const [allBadges, setAllBadges] = useState<Badge[]>([]);
 
     const [loading, setLoading] = useState(true);
+    const [newPassword, setNewPassword] = useState("");
+    const [isChangingPassword, setIsChangingPassword] = useState(false);
 
     const fetchData = async () => {
         setLoading(true);
@@ -133,6 +136,28 @@ export default function AdminUserDetailPage() {
         else fetchData();
     };
 
+    const handlePasswordChange = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (newPassword.length < 6) {
+            alert("Le mot de passe doit contenir au moins 6 caractères.");
+            return;
+        }
+        if (!confirm(`Confirmer la modification absolue du mot de passe pour cet élève ?`)) return;
+
+        setIsChangingPassword(true);
+        const formData = new FormData();
+        formData.append("new_password", newPassword);
+
+        const result = await adminChangeUserPassword(id as string, formData);
+        setIsChangingPassword(false);
+
+        if (result.error) {
+            alert("Erreur: " + result.error);
+        } else {
+            alert("Mot de passe modifié avec succès ! L'élève peut s'y connecter.");
+            setNewPassword("");
+        }
+    };
 
     if (loading) return <div className="min-h-screen bg-gray-900 text-white flex items-center justify-center">Chargement...</div>;
     if (!profile) return <div className="min-h-screen bg-gray-900 text-white flex items-center justify-center">Profil introuvable</div>;
@@ -208,6 +233,37 @@ export default function AdminUserDetailPage() {
                                 </div>
                             </div>
                         </div>
+
+                        {/* SECURITE / MOT DE PASSE */}
+                        <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
+                            <h3 className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-4 flex items-center gap-2">
+                                <Key className="w-4 h-4" /> Sécurité
+                            </h3>
+                            <form onSubmit={handlePasswordChange} className="space-y-3">
+                                <div>
+                                    <label className="text-[10px] text-gray-400 uppercase tracking-wider block mb-1">Nouveau mot de passe</label>
+                                    <input
+                                        type="text"
+                                        placeholder="Min. 6 caractères"
+                                        className="w-full bg-black/40 w-full border border-white/10 rounded-lg p-2 text-sm outline-none focus:border-purple-500 transition-colors"
+                                        value={newPassword}
+                                        onChange={(e) => setNewPassword(e.target.value)}
+                                        minLength={6}
+                                    />
+                                </div>
+                                <button
+                                    type="submit"
+                                    disabled={!newPassword || newPassword.length < 6 || isChangingPassword}
+                                    className="w-full bg-purple-600 hover:bg-purple-500 disabled:opacity-50 disabled:cursor-not-allowed text-white text-xs font-bold uppercase tracking-widest py-2 rounded-lg transition-colors"
+                                >
+                                    {isChangingPassword ? "Modification..." : "Forcer ce Mot de Passe"}
+                                </button>
+                                <p className="text-[10px] text-gray-500 text-center mt-2 leading-tight">
+                                    L'ancien mot de passe ne fonctionnera plus. Copiez-le et envoyez-le à l'élève.
+                                </p>
+                            </form>
+                        </div>
+
                     </div>
 
                     {/* RIGHT COLUMN: PROGRESS & HISTORY */}
