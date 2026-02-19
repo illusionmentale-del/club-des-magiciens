@@ -2,9 +2,20 @@
 
 import { createUserManually } from "@/app/admin/actions";
 import Link from "next/link";
-import { ArrowLeft, UserPlus } from "lucide-react";
+import { ArrowLeft, UserPlus, AlertCircle } from "lucide-react";
+import { useState } from "react";
 
 export default function NewUserPage() {
+    const [error, setError] = useState<string | null>(null);
+
+    async function handleSubmit(formData: FormData) {
+        setError(null);
+        const result = await createUserManually(formData);
+        if (result?.error) {
+            setError(result.error);
+        }
+    }
+
     return (
         <div className="min-h-screen bg-magic-bg text-white p-8">
             <div className="max-w-2xl mx-auto">
@@ -14,7 +25,13 @@ export default function NewUserPage() {
                 </header>
 
                 <div className="bg-magic-card border border-white/10 p-8 rounded-2xl">
-                    <form action={createUserManually} className="space-y-6">
+                    <form action={handleSubmit} className="space-y-6">
+                        {error && (
+                            <div className="bg-red-500/10 border border-red-500/50 text-red-200 p-4 rounded-xl flex items-center gap-3">
+                                <AlertCircle className="w-5 h-5 flex-shrink-0 text-red-400" />
+                                <p className="text-sm font-medium">{error}</p>
+                            </div>
+                        )}
                         <div>
                             <label className="block text-sm font-medium text-gray-400 mb-1">Type de compte</label>
                             <select

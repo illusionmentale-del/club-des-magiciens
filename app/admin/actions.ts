@@ -355,7 +355,10 @@ export async function createUserManually(formData: FormData) {
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
     const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
-    if (!supabaseServiceKey) throw new Error("Service Role Key missing");
+    if (!supabaseServiceKey) {
+        console.error("Service Role Key missing");
+        return { error: "Erreur de configuration Serveur (SUPABASE_SERVICE_ROLE_KEY manquante)." };
+    }
 
     // Dynamic import to avoid client-side bundling issues if this file is imported there (though it is 'use server')
     const { createClient } = await import("@supabase/supabase-js");
@@ -392,7 +395,7 @@ export async function createUserManually(formData: FormData) {
 
     if (error) {
         console.error("Error creating user:", error);
-        throw new Error(error.message);
+        return { error: error.message };
     }
 
     // Trigger should handle profile creation, but in case it fails or we want to set username immediately:
