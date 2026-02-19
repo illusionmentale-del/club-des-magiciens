@@ -3,14 +3,16 @@
 import { useState } from "react";
 import { User, Crown, Trash2, X, RefreshCcw, Save, Mail } from "lucide-react"; // Added Mail
 import { updateUserAccess, deleteUserEntity, restoreUserEntity, addTag, removeTag, toggleAdmin, resendWelcomeEmail } from "@/app/admin/actions"; // Added resendWelcomeEmail
+import Link from "next/link";
 
 // Need to define props interface based on profile shape
 interface UserRowProps {
     profile: any;
     isProtected: boolean;
+    basePath?: string;
 }
 
-export default function UserRow({ profile, isProtected }: UserRowProps) {
+export default function UserRow({ profile, isProtected, basePath }: UserRowProps) {
     const [isDeleting, setIsDeleting] = useState(false);
     const [isResending, setIsResending] = useState(false); // New state
 
@@ -48,19 +50,39 @@ export default function UserRow({ profile, isProtected }: UserRowProps) {
         <div className={`bg-magic-card border ${isDeleted ? 'border-red-900 bg-red-900/10' : 'border-white/10'} rounded-2xl p-6 flex flex-col md:flex-row gap-6 items-start md:items-center transition-all`}>
             {/* INFO */}
             <div className="flex items-center gap-4 min-w-[250px]">
-                <div className={`w-12 h-12 rounded-full flex items-center justify-center font-bold text-xl relative ${profile.role === 'admin' ? 'bg-red-500 text-white shadow-lg shadow-red-500/30' : 'bg-magic-purple text-white'} ${isDeleted ? 'grayscale opacity-50' : ''}`}>
-                    {profile.username?.[0]?.toUpperCase() || <User />}
-                    {isDeleted && <div className="absolute inset-0 flex items-center justify-center bg-black/50 rounded-full"><X className="w-8 h-8 text-red-500" /></div>}
-                </div>
-                <div>
-                    <div className="font-bold text-lg flex items-center gap-2">
-                        {profile.username || "Sans Pseudo"}
-                        {profile.role === 'admin' && <Crown className="w-4 h-4 text-yellow-400" />}
-                        {isDeleted && <span className="text-xs bg-red-500 text-white px-2 py-0.5 rounded-full">SUPPRIMÉ</span>}
-                    </div>
-                    <div className="text-sm text-gray-500">ID: {profile.id.slice(0, 8)}...</div>
-                    <div className="text-sm text-gray-400">{profile.email || "Email masqué"}</div>
-                </div>
+                {basePath ? (
+                    <Link href={`${basePath}/${profile.id}`} className="flex items-center gap-4 hover:opacity-80 transition-opacity w-full">
+                        <div className={`w-12 h-12 rounded-full flex items-center justify-center font-bold text-xl relative ${profile.role === 'admin' ? 'bg-red-500 text-white shadow-lg shadow-red-500/30' : 'bg-magic-purple text-white'} ${isDeleted ? 'grayscale opacity-50' : ''}`}>
+                            {profile.username?.[0]?.toUpperCase() || <User />}
+                            {isDeleted && <div className="absolute inset-0 flex items-center justify-center bg-black/50 rounded-full"><X className="w-8 h-8 text-red-500" /></div>}
+                        </div>
+                        <div>
+                            <div className="font-bold text-lg flex items-center gap-2 group-hover:text-magic-gold transition-colors">
+                                {profile.username || "Sans Pseudo"}
+                                {profile.role === 'admin' && <Crown className="w-4 h-4 text-yellow-400" />}
+                                {isDeleted && <span className="text-xs bg-red-500 text-white px-2 py-0.5 rounded-full">SUPPRIMÉ</span>}
+                            </div>
+                            <div className="text-sm text-gray-500">ID: {profile.id.slice(0, 8)}...</div>
+                            <div className="text-sm text-gray-400">{profile.email || "Email masqué"}</div>
+                        </div>
+                    </Link>
+                ) : (
+                    <>
+                        <div className={`w-12 h-12 rounded-full flex items-center justify-center font-bold text-xl relative ${profile.role === 'admin' ? 'bg-red-500 text-white shadow-lg shadow-red-500/30' : 'bg-magic-purple text-white'} ${isDeleted ? 'grayscale opacity-50' : ''}`}>
+                            {profile.username?.[0]?.toUpperCase() || <User />}
+                            {isDeleted && <div className="absolute inset-0 flex items-center justify-center bg-black/50 rounded-full"><X className="w-8 h-8 text-red-500" /></div>}
+                        </div>
+                        <div>
+                            <div className="font-bold text-lg flex items-center gap-2">
+                                {profile.username || "Sans Pseudo"}
+                                {profile.role === 'admin' && <Crown className="w-4 h-4 text-yellow-400" />}
+                                {isDeleted && <span className="text-xs bg-red-500 text-white px-2 py-0.5 rounded-full">SUPPRIMÉ</span>}
+                            </div>
+                            <div className="text-sm text-gray-500">ID: {profile.id.slice(0, 8)}...</div>
+                            <div className="text-sm text-gray-400">{profile.email || "Email masqué"}</div>
+                        </div>
+                    </>
+                )}
             </div>
 
             {/* ACCESS LEVEL */}

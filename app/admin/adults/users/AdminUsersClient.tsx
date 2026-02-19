@@ -56,7 +56,7 @@ export default function AdminUsersClient({ profiles }: AdminUsersClientProps) {
                             </div>
                         </div>
                     </div>
-                    <Link href="/admin/kids/users/new" className={`${btnColor} text-white px-4 py-2 rounded-xl font-bold flex items-center gap-2 transition-colors`}>
+                    <Link href="/admin/adults/users/new" className={`${btnColor} text-white px-4 py-2 rounded-xl font-bold flex items-center gap-2 transition-colors`}>
                         <UserPlus className="w-4 h-4" />
                         Ajouter
                     </Link>
@@ -66,7 +66,7 @@ export default function AdminUsersClient({ profiles }: AdminUsersClientProps) {
                     {/* ACTIVE USERS */}
                     <div className="grid grid-cols-1 gap-4">
                         {activeProfiles.map((profile) => (
-                            <UserRow key={profile.id} profile={profile} isProtected={false} basePath="/admin/kids/users" />
+                            <UserRow key={profile.id} profile={profile} isProtected={false} basePath="/admin/adults/users" />
                         ))}
                         {activeProfiles.length === 0 && (
                             <div className="text-gray-500 italic p-8 text-center bg-white/5 rounded-2xl">
@@ -83,7 +83,7 @@ export default function AdminUsersClient({ profiles }: AdminUsersClientProps) {
                             </h2>
                             <div className="grid grid-cols-1 gap-4 opacity-75">
                                 {deletedProfiles.map((profile) => (
-                                    <UserRow key={profile.id} profile={profile} isProtected={false} basePath="/admin/kids/users" />
+                                    <UserRow key={profile.id} profile={profile} isProtected={false} basePath="/admin/adults/users" />
                                 ))}
                             </div>
                         </div>
