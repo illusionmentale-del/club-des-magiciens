@@ -141,14 +141,42 @@ export default async function KidsHomePage({ searchParams }: { searchParams: Pro
     }
 
     // NEWS (CURATION)
-    const newsConfig = getJsonSetting("news_config", []);
+    // Supports both old format (string[]) and new format ({id, type, data?}[])
+    const newsConfigRaw = getJsonSetting("news_config", []);
     let recentItems: any[] = [];
-    if (Array.isArray(newsConfig) && newsConfig.length > 0) {
-        // Filter from allItems to respect week limits (LTE currentWeek)
-        recentItems = allItems?.filter(i => newsConfig.includes(i.id)) || [];
+
+    if (Array.isArray(newsConfigRaw) && newsConfigRaw.length > 0) {
+        // Normalize config to array of objects
+        const configItems = newsConfigRaw.map(item => {
+            if (typeof item === 'string') return { id: item, type: 'course' };
+            return item;
+        });
+
+        // 1. Fetch real course data for items of type 'course'
+        const courseIds = configItems.filter((i: any) => i.type === 'course').map((i: any) => i.id);
+        const courses = allItems?.filter(i => courseIds.includes(i.id)) || [];
+
+        // 2. Merge and preserve order from config
+        recentItems = configItems.map((configItem: any) => {
+            if (configItem.type === 'course') {
+                const realCourse = courses.find(c => c.id === configItem.id);
+                if (!realCourse) return null; // Course not found or not available yet
+                return { ...realCourse, type: 'course' };
+            }
+            // Custom items (tips, products, links)
+            return {
+                id: configItem.id,
+                type: configItem.type,
+                title: configItem.data?.title || "Sans titre",
+                thumbnail_url: configItem.data?.image,
+                url: configItem.data?.url,
+                week_number: null // Custom items don't have a week number usually
+            };
+        }).filter(Boolean); // Remove nulls
+
     } else {
         // Fallback news logic
-        recentItems = allItems?.filter(i => i.id !== mainItem?.id).slice(0, 3) || [];
+        recentItems = allItems?.filter(i => i.id !== mainItem?.id).slice(0, 3).map(i => ({ ...i, type: 'course' })) || [];
     }
 
     // --- END CONFIG LOGIC ---
