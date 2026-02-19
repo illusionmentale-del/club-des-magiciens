@@ -404,7 +404,8 @@ export async function createUserManually(formData: FormData) {
             username: username,
             full_name: username,
             role: role,
-            access_level: access_level
+            access_level: access_level,
+            is_kid: access_level === 'kid'
         });
         if (profileError) console.error("Profile update error:", profileError);
 
@@ -444,11 +445,14 @@ export async function createUserManually(formData: FormData) {
 export async function updateUserAccess(userId: string, formData: FormData) {
     const supabase = await createClient();
     const access_level = formData.get("access_level") as string;
+    const is_kid = access_level === 'kid';
 
-    const { error } = await supabase.from("profiles").update({ access_level }).eq("id", userId);
+    const { error } = await supabase.from("profiles").update({ access_level, is_kid }).eq("id", userId);
     if (error) console.error("Update Access Error:", error);
 
     revalidatePath("/admin/users");
+    revalidatePath("/admin/kids/users");
+    revalidatePath("/admin/adults/users");
 }
 
 export async function deleteUserEntity(userId: string) {
