@@ -1,6 +1,7 @@
 "use client";
 
-import { useFormState, useFormStatus } from "react-dom";
+import { useActionState } from "react";
+import { useFormStatus } from "react-dom";
 import Link from "next/link";
 import Image from "next/image";
 import { Loader2, Lock, User, ArrowRight, AlertCircle, Sparkles } from "lucide-react";
@@ -15,7 +16,7 @@ function SubmitButton() {
             disabled={pending}
             className="w-full py-4 bg-gradient-to-r from-brand-purple to-brand-blue hover:scale-[1.02] text-white font-black uppercase tracking-widest rounded-2xl transition-all shadow-lg hover:shadow-brand-purple/50 disabled:opacity-50 disabled:cursor-not-allowed flex justify-center items-center gap-2"
         >
-            {pending ? <Loader2 className="w-6 h-6 animate-spin" /> : <span className="flex items-center gap-2 text-lg">Ouvrir le Grimoire <ArrowRight className="w-5 h-5" /></span>}
+            {pending ? <Loader2 className="w-6 h-6 animate-spin" /> : <span className="flex items-center gap-2 text-lg">Entrer au QG <ArrowRight className="w-5 h-5" /></span>}
         </button>
     );
 }
@@ -23,7 +24,7 @@ function SubmitButton() {
 export default function KidsLoginPage() {
     // Server Action State for Password Login
     // @ts-ignore
-    const [state, formAction] = useFormState(loginWithPassword, null);
+    const [state, formAction] = useActionState(loginWithPassword, null);
 
     return (
         <div className="min-h-screen bg-brand-bg text-white flex flex-col items-center justify-center p-4 relative overflow-hidden">
@@ -76,6 +77,9 @@ export default function KidsLoginPage() {
                         <div className="space-y-2">
                             <div className="flex justify-between items-center ml-1">
                                 <label className="block text-xs font-black uppercase tracking-widest text-brand-purple">Mot de passe secret</label>
+                                <Link href="/login/forgot-password" title="Récupérer mon accès" className="text-[10px] font-black uppercase tracking-wider text-brand-blue hover:text-brand-purple transition-colors">
+                                    Oublié ?
+                                </Link>
                             </div>
                             <div className="relative group/input">
                                 <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-brand-purple transition-transform group-focus-within/input:scale-110" />

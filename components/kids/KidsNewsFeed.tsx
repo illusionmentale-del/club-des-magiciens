@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Bell, ArrowRight, FileText, Video } from "lucide-react";
+import { Bell, ArrowRight, FileText, Video, Sparkles, Lightbulb, Dices, Wand2 } from "lucide-react";
 
 type LibraryItem = {
     id: string;
@@ -16,7 +16,7 @@ export default function KidsNewsFeed({ items }: { items: LibraryItem[] }) {
         <section>
             <h3 className="text-lg font-bold text-white uppercase tracking-wider mb-6 flex items-center gap-2">
                 <Bell className="w-5 h-5 text-brand-gold" />
-                Les Nouveautés du Club
+                Les Nouveautés de la semaine
             </h3>
 
             <div className="space-y-4">
@@ -30,7 +30,12 @@ export default function KidsNewsFeed({ items }: { items: LibraryItem[] }) {
                                         <Image src={item.thumbnail_url} alt="" fill className="object-cover opacity-70 group-hover:opacity-100 transition-opacity" />
                                     ) : (
                                         <div className="w-full h-full flex items-center justify-center bg-brand-surface">
-                                            {item.type === 'pdf' ? <FileText className="w-6 h-6 text-brand-text-muted" /> : <Video className="w-6 h-6 text-brand-text-muted" />}
+                                            {item.type === 'pdf' && <FileText className="w-6 h-6 text-brand-text-muted" />}
+                                            {item.type === 'trick' && <Wand2 className="w-6 h-6 text-brand-text-muted" />}
+                                            {item.type === 'illusion' && <Sparkles className="w-6 h-6 text-brand-text-muted" />}
+                                            {item.type === 'tips' && <Lightbulb className="w-6 h-6 text-brand-text-muted" />}
+                                            {item.type === 'game' && <Dices className="w-6 h-6 text-brand-text-muted" />}
+                                            {!['pdf', 'trick', 'illusion', 'tips', 'game'].includes(item.type || '') && <Video className="w-6 h-6 text-brand-text-muted" />}
                                         </div>
                                     )}
                                     <div className="absolute top-1 right-1 bg-brand-blue text-[8px] font-bold px-1.5 py-0.5 rounded text-brand-bg uppercase shadow-sm">New</div>

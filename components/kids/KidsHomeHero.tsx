@@ -57,7 +57,7 @@ export default function KidsHomeHero({
                     <div className="absolute top-4 left-4">
                         <span className="bg-brand-purple text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest shadow-lg animate-bounce-slow flex items-center gap-1">
                             <Sparkles className="w-3 h-3" />
-                            Nouvelle Mission
+                            🎬 Nouveau contenu dispo | À toi de jouer !
                         </span>
                     </div>
 
@@ -90,7 +90,7 @@ export default function KidsHomeHero({
                             href={`/watch/${item.id}`}
                             className="block w-full text-center bg-brand-purple hover:bg-brand-purple/90 text-white font-bold py-4 rounded-xl transition-all shadow-lg shadow-brand-purple/20 uppercase tracking-wider text-sm hover:scale-[1.02] active:scale-[0.98]"
                         >
-                            Commencer la mission
+                            Découvrir la nouvelle vidéo
                         </Link>
                     </div>
                 </div>

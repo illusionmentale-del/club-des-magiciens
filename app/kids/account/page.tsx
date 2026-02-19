@@ -8,8 +8,9 @@ import { Settings, Trophy, Shield } from "lucide-react";
 export default async function KidsAccountPage({
     searchParams,
 }: {
-    searchParams: { view?: string };
+    searchParams: Promise<{ view?: string }>;
 }) {
+    const sParams = await searchParams;
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
 
@@ -23,7 +24,7 @@ export default async function KidsAccountPage({
         .eq("id", user.id)
         .single();
 
-    const isSettingsView = searchParams.view === 'settings';
+    const isSettingsView = sParams.view === 'settings';
 
     return (
         <div className="min-h-screen bg-brand-bg text-brand-text p-4 md:p-8 pb-32 font-sans selection:bg-brand-purple/30 overflow-hidden relative">

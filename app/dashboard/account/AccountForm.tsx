@@ -1,6 +1,7 @@
 "use client";
 
-import { useFormState, useFormStatus } from "react-dom";
+import { useActionState } from "react";
+import { useFormStatus } from "react-dom";
 import { updateProfile } from "./actions";
 import { User, MapPin, Wand2, Lock, AlertCircle, Check } from "lucide-react";
 import { useState } from "react";
@@ -24,8 +25,7 @@ function SubmitButton({ theme }: { theme: 'light' | 'dark' }) {
 }
 
 export default function AccountForm({ user, profile, theme = 'dark', isKidProfile = false }: { user: any, profile: any, theme?: 'light' | 'dark', isKidProfile?: boolean }) {
-    // @ts-ignore
-    const [state, formAction] = useFormState(updateProfile, null);
+    const [state, formAction] = useActionState(updateProfile, null);
     const [level, setLevel] = useState(profile?.magic_level || "Apprenti");
     const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
 

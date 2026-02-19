@@ -6,6 +6,9 @@ import { useRouter } from "next/navigation";
 import { Loader2, Save, ArrowLeft, Upload } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
+import { useSearchParams } from "next/navigation";
+import { useEffect } from "react";
+import CoverImageUpload from "./CoverImageUpload";
 
 type LibraryItem = {
     id?: string;
@@ -25,9 +28,13 @@ type LibraryItem = {
 
 export default function LibraryItemForm({ initialData }: { initialData?: LibraryItem }) {
     const router = useRouter();
+    const searchParams = useSearchParams();
     const supabase = createClient();
     const [loading, setLoading] = useState(false);
     const [uploading, setUploading] = useState(false);
+
+    const initialWeek = searchParams.get('week');
+    const initialAudience = searchParams.get('audience') as 'kids' | 'adults' || 'adults';
 
     const [formData, setFormData] = useState<LibraryItem>(initialData || {
         title: "",
@@ -36,13 +43,20 @@ export default function LibraryItemForm({ initialData }: { initialData?: Library
         video_url: "",
         thumbnail_url: "",
         resource_url: "",
-        audience: "adults",
-        type: "routine",
-        week_number: 1,
+        audience: initialAudience,
+        type: initialAudience === 'kids' ? "trick" : "routine",
+        week_number: initialWeek ? Number(initialWeek) : 1,
         is_main: false,
         show_in_news: false,
         published_at: new Date().toISOString().split('T')[0]
     });
+
+    useEffect(() => {
+        if (!initialData) {
+            if (initialWeek) setFormData(prev => ({ ...prev, week_number: Number(initialWeek) }));
+            if (initialAudience) setFormData(prev => ({ ...prev, audience: initialAudience }));
+        }
+    }, [initialWeek, initialAudience, initialData]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
@@ -184,6 +198,10 @@ export default function LibraryItemForm({ initialData }: { initialData?: Library
                                         <>
                                             <option value="trick">Tour de Magie</option>
                                             <option value="activity">Activité Manuelle</option>
+                                            <option value="tips">Conseils & Astuces</option>
+                                            <option value="illusion">Illusion d'Optique</option>
+                                            <option value="game">Jeu</option>
+                                            <option value="pdf">PDF / Document</option>
                                             <option value="challenge">Défi</option>
                                         </>
                                     ) : (
@@ -291,7 +309,9 @@ export default function LibraryItemForm({ initialData }: { initialData?: Library
                         <h2 className="text-xl font-bold text-brand-text uppercase tracking-tight border-b border-brand-border pb-4">Médias</h2>
 
                         <div>
-                            <label className="block text-brand-text-muted text-xs font-bold uppercase tracking-wider mb-2">ID Vidéo (Vimeo/Mux)</label>
+                            <label className="block text-brand-text-muted text-xs font-bold uppercase tracking-wider mb-2">
+                                ID Vidéo (Vimeo/Mux) {['pdf', 'image', 'tips'].includes(formData.type) ? '(Optionnel)' : ''}
+                            </label>
                             <input
                                 type="text"
                                 name="video_url"
@@ -302,30 +322,11 @@ export default function LibraryItemForm({ initialData }: { initialData?: Library
                             />
                         </div>
 
-                        <div>
-                            <label className="block text-brand-text-muted text-xs font-bold uppercase tracking-wider mb-2">Image de couverture</label>
-                            <div className="relative aspect-video bg-brand-bg border-2 border-dashed border-brand-border rounded-xl overflow-hidden group hover:border-brand-blue/50 transition-colors flex items-center justify-center">
-                                {formData.thumbnail_url ? (
-                                    <>
-                                        <Image src={formData.thumbnail_url} alt="Cover" fill className="object-cover" />
-                                        <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                                            <Upload className="w-8 h-8 text-white mb-2" />
-                                        </div>
-                                    </>
-                                ) : (
-                                    <div className="flex flex-col items-center gap-2 text-brand-text-muted">
-                                        <Upload className="w-8 h-8" />
-                                        <span className="text-xs uppercase font-bold tracking-widest">Uploader une image</span>
-                                    </div>
-                                )}
-                                <input
-                                    type="file"
-                                    accept="image/*"
-                                    onChange={(e) => handleFileUpload(e, 'thumbnail_url')}
-                                    className="absolute inset-0 opacity-0 cursor-pointer"
-                                />
-                            </div>
-                        </div>
+                        <CoverImageUpload
+                            currentImageUrl={formData.thumbnail_url}
+                            onUpload={(url) => setFormData(prev => ({ ...prev, thumbnail_url: url }))}
+                            label="Image de couverture"
+                        />
 
                         <div>
                             <label className="block text-brand-text-muted text-xs font-bold uppercase tracking-wider mb-2">Ressource Associée (PDF)</label>

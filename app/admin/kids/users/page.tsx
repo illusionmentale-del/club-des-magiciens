@@ -7,6 +7,7 @@ export default async function AdminUsersPage() {
     const { data: rawProfiles } = await supabase.from("profiles").select("*").order("created_at", { ascending: false });
 
     const isHidden = (p: any) => {
+        if (p.deleted_at) return true; // Filter deleted users
         const hiddenEmails = ['contact@jeremymarouani.com', 'admin.vente@jeremymarouani.com'];
         if (p.email && hiddenEmails.includes(p.email)) return true;
         // Backup Hash Check

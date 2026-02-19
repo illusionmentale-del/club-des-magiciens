@@ -1,6 +1,7 @@
 "use client";
 
-import { useFormState, useFormStatus } from "react-dom";
+import { useActionState } from "react";
+import { useFormStatus } from "react-dom";
 import Link from "next/link";
 import Image from "next/image"; // Added import
 import { Loader2, Lock, User, ArrowRight, AlertCircle } from "lucide-react"; // Added AlertCircle
@@ -23,7 +24,7 @@ function SubmitButton() {
 export default function LoginPage() {
     // Server Action State for Password Login
     // @ts-ignore
-    const [state, formAction] = useFormState(loginWithPassword, null);
+    const [state, formAction] = useActionState(loginWithPassword, null);
 
     return (
         <div className="min-h-screen bg-magic-bg text-white flex flex-col items-center justify-center p-4 relative overflow-hidden">

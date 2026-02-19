@@ -1,6 +1,6 @@
 "use client";
 
-import { useFormState, useFormStatus } from "react-dom";
+import { useFormStatus } from "react-dom";
 import { addComment } from "@/app/watch/[courseId]/actions";
 import { User, MessageCircle, Send } from "lucide-react";
 import { useRef } from "react";

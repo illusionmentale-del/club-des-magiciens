@@ -2,8 +2,8 @@
 
 import { createClient } from "@/lib/supabase/client";
 import Link from "next/link";
-import { useEffect, useState } from "react";
-import { Plus, Edit, Trash2, Search, Filter, Eye, Star, Newspaper } from "lucide-react";
+import { useEffect, useState, useMemo } from "react";
+import { Plus, Edit, Trash2, Search, Newspaper, ChevronRight, Calendar } from "lucide-react";
 import Image from "next/image";
 
 type LibraryItem = {
@@ -23,22 +23,17 @@ export default function AdminLibraryPage() {
     const supabase = createClient();
     const [items, setItems] = useState<LibraryItem[]>([]);
     const [loading, setLoading] = useState(true);
-    const [filter, setFilter] = useState<'all' | 'kids' | 'adults'>('kids');
     const [search, setSearch] = useState("");
 
     const fetchItems = async () => {
         setLoading(true);
-        let query = supabase
+        const { data, error } = await supabase
             .from("library_items")
             .select("*")
+            .eq("audience", "kids")
             .order("week_number", { ascending: true })
             .order("created_at", { ascending: false });
 
-        if (filter !== 'all') {
-            query = query.eq("audience", filter);
-        }
-
-        const { data, error } = await query;
         if (error) console.error("Error fetching items:", error);
         else setItems(data || []);
         setLoading(false);
@@ -46,7 +41,7 @@ export default function AdminLibraryPage() {
 
     useEffect(() => {
         fetchItems();
-    }, [filter]);
+    }, []);
 
     const handleDelete = async (id: string) => {
         if (!confirm("Supprimer cet atelier ?")) return;
@@ -61,9 +56,25 @@ export default function AdminLibraryPage() {
         else fetchItems();
     };
 
-    const filteredItems = items.filter(item =>
-        item.title.toLowerCase().includes(search.toLowerCase())
-    );
+    const groupedItems = useMemo(() => {
+        const filtered = items.filter(item =>
+            item.title.toLowerCase().includes(search.toLowerCase())
+        );
+
+        const groups: Record<number, LibraryItem[]> = {};
+        filtered.forEach(item => {
+            const week = item.week_number || 0;
+            if (!groups[week]) groups[week] = [];
+            groups[week].push(item);
+        });
+
+        return Object.entries(groups).sort(([a], [b]) => Number(a) - Number(b));
+    }, [items, search]);
+
+    const maxWeek = useMemo(() => {
+        if (items.length === 0) return 0;
+        return Math.max(...items.map(i => i.week_number || 0));
+    }, [items]);
 
     return (
         <div className="min-h-screen bg-magic-bg text-white p-8">
@@ -71,125 +82,124 @@ export default function AdminLibraryPage() {
                 <header className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
                     <div>
                         <h1 className="text-3xl font-bold flex items-center gap-2">
-                            <span className="text-purple-400">📚</span> Le Club
+                            <span className="text-purple-400">📚</span> Le Club Kids
                         </h1>
-                        <p className="text-gray-400">Gestion des Ateliers et Contenus</p>
+                        <p className="text-gray-400">Gestion du programme hebdomadaire</p>
                     </div>
-                    <Link
-                        href="/admin/kids/library/new"
-                        className="bg-purple-600 hover:bg-purple-500 text-white px-6 py-3 rounded-xl font-bold flex items-center gap-2 transition-all shadow-lg shadow-purple-900/50"
-                    >
-                        <Plus className="w-5 h-5" />
-                        Nouveau Contenu
-                    </Link>
+                    <div className="flex items-center gap-4">
+                        <Link
+                            href={`/admin/kids/library/new?audience=kids&week=${maxWeek + 1}`}
+                            className="bg-purple-600 hover:bg-purple-500 text-white px-6 py-3 rounded-xl font-bold flex items-center gap-2 transition-all shadow-lg shadow-purple-900/50"
+                        >
+                            <Calendar className="w-5 h-5" />
+                            Nouvelle Semaine
+                        </Link>
+                    </div>
                 </header>
 
-                {/* Filters */}
-                <div className="flex flex-col md:flex-row gap-4 mb-8 bg-black/20 p-4 rounded-xl border border-white/5">
+                {/* Search */}
+                <div className="mb-8 bg-black/20 p-4 rounded-xl border border-white/5">
                     <div className="relative flex-1">
                         <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 w-5 h-5" />
                         <input
                             type="text"
-                            placeholder="Rechercher un titre..."
+                            placeholder="Rechercher un atelier..."
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
-                            className="w-full bg-black/40 border border-white/10 rounded-lg pl-10 pr-4 py-2 text-white focus:outline-none focus:border-purple-500"
+                            className="w-full bg-black/40 border border-white/10 rounded-lg pl-10 pr-4 py-3 text-white focus:outline-none focus:border-purple-500"
                         />
-                    </div>
-                    <div className="flex bg-black/40 rounded-lg p-1 border border-white/10">
-                        <button
-                            onClick={() => setFilter('kids')}
-                            className={`px-4 py-1.5 rounded-md text-sm font-bold transition-colors ${filter === 'kids' ? 'bg-purple-600 text-white' : 'text-gray-400 hover:text-white'}`}
-                        >
-                            Kids
-                        </button>
-                        <button
-                            onClick={() => setFilter('adults')}
-                            className={`px-4 py-1.5 rounded-md text-sm font-bold transition-colors ${filter === 'adults' ? 'bg-blue-600 text-white' : 'text-gray-400 hover:text-white'}`}
-                        >
-                            Adultes
-                        </button>
-                        <button
-                            onClick={() => setFilter('all')}
-                            className={`px-4 py-1.5 rounded-md text-sm font-bold transition-colors ${filter === 'all' ? 'bg-gray-700 text-white' : 'text-gray-400 hover:text-white'}`}
-                        >
-                            Tout
-                        </button>
                     </div>
                 </div>
 
-                {/* List */}
+                {/* List grouped by week */}
                 {loading ? (
-                    <div className="text-center py-12 text-gray-500">Chargement...</div>
+                    <div className="text-center py-12 text-gray-500">Chargement des semaines...</div>
                 ) : (
-                    <div className="grid grid-cols-1 gap-4">
-                        {filteredItems.map((item) => (
-                            <div key={item.id} className="bg-magic-card border border-white/5 rounded-xl p-4 flex flex-col md:flex-row items-center gap-6 hover:border-white/20 transition-colors group">
-                                {/* Thumbnail */}
-                                <div className="w-full md:w-32 aspect-video bg-black/50 rounded-lg overflow-hidden relative shrink-0">
-                                    {item.thumbnail_url ? (
-                                        <Image src={item.thumbnail_url} alt={item.title} fill className="object-cover" />
-                                    ) : (
-                                        <div className="flex items-center justify-center h-full text-gray-600 text-xs">No Image</div>
-                                    )}
-                                    {item.is_main && (
-                                        <div className="absolute top-1 left-1 bg-yellow-500 text-black text-[10px] font-bold px-1.5 rounded">STAR</div>
-                                    )}
-                                </div>
-
-                                {/* Info */}
-                                <div className="flex-1 text-center md:text-left">
-                                    <div className="flex items-center gap-2 justify-center md:justify-start mb-1">
-                                        <h3 className="font-bold text-lg text-white group-hover:text-purple-400 transition-colors">{item.title}</h3>
-                                        <span className={`text-[10px] px-2 py-0.5 rounded border ${item.audience === 'kids' ? 'border-purple-500/30 text-purple-400' : 'border-blue-500/30 text-blue-400'}`}>
-                                            {item.audience.toUpperCase()}
+                    <div className="space-y-12">
+                        {groupedItems.map(([week, weekItems]) => (
+                            <div key={week} className="space-y-4">
+                                <div className="flex items-center justify-between border-b border-white/10 pb-2">
+                                    <h2 className="text-xl font-bold flex items-center gap-3">
+                                        <span className="bg-purple-600/20 text-purple-400 w-8 h-8 rounded-lg flex items-center justify-center text-sm border border-purple-500/30">
+                                            {week}
                                         </span>
-                                    </div>
-                                    <div className="text-sm text-gray-400 flex flex-wrap gap-4 justify-center md:justify-start">
-                                        {item.audience === 'kids' && (
-                                            <span className="flex items-center gap-1"><span className="text-gray-500">Semaine:</span> <span className="text-white font-mono">{item.week_number}</span></span>
-                                        )}
-                                        <span className="flex items-center gap-1"><span className="text-gray-500">Type:</span> <span className="text-white capitalize">{item.type}</span></span>
-                                    </div>
+                                        Semaine {week === '0' ? 'Intro / Général' : week}
+                                    </h2>
+                                    <Link
+                                        href={`/admin/kids/library/new?audience=kids&week=${week}`}
+                                        className="text-xs font-bold text-gray-400 hover:text-purple-400 transition-colors flex items-center gap-1 uppercase tracking-wider"
+                                    >
+                                        <Plus className="w-3 h-3" />
+                                        Ajouter du contenu
+                                    </Link>
                                 </div>
 
-                                {/* Actions / Flags */}
-                                <div className="flex items-center gap-3">
-                                    <button
-                                        onClick={() => toggleFlag(item.id, 'show_in_news', item.show_in_news)}
-                                        className={`p-2 rounded-lg transition-colors border ${item.show_in_news ? 'bg-green-500/20 border-green-500/30 text-green-400' : 'bg-white/5 border-white/10 text-gray-600 hover:text-white'}`}
-                                        title="Afficher dans les Nouveautés"
-                                    >
-                                        <Newspaper className="w-4 h-4" />
-                                    </button>
+                                <div className="grid grid-cols-1 gap-3">
+                                    {weekItems.map((item) => (
+                                        <div key={item.id} className="bg-magic-card border border-white/5 rounded-xl p-3 flex items-center gap-4 hover:border-white/20 transition-colors group">
+                                            {/* Thumbnail */}
+                                            <div className="w-24 aspect-video bg-black/50 rounded-lg overflow-hidden relative shrink-0 border border-white/5">
+                                                {item.thumbnail_url ? (
+                                                    <Image src={item.thumbnail_url} alt={item.title} fill className="object-cover" />
+                                                ) : (
+                                                    <div className="flex items-center justify-center h-full text-gray-600 text-[10px]">No Image</div>
+                                                )}
+                                                {item.is_main && (
+                                                    <div className="absolute top-1 left-1 bg-yellow-500 text-black text-[8px] font-bold px-1 rounded">STAR</div>
+                                                )}
+                                            </div>
 
-                                    {/* Only pertinent for Kids mainly, or if we want manual highlight */}
-                                    {/* <button
-                                        onClick={() => toggleFlag(item.id, 'is_highlighted', item.is_highlighted)}
-                                        className={`p-2 rounded-lg transition-colors border ${item.is_highlighted ? 'bg-yellow-500/20 border-yellow-500/30 text-yellow-400' : 'bg-white/5 border-white/10 text-gray-600 hover:text-white'}`}
-                                        title="Mettre en avant"
-                                    >
-                                        <Star className="w-4 h-4" />
-                                    </button> */}
+                                            {/* Info */}
+                                            <div className="flex-1 min-w-0">
+                                                <div className="flex items-center gap-2 mb-0.5">
+                                                    <h3 className="font-bold text-sm text-white truncate group-hover:text-purple-400 transition-colors">{item.title}</h3>
+                                                    <span className="text-[9px] px-1.5 py-0.5 rounded border border-white/10 text-gray-400 uppercase tracking-widest bg-black/20">
+                                                        {item.type}
+                                                    </span>
+                                                </div>
+                                                <p className="text-xs text-gray-500 truncate">{item.description || "Aucune description"}</p>
+                                            </div>
 
-                                    <div className="h-8 w-px bg-white/10 mx-2"></div>
+                                            {/* Actions */}
+                                            <div className="flex items-center gap-2 opacity-40 group-hover:opacity-100 transition-opacity">
+                                                <button
+                                                    onClick={() => toggleFlag(item.id, 'show_in_news', item.show_in_news)}
+                                                    className={`p-1.5 rounded-lg transition-colors border ${item.show_in_news ? 'bg-green-500/20 border-green-500/30 text-green-400' : 'bg-white/5 border-white/10 text-gray-500 hover:text-white'}`}
+                                                    title="Afficher dans les Nouveautés"
+                                                >
+                                                    <Newspaper className="w-3.5 h-3.5" />
+                                                </button>
 
-                                    <Link href={`/admin/kids/library/${item.id}`} className="p-2 bg-blue-500/20 text-blue-400 rounded-lg hover:bg-blue-500/30 transition-colors">
-                                        <Edit className="w-4 h-4" />
-                                    </Link>
-                                    <button
-                                        onClick={() => handleDelete(item.id)}
-                                        className="p-2 bg-red-500/20 text-red-400 rounded-lg hover:bg-red-500/30 transition-colors"
-                                    >
-                                        <Trash2 className="w-4 h-4" />
-                                    </button>
+                                                <div className="h-6 w-px bg-white/10 mx-1"></div>
+
+                                                <Link href={`/admin/kids/library/${item.id}`} className="p-1.5 bg-blue-500/20 text-blue-400 rounded-lg hover:bg-blue-500/30 transition-colors">
+                                                    <Edit className="w-3.5 h-3.5" />
+                                                </Link>
+                                                <button
+                                                    onClick={() => handleDelete(item.id)}
+                                                    className="p-1.5 bg-red-500/20 text-red-400 rounded-lg hover:bg-red-500/30 transition-colors"
+                                                >
+                                                    <Trash2 className="w-3.5 h-3.5" />
+                                                </button>
+                                            </div>
+                                        </div>
+                                    ))}
                                 </div>
                             </div>
                         ))}
 
-                        {filteredItems.length === 0 && (
-                            <div className="text-center py-12 text-gray-500 bg-white/5 rounded-xl border border-dashed border-white/10">
-                                Aucun contenu trouvé via les filtres actuels.
+                        {groupedItems.length === 0 && (
+                            <div className="text-center py-20 text-gray-500 bg-white/5 rounded-2xl border border-dashed border-white/10">
+                                <Plus className="w-12 h-12 mx-auto mb-4 text-gray-700" />
+                                <p className="text-lg font-medium">Aucun contenu dans le Club Kids</p>
+                                <p className="text-sm mt-1">Commencez par créer la première semaine !</p>
+                                <Link
+                                    href="/admin/kids/library/new?audience=kids&week=1"
+                                    className="inline-flex items-center gap-2 mt-6 bg-purple-600 hover:bg-purple-500 text-white px-6 py-2 rounded-xl font-bold transition-all"
+                                >
+                                    <Plus className="w-5 h-5" />
+                                    Ajouter un Atelier
+                                </Link>
                             </div>
                         )}
                     </div>

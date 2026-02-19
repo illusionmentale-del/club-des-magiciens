@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { User, Crown, Trash2, X, RefreshCcw, Save } from "lucide-react";
-import { updateUserAccess, deleteUserEntity, restoreUserEntity, addTag, removeTag, toggleAdmin } from "@/app/admin/actions";
+import { User, Crown, Trash2, X, RefreshCcw, Save, Mail } from "lucide-react"; // Added Mail
+import { updateUserAccess, deleteUserEntity, restoreUserEntity, addTag, removeTag, toggleAdmin, resendWelcomeEmail } from "@/app/admin/actions"; // Added resendWelcomeEmail
 
 // Need to define props interface based on profile shape
 interface UserRowProps {
@@ -12,6 +12,7 @@ interface UserRowProps {
 
 export default function UserRow({ profile, isProtected }: UserRowProps) {
     const [isDeleting, setIsDeleting] = useState(false);
+    const [isResending, setIsResending] = useState(false); // New state
 
     const handleDelete = async () => {
         if (confirm("⚠️ Êtes-vous sûr de vouloir supprimer ce membre ?\n\nIl ne pourra plus se connecter, mais vous pourrez le restaurer depuis la liste des supprimés.")) {
@@ -24,6 +25,20 @@ export default function UserRow({ profile, isProtected }: UserRowProps) {
     const handleRestore = async () => {
         if (confirm("Restaurer ce membre et réactiver son accès ?")) {
             await restoreUserEntity(profile.id);
+        }
+    };
+
+    const handleResendEmail = async () => {
+        if (!profile.email) return;
+        if (confirm(`Renvoyer l'email de bienvenue à ${profile.email} ?`)) {
+            setIsResending(true);
+            const res = await resendWelcomeEmail(profile.email, profile.username || 'Magicien');
+            setIsResending(false);
+            if (res.error) {
+                alert("Erreur lors de l'envoi : " + res.error);
+            } else {
+                alert("Email renvoyé avec succès ! 📩");
+            }
         }
     };
 
@@ -92,13 +107,26 @@ export default function UserRow({ profile, isProtected }: UserRowProps) {
                                 <RefreshCcw className="w-4 h-4" /> Restaurer
                             </button>
                         ) : (
-                            <button
-                                onClick={handleDelete}
-                                disabled={isDeleting}
-                                className="text-red-400 hover:text-red-300 text-sm flex items-center justify-end gap-2 w-full transition-colors"
-                            >
-                                <Trash2 className="w-4 h-4" /> {isDeleting ? '...' : 'Supprimer'}
-                            </button>
+                            <>
+                                <button
+                                    onClick={handleDelete}
+                                    disabled={isDeleting}
+                                    className="text-red-400 hover:text-red-300 text-sm flex items-center justify-end gap-2 w-full transition-colors"
+                                >
+                                    <Trash2 className="w-4 h-4" /> {isDeleting ? '...' : 'Supprimer'}
+                                </button>
+
+                                {profile.email && !isDeleting && (
+                                    <button
+                                        onClick={handleResendEmail}
+                                        disabled={isResending}
+                                        className="text-blue-400 hover:text-blue-300 text-sm flex items-center justify-end gap-2 w-full transition-colors"
+                                        title="Renvoyer l'email de bienvenue"
+                                    >
+                                        <Mail className="w-4 h-4" /> {isResending ? '...' : 'Renvoyer Email'}
+                                    </button>
+                                )}
+                            </>
                         )}
                     </>
                 )}

@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { Package, Sparkles, ShoppingBag } from "lucide-react";
+import { Separator } from "@/components/ui/separator";
 import KidsHomeHero from "@/components/kids/KidsHomeHero";
 import KidsNewsFeed from "@/components/kids/KidsNewsFeed";
 import KidsProgression from "@/components/kids/KidsProgression";
@@ -10,7 +11,11 @@ import KidsAchievements from "@/components/kids/KidsAchievements";
 
 export const dynamic = 'force-dynamic';
 
-export default async function KidsHomePage() {
+export default async function KidsHomePage({ searchParams }: { searchParams: Promise<any> }) {
+    const sParams = await searchParams;
+    const isForcedPreview = sParams.preview === "true";
+    const forcedView = sParams.view;
+
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
 
@@ -176,8 +181,11 @@ export default async function KidsHomePage() {
         .eq("status", "paid");
     const hasPurchases = (purchaseCount || 0) > 0;
 
-    const userName = profile.first_name || profile.display_name?.split(' ')[0] || "Jeune Magicien";
+    const userName = profile.username || profile.full_name || profile.display_name || profile.first_name || user.user_metadata?.full_name || "Jeune Magicien";
     const userGrade = profile.magic_level || "Apprenti";
+
+    // Preview Debug Info (Visible only in preview mode)
+    const isPreview = settingsMap.kid_home_preview === "true" || true; // Always check searchParams
 
     return (
         <div className="min-h-screen bg-brand-bg text-brand-text p-4 md:p-8 pb-32 font-sans overflow-hidden relative selection:bg-brand-purple/30">
@@ -186,6 +194,16 @@ export default async function KidsHomePage() {
             <div className="absolute top-[20%] right-[-10%] w-[40%] h-[40%] bg-brand-blue/10 blur-[120px] rounded-full pointer-events-none mix-blend-screen"></div>
 
             <div className="max-w-5xl mx-auto relative z-10 space-y-12">
+
+                {isForcedPreview && (
+                    <div className="flex items-center justify-center gap-4 py-2 px-4 bg-brand-purple/20 border border-brand-purple/30 rounded-xl mb-8 animate-pulse">
+                        <span className="text-[10px] font-black uppercase tracking-widest text-brand-purple">Mode Aperçu Actif</span>
+                        <Separator orientation="vertical" className="h-4 bg-brand-purple/30" />
+                        <span className="text-[10px] font-bold text-white uppercase italic">
+                            Interface : {forcedView === 'mobile' ? '📱 Mobile' : (forcedView === 'desktop' ? '💻 Desktop' : '🌐 Auto')}
+                        </span>
+                    </div>
+                )}
 
                 {/* BLOC 1: BIENVENUE */}
                 <header className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 pt-4">
@@ -210,7 +228,7 @@ export default async function KidsHomePage() {
                     overrideHook={featuredConfig.text}
                 />
 
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                     {/* COLONNE GAUCHE (2/3) */}
                     <div className="lg:col-span-2 space-y-12">
 

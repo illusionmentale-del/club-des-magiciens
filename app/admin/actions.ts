@@ -3,6 +3,10 @@
 import { createClient } from "@/lib/supabase/server";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { Resend } from "resend";
+import { WelcomeKidEmail } from "@/components/emails/WelcomeKidEmail";
+
+// const resend = new Resend(process.env.RESEND_API_KEY); // Moved inside function to avoid init error on import
 
 
 // --- NEWS ACTIONS ---
@@ -362,7 +366,22 @@ export async function createUserManually(formData: FormData) {
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
     const username = formData.get("username") as string;
-    const access_level = formData.get("access_level") as string || 'adult';
+    const account_type = formData.get("account_type") as string || 'kid';
+
+    let role = 'user';
+    let access_level = 'kid';
+
+    if (account_type === 'admin') {
+        role = 'admin';
+        access_level = 'adult'; // Admins usually have adult access level or better
+    } else if (account_type === 'adult') {
+        role = 'user';
+        access_level = 'adult';
+    } else {
+        // kid
+        role = 'user';
+        access_level = 'kid';
+    }
 
     const { data, error } = await supabaseAdmin.auth.admin.createUser({
         email,
@@ -384,14 +403,41 @@ export async function createUserManually(formData: FormData) {
             id: data.user.id,
             username: username,
             full_name: username,
-            role: "user",
+            role: role,
             access_level: access_level
         });
         if (profileError) console.error("Profile update error:", profileError);
+
+        // Send Welcome Email if it's a Kid
+        if (access_level === 'kid') {
+            console.log("Attempting to send email to:", email);
+            console.log("API Key present:", !!process.env.RESEND_API_KEY);
+            try {
+                const resend = new Resend(process.env.RESEND_API_KEY);
+                const result = await resend.emails.send({
+                    from: 'Club des Petits Magiciens <onboarding@resend.dev>', // Use test domain first
+                    to: [email],
+                    subject: 'Bienvenue au Club des Petits Magiciens ! 🎩✨',
+                    react: WelcomeKidEmail({
+                        username: username,
+                        password: password,
+                        loginUrl: "https://clubdespetitsmagiciens.fr/login"
+                    }),
+                });
+            } catch (emailError) {
+                console.error("Error sending welcome email:", emailError);
+                // Don't fail the request, just log it
+            }
+        }
     }
 
-    revalidatePath("/admin/users");
-    redirect("/admin/users");
+    if (access_level === 'kid') {
+        revalidatePath("/admin/kids/users");
+        redirect("/admin/kids/users");
+    } else {
+        revalidatePath("/admin/adults/users");
+        redirect("/admin/adults/users");
+    }
 }
 
 // Standard Client for User Updates (RLS Policy Protected)
@@ -406,11 +452,25 @@ export async function updateUserAccess(userId: string, formData: FormData) {
 }
 
 export async function deleteUserEntity(userId: string) {
-    const supabase = await createClient();
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+    const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
+
+    // Use Service Role to bypass RLS policies
+    const { createClient } = await import("@supabase/supabase-js");
+    const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey, {
+        auth: { autoRefreshToken: false, persistSession: false }
+    });
 
     // Set deleted_at
-    await supabase.from("profiles").update({ deleted_at: new Date().toISOString() }).eq("id", userId);
-    revalidatePath("/admin/users");
+    const { error } = await supabaseAdmin.from("profiles").update({ deleted_at: new Date().toISOString() }).eq("id", userId);
+
+    if (error) {
+        console.error("Error deleting user:", error);
+        throw new Error("Impossible de supprimer l'utilisateur");
+    }
+
+    revalidatePath("/admin/kids/users");
+    revalidatePath("/admin/adults/users");
 }
 
 export async function restoreUserEntity(userId: string) {
@@ -418,7 +478,8 @@ export async function restoreUserEntity(userId: string) {
 
     // Clear deleted_at
     await supabase.from("profiles").update({ deleted_at: null }).eq("id", userId);
-    revalidatePath("/admin/users");
+    revalidatePath("/admin/kids/users");
+    revalidatePath("/admin/adults/users");
 }
 
 export async function addTag(userId: string, formData: FormData) {
@@ -432,7 +493,8 @@ export async function addTag(userId: string, formData: FormData) {
     if (!currentTags.includes(newTag)) {
         await supabase.from("profiles").update({ tags: [...currentTags, newTag] }).eq("id", userId);
     }
-    revalidatePath("/admin/users");
+    revalidatePath("/admin/kids/users");
+    revalidatePath("/admin/adults/users");
 }
 
 export async function removeTag(userId: string, tagToRemove: string) {
@@ -442,5 +504,58 @@ export async function removeTag(userId: string, tagToRemove: string) {
 
     const updatedTags = currentTags.filter((t: string) => t !== tagToRemove);
     await supabase.from("profiles").update({ tags: updatedTags }).eq("id", userId);
-    revalidatePath("/admin/users");
+    revalidatePath("/admin/kids/users");
+    revalidatePath("/admin/adults/users");
+}
+
+export async function resendWelcomeEmail(email: string, username: string) {
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+    const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
+
+    // Need admin client to generate recovery link
+    const { createClient: createSupabaseAdmin } = await import("@supabase/supabase-js");
+    const supabaseAdmin = createSupabaseAdmin(supabaseUrl, supabaseServiceKey, {
+        auth: { autoRefreshToken: false, persistSession: false }
+    });
+
+    const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) throw new Error("Unauthorized");
+
+    // Admin check
+    const { data: profile } = await supabase.from('profiles').select('role').eq('id', user.id).single();
+    if (profile?.role !== 'admin') throw new Error("Forbidden");
+
+    try {
+        // Generate recovery link
+        const { data: linkData, error: linkError } = await supabaseAdmin.auth.admin.generateLink({
+            type: 'recovery',
+            email: email,
+            options: {
+                redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'}/dashboard`
+            }
+        });
+
+        if (linkError) throw linkError;
+
+        const resend = new Resend(process.env.RESEND_API_KEY);
+        const fromEmail = process.env.NODE_ENV === 'development'
+            ? 'Club des Petits Magiciens <onboarding@resend.dev>'
+            : 'Club des Petits Magiciens <contact@clubdespetitsmagiciens.fr>';
+
+        await resend.emails.send({
+            from: fromEmail,
+            to: [email],
+            subject: 'Magie ! Ton lien de connexion au Club 🎩✨',
+            react: WelcomeKidEmail({
+                username: username,
+                loginUrl: "https://clubdespetitsmagiciens.fr/login",
+                recoveryUrl: linkData.properties.action_link // The magic link
+            }),
+        });
+        return { success: true };
+    } catch (error: any) {
+        console.error("Resend error:", error);
+        return { error: error.message };
+    }
 }

@@ -1,9 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { Menu, X, BookOpen, Settings, Video, LogOut, Star, Play, ShoppingBag, Trophy, Map, Package, Wand2, Shield, LayoutDashboard } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
@@ -11,10 +11,28 @@ import { useRouter } from "next/navigation";
 export default function KidsMobileNav({ logoUrl, hasPurchases, isAdmin }: { logoUrl?: string; hasPurchases?: boolean; isAdmin?: boolean; }) {
     const [isOpen, setIsOpen] = useState(false);
     const pathname = usePathname();
+    const searchParams = useSearchParams();
     const router = useRouter();
     const supabase = createClient();
 
+    // Support for forced preview modes
+    const forcedView = searchParams.get('view');
+    const isForcedMobile = forcedView === 'mobile';
+    const isForcedDesktop = forcedView === 'desktop';
+    const [mounted, setMounted] = useState(false);
+    const [hash, setHash] = useState('');
+
+    useEffect(() => {
+        setMounted(true);
+        setHash(window.location.hash);
+
+        const handleHashChange = () => setHash(window.location.hash);
+        window.addEventListener('hashchange', handleHashChange);
+        return () => window.removeEventListener('hashchange', handleHashChange);
+    }, []);
+
     const isActive = (path: string) => pathname === path;
+    const isHomeActive = isActive('/kids') && (!mounted || !hash);
 
     const close = () => setIsOpen(false);
 
@@ -25,7 +43,7 @@ export default function KidsMobileNav({ logoUrl, hasPurchases, isAdmin }: { logo
     };
 
     return (
-        <div className="md:hidden bg-magic-card border-b border-white/10 sticky top-0 z-50">
+        <div className={`${isForcedDesktop ? 'hidden' : (isForcedMobile ? 'block' : 'md:hidden')} bg-magic-card border-b border-white/10 sticky top-0 z-50`}>
             <div className="flex items-center justify-between p-4">
                 <Link href="/kids">
                     <div className="relative w-32 h-10">
@@ -68,13 +86,13 @@ export default function KidsMobileNav({ logoUrl, hasPurchases, isAdmin }: { logo
                             <Link
                                 href="/kids"
                                 onClick={close}
-                                className={`group flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${isActive('/kids') && !window.location.hash ? 'bg-magic-purple/20 border border-magic-purple/20' : 'hover:bg-white/5'}`}
+                                className={`group flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${isHomeActive ? 'bg-magic-purple/20 border border-magic-purple/20' : 'hover:bg-white/5'}`}
                             >
-                                <div className={`p-2 rounded-lg ${isActive('/kids') && !window.location.hash ? 'bg-magic-purple text-white' : 'bg-white/5 text-gray-400 group-hover:text-white'}`}>
+                                <div className={`p-2 rounded-lg ${isHomeActive ? 'bg-magic-purple text-white' : 'bg-white/5 text-gray-400 group-hover:text-white'}`}>
                                     <Wand2 className="w-5 h-5" />
                                 </div>
                                 <div>
-                                    <div className={`font-bold ${isActive('/kids') && !window.location.hash ? 'text-magic-purple' : 'text-gray-300 group-hover:text-white'}`}>Le Club</div>
+                                    <div className={`font-bold ${isHomeActive ? 'text-magic-purple' : 'text-gray-300 group-hover:text-white'}`}>Le Club</div>
                                     <div className="text-[10px] text-gray-500 font-medium group-hover:text-gray-400">Retrouve toutes les dernières actualités</div>
                                 </div>
                             </Link>
@@ -89,8 +107,8 @@ export default function KidsMobileNav({ logoUrl, hasPurchases, isAdmin }: { logo
                                     <BookOpen className="w-5 h-5" />
                                 </div>
                                 <div>
-                                    <div className={`font-bold ${isActive('/kids/program') ? 'text-magic-purple' : 'text-gray-300 group-hover:text-white'}`}>Le Grimoire</div>
-                                    <div className="text-[10px] text-gray-500 font-medium group-hover:text-gray-400">Archives de tous les tours</div>
+                                    <div className={`font-bold ${isActive('/kids/program') ? 'text-magic-purple' : 'text-gray-300 group-hover:text-white'}`}>Le QG des Petits Magiciens</div>
+                                    <div className="text-[10px] text-gray-500 font-medium group-hover:text-gray-400">Accéder aux cours et contenus</div>
                                 </div>
                             </Link>
 

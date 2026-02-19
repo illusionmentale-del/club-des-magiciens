@@ -1,8 +1,9 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { LogOut, BookOpen, Settings, Video, Star, Youtube, Instagram, Facebook, LayoutDashboard, Shield, Wand2, ShoppingBag, Trophy, Map, Package } from "lucide-react";
 
@@ -14,7 +15,24 @@ export default function KidsSidebar({ socialLinks, logoUrl, isAdmin, hasPurchase
 }) {
     const pathname = usePathname();
     const router = useRouter();
+    const searchParams = useSearchParams();
     const supabase = createClient();
+
+    // Support for forced preview modes
+    const forcedView = searchParams.get('view');
+    const isForcedMobile = forcedView === 'mobile';
+    const isForcedDesktop = forcedView === 'desktop';
+    const [mounted, setMounted] = useState(false);
+    const [hash, setHash] = useState('');
+
+    useEffect(() => {
+        setMounted(true);
+        setHash(window.location.hash);
+
+        const handleHashChange = () => setHash(window.location.hash);
+        window.addEventListener('hashchange', handleHashChange);
+        return () => window.removeEventListener('hashchange', handleHashChange);
+    }, []);
 
     const handleLogout = async () => {
         await supabase.auth.signOut();
@@ -23,9 +41,10 @@ export default function KidsSidebar({ socialLinks, logoUrl, isAdmin, hasPurchase
     };
 
     const isActive = (path: string) => pathname === path;
+    const isHomeActive = isActive('/kids') && (!mounted || !hash);
 
     return (
-        <aside className="w-64 bg-magic-card border-r border-white/10 hidden md:flex flex-col flex-shrink-0 h-full">
+        <aside className={`w-64 bg-magic-card border-r border-white/10 ${isForcedMobile ? 'hidden' : (isForcedDesktop ? 'flex' : 'hidden md:flex')} flex-col flex-shrink-0 h-full`}>
             {/* Logo Area */}
             <div className="p-6 border-b border-white/10 flex flex-col items-center gap-4 text-center">
                 <Link href="/kids">
@@ -62,13 +81,13 @@ export default function KidsSidebar({ socialLinks, logoUrl, isAdmin, hasPurchase
                 {/* 1. 🏰 Le Club (Home) */}
                 <Link
                     href="/kids"
-                    className={`group flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${isActive('/kids') && !window.location.hash ? 'bg-magic-purple/20 border border-magic-purple/20' : 'hover:bg-white/5'}`}
+                    className={`group flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${isHomeActive ? 'bg-magic-purple/20 border border-magic-purple/20' : 'hover:bg-white/5'}`}
                 >
-                    <div className={`p-2 rounded-lg ${isActive('/kids') && !window.location.hash ? 'bg-magic-purple text-white' : 'bg-white/5 text-gray-400 group-hover:text-white'}`}>
+                    <div className={`p-2 rounded-lg ${isHomeActive ? 'bg-magic-purple text-white' : 'bg-white/5 text-gray-400 group-hover:text-white'}`}>
                         <Wand2 className="w-5 h-5" />
                     </div>
                     <div>
-                        <div className={`font-bold ${isActive('/kids') && !window.location.hash ? 'text-magic-purple' : 'text-gray-300 group-hover:text-white'}`}>Le Club</div>
+                        <div className={`font-bold ${isHomeActive ? 'text-magic-purple' : 'text-gray-300 group-hover:text-white'}`}>Le Club</div>
                         <div className="text-[10px] text-gray-500 font-medium group-hover:text-gray-400 hidden xl:block">Retrouve toutes les dernières actualités</div>
                     </div>
                 </Link>
@@ -82,8 +101,8 @@ export default function KidsSidebar({ socialLinks, logoUrl, isAdmin, hasPurchase
                         <BookOpen className="w-5 h-5" />
                     </div>
                     <div>
-                        <div className={`font-bold ${isActive('/kids/program') ? 'text-magic-purple' : 'text-gray-300 group-hover:text-white'}`}>Le Grimoire</div>
-                        <div className="text-[10px] text-gray-500 font-medium group-hover:text-gray-400 hidden xl:block">Archives de tous les tours</div>
+                        <div className={`font-bold ${isActive('/kids/program') ? 'text-magic-purple' : 'text-gray-300 group-hover:text-white'}`}>Le QG des Petits Magiciens</div>
+                        <div className="text-[10px] text-gray-500 font-medium group-hover:text-gray-400 hidden xl:block">Accéder aux cours et contenus</div>
                     </div>
                 </Link>
 

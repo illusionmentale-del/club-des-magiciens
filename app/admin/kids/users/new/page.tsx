@@ -15,6 +15,17 @@ export default function NewUserPage() {
 
                 <div className="bg-magic-card border border-white/10 p-8 rounded-2xl">
                     <form action={createUserManually} className="space-y-6">
+                        <div>
+                            <label className="block text-sm font-medium text-gray-400 mb-1">Type de compte</label>
+                            <select
+                                name="account_type"
+                                className="w-full bg-black/50 border border-white/10 rounded-xl p-3 text-white focus:outline-none focus:border-magic-purple focus:ring-1 focus:ring-magic-purple transition-all"
+                            >
+                                <option value="kid">Enfant</option>
+                                <option value="adult">Adulte</option>
+                                <option value="admin">Administrateur</option>
+                            </select>
+                        </div>
 
                         <div>
                             <label className="block text-sm font-medium text-gray-400 mb-1">Pseudo</label>

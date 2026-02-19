@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Sparkles, Megaphone, Trophy, ShoppingBag, Eye, Save } from "lucide-react";
 import { saveKidsHomeSettings } from "@/app/admin/actions";
+import CoverImageUpload from "@/components/admin/CoverImageUpload";
+import { useAdmin } from "@/app/admin/AdminContext";
 
 interface LibraryItem {
     id: string;
@@ -19,6 +21,7 @@ interface KidsHomeConfigProps {
 }
 
 export default function KidsHomeConfig({ initialSettings, libraryItems }: KidsHomeConfigProps) {
+    const { setIsPreviewOpen } = useAdmin();
     const [activeTab, setActiveTab] = useState("welcome");
     const [loading, setLoading] = useState(false);
 
@@ -100,7 +103,7 @@ export default function KidsHomeConfig({ initialSettings, libraryItems }: KidsHo
                 <Button
                     variant="outline"
                     className="w-full border-white/10 text-white hover:bg-white/5 mt-4"
-                    onClick={() => window.open("/kids", "_blank")}
+                    onClick={() => setIsPreviewOpen(true)}
                 >
                     <Eye className="w-4 h-4 mr-2" />
                     Aperçu Direct
@@ -187,13 +190,10 @@ export default function KidsHomeConfig({ initialSettings, libraryItems }: KidsHo
                                 </div>
 
                                 <div className="space-y-4">
-                                    <label className="text-xs font-black uppercase tracking-widest text-brand-text-muted">URL Image personnalisée (Override)</label>
-                                    <input
-                                        type="text"
-                                        value={featuredConfig.image}
-                                        onChange={(e) => setFeaturedConfig({ ...featuredConfig, image: e.target.value })}
-                                        className="w-full bg-brand-bg border border-white/10 rounded-xl p-4 text-white focus:outline-none focus:border-brand-purple/50"
-                                        placeholder="https://..."
+                                    <CoverImageUpload
+                                        currentImageUrl={featuredConfig.image}
+                                        onUpload={(url: string) => setFeaturedConfig({ ...featuredConfig, image: url })}
+                                        label="Image de couverture (Override)"
                                     />
                                     <p className="text-[10px] text-brand-text-muted">
                                         Laissez vide pour utiliser la miniature par défaut de l'atelier.

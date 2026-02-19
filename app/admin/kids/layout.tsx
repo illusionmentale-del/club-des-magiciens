@@ -4,6 +4,7 @@ import Link from "next/link";
 import { LayoutDashboard, Film, Users, LogOut, ArrowLeft, Sparkles, Trophy, Settings } from "lucide-react";
 import { cookies } from "next/headers";
 import { Separator } from "@/components/ui/separator";
+import GlobalPreview from "@/components/admin/GlobalPreview";
 import {
     Breadcrumb,
     BreadcrumbItem,
@@ -65,12 +66,9 @@ export default async function AdminLayout({
                         Élèves
                     </Link>
 
-                    <Separator className="my-6 bg-white/5" />
-                    <p className="px-4 text-[10px] font-black text-brand-text-muted uppercase tracking-widest mb-4">Système</p>
-
                     <Link href="/admin/kids/settings" className="flex items-center gap-3 px-4 py-3 text-sm font-bold uppercase tracking-widest text-brand-text-muted hover:text-white hover:bg-white/5 rounded-xl transition-all group">
                         <Settings className="w-4 h-4 group-hover:text-brand-purple transition-colors" />
-                        Réglages
+                        Paramètres page d'accueil
                     </Link>
                 </nav>
 
@@ -99,6 +97,8 @@ export default async function AdminLayout({
                             </BreadcrumbItem>
                         </BreadcrumbList>
                     </Breadcrumb>
+
+                    <GlobalPreview />
                 </header>
 
                 <div className="p-8 md:p-12 relative z-10 max-w-7xl mx-auto w-full">

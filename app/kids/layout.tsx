@@ -2,6 +2,7 @@ import KidsSidebar from "@/components/KidsSidebar";
 import KidsMobileNav from "@/components/KidsMobileNav";
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
+import { Suspense } from "react";
 
 export default async function KidsLayout({
     children,
@@ -69,9 +70,13 @@ export default async function KidsLayout({
 
     return (
         <div className="flex h-screen bg-brand-bg overflow-hidden text-brand-text font-sans">
-            <KidsSidebar socialLinks={socialLinks} logoUrl={siteLogo} isAdmin={isAdmin} hasPurchases={hasPurchases} />
+            <Suspense fallback={<div className="w-64 bg-magic-card hidden md:block" />}>
+                <KidsSidebar socialLinks={socialLinks} logoUrl={siteLogo} isAdmin={isAdmin} hasPurchases={hasPurchases} />
+            </Suspense>
             <div className="flex-1 flex flex-col md:pl-0">
-                <KidsMobileNav logoUrl={siteLogo} hasPurchases={hasPurchases} isAdmin={isAdmin} />
+                <Suspense fallback={<div className="h-16 bg-magic-card md:hidden" />}>
+                    <KidsMobileNav logoUrl={siteLogo} hasPurchases={hasPurchases} isAdmin={isAdmin} />
+                </Suspense>
                 <main className="flex-1 overflow-y-auto bg-brand-bg p-4 md:p-8 text-brand-text">
                     {children}
                 </main>

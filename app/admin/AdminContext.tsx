@@ -7,12 +7,15 @@ type AdminAudience = "adults" | "kids" | "all";
 interface AdminContextType {
     audience: AdminAudience;
     setAudience: (audience: AdminAudience) => void;
+    isPreviewOpen: boolean;
+    setIsPreviewOpen: (open: boolean) => void;
 }
 
 const AdminContext = createContext<AdminContextType | undefined>(undefined);
 
 export function AdminProvider({ children }: { children: ReactNode }) {
     const [audience, setAudienceState] = useState<AdminAudience>("adults");
+    const [isPreviewOpen, setIsPreviewOpen] = useState(false);
 
     useEffect(() => {
         const stored = localStorage.getItem("admin_audience") as AdminAudience;
@@ -25,7 +28,7 @@ export function AdminProvider({ children }: { children: ReactNode }) {
     };
 
     return (
-        <AdminContext.Provider value={{ audience, setAudience }}>
+        <AdminContext.Provider value={{ audience, setAudience, isPreviewOpen, setIsPreviewOpen }}>
             {children}
         </AdminContext.Provider>
     );

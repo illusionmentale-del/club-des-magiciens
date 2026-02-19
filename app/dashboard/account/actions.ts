@@ -66,5 +66,6 @@ export async function updateProfile(prevState: any, formData: FormData) {
 
     revalidatePath("/dashboard/account");
     revalidatePath("/kids/account");
+    revalidatePath("/kids");
     return { success: "Profil mis à jour avec succès !" };
 }
