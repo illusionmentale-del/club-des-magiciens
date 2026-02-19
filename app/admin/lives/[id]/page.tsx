@@ -3,9 +3,10 @@
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import Link from "next/link";
-import { ArrowLeft, ShieldCheck, Users, Lock, Mic, Video } from "lucide-react";
+import { ArrowLeft, ShieldCheck, Users, Lock, Mic, Video, Play, StopCircle } from "lucide-react";
 import { useParams, usePathname } from "next/navigation";
 import LiveChat from "@/components/LiveChat";
+import { updateLiveStatus } from "@/app/admin/actions";
 
 export default function LiveControlRoom() {
     const { id } = useParams();
@@ -72,14 +73,49 @@ export default function LiveControlRoom() {
                         href={`https://meet.jit.si/${roomName}?userInfo.displayName=MaitreDuClub`}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="px-8 py-4 bg-blue-600 hover:bg-blue-500 rounded-2xl font-bold text-xl flex items-center gap-3 transition-transform hover:scale-105 shadow-xl shadow-blue-900/20"
+                        className="px-8 py-4 bg-blue-600 hover:bg-blue-500 rounded-2xl font-bold text-xl flex items-center gap-3 transition-transform hover:scale-105 shadow-xl shadow-blue-900/20 mb-12"
                     >
                         <Video className="w-6 h-6" />
                         OUVRIR LA SALLE JITSI (ADMIN)
                     </a>
 
+                    <div className="bg-white/5 border border-white/10 p-6 rounded-2xl max-w-lg w-full">
+                        <h3 className="text-sm font-bold text-gray-400 uppercase tracking-widest mb-4">État de la Diffusion</h3>
+                        <div className="flex items-center justify-between mb-6">
+                            <span className="text-lg font-bold">Statut Actuel :</span>
+                            <span className={`px-4 py-1.5 rounded-full text-sm font-bold uppercase tracking-wider ${live.status === 'en_cours' ? 'bg-red-500 text-white animate-pulse shadow-[0_0_15px_rgba(239,68,68,0.5)]' :
+                                    live.status === 'programmé' ? 'bg-gray-500/20 text-gray-300 border border-white/10' :
+                                        'bg-gray-800 text-gray-500'
+                                }`}>
+                                {live.status === 'en_cours' ? 'EN DIRECT' : live.status === 'programmé' ? 'EN ATTENTE' : 'TERMINÉ'}
+                            </span>
+                        </div>
+
+                        <div className="flex flex-col gap-3">
+                            {live.status === 'programmé' && (
+                                <form action={updateLiveStatus.bind(null, live.id, 'en_cours', undefined)}>
+                                    <button className="w-full px-6 py-4 bg-red-600 hover:bg-red-500 rounded-xl font-black uppercase text-lg flex items-center justify-center gap-2 transition-transform hover:scale-105 shadow-[0_0_30px_rgba(220,38,38,0.4)]">
+                                        <Play className="w-6 h-6" />
+                                        LANCER LE LIVE AUX ÉLÈVES
+                                    </button>
+                                    <p className="text-xs text-gray-400 mt-2 text-center">Ceci débloquera le bouton "Rejoindre" sur la page d'accueil des élèves.</p>
+                                </form>
+                            )}
+
+                            {live.status === 'en_cours' && (
+                                <form action={updateLiveStatus.bind(null, live.id, 'terminé', undefined)}>
+                                    <button className="w-full px-6 py-4 bg-gray-700 hover:bg-gray-600 rounded-xl font-bold uppercase flex items-center justify-center gap-2 transition-colors">
+                                        <StopCircle className="w-5 h-5" />
+                                        ARRÊTER LA DIFFUSION
+                                    </button>
+                                    <p className="text-xs text-gray-400 mt-2 text-center">Ceci clôturera le live pour tout le monde.</p>
+                                </form>
+                            )}
+                        </div>
+                    </div>
+
                     <p className="mt-6 text-xs text-gray-500">
-                        Une fois ouverte : Connectez-vous en tant qu'hôte (Log-in) si demandé.
+                        Rappel : Connectez-vous en tant qu'hôte (Log-in) sur la fenêtre Jitsi pour autoriser les caméras/micros.
                     </p>
                 </div>
 
