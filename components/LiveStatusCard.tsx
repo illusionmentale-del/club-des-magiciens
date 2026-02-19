@@ -2,8 +2,7 @@
 
 import FlipClockCountdown from '@leenguyen/react-flip-clock-countdown';
 import '@leenguyen/react-flip-clock-countdown/dist/index.css';
-import { Video, Calendar, ArrowRight, Play, Radio } from "lucide-react";
-import Image from "next/image";
+import { Video, Calendar, Sparkles } from "lucide-react";
 import { useEffect, useState } from 'react';
 
 // Props: live object from DB
@@ -14,16 +13,12 @@ export function LiveStatusCard({ live }: { live: any }) {
     if (!live || live.status === 'terminé') {
         if (live?.status === 'terminé' && live.platform === 'vimeo') {
             return (
-                <div className="bg-[#0F1014] border border-white/5 p-8 relative overflow-hidden group hover:border-blue-500/30 transition-all">
-                    {/* Tech Corners */}
-                    <div className="absolute top-0 right-0 w-4 h-4 border-t border-r border-white/10 group-hover:border-blue-500/50 transition-colors"></div>
-                    <div className="absolute bottom-0 left-0 w-4 h-4 border-b border-l border-white/10 group-hover:border-blue-500/50 transition-colors"></div>
-
-                    <div className="text-[10px] text-blue-500 uppercase tracking-widest font-bold mb-4 flex items-center gap-2">
-                        <div className="w-1.5 h-1.5 bg-blue-500 rounded-full shadow-[0_0_5px_#3b82f6]"></div> REPLAY DISPONIBLE
+                <div className="relative w-full rounded-3xl overflow-hidden border border-brand-gold/20 bg-black/40 backdrop-blur-md p-6 lg:p-10 shadow-2xl group hover:border-brand-gold/40 transition-all">
+                    <div className="text-[10px] text-brand-gold uppercase tracking-widest font-bold mb-4 flex items-center gap-2">
+                        <div className="w-2 h-2 bg-brand-gold rounded-full shadow-[0_0_8px_#fbbf24]"></div> REPLAY DISPONIBLE
                     </div>
-                    <h3 className="text-xl font-bold mb-6 text-white uppercase tracking-wide">{live.title}</h3>
-                    <div className="aspect-video bg-black border border-white/10 relative overflow-hidden group-hover:border-white/20 transition-all">
+                    <h3 className="text-3xl font-black mb-6 text-white uppercase tracking-tight">{live.title}</h3>
+                    <div className="aspect-video bg-black rounded-xl border border-white/10 relative overflow-hidden group-hover:border-white/20 transition-all shadow-2xl">
                         <iframe
                             src={`https://player.vimeo.com/video/${live.platform_id}`}
                             className="w-full h-full"
@@ -35,81 +30,101 @@ export function LiveStatusCard({ live }: { live: any }) {
                 </div>
             );
         }
-
-        // No live
-        return (
-            <div className="bg-[#0F1014] border border-white/5 p-8 opacity-60 grayscale hover:grayscale-0 transition-all hover:opacity-100 hover:border-purple-500/20 group relative overflow-hidden">
-                <div className="absolute inset-0 bg-[url('/images/noise.png')] opacity-5"></div>
-                <div className="text-[10px] text-slate-500 uppercase tracking-widest font-bold mb-2">Transmission</div>
-                <h3 className="text-xl font-bold mb-2 text-white uppercase tracking-tight">Aucun Signal</h3>
-                <p className="text-xs text-slate-500 font-mono">// WAITING_FOR_DATA ...</p>
-            </div>
-        );
+        return null; // hide if completely done and no replay
     }
 
     const isLiveNow = live.status === 'en_cours';
     const liveDate = new Date(live.start_date).getTime();
 
     return (
-        <div className={`bg-[#0F1014] border ${isLiveNow ? 'border-red-500/50 shadow-[0_0_30px_rgba(239,68,68,0.1)]' : 'border-white/5'} p-8 relative overflow-hidden transition-all duration-500 group`}>
-            {/* Background Mesh */}
-            <div className="absolute inset-0 bg-[linear-gradient(45deg,rgba(255,255,255,0.01)_25%,transparent_25%,transparent_50%,rgba(255,255,255,0.01)_50%,rgba(255,255,255,0.01)_75%,transparent_75%,transparent)] bg-[size:24px_24px] pointer-events-none"></div>
+        <div className={`relative w-full rounded-3xl overflow-hidden border p-6 lg:p-10 shadow-2xl transition-all duration-700 group
+            ${isLiveNow
+                ? 'border-red-500/50 bg-gradient-to-br from-red-900/40 via-black/60 to-black rounded-3xl shadow-[0_0_50px_rgba(239,68,68,0.15)]'
+                : 'border-brand-purple/30 bg-gradient-to-br from-brand-purple/20 via-black/60 to-black/90 shadow-[0_0_40px_rgba(168,85,247,0.1)]'
+            }`}>
 
-            {/* Header */}
-            <div className="flex items-center justify-between mb-6 relative z-10">
-                <div className={`text-[10px] uppercase tracking-widest font-bold flex items-center gap-2 ${isLiveNow ? 'text-red-500 animate-pulse' : 'text-purple-500'}`}>
-                    {isLiveNow ? (
-                        <><Radio className="w-4 h-4 animate-ping absolute opacity-50" /><Radio className="w-4 h-4 relative" /> EN DIRECT</>
-                    ) : (
-                        <><Calendar className="w-4 h-4" /> PROCHAIN LIVE</>
+            {/* Ambient Background Glow */}
+            <div className={`absolute -top-40 -left-40 w-96 h-96 rounded-full blur-[120px] opacity-30 pointer-events-none transition-colors duration-700
+                ${isLiveNow ? 'bg-red-600' : 'bg-brand-purple'}`}></div>
+            <div className={`absolute -bottom-40 -right-40 w-96 h-96 rounded-full blur-[120px] opacity-20 pointer-events-none transition-colors duration-700
+                ${isLiveNow ? 'bg-red-600' : 'bg-brand-purple'}`}></div>
+
+            <div className="relative z-10 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8">
+
+                {/* Left Side: Info */}
+                <div className="flex-1">
+                    <div className="mb-4">
+                        <span className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest
+                            ${isLiveNow
+                                ? 'bg-red-500/20 text-red-500 shadow-[0_0_15px_rgba(239,68,68,0.5)] border border-red-500/30'
+                                : 'bg-brand-purple/20 text-brand-purple border border-brand-purple/30'}`}>
+                            {isLiveNow ? (
+                                <><span className="relative flex h-2 w-2"><span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span><span className="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span></span> EN DIRECT</>
+                            ) : (
+                                <><Calendar className="w-4 h-4" /> PROCHAIN LIVE</>
+                            )}
+                        </span>
+                    </div>
+
+                    <h3 className="text-3xl lg:text-5xl font-black mb-3 text-white tracking-tight drop-shadow-lg">{live.title}</h3>
+
+                    {!isLiveNow && (
+                        <p className="text-gray-400 font-medium flex items-center gap-2 text-lg">
+                            {new Date(live.start_date).toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' })} à {new Date(live.start_date).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }).replace(':', 'h')}
+                        </p>
                     )}
                 </div>
-            </div>
 
-            <h3 className="text-2xl font-bold mb-2 text-white uppercase tracking-tight relative z-10">{live.title}</h3>
+                {/* Right Side: Action / Countdown */}
+                <div className="w-full lg:w-auto">
+                    {isLiveNow ? (
+                        <div className="flex flex-col items-center lg:items-end gap-4">
+                            <p className="text-red-200/80 text-sm font-medium animate-pulse tracking-wide">La salle temporelle est ouverte !</p>
+                            <a
+                                href={`https://meet.jit.si/${live.platform_id}`}
+                                target="_blank"
+                                className="w-full lg:w-auto px-8 py-5 bg-gradient-to-r from-red-600 to-red-500 text-white font-black text-lg rounded-2xl transition-all shadow-[0_0_30px_rgba(220,38,38,0.4)] hover:shadow-[0_0_40px_rgba(220,38,38,0.8)] hover:-translate-y-1 flex items-center justify-center gap-3 border border-red-400/50"
+                            >
+                                <Video className="w-6 h-6" /> REJOINDRE LE LIVE
+                            </a>
+                        </div>
+                    ) : (
+                        <div className="flex flex-col items-center lg:items-end gap-6 bg-black/40 p-6 lg:p-8 rounded-3xl border border-white/5 backdrop-blur-xl relative overflow-hidden group-hover:border-brand-purple/20 transition-colors shadow-inner shadow-white/5">
+                            {/* Decorative sparkles */}
+                            <Sparkles className="absolute top-4 right-4 w-5 h-5 text-brand-purple/40 animate-pulse" />
 
-            {!isLiveNow && (
-                <div className="flex items-center gap-2 text-sm text-slate-400 font-mono mb-8 relative z-10 border-l-2 border-purple-500/50 pl-3">
-                    {new Date(live.start_date).toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit' })}
-                </div>
-            )}
+                            {isClient && (
+                                <div className="scale-90 sm:scale-100 origin-center lg:origin-right">
+                                    <FlipClockCountdown
+                                        to={liveDate}
+                                        labels={['JOURS', 'HEURES', 'MIN', 'SEC']}
+                                        labelStyle={{ fontSize: 11, fontWeight: 800, textTransform: 'uppercase', color: '#9ca3af', marginTop: '16px', letterSpacing: '0.1em' }}
+                                        digitBlockStyle={{
+                                            width: 50,
+                                            height: 70,
+                                            fontSize: 34,
+                                            fontWeight: 900,
+                                            backgroundColor: 'rgba(255,255,255,0.03)',
+                                            color: 'white',
+                                            borderRadius: '12px',
+                                            border: '1px solid rgba(255,255,255,0.08)',
+                                            boxShadow: '0 8px 32px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.1)'
+                                        }}
+                                        dividerStyle={{ color: 'rgba(255,255,255,0.05)', height: 1 }}
+                                        separatorStyle={{ color: '#a855f7', size: 5 }}
+                                        duration={0.5}
+                                    />
+                                </div>
+                            )}
 
-            {/* Content Switch */}
-            <div className="relative z-10 mt-6">
-                {isLiveNow ? (
-                    <div className="space-y-6">
-                        <p className="text-slate-300 text-sm font-light">Le salon est ouvert. Initialisation du lien...</p>
-                        <a
-                            href={`https://meet.jit.si/${live.platform_id}`}
-                            target="_blank"
-                            className="w-full py-4 bg-red-600 hover:bg-red-500 text-white font-bold uppercase tracking-widest transition-all shadow-[0_0_20px_rgba(220,38,38,0.4)] hover:shadow-[0_0_30px_rgba(220,38,38,0.6)] flex items-center justify-center gap-3 group/btn relative overflow-hidden border border-red-400"
-                        >
-                            <span className="relative z-10 flex items-center gap-2"><Video className="w-4 h-4" /> Rejoindre</span>
-                            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover/btn:translate-x-full duration-700 transition-transform"></div>
-                        </a>
-                    </div>
-                ) : (
-                    <div className="space-y-8">
-                        {/* Countdown */}
-                        {isClient && (
-                            <div className="flex justify-center py-2 grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 transition-all">
-                                <FlipClockCountdown
-                                    to={liveDate}
-                                    labels={['JOURS', 'HEURES', 'MIN', 'SEC']}
-                                    labelStyle={{ fontSize: 8, fontWeight: 700, textTransform: 'uppercase', color: '#94a3b8' }}
-                                    digitBlockStyle={{ width: 25, height: 40, fontSize: 18, backgroundColor: '#1e293b', color: 'white' }}
-                                    dividerStyle={{ color: '#0F1014', height: 1 }}
-                                    separatorStyle={{ color: '#a855f7', size: 3 }}
-                                    duration={0.5}
-                                />
+                            <div className="w-full text-center mt-2">
+                                <span className="inline-block px-5 py-2.5 rounded-full bg-brand-purple/10 text-brand-purple/80 text-xs font-bold tracking-widest uppercase border border-brand-purple/20">
+                                    Rendez-vous très vite
+                                </span>
                             </div>
-                        )}
-
-                        <button disabled className="w-full py-3 bg-white/5 border border-white/5 text-slate-500 font-mono text-xs uppercase tracking-widest cursor-not-allowed flex items-center justify-center gap-2">
-                             // STANDBY //
-                        </button>
-                    </div>
-                )}
+                        </div>
+                    )}
+                </div>
             </div>
         </div>
     );
