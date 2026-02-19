@@ -33,6 +33,7 @@ export default async function AdminLayout({
 
     const content = (
         <div className="flex min-h-screen w-full bg-brand-bg text-brand-text font-sans selection:bg-brand-purple/30">
+            <GlobalPreview />
             {/* Custom Sidebar for Kids */}
             <aside className="fixed inset-y-0 left-0 z-50 w-64 bg-brand-card border-r border-white/5 hidden md:flex flex-col shadow-2xl">
                 <div className="flex items-center h-20 px-6 border-b border-white/5 bg-gradient-to-r from-brand-card to-brand-bg">
@@ -98,7 +99,6 @@ export default async function AdminLayout({
                         </BreadcrumbList>
                     </Breadcrumb>
 
-                    <GlobalPreview />
                 </header>
 
                 <div className="p-8 md:p-12 relative z-10 max-w-7xl mx-auto w-full">

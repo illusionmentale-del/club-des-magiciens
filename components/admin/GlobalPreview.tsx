@@ -34,7 +34,7 @@ export default function GlobalPreview() {
     }
 
     return (
-        <div className="fixed inset-0 z-[100] flex flex-col bg-black/90 backdrop-blur-md animate-in fade-in duration-300">
+        <div className="fixed inset-0 z-[9999] flex flex-col bg-black/90 backdrop-blur-md animate-in fade-in duration-300">
             {/* Header of Preview */}
             <div className="h-16 border-b border-white/10 flex items-center justify-between px-8 bg-brand-bg/50">
                 <div className="flex items-center gap-4">
