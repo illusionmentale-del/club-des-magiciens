@@ -30,17 +30,12 @@ const nextConfig: NextConfig = {
         source: '/:path*',
         headers: [
           {
-            key: 'Content-Security-Policy',
-            value: "frame-ancestors 'self' localhost:* http://localhost:*",
-          },
-        ],
-      },
-      {
-        source: '/kids(.*)',
-        headers: [
-          {
             key: 'X-Frame-Options',
             value: 'SAMEORIGIN',
+          },
+          {
+            key: 'Content-Security-Policy',
+            value: "frame-ancestors 'self' localhost:* http://localhost:* https://*.vercel.app https://clubdesmagiciens.fr",
           },
         ],
       },
