@@ -37,6 +37,10 @@ export default function AdultsAdminLayout({
                     <Separator className="my-6 bg-white/5" />
                     <p className="px-4 text-[10px] font-black text-brand-gold uppercase tracking-widest mb-4">Business</p>
 
+                    <Link href="/admin/adults/users" className="flex items-center gap-3 px-4 py-3 text-sm font-bold uppercase tracking-widest text-brand-text-muted hover:text-white hover:bg-white/5 rounded-xl transition-all group">
+                        <Users className="w-5 h-5 group-hover:text-brand-gold transition-colors" />
+                        Élèves
+                    </Link>
                     <Link href="/admin/adults/courses" className="flex items-center gap-3 px-4 py-3 text-sm font-bold uppercase tracking-widest text-brand-text-muted hover:text-white hover:bg-white/5 rounded-xl transition-all group">
                         <BookOpen className="w-5 h-5 group-hover:text-brand-gold transition-colors" />
                         Formations
