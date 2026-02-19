@@ -6,6 +6,7 @@ import { ArrowLeft, Video, Calendar, Play, Trash2, StopCircle, Plus } from "luci
 import { updateLiveStatus, deleteLive } from "../actions";
 import { useAdmin } from "../AdminContext";
 import { useEffect, useState } from "react";
+import { useSearchParams, usePathname } from "next/navigation";
 
 // Types
 type Live = {
@@ -20,9 +21,23 @@ type Live = {
 };
 
 export default function AdminLivesPage() {
-    const { audience } = useAdmin();
+    const { audience, setAudience } = useAdmin();
+    const searchParams = useSearchParams();
+    const pathname = usePathname();
+    const queryAudience = searchParams.get("audience");
+
+    // Determine base path to keep the user in the right layout
+    const basePath = pathname.includes('/kids/') ? '/admin/kids' : (pathname.includes('/adults/') ? '/admin/adults' : '/admin');
+
     const [lives, setLives] = useState<Live[]>([]);
     const supabase = createClient();
+
+    // Auto-switch audience context if arrived via a sidebar link
+    useEffect(() => {
+        if (queryAudience === 'kids' || queryAudience === 'adults') {
+            setAudience(queryAudience);
+        }
+    }, [queryAudience, setAudience]);
 
     useEffect(() => {
         const fetchLives = async () => {
@@ -38,22 +53,24 @@ export default function AdminLivesPage() {
         return true;
     });
 
-    const themeColor = audience === 'adults' ? 'bg-red-600' : 'bg-red-500';
+    const themeColor = audience === 'adults' ? 'bg-brand-gold text-black hover:bg-brand-gold/90' : 'bg-brand-purple text-white hover:bg-brand-purple/90';
+    const badgeColor = audience === 'adults' ? 'bg-brand-gold/20 text-brand-gold' : 'bg-brand-purple/20 text-brand-purple';
+    const iconColor = audience === 'adults' ? 'text-brand-gold' : 'text-brand-purple';
 
     return (
-        <div className={`min-h-screen ${audience === 'adults' ? 'bg-black' : 'bg-gray-900'} text-white p-8 transition-colors duration-500`}>
+        <div className={`w-full transition-colors duration-500`}>
             <header className="flex items-center justify-between mb-8 max-w-5xl mx-auto">
                 <Link href="/admin" className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors">
                     <ArrowLeft className="w-5 h-5" />
                     Retour au QG Admin
                 </Link>
                 <div className="flex items-center gap-3">
-                    <div className="p-2 bg-red-500/20 rounded-lg">
-                        <Video className="w-6 h-6 text-red-500" />
+                    <div className={`p-2 rounded-lg ${badgeColor}`}>
+                        <Video className={`w-6 h-6 ${iconColor}`} />
                     </div>
                     <div>
                         <h1 className="text-3xl font-bold">Gestion des Lives ({audience === 'adults' ? 'Adulte' : 'Enfant'})</h1>
-                        <div className={`text-sm px-2 py-0.5 rounded inline-block mt-1 uppercase font-bold tracking-wider ${audience === 'adults' ? 'bg-red-500/20 text-red-500' : 'bg-white/20 text-white'}`}>
+                        <div className={`text-sm px-2 py-0.5 rounded inline-block mt-1 uppercase font-bold tracking-wider ${badgeColor}`}>
                             Mode {audience === 'adults' ? 'Adulte' : 'Enfant'}
                         </div>
                     </div>
@@ -63,11 +80,7 @@ export default function AdminLivesPage() {
             <div className="max-w-5xl mx-auto space-y-8">
                 {/* Actions */}
                 <div className="flex justify-end">
-                    {/* We pass audience logic via URL param or context? 
-                        Ideally the 'new' page also listens to context. 
-                        Let's link to new and let new page handle context. 
-                    */}
-                    <Link href="/admin/lives/new" className={`px-6 py-3 ${themeColor} hover:opacity-90 rounded-xl font-bold flex items-center gap-2 transition-colors shadow-lg shadow-red-900/20`}>
+                    <Link href={`${basePath}/lives/new?audience=${audience}`} className={`px-6 py-3 ${themeColor} rounded-xl font-bold flex items-center gap-2 transition-colors shadow-lg`}>
                         <Calendar className="w-5 h-5" />
                         Programmer un Live {audience === 'kids' && '(Kids)'}
                     </Link>
@@ -96,7 +109,7 @@ export default function AdminLivesPage() {
                                     {live.platform === 'vimeo' && <span className="text-gray-500">Replay Vimeo: {live.platform_id}</span>}
                                 </div>
                                 <div className="mt-4">
-                                    <Link href={`/admin/lives/${live.id}`} className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600/20 text-blue-400 hover:bg-blue-600/30 rounded-lg font-bold text-sm transition-colors border border-blue-500/20">
+                                    <Link href={`${basePath}/lives/${live.id}`} className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600/20 text-blue-400 hover:bg-blue-600/30 rounded-lg font-bold text-sm transition-colors border border-blue-500/20">
                                         <Video className="w-4 h-4" />
                                         Ouvrir la Salle de Contrôle
                                     </Link>
@@ -121,7 +134,7 @@ export default function AdminLivesPage() {
                                     </form>
                                 )}
                                 {live.status === 'terminé' && live.platform !== 'vimeo' && (
-                                    <Link href={`/admin/lives/${live.id}/replay`} className="px-4 py-2 bg-blue-600/20 text-blue-400 hover:bg-blue-600/30 rounded-lg font-bold text-sm">
+                                    <Link href={`${basePath}/lives/${live.id}/replay`} className="px-4 py-2 bg-blue-600/20 text-blue-400 hover:bg-blue-600/30 rounded-lg font-bold text-sm">
                                         Ajouter Replay
                                     </Link>
                                 )}

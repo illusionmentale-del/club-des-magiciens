@@ -1,7 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import { LayoutDashboard, Film, Users, LogOut, ArrowLeft, Sparkles, Trophy, Settings } from "lucide-react";
+import { LayoutDashboard, Film, Users, LogOut, ArrowLeft, Sparkles, Trophy, Settings, Video } from "lucide-react";
 import { cookies } from "next/headers";
 import { Separator } from "@/components/ui/separator";
 import GlobalPreview from "@/components/admin/GlobalPreview";
@@ -65,6 +65,10 @@ export default async function AdminLayout({
                     <Link href="/admin/kids/users" className="flex items-center gap-3 px-4 py-3 text-sm font-bold uppercase tracking-widest text-brand-text-muted hover:text-white hover:bg-white/5 rounded-xl transition-all group">
                         <Users className="w-5 h-5 group-hover:text-brand-purple transition-colors" />
                         Élèves
+                    </Link>
+                    <Link href="/admin/kids/lives" className="flex items-center gap-3 px-4 py-3 text-sm font-bold uppercase tracking-widest text-brand-text-muted hover:text-white hover:bg-white/5 rounded-xl transition-all group">
+                        <Video className="w-4 h-4 group-hover:text-brand-purple transition-colors" />
+                        Diffusions Live
                     </Link>
 
                     <Link href="/admin/kids/settings" className="flex items-center gap-3 px-4 py-3 text-sm font-bold uppercase tracking-widest text-brand-text-muted hover:text-white hover:bg-white/5 rounded-xl transition-all group">

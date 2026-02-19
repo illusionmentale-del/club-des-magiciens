@@ -4,25 +4,38 @@ import { createLive } from "../../actions";
 import Link from "next/link";
 import { ArrowLeft, Save } from "lucide-react";
 import { useAdmin } from "../../AdminContext";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSearchParams, usePathname } from "next/navigation";
 
 export default function NewLivePage() {
-    const { audience } = useAdmin();
-    const themeColor = audience === 'adults' ? 'bg-red-600' : 'bg-red-500';
-    const bgClass = audience === 'adults' ? 'bg-black' : 'bg-gray-900';
+    const { audience, setAudience } = useAdmin();
+    const searchParams = useSearchParams();
+    const pathname = usePathname();
+    const queryAudience = searchParams.get("audience");
+
+    const basePath = pathname.includes('/kids/') ? '/admin/kids' : (pathname.includes('/adults/') ? '/admin/adults' : '/admin');
+
+    useEffect(() => {
+        if (queryAudience === 'kids' || queryAudience === 'adults') {
+            setAudience(queryAudience);
+        }
+    }, [queryAudience, setAudience]);
+
+    const themeColor = audience === 'adults' ? 'bg-brand-gold text-black hover:bg-brand-gold/90' : 'bg-brand-purple text-white hover:bg-brand-purple/90';
+    const textColor = audience === 'adults' ? 'text-brand-gold' : 'text-brand-purple';
 
     const [platform, setPlatform] = useState('jitsi');
 
     return (
-        <div className={`min-h-screen ${bgClass} text-white p-8 flex items-center justify-center transition-colors duration-500`}>
+        <div className={`flex flex-col flex-1 w-full text-white p-8 items-center justify-center min-h-[calc(100vh-80px)] transition-colors duration-500`}>
             <div className="w-full max-w-2xl">
-                <Link href="/admin/lives" className="inline-flex items-center gap-2 text-gray-400 hover:text-white mb-8 transition-colors">
+                <Link href={`${basePath}/lives`} className="inline-flex items-center gap-2 text-gray-400 hover:text-white mb-8 transition-colors">
                     <ArrowLeft className="w-5 h-5" />
                     Retour
                 </Link>
 
-                <div className={`bg-magic-card border ${audience === 'adults' ? 'border-white/10' : 'border-purple-500/20'} p-8 rounded-2xl`}>
-                    <h1 className="text-3xl font-bold mb-8 text-magic-gold">Programmer un Live ({audience === 'adults' ? 'Adulte' : 'Enfant'})</h1>
+                <div className={`bg-white/5 border ${audience === 'adults' ? 'border-white/10' : 'border-brand-purple/20'} p-8 rounded-2xl`}>
+                    <h1 className={`text-3xl font-bold mb-8 ${textColor}`}>Programmer un Live ({audience === 'adults' ? 'Adulte' : 'Enfant'})</h1>
 
                     <form action={createLive} className="space-y-6">
                         {/* Hidden Audience Field - Auto-filled by context */}
@@ -83,7 +96,7 @@ export default function NewLivePage() {
                             </p>
                         </div>
 
-                        <button type="submit" className={`w-full ${themeColor} hover:opacity-90 text-white font-bold py-4 rounded-xl transition-all shadow-lg shadow-red-900/20 flex items-center justify-center gap-2 mt-8`}>
+                        <button type="submit" className={`w-full ${themeColor} font-bold py-4 rounded-xl transition-all shadow-lg flex items-center justify-center gap-2 mt-8`}>
                             <Save className="w-5 h-5" />
                             Confirmer la programmation
                         </button>

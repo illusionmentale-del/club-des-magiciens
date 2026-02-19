@@ -7,7 +7,7 @@ import {
     BreadcrumbPage,
     BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
-import { Users, LayoutDashboard, BookOpen, ShoppingBag, BarChart, Settings, LogOut } from "lucide-react"
+import { Users, LayoutDashboard, BookOpen, ShoppingBag, BarChart, Settings, LogOut, Video } from "lucide-react"
 import Link from "next/link"
 
 export default function AdultsAdminLayout({
@@ -48,6 +48,10 @@ export default function AdultsAdminLayout({
                     <Link href="/admin/adults/analytics" className="flex items-center gap-3 px-4 py-3 text-sm font-bold uppercase tracking-widest text-brand-text-muted hover:text-white hover:bg-white/5 rounded-xl transition-all group">
                         <BarChart className="w-5 h-5 group-hover:text-brand-gold transition-colors" />
                         Analytics
+                    </Link>
+                    <Link href="/admin/adults/lives" className="flex items-center gap-3 px-4 py-3 text-sm font-bold uppercase tracking-widest text-brand-text-muted hover:text-white hover:bg-white/5 rounded-xl transition-all group">
+                        <Video className="w-5 h-5 group-hover:text-brand-gold transition-colors" />
+                        Diffusions Live
                     </Link>
 
                     <Separator className="my-6 bg-white/5" />

@@ -4,13 +4,16 @@ import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import Link from "next/link";
 import { ArrowLeft, ShieldCheck, Users, Lock, Mic, Video } from "lucide-react";
-import { useParams } from "next/navigation";
+import { useParams, usePathname } from "next/navigation";
 import LiveChat from "@/components/LiveChat";
 
 export default function LiveControlRoom() {
     const { id } = useParams();
+    const pathname = usePathname();
     const [live, setLive] = useState<any>(null);
     const [loading, setLoading] = useState(true);
+
+    const basePath = pathname.includes('/kids/') ? '/admin/kids' : (pathname.includes('/adults/') ? '/admin/adults' : '/admin');
 
     useEffect(() => {
         const fetchLive = async () => {
@@ -28,11 +31,11 @@ export default function LiveControlRoom() {
     const roomName = live.platform_id; // e.g. "ClubMagie-Secret-123"
 
     return (
-        <div className="min-h-screen bg-black text-white flex flex-col">
+        <div className="flex-1 w-full text-white flex flex-col h-screen md:h-auto md:min-h-[calc(100vh-80px)]">
             {/* Header */}
             <header className="bg-white/5 border-b border-white/10 p-4 flex items-center justify-between">
                 <div className="flex items-center gap-4">
-                    <Link href="/admin/lives" className="p-2 hover:bg-white/10 rounded-lg transition-colors">
+                    <Link href={`${basePath}/lives`} className="p-2 hover:bg-white/10 rounded-lg transition-colors">
                         <ArrowLeft className="w-5 h-5" />
                     </Link>
                     <div>

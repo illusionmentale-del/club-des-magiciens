@@ -8,6 +8,7 @@ import KidsHomeHero from "@/components/kids/KidsHomeHero";
 import KidsNewsFeed from "@/components/kids/KidsNewsFeed";
 import KidsProgression from "@/components/kids/KidsProgression";
 import KidsAchievements from "@/components/kids/KidsAchievements";
+import { LiveStatusCard } from "@/components/LiveStatusCard";
 
 export const dynamic = 'force-dynamic';
 
@@ -104,14 +105,25 @@ export default async function KidsHomePage({ searchParams }: { searchParams: Pro
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
     const currentWeek = Math.floor(diffDays / 7) + 1;
 
-    // 2. Fetch Content (Library Items)
+    // 2. Fetch Content (Library Items & Active Live)
     // We fetch everything up to current week to have context
-    const { data: allItems } = await supabase
-        .from("library_items")
-        .select("*")
-        .eq("audience", "kids")
-        .lte("week_number", currentWeek)
-        .order("week_number", { ascending: false });
+    const [{ data: allItems }, { data: activeLive }] = await Promise.all([
+        supabase
+            .from("library_items")
+            .select("*")
+            .eq("audience", "kids")
+            .lte("week_number", currentWeek)
+            .order("week_number", { ascending: false }),
+
+        supabase
+            .from("lives")
+            .select("*")
+            .or("audience.eq.kids,audience.eq.all")
+            .in("status", ["programmé", "en_cours"])
+            .order("start_date", { ascending: true })
+            .limit(1)
+            .maybeSingle()
+    ]);
 
     // --- CONFIG LOGIC ---
 
@@ -248,6 +260,13 @@ export default async function KidsHomePage({ searchParams }: { searchParams: Pro
                         </p>
                     </div>
                 </header>
+
+                {/* BLOC: LIVE STREAM BANNER */}
+                {activeLive && (
+                    <div className="mb-8">
+                        <LiveStatusCard live={activeLive} />
+                    </div>
+                )}
 
                 {/* BLOC 2: HERO (ATELIER VEDETTE) */}
                 <KidsHomeHero

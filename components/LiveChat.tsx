@@ -10,6 +10,7 @@ type Message = {
     content: string;
     created_at: string;
     user_id: string;
+    type: 'chat' | 'question';
     profiles?: {
         full_name: string;
         avatar_url: string;
@@ -26,6 +27,8 @@ type Props = {
 export default function LiveChat({ liveId, isAdmin = false, isKids = false }: Props) {
     const [messages, setMessages] = useState<Message[]>([]);
     const [newMessage, setNewMessage] = useState("");
+    const [messageType, setMessageType] = useState<'chat' | 'question'>('chat');
+    const [adminFilter, setAdminFilter] = useState<'all' | 'questions'>('all');
     const [currentUserId, setCurrentUserId] = useState<string | null>(null);
     const messagesEndRef = useRef<HTMLDivElement>(null);
     const supabase = createClient();
@@ -100,7 +103,8 @@ export default function LiveChat({ liveId, isAdmin = false, isKids = false }: Pr
         const { error } = await supabase.from("live_messages").insert({
             live_id: liveId,
             user_id: currentUserId,
-            content
+            content,
+            type: messageType
         });
 
         if (error) {
@@ -114,24 +118,46 @@ export default function LiveChat({ liveId, isAdmin = false, isKids = false }: Pr
         await supabase.from("live_messages").delete().eq("id", msgId);
     };
 
+    const visibleMessages = messages.filter(msg => {
+        if (isAdmin && adminFilter === 'questions') return msg.type === 'question';
+        return true;
+    });
+
     return (
         <div className="flex flex-col h-full bg-white/5 rounded-xl border border-white/10 overflow-hidden">
-            <div className="p-4 border-b border-white/10 bg-white/5">
+            <div className="p-4 border-b border-white/10 bg-white/5 flex items-center justify-between">
                 <h3 className="font-bold text-white flex items-center gap-2">
                     💬 Chat en Direct
-                    <span className="text-xs font-normal text-gray-400 bg-black/20 px-2 py-0.5 rounded-full ml-auto">
-                        {messages.length} messages
-                    </span>
                 </h3>
+                <span className="text-xs font-normal text-gray-400 bg-black/20 px-2 py-0.5 rounded-full ml-auto whitespace-nowrap">
+                    {visibleMessages.length} msg
+                </span>
             </div>
 
+            {isAdmin && (
+                <div className="flex border-b border-white/10 bg-black/20 shrink-0">
+                    <button
+                        onClick={() => setAdminFilter('all')}
+                        className={`flex-1 py-3 text-xs font-bold uppercase tracking-widest transition-colors ${adminFilter === 'all' ? 'text-white border-b-2 border-purple-500 bg-white/5' : 'text-gray-500 hover:text-gray-300'}`}
+                    >
+                        Tout le chat
+                    </button>
+                    <button
+                        onClick={() => setAdminFilter('questions')}
+                        className={`flex-1 py-3 text-xs font-bold uppercase tracking-widest transition-colors ${adminFilter === 'questions' ? 'text-orange-400 border-b-2 border-orange-500 bg-white/5' : 'text-gray-500 hover:text-gray-300'}`}
+                    >
+                        Questions
+                    </button>
+                </div>
+            )}
+
             <div className="flex-1 overflow-y-auto p-4 space-y-4 scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent">
-                {messages.length === 0 && (
+                {visibleMessages.length === 0 && (
                     <div className="text-center text-gray-500 text-sm py-10">
-                        Soyez le premier à dire bonjour ! 👋
+                        {adminFilter === 'questions' ? "Aucune question pour le moment !" : "Soyez le premier à dire bonjour ! 👋"}
                     </div>
                 )}
-                {messages.map((msg) => {
+                {visibleMessages.map((msg) => {
                     // Determine avatar: if kids mode, prioritize kid avatar. Admin always uses main avatar.
                     const avatar = isKids
                         ? (msg.profiles?.avatar_url_kids || msg.profiles?.avatar_url)
@@ -163,12 +189,17 @@ export default function LiveChat({ liveId, isAdmin = false, isKids = false }: Pr
                                         </button>
                                     )}
                                 </div>
-                                <div className={`px-4 py-2.5 rounded-2xl text-sm break-words shadow-lg ${isMe
-                                        ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-tr-none'
-                                        : isAdmin /* If I am viewing as admin, I see others normally. */
-                                            ? 'bg-white/10 backdrop-blur-md border border-white/5 text-gray-100 rounded-tl-none'
+                                <div className={`px-4 py-3 rounded-2xl text-sm break-words shadow-lg relative ${msg.type === 'question'
+                                        ? `bg-gradient-to-br from-amber-500 to-orange-600 text-white border border-orange-400/50 ${isMe ? 'rounded-tr-none' : 'rounded-tl-none'}`
+                                        : isMe
+                                            ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-tr-none'
                                             : 'bg-white/10 backdrop-blur-md border border-white/5 text-gray-100 rounded-tl-none'
                                     }`}>
+                                    {msg.type === 'question' && (
+                                        <div className="text-[10px] uppercase tracking-widest font-black opacity-90 mb-1 flex items-center gap-1">
+                                            ❓ Question
+                                        </div>
+                                    )}
                                     {msg.content}
                                 </div>
                             </div>
@@ -178,20 +209,39 @@ export default function LiveChat({ liveId, isAdmin = false, isKids = false }: Pr
                 <div ref={messagesEndRef} />
             </div>
 
-            <form onSubmit={handleSendMessage} className="p-3 md:p-4 border-t border-white/10 bg-black/40 backdrop-blur-md pb-safe">
+            <form onSubmit={handleSendMessage} className="p-3 md:p-4 border-t border-white/10 bg-black/40 backdrop-blur-md pb-safe flex flex-col gap-3">
+                {!isAdmin && (
+                    <div className="flex gap-2">
+                        <button
+                            type="button"
+                            onClick={() => setMessageType('chat')}
+                            className={`flex-1 py-1.5 rounded-lg text-xs font-bold uppercase tracking-widest transition-all ${messageType === 'chat' ? 'bg-purple-500/20 text-purple-400 border border-purple-500/50' : 'bg-white/5 text-gray-500 border border-transparent hover:bg-white/10'}`}
+                        >
+                            💬 Message
+                        </button>
+                        <button
+                            type="button"
+                            onClick={() => setMessageType('question')}
+                            className={`flex-1 py-1.5 rounded-lg text-xs font-bold uppercase tracking-widest transition-all ${messageType === 'question' ? 'bg-orange-500/20 text-orange-400 border border-orange-500/50' : 'bg-white/5 text-gray-500 border border-transparent hover:bg-white/10'}`}
+                        >
+                            ❓ Question
+                        </button>
+                    </div>
+                )}
+
                 <div className="flex gap-2">
                     <input
                         type="text"
                         value={newMessage}
                         onChange={(e) => setNewMessage(e.target.value)}
-                        placeholder="✨ Posez votre question..."
-                        className="flex-1 bg-white/5 border border-white/10 rounded-full px-5 py-3 text-base md:text-sm text-white focus:outline-none focus:border-purple-500 focus:bg-white/10 transition-all placeholder-gray-400 shadow-inner"
+                        placeholder={messageType === 'question' ? "❓ Ta question au magicien..." : "✨ Dis quelque chose..."}
+                        className={`flex-1 border text-base md:text-sm text-white focus:outline-none transition-all placeholder-gray-400 shadow-inner rounded-full px-5 py-3 ${messageType === 'question' ? 'bg-orange-900/10 border-orange-500/50 focus:border-orange-500 focus:bg-orange-900/30' : 'bg-white/5 border-white/10 focus:border-purple-500 focus:bg-white/10'}`}
                         style={{ fontSize: '16px' }} // Prevent iOS zoom
                     />
                     <button
                         type="submit"
                         disabled={!newMessage.trim()}
-                        className="p-3 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 disabled:opacity-50 disabled:grayscale text-white rounded-full transition-all flex-shrink-0 shadow-lg hover:shadow-purple-500/25 transform hover:scale-105"
+                        className={`p-3 text-white rounded-full transition-all flex-shrink-0 shadow-lg transform hover:scale-105 disabled:opacity-50 disabled:grayscale ${messageType === 'question' ? 'bg-gradient-to-r from-orange-500 to-amber-500 hover:shadow-orange-500/25' : 'bg-gradient-to-r from-purple-600 to-pink-600 hover:shadow-purple-500/25'}`}
                     >
                         <Send className="w-5 h-5 md:w-4 md:h-4" />
                     </button>
