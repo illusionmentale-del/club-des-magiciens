@@ -70,13 +70,22 @@ export default function LiveChat({ liveId, isAdmin = false, isKids = false }: Pr
                 { event: 'INSERT', schema: 'public', table: 'live_messages', filter: `live_id=eq.${liveId}` },
                 async (payload) => {
                     const { new: newMsg } = payload;
-                    // Fetch profile for the new message
-                    const { data: profile } = await supabase.from('profiles').select('full_name, avatar_url, avatar_url_kids').eq('id', newMsg.user_id).single();
+                    // Fetch profile for the new message because realtime payload doesn't include joins
+                    const { data: profile } = await supabase
+                        .from('profiles')
+                        .select('full_name, avatar_url, avatar_url_kids')
+                        .eq('id', newMsg.user_id)
+                        .single();
 
                     const msgWithProfile = { ...newMsg, profiles: profile } as Message;
 
-                    setMessages((prev) => [...prev, msgWithProfile]);
-                    setTimeout(scrollToBottom, 100);
+                    // Only add if it doesn't already exist (in case of double triggers)
+                    setMessages((prev) => {
+                        if (prev.some(m => m.id === newMsg.id)) return prev;
+                        return [...prev, msgWithProfile];
+                    });
+
+                    setTimeout(scrollToBottom, 500);
                 }
             )
             .on(
@@ -190,10 +199,10 @@ export default function LiveChat({ liveId, isAdmin = false, isKids = false }: Pr
                                     )}
                                 </div>
                                 <div className={`px-4 py-3 rounded-2xl text-sm break-words shadow-lg relative ${msg.type === 'question'
-                                        ? `bg-gradient-to-br from-amber-500 to-orange-600 text-white border border-orange-400/50 ${isMe ? 'rounded-tr-none' : 'rounded-tl-none'}`
-                                        : isMe
-                                            ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-tr-none'
-                                            : 'bg-white/10 backdrop-blur-md border border-white/5 text-gray-100 rounded-tl-none'
+                                    ? `bg-gradient-to-br from-amber-500 to-orange-600 text-white border border-orange-400/50 ${isMe ? 'rounded-tr-none' : 'rounded-tl-none'}`
+                                    : isMe
+                                        ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-tr-none'
+                                        : 'bg-white/10 backdrop-blur-md border border-white/5 text-gray-100 rounded-tl-none'
                                     }`}>
                                     {msg.type === 'question' && (
                                         <div className="text-[10px] uppercase tracking-widest font-black opacity-90 mb-1 flex items-center gap-1">
