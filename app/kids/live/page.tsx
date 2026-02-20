@@ -39,7 +39,7 @@ export default function KidsLivePage() {
     if (isJoined && live) {
         return (
             <div className="w-full h-[calc(100dvh-6rem)] bg-black rounded-3xl overflow-hidden shadow-2xl relative mt-4 flex flex-col lg:flex-row">
-                <div className="relative w-full lg:flex-1 h-[30vh] lg:h-auto">
+                <div className="relative w-full lg:flex-1 h-[45vh] lg:h-auto flex-shrink-0">
                     {live.platform === 'vimeo' ? (
                         <iframe
                             src={`https://player.vimeo.com/video/${live.platform_id}?autoplay=1&title=0&byline=0&portrait=0`}
@@ -62,7 +62,7 @@ export default function KidsLivePage() {
                     </button>
                 </div>
                 {/* Kids Chat */}
-                <div className="w-full lg:w-80 h-[60vh] lg:h-auto bg-white border-t lg:border-t-0 lg:border-l border-purple-100 flex flex-col">
+                <div className="w-full lg:w-80 flex-1 lg:flex-none bg-white border-t lg:border-t-0 lg:border-l border-purple-100 flex flex-col min-h-0">
                     <LiveChat liveId={live.id} isKids={true} />
                 </div>
             </div>
