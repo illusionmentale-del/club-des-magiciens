@@ -49,7 +49,7 @@ export default function KidsLivePage() {
                         ></iframe>
                     ) : (
                         <iframe
-                            src={`https://meet.jit.si/${live.platform_id}#config.prejoinPageEnabled=false&config.deeplinking.disabled=true&config.startWithAudioMuted=true&config.startWithVideoMuted=true&config.disableInitialGUM=true&config.toolbarButtons=%5B%22fullscreen%22%2C%22hangup%22%2C%22participants-pane%22%5D&config.channelLastN=1&config.disableTileView=true`}
+                            src={`https://meet.jit.si/${live.platform_id}?userInfo.displayName=Eleve#config.prejoinPageEnabled=false&config.deeplinking.disabled=true&config.startWithAudioMuted=true&config.startWithVideoMuted=true&config.disableInitialGUM=true&config.toolbarButtons=%5B%22fullscreen%22%2C%22hangup%22%5D&config.channelLastN=1&config.disableTileView=true`}
                             allow="camera; microphone; fullscreen; display-capture; autoplay"
                             className="w-full h-full border-0 absolute inset-0"
                         ></iframe>

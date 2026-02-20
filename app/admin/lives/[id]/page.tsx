@@ -79,7 +79,7 @@ export default function LiveControlRoom() {
                                 <div className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></div> Monitor (Muet)
                             </div>
                             <iframe
-                                src={`https://meet.jit.si/${roomName}#config.prejoinPageEnabled=false&config.startWithAudioMuted=true&config.startWithVideoMuted=true&config.disableInitialGUM=true&config.toolbarButtons=%5B%22fullscreen%22%5D&userInfo.displayName=Monitor`}
+                                src={`https://meet.jit.si/${roomName}?userInfo.displayName=Monitor#config.prejoinPageEnabled=false&config.startWithAudioMuted=true&config.startWithVideoMuted=true&config.disableInitialGUM=true&config.toolbarButtons=%5B%22fullscreen%22%5D`}
                                 allow="autoplay; fullscreen"
                                 className="w-full h-full border-0 absolute inset-0 pointer-events-none"
                             // pointer-events-none prevents the admin from accidentally interacting with the monitor iframe
