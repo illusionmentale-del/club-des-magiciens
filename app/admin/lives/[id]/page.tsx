@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { createClient } from "@/lib/supabase/client";
 import Link from "next/link";
 import { ArrowLeft, ShieldCheck, Users, Lock, Mic, Video, Play, StopCircle } from "lucide-react";
@@ -13,6 +13,8 @@ export default function LiveControlRoom() {
     const pathname = usePathname();
     const [live, setLive] = useState<any>(null);
     const [loading, setLoading] = useState(true);
+    const [optimisticStatus, setOptimisticStatus] = useState<string | null>(null);
+    const [isPending, startTransition] = useTransition();
 
     const basePath = pathname.includes('/kids/') ? '/admin/kids' : (pathname.includes('/adults/') ? '/admin/adults' : '/admin');
 
@@ -21,10 +23,18 @@ export default function LiveControlRoom() {
             const supabase = createClient();
             const { data } = await supabase.from("lives").select("*").eq("id", id).single();
             setLive(data);
+            setOptimisticStatus(data?.status || null);
             setLoading(false);
         };
         fetchLive();
     }, [id]);
+
+    const handleUpdateStatus = (newStatus: string) => {
+        setOptimisticStatus(newStatus);
+        startTransition(async () => {
+            await updateLiveStatus(live.id, newStatus);
+        });
+    };
 
     if (loading) return <div className="min-h-screen bg-black text-white flex items-center justify-center">Chargement...</div>;
     if (!live) return <div className="min-h-screen bg-black text-white flex items-center justify-center">Live introuvable</div>;
@@ -60,63 +70,81 @@ export default function LiveControlRoom() {
             <div className="flex-1 flex overflow-hidden">
                 {/* Jitsi Embed */}
                 {/* Jitsi External Link (Bypass 5min limit) */}
-                <div className="flex-1 bg-black/90 relative flex flex-col items-center justify-center p-8 text-center">
-                    <div className="mb-6 animate-bounce">
-                        <Video className="w-16 h-16 text-magic-gold mx-auto mb-4" />
-                    </div>
-                    <h2 className="text-2xl font-bold mb-4">La salle est prête !</h2>
-                    <p className="text-gray-400 mb-8 max-w-md mx-auto">
-                        Pour éviter les limitations de durée (coupure à 5 min), la réunion doit s'ouvrir dans une fenêtre dédiée sécurisée.
-                    </p>
+                <div className="flex-1 bg-black/90 relative flex flex-col p-6 overflow-y-auto">
 
-                    <a
-                        href={`https://meet.jit.si/${roomName}?userInfo.displayName=MaitreDuClub`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="px-8 py-4 bg-blue-600 hover:bg-blue-500 rounded-2xl font-bold text-xl flex items-center gap-3 transition-transform hover:scale-105 shadow-xl shadow-blue-900/20 mb-12"
-                    >
-                        <Video className="w-6 h-6" />
-                        OUVRIR LA SALLE JITSI (ADMIN)
-                    </a>
+                    <div className="flex flex-col lg:flex-row gap-6 mb-8">
+                        {/* Monitor Iframe */}
+                        <div className="flex-1 bg-black rounded-2xl border border-white/10 overflow-hidden relative shadow-2xl min-h-[300px]">
+                            <div className="absolute top-2 left-2 z-10 bg-black/60 px-2 py-1 rounded text-[10px] font-bold tracking-widest uppercase border border-white/10 flex items-center gap-2 backdrop-blur-sm">
+                                <div className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></div> Monitor (Muet)
+                            </div>
+                            <iframe
+                                src={`https://meet.jit.si/${roomName}#config.prejoinPageEnabled=false&config.startWithAudioMuted=true&config.startWithVideoMuted=true&userInfo.displayName=Monitor`}
+                                className="w-full h-full border-0 absolute inset-0 pointer-events-none"
+                            // pointer-events-none prevents the admin from accidentally interacting with the monitor iframe
+                            ></iframe>
+                        </div>
 
-                    <div className="bg-white/5 border border-white/10 p-6 rounded-2xl max-w-lg w-full">
-                        <h3 className="text-sm font-bold text-gray-400 uppercase tracking-widest mb-4">État de la Diffusion</h3>
-                        <div className="flex items-center justify-between mb-6">
-                            <span className="text-lg font-bold">Statut Actuel :</span>
-                            <span className={`px-4 py-1.5 rounded-full text-sm font-bold uppercase tracking-wider ${live.status === 'en_cours' ? 'bg-red-500 text-white animate-pulse shadow-[0_0_15px_rgba(239,68,68,0.5)]' :
-                                    live.status === 'programmé' ? 'bg-gray-500/20 text-gray-300 border border-white/10' :
+                        {/* Status Control Panel */}
+                        <div className="w-full lg:w-80 bg-white/5 border border-white/10 p-6 rounded-2xl flex flex-col justify-center">
+                            <h3 className="text-sm font-bold text-gray-400 uppercase tracking-widest mb-4">État de la Diffusion</h3>
+                            <div className="flex items-center justify-between mb-6">
+                                <span className="text-sm font-bold">Statut Actuel :</span>
+                                <span className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${optimisticStatus === 'en_cours' ? 'bg-red-500 text-white animate-pulse shadow-[0_0_15px_rgba(239,68,68,0.5)]' :
+                                    optimisticStatus === 'programmé' ? 'bg-gray-500/20 text-gray-300 border border-white/10' :
                                         'bg-gray-800 text-gray-500'
-                                }`}>
-                                {live.status === 'en_cours' ? 'EN DIRECT' : live.status === 'programmé' ? 'EN ATTENTE' : 'TERMINÉ'}
-                            </span>
-                        </div>
+                                    }`}>
+                                    {optimisticStatus === 'en_cours' ? 'EN DIRECT' : optimisticStatus === 'programmé' ? 'EN ATTENTE' : 'TERMINÉ'}
+                                </span>
+                            </div>
 
-                        <div className="flex flex-col gap-3">
-                            {live.status === 'programmé' && (
-                                <form action={updateLiveStatus.bind(null, live.id, 'en_cours', undefined)}>
-                                    <button className="w-full px-6 py-4 bg-red-600 hover:bg-red-500 rounded-xl font-black uppercase text-lg flex items-center justify-center gap-2 transition-transform hover:scale-105 shadow-[0_0_30px_rgba(220,38,38,0.4)]">
-                                        <Play className="w-6 h-6" />
-                                        LANCER LE LIVE AUX ÉLÈVES
+                            <div className="flex flex-col gap-3">
+                                {optimisticStatus === 'programmé' && (
+                                    <button
+                                        onClick={() => handleUpdateStatus('en_cours')}
+                                        disabled={isPending}
+                                        className="w-full py-4 bg-red-600 hover:bg-red-500 disabled:opacity-50 rounded-xl font-black uppercase text-sm flex items-center justify-center gap-2 transition-transform hover:scale-105 shadow-[0_0_30px_rgba(220,38,38,0.4)]"
+                                    >
+                                        <Play className="w-5 h-5" />
+                                        {isPending ? "Lancement..." : "Lancer aux Élèves"}
                                     </button>
-                                    <p className="text-xs text-gray-400 mt-2 text-center">Ceci débloquera le bouton "Rejoindre" sur la page d'accueil des élèves.</p>
-                                </form>
-                            )}
+                                )}
 
-                            {live.status === 'en_cours' && (
-                                <form action={updateLiveStatus.bind(null, live.id, 'terminé', undefined)}>
-                                    <button className="w-full px-6 py-4 bg-gray-700 hover:bg-gray-600 rounded-xl font-bold uppercase flex items-center justify-center gap-2 transition-colors">
-                                        <StopCircle className="w-5 h-5" />
-                                        ARRÊTER LA DIFFUSION
+                                {optimisticStatus === 'en_cours' && (
+                                    <button
+                                        onClick={() => handleUpdateStatus('terminé')}
+                                        disabled={isPending}
+                                        className="w-full py-4 bg-gray-700 hover:bg-gray-600 disabled:opacity-50 rounded-xl font-bold uppercase text-sm flex items-center justify-center gap-2 transition-colors"
+                                    >
+                                        <StopCircle className="w-4 h-4" />
+                                        {isPending ? "Arrêt..." : "Arrêter la Diffusion"}
                                     </button>
-                                    <p className="text-xs text-gray-400 mt-2 text-center">Ceci clôturera le live pour tout le monde.</p>
-                                </form>
-                            )}
+                                )}
+                            </div>
                         </div>
                     </div>
 
-                    <p className="mt-6 text-xs text-gray-500">
-                        Rappel : Connectez-vous en tant qu'hôte (Log-in) sur la fenêtre Jitsi pour autoriser les caméras/micros.
-                    </p>
+                    <div className="bg-blue-900/10 border border-blue-500/20 p-6 rounded-2xl text-center">
+                        <div className="mb-4 animate-bounce">
+                            <Video className="w-12 h-12 text-blue-400 mx-auto" />
+                        </div>
+                        <h2 className="text-xl font-bold mb-2">Caméra Administrateur</h2>
+                        <p className="text-gray-400 text-sm mb-6 max-w-md mx-auto">
+                            Pour éviter les limitations Jitsi, votre caméra doit s'ouvrir dans un onglet dédié sécurisé.
+                        </p>
+
+                        <a
+                            href={`https://meet.jit.si/${roomName}?userInfo.displayName=MaitreDuClub`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex px-8 py-3 bg-blue-600 hover:bg-blue-500 rounded-xl font-bold text-sm items-center gap-3 transition-transform hover:scale-105 shadow-xl shadow-blue-900/20"
+                        >
+                            <Video className="w-5 h-5" />
+                            OUVRIR MON ONGLET CAMÉRA
+                        </a>
+                        <p className="mt-4 text-[10px] text-gray-500">Connectez-vous à Jitsi comme Modérateur si demandé.</p>
+                    </div>
+
                 </div>
 
                 {/* Sidebar Controls (Chat & Quick Actions) */}
