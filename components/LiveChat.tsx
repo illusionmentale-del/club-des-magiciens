@@ -4,6 +4,7 @@ import { useEffect, useState, useRef } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { Send, Trash2, User } from "lucide-react";
 import Image from "next/image";
+import { sendLiveChatMessage } from "@/app/admin/actions";
 
 type Message = {
     id: string;
@@ -109,12 +110,7 @@ export default function LiveChat({ liveId, isAdmin = false, isKids = false }: Pr
         const content = newMessage.trim();
         setNewMessage(""); // Optimistic clear
 
-        const { error } = await supabase.from("live_messages").insert({
-            live_id: liveId,
-            user_id: currentUserId,
-            content,
-            type: messageType
-        });
+        const { error } = await sendLiveChatMessage(liveId, content, messageType as any);
 
         if (error) {
             console.error("Error sending message:", error);

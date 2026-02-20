@@ -618,3 +618,33 @@ export async function adminChangeUserPassword(userId: string, formData: FormData
     revalidatePath(`/admin/adults/users/${userId}`);
     return { success: true };
 }
+
+// --- CHAT ACTIONS ---
+export async function sendLiveChatMessage(liveId: string, content: string, type: 'chat' | 'question') {
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+    const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
+
+    const { createClient: createSupabaseAdmin } = await import("@supabase/supabase-js");
+    const supabaseAdmin = createSupabaseAdmin(supabaseUrl, supabaseServiceKey, {
+        auth: { autoRefreshToken: false, persistSession: false }
+    });
+
+    const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+
+    if (!user) return { error: "Unauthorized" };
+
+    const { error } = await supabaseAdmin.from("live_messages").insert({
+        live_id: liveId,
+        user_id: user.id,
+        content,
+        type
+    });
+
+    if (error) {
+        console.error("Error sending chat message:", error);
+        return { error: error.message };
+    }
+
+    return { success: true };
+}
