@@ -54,14 +54,27 @@ export default async function KidsVideoPlayerPage({ params }: { params: { videoI
     }
 
     // --- Fetch Comments and Admin Status ---
-    const { data: comments } = await supabase
+    // --- Fetch Comments and Admin Status ---
+    // Fetch comments manually to avoid Supabase PGRST200 schema cache bug
+    const { data: rawComments } = await supabase
         .from("course_comments")
-        .select(`
-            *,
-            profiles (full_name, role, email)
-        `)
+        .select("*")
         .eq("course_id", params.videoId)
         .order("created_at", { ascending: false });
+
+    let comments: any[] = [];
+    if (rawComments && rawComments.length > 0) {
+        const userIds = [...new Set(rawComments.map(c => c.user_id))];
+        const { data: profiles } = await supabase
+            .from("profiles")
+            .select("id, full_name, role, email")
+            .in("id", userIds);
+
+        comments = rawComments.map(c => ({
+            ...c,
+            profiles: profiles?.find(p => p.id === c.user_id) || null
+        }));
+    }
 
     // Check if user is admin or Jérémy
     const { data: profile } = await supabase

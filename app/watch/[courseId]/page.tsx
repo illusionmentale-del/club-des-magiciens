@@ -56,15 +56,26 @@ export default async function WatchPage(props: WatchPageProps) {
             .single();
         const isValidated = !!progress;
 
-        // Fetch Comments for this Library Item
-        const { data: comments } = await supabase
+        // Fetch Comments for this Library Item manually to avoid PGRST200 error
+        const { data: rawComments } = await supabase
             .from("course_comments")
-            .select(`
-                *,
-                profiles (full_name, role, email)
-            `)
+            .select("*")
             .eq("course_id", libraryItem.id)
             .order("created_at", { ascending: false });
+
+        let comments: any[] = [];
+        if (rawComments && rawComments.length > 0) {
+            const userIds = [...new Set(rawComments.map(c => c.user_id))];
+            const { data: profiles } = await supabase
+                .from("profiles")
+                .select("id, full_name, role, email")
+                .in("id", userIds);
+
+            comments = rawComments.map(c => ({
+                ...c,
+                profiles: profiles?.find(p => p.id === c.user_id) || null
+            }));
+        }
 
         // Check if user is admin
         const { data: profile } = await supabase
@@ -209,15 +220,26 @@ export default async function WatchPage(props: WatchPageProps) {
         .eq("course_id", course.id)
         .order("position", { ascending: true });
 
-    // Fetch comments
-    const { data: comments } = await supabase
+    // Fetch comments manually to avoid PGRST200
+    const { data: rawComments } = await supabase
         .from("course_comments")
-        .select(`
-            *,
-            profiles (username, magic_level, avatar_url, avatar_url_kids)
-        `)
+        .select("*")
         .eq("course_id", course.id)
         .order("created_at", { ascending: false });
+
+    let comments: any[] = [];
+    if (rawComments && rawComments.length > 0) {
+        const userIds = [...new Set(rawComments.map(c => c.user_id))];
+        const { data: profiles } = await supabase
+            .from("profiles")
+            .select("id, username, magic_level, avatar_url, avatar_url_kids")
+            .in("id", userIds);
+
+        comments = rawComments.map(c => ({
+            ...c,
+            profiles: profiles?.find(p => p.id === c.user_id) || null
+        }));
+    }
 
     // Fetch progress
     const { data: progressData } = await supabase
