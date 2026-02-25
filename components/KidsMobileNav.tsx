@@ -116,9 +116,6 @@ export default function KidsMobileNav({ logoUrl, hasPurchases, isAdmin, hasUnrea
                                         <div className="text-xs text-gray-500">Accéder aux cours et contenus</div>
                                     </div>
                                 </div>
-                                {hasUnreadReplies && (
-                                    <div className="w-2.5 h-2.5 rounded-full bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.8)] animate-pulse"></div>
-                                )}
                             </Link>
 
                             {/* 3. 🎬 Les Masterclass */}
@@ -132,6 +129,12 @@ export default function KidsMobileNav({ logoUrl, hasPurchases, isAdmin, hasUnrea
                                         <div className="text-xs text-gray-500">Perfectionne-toi en vidéo</div>
                                     </div>
                                 </div>
+                                {hasUnreadReplies && (
+                                    <div className="flex items-center gap-2">
+                                        <span className="text-[10px] bg-red-500 text-white px-2 py-1 rounded-full font-bold">RÉPONSE</span>
+                                        <div className="w-2.5 h-2.5 rounded-full bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.8)] animate-pulse"></div>
+                                    </div>
+                                )}
                             </Link>
 
                             {/* 4. 👤 Mes Informations */}

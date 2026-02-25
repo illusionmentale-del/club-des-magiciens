@@ -112,11 +112,20 @@ export default function KidsSidebar({ socialLinks, logoUrl, isAdmin, hasPurchase
                 {/* 3. 🎬 Les Masterclass */}
                 <Link href="/kids/videos" className="block group">
                     <div className="flex items-center gap-4">
-                        <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-colors ${isActive('/kids/videos') ? 'bg-magic-purple text-white shadow-lg shadow-magic-purple/20' : 'bg-white/5 text-gray-400 group-hover:bg-white/10 group-hover:text-white'}`}>
+                        <div className={`relative w-10 h-10 rounded-xl flex items-center justify-center transition-colors ${isActive('/kids/videos') ? 'bg-magic-purple text-white shadow-lg shadow-magic-purple/20' : 'bg-white/5 text-gray-400 group-hover:bg-white/10 group-hover:text-white'}`}>
                             <Video className="w-5 h-5" />
+                            {hasUnreadReplies && (
+                                <span className="absolute -top-1 -right-1 flex h-3 w-3">
+                                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                                    <span className="relative inline-flex rounded-full h-3 w-3 bg-red-500 border-2 border-magic-card"></span>
+                                </span>
+                            )}
                         </div>
                         <div>
-                            <div className={`font-bold ${isActive('/kids/videos') ? 'text-magic-purple' : 'text-gray-300 group-hover:text-white'}`}>Les Masterclass</div>
+                            <div className={`font-bold flex items-center gap-2 ${isActive('/kids/videos') ? 'text-magic-purple' : 'text-gray-300 group-hover:text-white'}`}>
+                                Les Masterclass
+                                {hasUnreadReplies && <span className="text-[10px] bg-red-500 text-white px-1.5 py-0.5 rounded-full font-bold">RÉPONSE</span>}
+                            </div>
                             <div className="text-xs text-gray-500">Perfectionne-toi en vidéo</div>
                         </div>
                     </div>

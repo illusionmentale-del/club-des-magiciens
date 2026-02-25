@@ -1,16 +1,22 @@
 "use client";
 
-import { Send, Sparkles, File } from "lucide-react";
+import { Send, Sparkles, File, CheckCircle } from "lucide-react";
 import { useRef, useState, useTransition } from "react";
 import { addKidsComment } from "@/app/kids/videos/[videoId]/actions";
+import { usePathname } from "next/navigation";
 
 export default function KidsCommentsSection({ videoId, comments, isAdmin }: { videoId: string, comments: any[], isAdmin: boolean }) {
     const formRef = useRef<HTMLFormElement>(null);
     const [isPending, startTransition] = useTransition();
+    const [isSuccess, setIsSuccess] = useState(false);
+    const pathname = usePathname();
 
     const handleCommentSubmit = async (formData: FormData) => {
-        await addKidsComment(videoId, formData.get("content") as string);
+        setIsSuccess(false);
+        await addKidsComment(videoId, formData.get("content") as string, pathname);
         formRef.current?.reset();
+        setIsSuccess(true);
+        setTimeout(() => setIsSuccess(false), 5000);
     };
 
     return (
@@ -24,6 +30,14 @@ export default function KidsCommentsSection({ videoId, comments, isAdmin }: { vi
                     Pose ta question en dessous ! Le chat est <strong>privé</strong>, les autres petits magiciens ne verront jamais ton nom.
                 </p>
             </div>
+
+            {/* Success Message */}
+            {isSuccess && (
+                <div className="bg-green-500/20 border border-green-500/50 p-4 rounded-2xl flex items-center gap-3 text-green-400 font-bold mb-4 animate-in slide-in-from-top-2">
+                    <CheckCircle className="w-6 h-6 shrink-0" />
+                    <p>Ta question a été envoyée à Jérémy !</p>
+                </div>
+            )}
 
             {/* Comment Form */}
             <form

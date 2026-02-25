@@ -574,7 +574,7 @@ export async function resendWelcomeEmail(email: string, username: string) {
             ? 'Club des Petits Magiciens <onboarding@resend.dev>'
             : 'Club des Petits Magiciens <contact@clubdespetitsmagiciens.fr>';
 
-        await resend.emails.send({
+        const { data, error: sendError } = await resend.emails.send({
             from: fromEmail,
             to: [email],
             subject: 'Magie ! Ton lien de connexion au Club 🎩✨',
@@ -584,7 +584,13 @@ export async function resendWelcomeEmail(email: string, username: string) {
                 recoveryUrl: linkData.properties.action_link // The magic link
             }),
         });
-        return { success: true };
+
+        if (sendError) {
+            console.error("Resend API rejected email:", sendError);
+            return { error: sendError.message || "Refusé par le serveur mail" };
+        }
+
+        return { success: true, data };
     } catch (error: any) {
         console.error("Resend error:", error);
         return { error: error.message };

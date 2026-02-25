@@ -3,7 +3,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { revalidatePath } from "next/cache";
 
-export async function addKidsComment(videoId: string, content: string) {
+export async function addKidsComment(videoId: string, content: string, currentPath?: string) {
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
 
@@ -17,5 +17,10 @@ export async function addKidsComment(videoId: string, content: string) {
         content: content.trim()
     });
 
-    revalidatePath(`/kids/videos/${videoId}`);
+    if (currentPath) {
+        revalidatePath(currentPath);
+    } else {
+        revalidatePath(`/kids/videos/${videoId}`);
+        revalidatePath(`/watch/${videoId}`);
+    }
 }

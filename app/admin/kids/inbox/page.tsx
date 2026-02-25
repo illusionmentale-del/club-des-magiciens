@@ -6,26 +6,32 @@ export default async function AdminKidsInbox() {
     const supabase = await createClient();
 
     // 1. Fetch unread questions
-    // Since we know Jeremy's replies are either is_read=true by default (in our action)
-    // or we filter out admins. It's safer to filter out admins.
-    const { data: rawComments } = await supabase
+    // Since the foreign key relationship might be missing in the schema cache,
+    // we fetch comments first, then manually join profiles.
+    const { data: rawComments, error: commentsError } = await supabase
         .from("course_comments")
-        .select(`
-            id,
-            content,
-            course_id,
-            created_at,
-            profiles (
-                id,
-                full_name,
-                role,
-                email
-            )
-        `)
+        .select("id, content, course_id, created_at, user_id")
         .eq("is_read", false)
         .order("created_at", { ascending: false });
 
-    const typedComments = (rawComments as any[]) || [];
+    if (commentsError) {
+        console.error("Error fetching admin inbox comments:", commentsError);
+    }
+
+    let typedComments: any[] = [];
+
+    if (rawComments && rawComments.length > 0) {
+        const userIds = [...new Set(rawComments.map(c => c.user_id))];
+        const { data: profiles } = await supabase
+            .from("profiles")
+            .select("id, full_name, role, email")
+            .in("id", userIds);
+
+        typedComments = rawComments.map(c => ({
+            ...c,
+            profiles: profiles?.find(p => p.id === c.user_id) || null
+        }));
+    }
 
     // Filter out Jérémy's own test replies just in case they slipped as unread
     const comments = typedComments.filter(c => {
@@ -41,11 +47,13 @@ export default async function AdminKidsInbox() {
     if (courseIds.length > 0) {
         // Here we assume course_id in Kids space is either the library_item.id or library_item.video_url
         // Based on page.tsx, the kids video page uses `params.videoId` which is libraryItem.video_url (Bunny GUID)
+        const courseIdsString = `(${courseIds.join(',')})`;
+
         const { data: items } = await supabase
             .from("library_items")
             .select("id, title, video_url")
-            // We use in on video_url because the course_id stores params.videoId
-            .in("video_url", courseIds);
+            // Check if courseId matches either the Bunny GUID (video_url) or the UUID (id)
+            .or(`id.in.${courseIdsString},video_url.in.${courseIdsString}`);
 
         libraryItems = items || [];
     }

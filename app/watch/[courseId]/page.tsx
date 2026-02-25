@@ -5,6 +5,7 @@ import { ArrowLeft, PlayCircle, Lock, CheckCircle, Trophy, Star } from "lucide-r
 import { cn } from "@/lib/utils";
 import CommentsSection from "@/components/Comments";
 import VideoPlayerControls from "@/components/VideoPlayerControls";
+import KidsCommentsSection from "@/components/KidsComments";
 
 interface WatchPageProps {
     params: Promise<{ courseId: string }>;
@@ -54,6 +55,34 @@ export default async function WatchPage(props: WatchPageProps) {
             .eq("item_id", libraryItem.id)
             .single();
         const isValidated = !!progress;
+
+        // Fetch Comments for this Library Item
+        const { data: comments } = await supabase
+            .from("course_comments")
+            .select(`
+                *,
+                profiles (full_name, role, email)
+            `)
+            .eq("course_id", libraryItem.id)
+            .order("created_at", { ascending: false });
+
+        // Check if user is admin
+        const { data: profile } = await supabase
+            .from("profiles")
+            .select("role")
+            .eq("id", user.id)
+            .single();
+        const isAdmin = profile?.role === 'admin' || (user.email?.includes('admin@') ?? false);
+
+        // Mark any pending notifications as read for this kid on this video
+        if (!isAdmin) {
+            await supabase
+                .from("course_comments")
+                .update({ kid_notified: true })
+                .eq("course_id", libraryItem.id)
+                .eq("target_user_id", user.id)
+                .eq("kid_notified", false);
+        }
 
         return (
             <div className="min-h-screen bg-magic-bg text-white flex flex-col font-sans">
@@ -159,6 +188,13 @@ export default async function WatchPage(props: WatchPageProps) {
                             </div>
                         </div>
                     </div>
+
+                    {/* Kids Comments Section */}
+                    <KidsCommentsSection
+                        videoId={libraryItem.id}
+                        comments={comments || []}
+                        isAdmin={isAdmin}
+                    />
                 </div>
             </div>
         )

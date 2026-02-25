@@ -1,8 +1,8 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { markAsReadAndReply, dismissQuestion } from "@/app/admin/kids/inbox/actions";
-import { Send, FileText, Video, File, Check, X } from "lucide-react";
+import { markAsReadAndReply, dismissQuestion, deleteQuestion } from "@/app/admin/kids/inbox/actions";
+import { Send, FileText, Video, File, Check, X, Trash2 } from "lucide-react";
 
 export default function InboxReplyForm({
     commentId,
@@ -20,11 +20,17 @@ export default function InboxReplyForm({
     const [content, setContent] = useState('');
     const [mediaUrl, setMediaUrl] = useState('');
     const [mediaTitle, setMediaTitle] = useState('');
+    const [isBroadcast, setIsBroadcast] = useState(false);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         startTransition(async () => {
-            await markAsReadAndReply(commentId, courseId, content, mediaType, mediaUrl, mediaTitle);
+            await markAsReadAndReply(commentId, courseId, content, mediaType, mediaUrl, mediaTitle, isBroadcast);
+            alert(`Réponse envoyée avec succès à ${kidPseudo} ! 🪄`);
+            setContent('');
+            setMediaUrl('');
+            setMediaTitle('');
+            setIsBroadcast(false);
         });
     };
 
@@ -32,6 +38,16 @@ export default function InboxReplyForm({
         if (confirm(`Marquer la question de ${kidPseudo} comme lue sans répondre ?`)) {
             startTransition(async () => {
                 await dismissQuestion(commentId);
+                alert(`Question de ${kidPseudo} marquée comme lue !`);
+            });
+        }
+    };
+
+    const handleDelete = () => {
+        if (confirm(`⚠️ ATTENTION : Supprimer DÉFINITIVEMENT la question de ${kidPseudo} ?`)) {
+            startTransition(async () => {
+                await deleteQuestion(commentId);
+                alert(`Question de ${kidPseudo} supprimée avec succès.`);
             });
         }
     };
@@ -140,21 +156,45 @@ export default function InboxReplyForm({
                     </div>
                 )}
 
-                <div className="flex gap-3 justify-end pt-2">
+                {/* Broadcast Option */}
+                <div className="flex items-center gap-2 p-3 bg-white/5 border border-white/10 rounded-xl mt-4">
+                    <input
+                        type="checkbox"
+                        id={`broadcast-${commentId}`}
+                        checked={isBroadcast}
+                        onChange={(e) => setIsBroadcast(e.target.checked)}
+                        className="w-4 h-4 rounded bg-black/50 border-white/20 text-brand-purple focus:ring-brand-purple focus:ring-offset-gray-900"
+                    />
+                    <label htmlFor={`broadcast-${commentId}`} className="text-sm font-medium text-gray-300 select-none cursor-pointer flex-1">
+                        Notifier <strong className="text-brand-purple">tous les apprentis magiciens</strong> (Broadcast)
+                    </label>
+                </div>
+
+                <div className="flex gap-3 justify-between w-full pt-2">
                     <button
                         type="button"
-                        onClick={handleDismiss}
-                        className="px-4 py-2 rounded-xl text-xs font-bold text-gray-400 hover:text-white hover:bg-white/5 transition-all flex items-center gap-2"
+                        onClick={handleDelete}
+                        className="px-4 py-2 rounded-xl text-xs font-bold text-red-500 hover:text-white hover:bg-red-500/20 transition-all flex items-center gap-2"
+                        title="Supprimer définitivement"
                     >
-                        <X className="w-4 h-4" /> Ignorer (Lu)
+                        <Trash2 className="w-4 h-4" />
                     </button>
-                    <button
-                        type="submit"
-                        disabled={isPending}
-                        className="px-6 py-2 rounded-xl text-sm font-bold bg-gradient-to-r from-brand-purple to-brand-blue text-white shadow-lg hover:shadow-brand-purple/20 hover:scale-105 active:scale-95 transition-all flex items-center gap-2"
-                    >
-                        <Send className="w-4 h-4" /> Envoyer la réponse
-                    </button>
+                    <div className="flex gap-3">
+                        <button
+                            type="button"
+                            onClick={handleDismiss}
+                            className="px-4 py-2 rounded-xl text-xs font-bold text-gray-400 hover:text-white hover:bg-white/5 transition-all flex items-center gap-2"
+                        >
+                            <X className="w-4 h-4" /> Ignorer (Lu)
+                        </button>
+                        <button
+                            type="submit"
+                            disabled={isPending}
+                            className="px-6 py-2 rounded-xl text-sm font-bold bg-gradient-to-r from-brand-purple to-brand-blue text-white shadow-lg hover:shadow-brand-purple/20 hover:scale-105 active:scale-95 transition-all flex items-center gap-2"
+                        >
+                            <Send className="w-4 h-4" /> Envoyer la réponse
+                        </button>
+                    </div>
                 </div>
             </form>
         </div>

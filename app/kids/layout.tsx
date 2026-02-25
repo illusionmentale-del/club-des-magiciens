@@ -76,7 +76,7 @@ export default async function KidsLayout({
             </Suspense>
             <div className="flex-1 flex flex-col md:pl-0">
                 <Suspense fallback={<div className="h-16 bg-magic-card md:hidden" />}>
-                    <KidsMobileNav logoUrl={siteLogo} isAdmin={isAdmin} />
+                    <KidsMobileNav logoUrl={siteLogo} isAdmin={isAdmin} hasUnreadReplies={hasUnreadReplies} />
                 </Suspense>
                 <main className="flex-1 overflow-y-auto bg-brand-bg p-4 md:p-8 text-brand-text">
                     {children}
