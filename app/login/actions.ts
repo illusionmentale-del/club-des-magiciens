@@ -7,6 +7,7 @@ import { redirect } from "next/navigation";
 export async function loginWithPassword(prevState: any, formData: FormData) {
     const identifier = formData.get("identifier") as string;
     const password = formData.get("password") as string;
+    const redirectUrl = formData.get("redirect") as string || "/dashboard";
 
     if (!identifier || !password) {
         return { error: "Identifiant et mot de passe requis." };
@@ -50,5 +51,25 @@ export async function loginWithPassword(prevState: any, formData: FormData) {
         return { error: "Mot de passe incorrect ou compte inexistant." };
     }
 
-    redirect("/dashboard");
+    // 4. First Login Onboarding Check
+    let finalRedirectUrl = redirectUrl;
+    const { data: { user } } = await supabase.auth.getUser();
+
+    if (user) {
+        const { data: profile } = await supabase
+            .from("profiles")
+            .select("access_level, username")
+            .eq("id", user.id)
+            .single();
+
+        if (profile && profile.access_level === 'kid') {
+            if (!profile.username || profile.username.trim() === '') {
+                finalRedirectUrl = '/kids/account?view=settings';
+            } else if (finalRedirectUrl === '/dashboard') {
+                finalRedirectUrl = '/kids/courses'; // Default safe route for kids
+            }
+        }
+    }
+
+    redirect(finalRedirectUrl);
 }

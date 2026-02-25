@@ -33,6 +33,7 @@ export default function MagicCard({ user, profile, isKid = false }: MagicCardPro
 
     return (
         <div className="w-full max-w-2xl mx-auto perspective-1000 min-h-[600px] relative group/card font-sans">
+            <div className="absolute -inset-2 bg-gradient-to-r from-brand-purple to-brand-blue rounded-[2.5rem] opacity-0 blur-xl group-hover/card:opacity-40 transition duration-1000 pointer-events-none"></div>
             <motion.div
                 className="relative w-full h-full preserve-3d transition-all duration-700"
                 animate={{ rotateY: isFlipped ? 180 : 0 }}
@@ -193,7 +194,7 @@ export default function MagicCard({ user, profile, isKid = false }: MagicCardPro
                     </div>
 
                     <div className="flex-1 overflow-y-auto customized-scrollbar relative z-10 -mr-4 pr-4 pb-12">
-                        <AccountForm user={user} profile={profile} theme="dark" />
+                        <AccountForm user={user} profile={profile} theme="dark" isKidProfile={isKid} />
                         {/* Extra spacer at bottom to ensure button is reachable */}
                         <div className="h-24"></div>
                     </div>

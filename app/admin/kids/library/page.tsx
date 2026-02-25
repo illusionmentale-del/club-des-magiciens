@@ -6,6 +6,9 @@ import { useEffect, useState, useMemo } from "react";
 import { Plus, Edit, Trash2, Search, Newspaper, ChevronRight, Calendar } from "lucide-react";
 import Image from "next/image";
 
+import BroadcastModal from "@/components/admin/BroadcastModal";
+import { Megaphone } from "lucide-react";
+
 type LibraryItem = {
     id: string;
     title: string;
@@ -24,6 +27,7 @@ export default function AdminLibraryPage() {
     const [items, setItems] = useState<LibraryItem[]>([]);
     const [loading, setLoading] = useState(true);
     const [search, setSearch] = useState("");
+    const [isBroadcastOpen, setIsBroadcastOpen] = useState(false);
 
     const fetchItems = async () => {
         setLoading(true);
@@ -87,6 +91,13 @@ export default function AdminLibraryPage() {
                         <p className="text-gray-400">Gestion du programme hebdomadaire</p>
                     </div>
                     <div className="flex items-center gap-4">
+                        <button
+                            onClick={() => setIsBroadcastOpen(true)}
+                            className="bg-blue-600/20 text-blue-400 border border-blue-500/30 hover:bg-blue-600/30 hover:text-white px-6 py-3 rounded-xl font-bold flex items-center gap-2 transition-all shadow-lg"
+                        >
+                            <Megaphone className="w-5 h-5" />
+                            Alerte Nouveauté
+                        </button>
                         <Link
                             href={`/admin/kids/library/new?audience=kids&week=${maxWeek + 1}`}
                             className="bg-purple-600 hover:bg-purple-500 text-white px-6 py-3 rounded-xl font-bold flex items-center gap-2 transition-all shadow-lg shadow-purple-900/50"
@@ -96,6 +107,8 @@ export default function AdminLibraryPage() {
                         </Link>
                     </div>
                 </header>
+
+                <BroadcastModal isOpen={isBroadcastOpen} onClose={() => setIsBroadcastOpen(false)} />
 
                 {/* Search */}
                 <div className="mb-8 bg-black/20 p-4 rounded-xl border border-white/5">

@@ -14,13 +14,11 @@ export default async function KidsLayout({
 
     if (!user) {
         redirect("/login");
-    } else {
-        // STRICT SEPARATION: Check if adult
-        const { data: profile } = await supabase.from('profiles').select('access_level').eq('id', user.id).single();
-        if (profile?.access_level !== 'kid') {
-            // redirect("/dashboard"); // Optional: Strict enforcement
-        }
     }
+
+    // SILENT TRACKING: Record the last kid login
+    // We execute this asynchronously so it doesn't block the page load
+    supabase.from('profiles').update({ last_kids_login: new Date().toISOString() }).eq('id', user.id).then();
 
     let socialLinks = {
         youtube: "https://youtube.com/@LeMagicienPOV",
@@ -30,22 +28,14 @@ export default async function KidsLayout({
     };
     let siteLogo = "/logo.png";
 
-    let isLoading = true; // Not used but good for structure if we add loading state
     let isAdmin = false;
-    let hasPurchases = false;
+
+    let hasUnreadReplies = false;
 
     if (user) {
+        // ... existing admin and settings fetch ...
         const { data: profile } = await supabase.from('profiles').select('role').eq('id', user.id).single();
         isAdmin = profile?.role === 'admin';
-
-        // Check for purchases (Mes Coffres)
-        const { count: purchaseCount } = await supabase
-            .from("purchases")
-            .select("*", { count: 'exact', head: true })
-            .eq("user_id", user.id)
-            .eq("status", "paid");
-
-        hasPurchases = (purchaseCount || 0) > 0;
 
         const { data: settings } = await supabase.from("settings").select("*");
 
@@ -66,16 +56,27 @@ export default async function KidsLayout({
         };
 
         siteLogo = getSetting("site_logo", "/logo.png");
+
+        // Check for unread replies from Jérémy for the kid's notification badge
+        if (!isAdmin) {
+            const { count } = await supabase
+                .from("course_comments")
+                .select("id", { count: "exact", head: true })
+                .eq("target_user_id", user.id)
+                .eq("kid_notified", false);
+
+            hasUnreadReplies = (count || 0) > 0;
+        }
     }
 
     return (
         <div className="flex h-screen bg-brand-bg overflow-hidden text-brand-text font-sans">
             <Suspense fallback={<div className="w-64 bg-magic-card hidden md:block" />}>
-                <KidsSidebar socialLinks={socialLinks} logoUrl={siteLogo} isAdmin={isAdmin} hasPurchases={hasPurchases} />
+                <KidsSidebar socialLinks={socialLinks} logoUrl={siteLogo} isAdmin={isAdmin} hasUnreadReplies={hasUnreadReplies} />
             </Suspense>
             <div className="flex-1 flex flex-col md:pl-0">
                 <Suspense fallback={<div className="h-16 bg-magic-card md:hidden" />}>
-                    <KidsMobileNav logoUrl={siteLogo} hasPurchases={hasPurchases} isAdmin={isAdmin} />
+                    <KidsMobileNav logoUrl={siteLogo} isAdmin={isAdmin} />
                 </Suspense>
                 <main className="flex-1 overflow-y-auto bg-brand-bg p-4 md:p-8 text-brand-text">
                     {children}

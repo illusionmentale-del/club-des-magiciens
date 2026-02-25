@@ -57,31 +57,47 @@ export const WelcomeKidEmail = ({
                             />
                         </Section>
                         <Heading className="text-black text-[24px] font-normal text-center p-0 my-[30px] mx-0">
-                            {recoveryUrl ? "🪄 Accès au Club" : "Bienvenue jeune apprenti"} <strong>{username}</strong> !
+                            🪄 Bienvenue au Club !
                         </Heading>
                         <Text className="text-black text-[14px] leading-[24px]">
-                            Félicitations ! Tu fais maintenant partie du <strong>Club des Petits Magiciens</strong>.
-                            De nombreux secrets t'attendent pour devenir un grand magicien.
+                            Félicitations ! L'abonnement est validé et tu as maintenant accès au Club des Petits Magiciens. De nombreux secrets t'attendent pour découvrir l'art de la prestidigitation.
                         </Text>
-                        <Section className="bg-gray-100 rounded-lg p-6 my-6 text-center">
-                            <Text className="text-gray-500 text-xs uppercase font-bold mb-2 tracking-wider">
-                                Tes codes secrets
-                            </Text>
-                            <Text className="text-black text-lg my-1">
-                                Magigicien : <strong>{username}</strong>
-                            </Text>
-                            {password && (
-                                <Text className="text-black text-lg my-1">
-                                    Mot de passe : <strong>{password}</strong>
-                                </Text>
+                        <Section className="bg-brand-purple/10 border border-brand-purple/20 rounded-lg p-6 my-6 text-center">
+                            {password ? (
+                                <>
+                                    <Text className="text-black font-bold text-lg my-1">
+                                        Voici tes identifiants d'accès :
+                                    </Text>
+                                    <Text className="text-black text-md mt-4">
+                                        Email : <strong>{username}</strong>
+                                    </Text>
+                                    <Text className="text-black text-md my-1">
+                                        Mot de passe provisoire : <strong>{password}</strong>
+                                    </Text>
+                                    <Text className="text-gray-600 text-xs mt-4 italic">
+                                        (Nous te conseillons de le modifier une fois connecté dans ton espace "Mon Profil")
+                                    </Text>
+                                </>
+                            ) : (
+                                <>
+                                    <Text className="text-black font-bold text-lg my-1">
+                                        Ton compte est déjà actif !
+                                    </Text>
+                                    <Text className="text-gray-600 text-sm mt-2">
+                                        Connecte-toi avec tes identifiants habituels associés à l'email <strong>{username}</strong>.
+                                    </Text>
+                                    <Text className="text-gray-600 text-xs mt-2 italic">
+                                        (Si tu as oublié ton mot de passe, clique sur "Mot de passe oublié" sur la page de connexion)
+                                    </Text>
+                                </>
                             )}
                         </Section>
                         <Section className="text-center mt-[32px] mb-[32px]">
                             <Button
                                 className="bg-[#7c3aed] rounded text-white text-[12px] font-bold no-underline text-center px-5 py-3"
-                                href={recoveryUrl || loginUrl}
+                                href={loginUrl}
                             >
-                                {recoveryUrl ? "ME CONNECTER AUTOMATIQUEMENT ✨" : "ENTRER DANS LE CLUB 🎩"}
+                                ENTRER DANS LE CLUB 🎩
                             </Button>
                         </Section>
                         <Text className="text-black text-[14px] leading-[24px]">

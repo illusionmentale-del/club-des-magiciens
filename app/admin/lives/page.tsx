@@ -59,7 +59,7 @@ export default function AdminLivesPage() {
 
     return (
         <div className={`w-full transition-colors duration-500`}>
-            <header className="flex items-center justify-between mb-8 max-w-5xl mx-auto">
+            <header className="flex items-center justify-between mb-8">
                 <Link href="/admin" className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors">
                     <ArrowLeft className="w-5 h-5" />
                     Retour au QG Admin
@@ -69,7 +69,7 @@ export default function AdminLivesPage() {
                         <Video className={`w-6 h-6 ${iconColor}`} />
                     </div>
                     <div>
-                        <h1 className="text-3xl font-bold">Gestion des Lives ({audience === 'adults' ? 'Adulte' : 'Enfant'})</h1>
+                        <h1 className="text-3xl font-bold">Gestion des Événements</h1>
                         <div className={`text-sm px-2 py-0.5 rounded inline-block mt-1 uppercase font-bold tracking-wider ${badgeColor}`}>
                             Mode {audience === 'adults' ? 'Adulte' : 'Enfant'}
                         </div>
@@ -77,12 +77,12 @@ export default function AdminLivesPage() {
                 </div>
             </header>
 
-            <div className="max-w-5xl mx-auto space-y-8">
+            <div className="space-y-8">
                 {/* Actions */}
                 <div className="flex justify-end">
                     <Link href={`${basePath}/lives/new?audience=${audience}`} className={`px-6 py-3 ${themeColor} rounded-xl font-bold flex items-center gap-2 transition-colors shadow-lg`}>
                         <Calendar className="w-5 h-5" />
-                        Programmer un Live {audience === 'kids' && '(Kids)'}
+                        Programmer un Nouvel Événement
                     </Link>
                 </div>
 
@@ -106,7 +106,8 @@ export default function AdminLivesPage() {
                                 <div className="text-gray-400 flex items-center gap-4 text-sm">
                                     <span className="flex items-center gap-1"><Calendar className="w-4 h-4" /> {new Date(live.start_date).toLocaleString()}</span>
                                     {live.platform === 'jitsi' && <span className="text-gray-500">Jitsi: {live.platform_id}</span>}
-                                    {live.platform === 'vimeo' && <span className="text-gray-500">Replay Vimeo: {live.platform_id}</span>}
+                                    {live.platform === 'zoom' && <span className="text-gray-500">Zoom: {live.platform_id}</span>}
+                                    {live.platform === 'bunny' && <span className="text-gray-500">Vidéo: {live.platform_id}</span>}
                                 </div>
                                 <div className="mt-4">
                                     <Link href={`${basePath}/lives/${live.id}`} className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600/20 text-blue-400 hover:bg-blue-600/30 rounded-lg font-bold text-sm transition-colors border border-blue-500/20">
@@ -133,7 +134,7 @@ export default function AdminLivesPage() {
                                         </button>
                                     </form>
                                 )}
-                                {live.status === 'terminé' && live.platform !== 'vimeo' && (
+                                {live.status === 'terminé' && (live.platform === 'jitsi' || live.platform === 'zoom') && (
                                     <Link href={`${basePath}/lives/${live.id}/replay`} className="px-4 py-2 bg-blue-600/20 text-blue-400 hover:bg-blue-600/30 rounded-lg font-bold text-sm">
                                         Ajouter Replay
                                     </Link>
@@ -149,7 +150,7 @@ export default function AdminLivesPage() {
                     ))}
                     {filteredLives.length === 0 && (
                         <div className="text-center text-gray-500 py-12 bg-white/5 rounded-2xl">
-                            Aucun live programmé pour l'espace <span className="font-bold">{audience === 'adults' ? 'Adulte' : 'Enfant'}</span>.
+                            Aucune session programmée pour l'espace <span className="font-bold">{audience === 'adults' ? 'Adulte' : 'Enfant'}</span>.
                         </div>
                     )}
                 </div>

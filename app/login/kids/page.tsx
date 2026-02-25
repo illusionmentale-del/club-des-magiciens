@@ -93,6 +93,18 @@ export default function KidsLoginPage() {
                             </div>
                         </div>
 
+                        <div className="flex items-center gap-3 ml-1">
+                            <input
+                                type="checkbox"
+                                id="remember"
+                                name="remember"
+                                className="w-5 h-5 rounded border-2 border-brand-purple/50 bg-brand-bg/50 text-brand-purple focus:ring-brand-purple/20 focus:ring-4 focus:outline-none transition-all cursor-pointer accent-brand-purple"
+                            />
+                            <label htmlFor="remember" className="text-xs font-black uppercase tracking-widest text-brand-purple cursor-pointer select-none">
+                                Rester connecté
+                            </label>
+                        </div>
+
                         {state?.error && (
                             <div className="p-4 bg-red-500/20 text-red-300 rounded-2xl text-sm border-2 border-red-500/30 flex items-center gap-3 font-bold animate-shake">
                                 <AlertCircle className="w-5 h-5 shrink-0" />

@@ -92,7 +92,6 @@ export default function KidsHomeConfig({ initialSettings, libraryItems }: KidsHo
                     { id: "welcome", label: "Message d'accueil", icon: Megaphone },
                     { id: "featured", label: "Atelier Vedette", icon: Sparkles },
                     { id: "news", label: "Nouveautés", icon: Trophy },
-                    { id: "shop", label: "Boutique Home", icon: ShoppingBag },
                 ].map((tab) => (
                     <button
                         key={tab.id}
@@ -136,7 +135,6 @@ export default function KidsHomeConfig({ initialSettings, libraryItems }: KidsHo
                             {activeTab === "welcome" && <><Megaphone className="text-brand-purple" /> Message de Bienvenue</>}
                             {activeTab === "featured" && <><Sparkles className="text-brand-purple" /> Atelier en Vedette</>}
                             {activeTab === "news" && <><Trophy className="text-brand-purple" /> Nouveautés de la Semaine</>}
-                            {activeTab === "shop" && <><ShoppingBag className="text-brand-purple" /> Promotion Boutique</>}
                         </CardTitle>
                     </CardHeader>
                     <CardContent className="p-8">
@@ -276,7 +274,6 @@ export default function KidsHomeConfig({ initialSettings, libraryItems }: KidsHo
                                                 >
                                                     <option value="custom_link">Lien Externe</option>
                                                     <option value="tip">Conseil / Astuce</option>
-                                                    <option value="product">Produit Boutique</option>
                                                 </select>
                                             </div>
                                             <div className="space-y-2">
@@ -355,7 +352,6 @@ export default function KidsHomeConfig({ initialSettings, libraryItems }: KidsHo
                                                     ) : (
                                                         <div className="w-10 h-10 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center">
                                                             {item.type === 'tip' && <Megaphone className="w-5 h-5 text-brand-text-muted" />}
-                                                            {item.type === 'product' && <ShoppingBag className="w-5 h-5 text-brand-text-muted" />}
                                                             {item.type === 'custom_link' && <ExternalLink className="w-5 h-5 text-brand-text-muted" />}
                                                         </div>
                                                     )}
@@ -363,7 +359,7 @@ export default function KidsHomeConfig({ initialSettings, libraryItems }: KidsHo
                                                         <p className="text-sm font-bold text-white">{item.data?.title || "Sans titre"}</p>
                                                         <div className="flex items-center gap-2">
                                                             <span className="text-[10px] font-bold uppercase tracking-widest bg-white/10 px-1.5 py-0.5 rounded text-brand-text-muted">
-                                                                {item.type === 'custom_link' ? 'LIEN' : item.type === 'tip' ? 'CONSEIL' : 'PRODUIT'}
+                                                                {item.type === 'custom_link' ? 'LIEN' : 'CONSEIL'}
                                                             </span>
                                                             <p className="text-[10px] text-brand-text-muted truncate max-w-[150px]">{item.data?.url}</p>
                                                         </div>
@@ -379,24 +375,6 @@ export default function KidsHomeConfig({ initialSettings, libraryItems }: KidsHo
                                             </div>
                                         ))}
                                     </div>
-                                </div>
-                            </div>
-                        )}
-
-                        {/* TAB: SHOP */}
-                        {activeTab === "shop" && (
-                            <div className="space-y-6">
-                                <div className="p-6 bg-brand-gold/5 rounded-2xl border border-brand-gold/10 flex items-center gap-4 text-brand-gold">
-                                    <ShoppingBag className="w-8 h-8" />
-                                    <div>
-                                        <p className="font-black uppercase tracking-widest text-[10px]">Information</p>
-                                        <p className="text-sm">Le bloc Boutique est toujours visible sur la Home "Le Club". Cette section vous permet de choisir les produits à mettre en avant spécifiquement.</p>
-                                    </div>
-                                </div>
-
-                                <div className="text-center py-12 text-brand-text-muted border-2 border-dashed border-white/5 rounded-2xl">
-                                    <ShoppingBag className="w-8 h-8 mx-auto mb-4 opacity-20" />
-                                    Configuration avancée des produits à venir...
                                 </div>
                             </div>
                         )}

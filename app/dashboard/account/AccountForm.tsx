@@ -3,7 +3,7 @@
 import { useActionState } from "react";
 import { useFormStatus } from "react-dom";
 import { updateProfile } from "./actions";
-import { User, MapPin, Wand2, Lock, AlertCircle, Check } from "lucide-react";
+import { User, MapPin, Wand2, Lock, AlertCircle, Check, Sparkles } from "lucide-react";
 import { useState } from "react";
 
 import AvatarUpload from "@/components/AvatarUpload";
@@ -77,15 +77,32 @@ export default function AccountForm({ user, profile, theme = 'dark', isKidProfil
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 flex-1 w-full">
                         <div>
                             <label className={`block text-sm mb-2 ${labelClass}`}>Pseudonyme</label>
-                            <input name="username" defaultValue={profile?.username || ""} placeholder="Votre pseudo" className={inputClass} />
+                            <input name="username" defaultValue={profile?.username || ""} placeholder="Votre pseudo" className={inputClass} required={isKidProfile} />
                         </div>
-                        <div>
-                            <label className={`block text-sm mb-2 ${labelClass}`}>Ville / QG</label>
-                            <div className="relative">
-                                <MapPin className={`absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 ${theme === 'light' ? 'text-gray-400' : 'text-gray-600'}`} />
-                                <input name="city" defaultValue={profile?.city || ""} placeholder="Paris, France" className={`${inputClass} pl-10`} />
+                        {isKidProfile ? (
+                            <div>
+                                <label className={`block text-sm mb-2 ${labelClass}`}>Ta Faction Magique</label>
+                                <div className="relative">
+                                    <select name="city" defaultValue={profile?.city || ""} className={`${inputClass} appearance-none bg-brand-bg/50`} required>
+                                        <option value="" disabled>Choisis ta faction...</option>
+                                        <option value="Magicien">🎩 Magicien / Magicienne</option>
+                                        <option value="Sorcier">🔮 Sorcier / Sorcière</option>
+                                        <option value="Elfe">🧝 Elfe</option>
+                                        <option value="Fée">🧚 Fée</option>
+                                        <option value="Licorne">🦄 Licorne</option>
+                                        <option value="Illusionniste">🌟 Illusionniste</option>
+                                    </select>
+                                </div>
                             </div>
-                        </div>
+                        ) : (
+                            <div>
+                                <label className={`block text-sm mb-2 ${labelClass}`}>Ville / QG</label>
+                                <div className="relative">
+                                    <MapPin className={`absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 ${theme === 'light' ? 'text-gray-400' : 'text-gray-600'}`} />
+                                    <input name="city" defaultValue={profile?.city || ""} placeholder="Paris, France" className={`${inputClass} pl-10`} />
+                                </div>
+                            </div>
+                        )}
                         <div className="col-span-full">
                             <label className={`block text-sm mb-2 ${labelClass}`}>Bio / Présentation</label>
                             <textarea name="bio" defaultValue={profile?.bio || ""} placeholder="Quelques mots sur vous..." rows={4} className={inputClass} />

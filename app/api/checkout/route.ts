@@ -23,39 +23,39 @@ export async function POST(req: Request) {
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
 
-    if (!user) {
-        return new NextResponse('Unauthorized', { status: 401 });
-    }
-
     const { priceId, productId, isSubscription, space } = await req.json();
 
     try {
-        // 1. Get or Create Stripe Customer
-        const { data: profile } = await supabase
-            .from('profiles')
-            .select('stripe_customer_id, email')
-            .eq('id', user.id)
-            .single();
+        const stripe = getStripe();
+        let customerId = undefined;
+        let clientReferenceId = undefined;
 
-        let customerId = profile?.stripe_customer_id;
+        if (user) {
+            // 1. Get or Create Stripe Customer for logged-in user
+            const { data: profile } = await supabase
+                .from('profiles')
+                .select('stripe_customer_id, email')
+                .eq('id', user.id)
+                .single();
 
-        if (!customerId) {
-            const stripe = getStripe();
-            const customer = await stripe.customers.create({
-                email: user.email || profile?.email,
-                metadata: {
-                    supabase_user_id: user.id
-                }
-            });
-            customerId = customer.id;
+            customerId = profile?.stripe_customer_id;
 
-            // Save it
-            await supabase.from('profiles').update({ stripe_customer_id: customerId }).eq('id', user.id);
+            if (!customerId) {
+                const customer = await stripe.customers.create({
+                    email: user.email || profile?.email,
+                    metadata: {
+                        supabase_user_id: user.id
+                    }
+                });
+                customerId = customer.id;
+
+                // Save it
+                await supabase.from('profiles').update({ stripe_customer_id: customerId }).eq('id', user.id);
+            }
+            clientReferenceId = user.id;
         }
 
         // 2. Create Session
-        const stripe = getStripe();
-
         const sessionConfig: Stripe.Checkout.SessionCreateParams = {
             customer: customerId,
             line_items: [
@@ -65,25 +65,36 @@ export async function POST(req: Request) {
                 },
             ],
             mode: isSubscription ? 'subscription' : 'payment',
-            success_url: `${process.env.NEXT_PUBLIC_APP_URL}/${space === 'kids' ? 'kids' : 'dashboard'}?success=true`,
-            cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/${space === 'kids' ? 'kids' : 'dashboard'}?canceled=true`,
-            client_reference_id: user.id,
+            success_url: `${process.env.NEXT_PUBLIC_APP_URL}/success`,
+            cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/${space === 'kids' ? 'tarifs/kids' : 'dashboard'}`,
+            client_reference_id: clientReferenceId,
             metadata: {
                 product_id: productId, // Internal Product ID
                 space: space,
-                user_id: user.id
             },
             allow_promotion_codes: true,
         };
+
+        if (user) {
+            sessionConfig.metadata!.user_id = user.id;
+        }
 
         // Add subscription_data if it's a subscription
         if (isSubscription) {
             sessionConfig.subscription_data = {
                 metadata: {
                     space: space,
-                    user_id: user.id
                 }
             };
+            if (user) {
+                sessionConfig.subscription_data.metadata!.user_id = user.id;
+            }
+        }
+
+        if (!user && !isSubscription) {
+            // If it's a one-time payment and no user is logged in, Stripe doesn't create a customer by default.
+            // We want to force customer creation so we can retrieve the email/details in the webhook easily.
+            sessionConfig.customer_creation = 'always';
         }
 
         const session = await stripe.checkout.sessions.create(sessionConfig);
@@ -91,6 +102,6 @@ export async function POST(req: Request) {
         return NextResponse.json({ url: session.url });
     } catch (error: any) {
         console.error('Stripe Checkout Error:', error);
-        return new NextResponse(error.message, { status: 500 });
+        return NextResponse.json({ error: error.message }, { status: 500 });
     }
 }

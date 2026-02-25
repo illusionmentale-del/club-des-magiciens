@@ -5,13 +5,14 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
-import { LogOut, BookOpen, Settings, Video, Star, Youtube, Instagram, Facebook, LayoutDashboard, Shield, Wand2, ShoppingBag, Trophy, Map, Package } from "lucide-react";
+import { LogOut, BookOpen, Settings, Video, Star, Youtube, Instagram, Facebook, LayoutDashboard, Shield, Wand2, ShoppingBag, Trophy, Map, Package, Sparkles, Store } from "lucide-react";
 
-export default function KidsSidebar({ socialLinks, logoUrl, isAdmin, hasPurchases }: {
+export default function KidsSidebar({ socialLinks, logoUrl, isAdmin, hasPurchases, hasUnreadReplies }: {
     socialLinks?: { youtube: string; instagram: string; facebook: string; tiktok: string };
     logoUrl?: string;
     isAdmin?: boolean;
     hasPurchases?: boolean;
+    hasUnreadReplies?: boolean;
 }) {
     const pathname = usePathname();
     const router = useRouter();
@@ -83,55 +84,81 @@ export default function KidsSidebar({ socialLinks, logoUrl, isAdmin, hasPurchase
                     href="/kids"
                     className={`group flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${isHomeActive ? 'bg-magic-purple/20 border border-magic-purple/20' : 'hover:bg-white/5'}`}
                 >
-                    <div className={`p-2 rounded-lg ${isHomeActive ? 'bg-magic-purple text-white' : 'bg-white/5 text-gray-400 group-hover:text-white'}`}>
-                        <Wand2 className="w-5 h-5" />
-                    </div>
-                    <div>
-                        <div className={`font-bold ${isHomeActive ? 'text-magic-purple' : 'text-gray-300 group-hover:text-white'}`}>Le Club</div>
-                        <div className="text-[10px] text-gray-500 font-medium group-hover:text-gray-400 hidden xl:block">Retrouve toutes les dernières actualités</div>
+                    <div className="flex items-center gap-4">
+                        <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-colors ${isActive('/kids') && pathname === '/kids' ? 'bg-magic-purple text-white shadow-lg shadow-magic-purple/20' : 'bg-white/5 text-gray-400 group-hover:bg-white/10 group-hover:text-white'}`}>
+                            <Sparkles className="w-5 h-5" />
+                        </div>
+                        <div>
+                            <div className={`font-bold ${isActive('/kids') && pathname === '/kids' ? 'text-magic-purple' : 'text-gray-300 group-hover:text-white'}`}>L'Actu du Club</div>
+                            <div className="text-xs text-gray-500">Retrouve toutes les dernières actualités</div>
+                        </div>
                     </div>
                 </Link>
 
                 {/* 2. 📖 Le Grimoire (Archives) */}
-                <Link
-                    href="/kids/program"
-                    className={`group flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${isActive('/kids/program') ? 'bg-magic-purple/20 border border-magic-purple/20' : 'hover:bg-white/5'}`}
-                >
-                    <div className={`p-2 rounded-lg ${isActive('/kids/program') ? 'bg-magic-purple text-white' : 'bg-white/5 text-gray-400 group-hover:text-white'}`}>
-                        <BookOpen className="w-5 h-5" />
-                    </div>
-                    <div>
-                        <div className={`font-bold ${isActive('/kids/program') ? 'text-magic-purple' : 'text-gray-300 group-hover:text-white'}`}>Le QG des Petits Magiciens</div>
-                        <div className="text-[10px] text-gray-500 font-medium group-hover:text-gray-400 hidden xl:block">Accéder aux cours et contenus</div>
-                    </div>
-                </Link>
-
-                {/* 3. 👤 Mes Informations (Combined) */}
-                <Link
-                    href="/kids/account"
-                    className={`group flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${isActive('/kids/account') ? 'bg-magic-purple/20 border border-magic-purple/20' : 'hover:bg-white/5'}`}
-                >
-                    <div className={`p-2 rounded-lg ${isActive('/kids/account') ? 'bg-magic-purple text-white' : 'bg-white/5 text-gray-400 group-hover:text-white'}`}>
-                        <Trophy className="w-5 h-5" />
-                    </div>
-                    <div>
-                        <div className={`font-bold ${isActive('/kids/account') ? 'text-magic-purple' : 'text-gray-300 group-hover:text-white'}`}>Mes Informations</div>
-                        <div className="text-[10px] text-gray-500 font-medium group-hover:text-gray-400 hidden xl:block">Ma carte, ma progression et mes secrets</div>
-                    </div>
-                </Link>
-
-                {/* 📦 Mes Coffres (Dynamic) */}
-                {hasPurchases && (
-                    <Link
-                        href="/kids/courses?filter=owned"
-                        className={`group flex items-center gap-3 px-4 py-3 rounded-xl transition-all hover:bg-white/5`}
-                    >
-                        <div className="p-2 rounded-lg bg-brand-gold/10 text-brand-gold">
-                            <Package className="w-5 h-5" />
+                {/* Programme => La Formation */}
+                <Link href="/kids/program" className="block group">
+                    <div className="flex items-center gap-4">
+                        <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-colors ${isActive('/kids/program') || pathname?.startsWith('/kids/courses') ? 'bg-magic-purple text-white shadow-lg shadow-magic-purple/20' : 'bg-white/5 text-gray-400 group-hover:bg-white/10 group-hover:text-white'}`}>
+                            <BookOpen className="w-5 h-5" />
                         </div>
                         <div>
-                            <div className="font-bold text-brand-gold">Mes Coffres</div>
-                            <div className="text-[10px] text-gray-500 font-medium group-hover:text-gray-400 hidden xl:block">Tes trésors magiques</div>
+                            <div className={`font-bold ${isActive('/kids/program') || pathname?.startsWith('/kids/courses') ? 'text-magic-purple' : 'text-gray-300 group-hover:text-white'}`}>La Formation</div>
+                            <div className="text-xs text-gray-500">Accéder aux cours et contenus</div>
+                        </div>
+                    </div>
+                </Link>
+
+                {/* 3. 🎬 Les Masterclass */}
+                <Link href="/kids/videos" className="block group">
+                    <div className="flex items-center gap-4">
+                        <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-colors ${isActive('/kids/videos') ? 'bg-magic-purple text-white shadow-lg shadow-magic-purple/20' : 'bg-white/5 text-gray-400 group-hover:bg-white/10 group-hover:text-white'}`}>
+                            <Video className="w-5 h-5" />
+                        </div>
+                        <div>
+                            <div className={`font-bold ${isActive('/kids/videos') ? 'text-magic-purple' : 'text-gray-300 group-hover:text-white'}`}>Les Masterclass</div>
+                            <div className="text-xs text-gray-500">Perfectionne-toi en vidéo</div>
+                        </div>
+                    </div>
+                </Link>
+
+                {/* 4. 👤 Mes Informations */}
+                <Link href="/kids/account" className="block group">
+                    <div className="flex items-center gap-4">
+                        <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-colors ${isActive('/kids/account') ? 'bg-magic-purple text-white shadow-lg shadow-magic-purple/20' : 'bg-white/5 text-gray-400 group-hover:bg-white/10 group-hover:text-white'}`}>
+                            <Trophy className="w-5 h-5" />
+                        </div>
+                        <div>
+                            <div className={`font-bold ${isActive('/kids/account') ? 'text-magic-purple' : 'text-gray-300 group-hover:text-white'}`}>Mes Informations</div>
+                            <div className="text-xs text-gray-500">Ma progression et mes secrets</div>
+                        </div>
+                    </div>
+                </Link>
+
+                {/* 5. 🏪 La Boutique */}
+                <Link href="/kids/shop" className="block group">
+                    <div className="flex items-center gap-4">
+                        <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-colors ${isActive('/kids/shop') ? 'bg-magic-purple text-white shadow-lg shadow-magic-purple/20' : 'bg-white/5 text-gray-400 group-hover:bg-white/10 group-hover:text-white'}`}>
+                            <Store className="w-5 h-5" />
+                        </div>
+                        <div>
+                            <div className={`font-bold ${isActive('/kids/shop') ? 'text-magic-purple' : 'text-gray-300 group-hover:text-white'}`}>La Boutique</div>
+                            <div className="text-xs text-gray-500">Découvre les trucs de Jérémy</div>
+                        </div>
+                    </div>
+                </Link>
+
+                {/* 📦 Mes Coffres (Purchases) */}
+                {hasPurchases && (
+                    <Link href="/kids/purchases" className="block group">
+                        <div className="flex items-center gap-4">
+                            <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-colors bg-brand-gold/10 text-brand-gold`}>
+                                <Package className="w-5 h-5" />
+                            </div>
+                            <div>
+                                <div className="font-bold text-brand-gold">Mes Coffres</div>
+                                <div className="text-xs text-gray-500">Tes trésors magiques</div>
+                            </div>
                         </div>
                     </Link>
                 )}    {isAdmin && (

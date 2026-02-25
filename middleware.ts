@@ -11,8 +11,8 @@ export async function middleware(request: NextRequest) {
     const isKidsDomain = hostname?.includes('clubdespetitsmagiciens') || hostname?.includes('club-des-petits-magiciens') || hostname?.startsWith('kids.');
 
     if (isKidsDomain) {
-        // Rewrite root and login paths to the kids login page
-        if (requestUrl.pathname === '/' || requestUrl.pathname === '/login') {
+        // Rewrite login path to the custom kids login page
+        if (requestUrl.pathname === '/login') {
             return NextResponse.rewrite(new URL('/login/kids', request.url));
         }
     }

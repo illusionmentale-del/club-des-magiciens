@@ -65,6 +65,10 @@ export default function AdultsAdminLayout({
                         <Settings className="w-5 h-5 group-hover:text-brand-gold transition-colors" />
                         Réglages
                     </Link>
+                    <Link href="/admin/legal" className="flex items-center gap-3 px-4 py-3 text-sm font-bold uppercase tracking-widest text-brand-text-muted hover:text-white hover:bg-white/5 rounded-xl transition-all group">
+                        <BookOpen className="w-5 h-5 group-hover:text-brand-gold transition-colors" />
+                        Textes Légaux
+                    </Link>
                 </nav>
 
                 <div className="p-4 border-t border-white/5 bg-black/20">
@@ -80,21 +84,23 @@ export default function AdultsAdminLayout({
                 {/* Page Background Glow */}
                 <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-brand-gold/5 blur-[150px] rounded-full pointer-events-none"></div>
 
-                <header className="flex items-center justify-between h-20 px-8 border-b border-white/5 bg-brand-bg/80 backdrop-blur-xl sticky top-0 z-40">
-                    <Breadcrumb>
-                        <BreadcrumbList>
-                            <BreadcrumbItem>
-                                <BreadcrumbLink href="/admin" className="text-brand-text-muted hover:text-white">Admin</BreadcrumbLink>
-                            </BreadcrumbItem>
-                            <BreadcrumbSeparator className="text-white/10" />
-                            <BreadcrumbItem>
-                                <BreadcrumbPage className="text-brand-gold font-bold uppercase tracking-widest text-xs">Business</BreadcrumbPage>
-                            </BreadcrumbItem>
-                        </BreadcrumbList>
-                    </Breadcrumb>
+                <header className="h-20 border-b border-white/5 bg-brand-bg/80 backdrop-blur-xl sticky top-0 z-40 px-8">
+                    <div className="flex items-center justify-between w-full max-w-7xl mx-auto h-full">
+                        <Breadcrumb>
+                            <BreadcrumbList>
+                                <BreadcrumbItem>
+                                    <BreadcrumbLink href="/admin" className="text-brand-text-muted hover:text-white">Admin</BreadcrumbLink>
+                                </BreadcrumbItem>
+                                <BreadcrumbSeparator className="text-white/10" />
+                                <BreadcrumbItem>
+                                    <BreadcrumbPage className="text-brand-gold font-bold uppercase tracking-widest text-xs">Business</BreadcrumbPage>
+                                </BreadcrumbItem>
+                            </BreadcrumbList>
+                        </Breadcrumb>
+                    </div>
                 </header>
 
-                <div className="p-8 md:p-12 relative z-10 max-w-7xl mx-auto w-full">
+                <div className="p-8 md:p-12 relative z-10 w-full max-w-7xl mx-auto flex-1">
                     {children}
                 </div>
             </main>

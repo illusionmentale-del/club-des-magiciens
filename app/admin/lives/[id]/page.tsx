@@ -3,10 +3,10 @@
 import { useEffect, useState, useTransition } from "react";
 import { createClient } from "@/lib/supabase/client";
 import Link from "next/link";
-import { ArrowLeft, ShieldCheck, Users, Lock, Mic, Video, Play, StopCircle } from "lucide-react";
+import { ArrowLeft, ShieldCheck, Users, Lock, Mic, Video, Play, StopCircle, BellRing, Pencil } from "lucide-react";
 import { useParams, usePathname } from "next/navigation";
 import LiveChat from "@/components/LiveChat";
-import { updateLiveStatus } from "@/app/admin/actions";
+import { updateLiveStatus, updateLiveRoom } from "@/app/admin/actions";
 
 export default function LiveControlRoom() {
     const { id } = useParams();
@@ -14,6 +14,7 @@ export default function LiveControlRoom() {
     const [live, setLive] = useState<any>(null);
     const [loading, setLoading] = useState(true);
     const [optimisticStatus, setOptimisticStatus] = useState<string | null>(null);
+    const [reminderCount, setReminderCount] = useState<number>(0);
     const [isPending, startTransition] = useTransition();
 
     const basePath = pathname.includes('/kids/') ? '/admin/kids' : (pathname.includes('/adults/') ? '/admin/adults' : '/admin');
@@ -21,9 +22,14 @@ export default function LiveControlRoom() {
     useEffect(() => {
         const fetchLive = async () => {
             const supabase = createClient();
-            const { data } = await supabase.from("lives").select("*").eq("id", id).single();
-            setLive(data);
-            setOptimisticStatus(data?.status || null);
+            const [liveRes, reminderRes] = await Promise.all([
+                supabase.from("lives").select("*").eq("id", id).single(),
+                supabase.from("event_reminders").select("id", { count: 'exact' }).eq("event_id", id)
+            ]);
+
+            setLive(liveRes.data);
+            setOptimisticStatus(liveRes.data?.status || null);
+            setReminderCount(reminderRes.count || 0);
             setLoading(false);
         };
         fetchLive();
@@ -34,6 +40,18 @@ export default function LiveControlRoom() {
         startTransition(async () => {
             await updateLiveStatus(live.id, newStatus);
         });
+    };
+
+    const handleRenameRoom = () => {
+        const newRoomName = prompt("Nouveau nom de la salle Jitsi (identifiant de cours) :", live.platform_id);
+        if (newRoomName && newRoomName !== live.platform_id) {
+            // Remove spaces just in case
+            const cleanName = newRoomName.replace(/\s+/g, '-');
+            setLive({ ...live, platform_id: cleanName });
+            startTransition(async () => {
+                await updateLiveRoom(live.id, cleanName);
+            });
+        }
     };
 
     if (loading) return <div className="min-h-screen bg-black text-white flex items-center justify-center">Chargement...</div>;
@@ -49,12 +67,22 @@ export default function LiveControlRoom() {
                     <Link href={`${basePath}/lives`} className="p-2 hover:bg-white/10 rounded-lg transition-colors">
                         <ArrowLeft className="w-5 h-5" />
                     </Link>
-                    <div>
-                        <h1 className="font-bold text-lg">{live.title}</h1>
-                        <span className="text-xs text-red-500 font-mono uppercase tracking-widest flex items-center gap-1">
-                            <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
-                            Salle de Contrôle
-                        </span>
+                    <div className="flex items-center gap-3">
+                        <div>
+                            <h1 className="font-bold text-lg">{live.title}</h1>
+                            <span className="text-xs text-red-500 font-mono uppercase tracking-widest flex items-center gap-1">
+                                <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
+                                Salle de Contrôle • {live.platform_id}
+                            </span>
+                        </div>
+                        <button
+                            onClick={handleRenameRoom}
+                            disabled={isPending}
+                            className="p-2 bg-white/5 hover:bg-white/20 rounded-full transition-colors group"
+                            title="Renommer la salle"
+                        >
+                            <Pencil className="w-4 h-4 text-gray-400 group-hover:text-white" />
+                        </button>
                     </div>
                 </div>
 
@@ -167,6 +195,10 @@ export default function LiveControlRoom() {
                             <div className="bg-black/20 p-3 rounded-lg border border-white/5">
                                 <h4 className="font-bold text-xs mb-1 text-red-400">Enregistrement</h4>
                                 <p className="text-[10px] text-gray-500">Utilisez l'option "Start Recording" (Dropbox requis) ou OBS.</p>
+                            </div>
+                            <div className="bg-black/20 p-3 rounded-lg border border-white/5">
+                                <h4 className="font-bold text-xs mb-1 text-green-400 flex items-center gap-2"><BellRing className="w-3 h-3" /> Alertes</h4>
+                                <p className="text-[10px] text-gray-400"><strong className="text-white text-sm">{reminderCount}</strong> membre(s) attend(ent) cet événement.</p>
                             </div>
                         </div>
                     </div>

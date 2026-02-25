@@ -76,7 +76,17 @@ export default async function WatchPage(props: WatchPageProps) {
                     <div className="aspect-video bg-black rounded-2xl overflow-hidden shadow-2xl border border-white/10 relative group">
                         {libraryItem.video_url ? (
                             <>
-                                {/^\d+$/.test(libraryItem.video_url) ? (
+                                {/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(libraryItem.video_url) ? (
+                                    // Bunny Stream Player (IDs are GUIDs)
+                                    <iframe
+                                        src={`https://iframe.mediadelivery.net/embed/${process.env.BUNNY_KIDS_LIBRARY_ID}/${libraryItem.video_url}?autoplay=false&loop=false&muted=false&preload=true&responsive=true`}
+                                        className="absolute inset-0 w-full h-full"
+                                        frameBorder="0"
+                                        allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;"
+                                        allowFullScreen
+                                    ></iframe>
+                                ) : /^\d+$/.test(libraryItem.video_url) ? (
+                                    // Vimeo Player (IDs are numbers)
                                     <iframe
                                         src={`https://player.vimeo.com/video/${libraryItem.video_url}?h=0&title=0&byline=0&portrait=0`}
                                         className="absolute inset-0 w-full h-full"
@@ -85,6 +95,7 @@ export default async function WatchPage(props: WatchPageProps) {
                                         allowFullScreen
                                     ></iframe>
                                 ) : (
+                                    // YouTube Player
                                     <iframe
                                         src={`https://www.youtube-nocookie.com/embed/${libraryItem.video_url}?rel=0&modestbranding=1`}
                                         className="absolute inset-0 w-full h-full"
@@ -213,7 +224,16 @@ export default async function WatchPage(props: WatchPageProps) {
                     <div className="aspect-video bg-black rounded-xl overflow-hidden shadow-2xl border border-white/10 relative group">
                         {currentVideo ? (
                             <>
-                                {/^\d+$/.test(currentVideo.video_url) ? (
+                                {/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(currentVideo.video_url) ? (
+                                    // Bunny Stream Player (IDs are GUIDs)
+                                    <iframe
+                                        src={`https://iframe.mediadelivery.net/embed/${process.env.BUNNY_ADULTS_LIBRARY_ID}/${currentVideo.video_url}?autoplay=false&loop=false&muted=false&preload=true&responsive=true`}
+                                        className="absolute inset-0 w-full h-full"
+                                        frameBorder="0"
+                                        allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;"
+                                        allowFullScreen
+                                    ></iframe>
+                                ) : /^\d+$/.test(currentVideo.video_url) ? (
                                     // Vimeo Player (IDs are numbers)
                                     <iframe
                                         src={`https://player.vimeo.com/video/${currentVideo.video_url}?h=0&title=0&byline=0&portrait=0`}

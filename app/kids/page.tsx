@@ -9,6 +9,7 @@ import KidsNewsFeed from "@/components/kids/KidsNewsFeed";
 import KidsProgression from "@/components/kids/KidsProgression";
 import KidsAchievements from "@/components/kids/KidsAchievements";
 import { LiveStatusCard } from "@/components/LiveStatusCard";
+import GlobalAlertBanner from "@/components/kids/GlobalAlertBanner";
 
 export const dynamic = 'force-dynamic';
 
@@ -41,7 +42,6 @@ export default async function KidsHomePage({ searchParams }: { searchParams: Pro
 
         // SELF-HEALING: If profile is missing but user exists, create it
         if (!profile && user) {
-            console.log("⚠️ Missing profile for user, attempting self-healing...");
             const { data: newProfile, error: createError } = await supabase
                 .from("profiles")
                 .insert({
@@ -56,8 +56,6 @@ export default async function KidsHomePage({ searchParams }: { searchParams: Pro
 
             if (newProfile) {
                 profile = newProfile;
-            } else {
-                console.error("Failed to auto-create profile:", createError);
             }
         }
 
@@ -105,9 +103,8 @@ export default async function KidsHomePage({ searchParams }: { searchParams: Pro
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
     const currentWeek = Math.floor(diffDays / 7) + 1;
 
-    // 2. Fetch Content (Library Items & Active Live)
-    // We fetch everything up to current week to have context
-    const [{ data: allItems }, { data: activeLive }] = await Promise.all([
+    // 2. Fetch Content (Library Items & Active Live & Alerts)
+    const [{ data: allItems }, { data: activeLive }, { data: alerts }, { data: readAlerts }] = await Promise.all([
         supabase
             .from("library_items")
             .select("*")
@@ -122,10 +119,37 @@ export default async function KidsHomePage({ searchParams }: { searchParams: Pro
             .in("status", ["programmé", "en_cours"])
             .order("start_date", { ascending: true })
             .limit(1)
-            .maybeSingle()
+            .maybeSingle(),
+
+        supabase
+            .from("global_alerts")
+            .select("*")
+            .or("target_audience.eq.kids,target_audience.eq.all")
+            .order("created_at", { ascending: false }),
+
+        supabase
+            .from("user_alerts_read")
+            .select("alert_id")
+            .eq("user_id", user.id)
     ]);
 
+    // Filter out read alerts
+    const readAlertIds = readAlerts?.map(r => r.alert_id) || [];
+    const unreadAlerts = alerts?.filter(a => !readAlertIds.includes(a.id)) || [];
+
     // --- CONFIG LOGIC ---
+
+    // Fetch reminder status if there's an active live
+    let isReminded = false;
+    if (activeLive && activeLive.status === "programmé") {
+        const { data: reminder } = await supabase
+            .from("event_reminders")
+            .select("id")
+            .eq("event_id", activeLive.id)
+            .eq("user_id", user.id)
+            .single();
+        if (reminder) isReminded = true;
+    }
 
     // WELCOME MESSAGE
     const welcomeActive = settingsMap.kid_home_welcome_active === "true";
@@ -224,9 +248,6 @@ export default async function KidsHomePage({ searchParams }: { searchParams: Pro
     const userName = profile.username || profile.full_name || profile.display_name || profile.first_name || user.user_metadata?.full_name || "Jeune Magicien";
     const userGrade = profile.magic_level || "Apprenti";
 
-    // Preview Debug Info (Visible only in preview mode)
-    const isPreview = settingsMap.kid_home_preview === "true" || true; // Always check searchParams
-
     return (
         <div className="min-h-screen bg-brand-bg text-brand-text p-4 md:p-8 pb-32 font-sans overflow-hidden relative selection:bg-brand-purple/30">
             {/* Background Ambience */}
@@ -253,7 +274,7 @@ export default async function KidsHomePage({ searchParams }: { searchParams: Pro
                             <span className="text-xs font-bold uppercase tracking-widest">Le Club des Petits Magiciens</span>
                         </div>
                         <h1 className="text-3xl md:text-5xl font-black text-white tracking-tight">
-                            Bienvenue, <span className="text-brand-purple">{userName}</span> ! ✨
+                            Bienvenue au <span className="text-brand-purple">Club</span> ! ✨
                         </h1>
                         <p className="text-brand-text-muted mt-2 text-lg">
                             {customWelcome || (mainItem ? "Prêt à découvrir les secrets de la semaine ?" : "Prêt pour ton aventure magique ?")}
@@ -261,10 +282,13 @@ export default async function KidsHomePage({ searchParams }: { searchParams: Pro
                     </div>
                 </header>
 
+                {/* BLOC: GLOBAL ALERTS */}
+                <GlobalAlertBanner alerts={unreadAlerts} />
+
                 {/* BLOC: LIVE STREAM BANNER */}
                 {activeLive && (
                     <div className="mb-8">
-                        <LiveStatusCard live={activeLive} />
+                        <LiveStatusCard live={activeLive} isReminded={isReminded} />
                     </div>
                 )}
 

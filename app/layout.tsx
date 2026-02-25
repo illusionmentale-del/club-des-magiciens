@@ -13,6 +13,8 @@ export const metadata: Metadata = {
   description: "Apprenez la magie et le mentalisme",
 };
 
+import CookieBanner from "@/components/CookieBanner";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -20,8 +22,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="fr" suppressHydrationWarning>
-      <body className={`${poppins.variable} font-sans bg-brand-bg text-brand-text antialiased`}>
+      <body className={`${poppins.variable} font-sans bg-brand-bg text-brand-text antialiased flex flex-col min-h-screen`}>
         {children}
+        <CookieBanner />
       </body>
     </html>
   );

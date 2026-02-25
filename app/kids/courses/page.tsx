@@ -1,8 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
-import Link from "next/link";
-import { BookOpen, Search, Star, ShoppingBag } from "lucide-react";
-import Image from "next/image";
+import { BookOpen, Search, ShoppingBag } from "lucide-react";
 import GrimoireCard from "@/components/GrimoireCard";
 
 export default async function KidsCoursesPage() {

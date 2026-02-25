@@ -24,6 +24,8 @@ type LibraryItem = {
     is_main?: boolean;
     show_in_news?: boolean;
     published_at?: string;
+    sales_page_url?: string | null;
+    price_label?: string | null;
 };
 
 export default function LibraryItemForm({ initialData }: { initialData?: LibraryItem }) {
@@ -32,6 +34,7 @@ export default function LibraryItemForm({ initialData }: { initialData?: Library
     const supabase = createClient();
     const [loading, setLoading] = useState(false);
     const [uploading, setUploading] = useState(false);
+    const [isPremium, setIsPremium] = useState(!!initialData?.sales_page_url || !!initialData?.price_label);
 
     const initialWeek = searchParams.get('week');
     const initialAudience = searchParams.get('audience') as 'kids' | 'adults' || 'adults';
@@ -48,7 +51,9 @@ export default function LibraryItemForm({ initialData }: { initialData?: Library
         week_number: initialWeek ? Number(initialWeek) : 1,
         is_main: false,
         show_in_news: false,
-        published_at: new Date().toISOString().split('T')[0]
+        published_at: new Date().toISOString().split('T')[0],
+        sales_page_url: "",
+        price_label: ""
     });
 
     useEffect(() => {
@@ -229,6 +234,61 @@ export default function LibraryItemForm({ initialData }: { initialData?: Library
                         </div>
                     </div>
 
+                    {/* Vente / Boutique */}
+                    <div className={`bg-brand-card border border-brand-border p-6 rounded-2xl relative overflow-hidden transition-all duration-300 ${isPremium ? 'space-y-6' : ''}`}>
+                        <div className="absolute top-0 right-0 w-20 h-20 bg-brand-purple/10 rounded-bl-full pointer-events-none"></div>
+
+                        <div className={`flex items-center justify-between ${isPremium ? 'border-b border-brand-border pb-4' : ''}`}>
+                            <h2 className="text-xl font-bold text-brand-purple uppercase tracking-tight">Boutique & Vente</h2>
+                            <div className="flex items-center gap-3">
+                                <span className={`text-xs font-bold uppercase tracking-wider ${isPremium ? 'text-brand-purple' : 'text-brand-text-muted'}`}>Contenu Premium</span>
+                                <label className="relative inline-flex items-center cursor-pointer">
+                                    <input
+                                        type="checkbox"
+                                        checked={isPremium}
+                                        onChange={(e) => {
+                                            const checked = e.target.checked;
+                                            setIsPremium(checked);
+                                            if (!checked) {
+                                                setFormData(prev => ({ ...prev, sales_page_url: "", price_label: "" }));
+                                            }
+                                        }}
+                                        className="sr-only peer"
+                                    />
+                                    <div className="w-11 h-6 bg-brand-bg rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-brand-text-muted peer-checked:after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-brand-purple border border-brand-border"></div>
+                                </label>
+                            </div>
+                        </div>
+
+                        {isPremium && (
+                            <div className="space-y-4 pt-2 animate-in fade-in slide-in-from-top-4 duration-300">
+                                <div>
+                                    <label className="block text-brand-text-muted text-xs font-bold uppercase tracking-wider mb-2">URL de la Page de Vente (Lien Stripe)</label>
+                                    <input
+                                        type="url"
+                                        name="sales_page_url"
+                                        value={formData.sales_page_url || ""}
+                                        onChange={handleChange}
+                                        className="w-full bg-brand-bg border border-brand-border rounded-xl p-4 text-brand-text focus:border-brand-purple outline-none transition-all placeholder:text-brand-text-muted/20"
+                                        placeholder="https://buy.stripe.com/live_..."
+                                    />
+                                    <p className="text-[10px] text-brand-text-muted mt-2">Si rempli, ce contenu apparaîtra dans la Boutique (payant).</p>
+                                </div>
+                                <div>
+                                    <label className="block text-brand-text-muted text-xs font-bold uppercase tracking-wider mb-2">Label du Prix</label>
+                                    <input
+                                        type="text"
+                                        name="price_label"
+                                        value={formData.price_label || ""}
+                                        onChange={handleChange}
+                                        className="w-full bg-brand-bg border border-brand-border rounded-xl p-4 text-brand-text focus:border-brand-purple outline-none transition-all placeholder:text-brand-text-muted/20"
+                                        placeholder="Ex: 49,00 €"
+                                    />
+                                </div>
+                            </div>
+                        )}
+                    </div>
+
                     {/* Specific Fields based on Audience */}
                     {formData.audience === 'kids' ? (
                         <div className="bg-brand-card border border-brand-border p-6 rounded-2xl space-y-6 relative overflow-hidden">
@@ -310,7 +370,7 @@ export default function LibraryItemForm({ initialData }: { initialData?: Library
 
                         <div>
                             <label className="block text-brand-text-muted text-xs font-bold uppercase tracking-wider mb-2">
-                                ID Vidéo (Vimeo/Mux) {['pdf', 'image', 'tips'].includes(formData.type) ? '(Optionnel)' : ''}
+                                ID VIDÉO {['pdf', 'image', 'tips'].includes(formData.type) ? '(Optionnel)' : ''}
                             </label>
                             <input
                                 type="text"
@@ -318,7 +378,7 @@ export default function LibraryItemForm({ initialData }: { initialData?: Library
                                 value={formData.video_url || ""}
                                 onChange={handleChange}
                                 className="w-full bg-brand-bg border border-brand-border rounded-xl p-4 text-brand-text focus:border-brand-blue font-mono text-sm"
-                                placeholder="123456789"
+                                placeholder="123456789 ou GUID Bunny"
                             />
                         </div>
 

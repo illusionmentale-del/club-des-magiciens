@@ -110,8 +110,8 @@ export default async function AdminCoursePage(props: { params: Promise<{ id: str
 
                         <div className="grid grid-cols-2 gap-4">
                             <div>
-                                <label className="block text-xs font-medium text-brand-text-muted mb-1">ID Viméo / YouTube</label>
-                                <input name="videoUrl" required placeholder="Ex: 84930210" className="w-full bg-brand-bg/50 border border-brand-border rounded-lg px-3 py-2 text-brand-text font-mono text-sm focus:outline-none focus:border-brand-purple/50 focus:ring-1 focus:ring-brand-purple/50" />
+                                <label className="block text-xs font-medium text-brand-text-muted mb-1">ID VIDÉO</label>
+                                <input name="videoUrl" required placeholder="Ex: 84930210 ou GUID Bunny" className="w-full bg-brand-bg/50 border border-brand-border rounded-lg px-3 py-2 text-brand-text font-mono text-sm focus:outline-none focus:border-brand-purple/50 focus:ring-1 focus:ring-brand-purple/50" />
                             </div>
                             <div>
                                 <label className="block text-xs font-medium text-brand-text-muted mb-1">Durée (secondes)</label>
@@ -124,7 +124,7 @@ export default async function AdminCoursePage(props: { params: Promise<{ id: str
                         </button>
 
                         <p className="text-xs text-gray-500 mt-2 text-center">
-                            Pour Vimeo : l'ID est la fin de l'URL (vimeo.com/<strong>123456</strong>).
+                            Pour Bunny, utilisez le GUID complet. Pour Vimeo : fin de l'URL (vimeo.com/<strong>123456</strong>).
                         </p>
                     </form>
                 </div>

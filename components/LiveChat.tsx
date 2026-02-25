@@ -124,6 +124,14 @@ export default function LiveChat({ liveId, isAdmin = false, isKids = false }: Pr
     };
 
     const visibleMessages = messages.filter(msg => {
+        // Option 3: Unidirectional Chat for Kids
+        // If it's the Kids space and the user is NOT an admin, they should ONLY see their own messages.
+        // They cannot see messages from other users (kids or infiltrated adults).
+        if (isKids && !isAdmin) {
+            return msg.user_id === currentUserId;
+        }
+
+        // Standard behavior for adults/admins
         if (isAdmin && adminFilter === 'questions') return msg.type === 'question';
         return true;
     });
@@ -157,9 +165,21 @@ export default function LiveChat({ liveId, isAdmin = false, isKids = false }: Pr
             )}
 
             <div className="flex-1 overflow-y-auto p-4 space-y-4 scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent">
+                {/* Reassurance Message for Kids */}
+                {isKids && !isAdmin && (
+                    <div className="bg-gradient-to-r from-purple-500/20 to-blue-500/20 border border-purple-500/30 rounded-xl p-3 mb-4 text-center">
+                        <p className="text-xs text-purple-200 font-medium">
+                            <span className="text-base mr-1">🕵️‍♂️</span>
+                            Mode Secret Activé ! Tes messages sont envoyés <strong>directement au magicien</strong>.
+                        </p>
+                    </div>
+                )}
+
                 {visibleMessages.length === 0 && (
                     <div className="text-center text-gray-500 text-sm py-10">
-                        {adminFilter === 'questions' ? "Aucune question pour le moment !" : "Soyez le premier à dire bonjour ! 👋"}
+                        {isAdmin ?
+                            (adminFilter === 'questions' ? "Aucune question pour le moment !" : "Soyez le premier à dire bonjour ! 👋")
+                            : "Pose ta première question au magicien ! ✨"}
                     </div>
                 )}
                 {visibleMessages.map((msg) => {

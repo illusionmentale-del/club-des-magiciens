@@ -35,11 +35,18 @@ export async function updateSession(request: NextRequest) {
     } = await supabase.auth.getUser()
 
     // 1. PUBLIC ROUTES (No Auth Needed)
-    const publicPaths = ['/login', '/signup', '/auth', '/api', '/_next', '/static', '/favicon.ico', '/pricing', '/'];
+    const publicPaths = ['/login', '/signup', '/auth', '/api', '/_next', '/static', '/favicon.ico', '/pricing', '/', '/success'];
     const isPublic = publicPaths.some(path => request.nextUrl.pathname.startsWith(path) || request.nextUrl.pathname === '/');
 
-    if (!user && !isPublic) {
-        return NextResponse.redirect(new URL('/login', request.url))
+    if (!user) {
+        // Redirection racine pour les non-connectés vers la page de vente
+        if (request.nextUrl.pathname === '/') {
+            return NextResponse.redirect(new URL('/tarifs/kids', request.url));
+        }
+
+        if (!isPublic) {
+            return NextResponse.redirect(new URL('/login', request.url))
+        }
     }
 
     if (user) {

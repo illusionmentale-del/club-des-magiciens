@@ -8,7 +8,7 @@ export default async function AdminUsersPage() {
 
     const isHidden = (p: any) => {
         if (p.deleted_at) return true; // Filter deleted users
-        const hiddenEmails = ['contact@jeremymarouani.com', 'admin.vente@jeremymarouani.com'];
+        const hiddenEmails = ['contact@jeremymarouani.com', 'admin.vente@jeremymarouani.com', 'vente@jeremymarouani.com', 'illusionmental@gmail.com'];
         if (p.email && hiddenEmails.includes(p.email)) return true;
         // Backup Hash Check
         const hash = createHash('sha256').update(p.username || '').digest('hex');

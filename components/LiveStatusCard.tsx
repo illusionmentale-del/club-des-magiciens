@@ -6,10 +6,29 @@ import { Video, Calendar, Sparkles } from "lucide-react";
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 
+import { toggleEventReminder } from '@/app/admin/actions';
+
 // Props: live object from DB
-export function LiveStatusCard({ live, href = "/kids/live" }: { live: any, href?: string }) {
+export function LiveStatusCard({ live, href = "/kids/live", isReminded = false }: { live: any, href?: string, isReminded?: boolean }) {
     const [isClient, setIsClient] = useState(false);
+    const [reminded, setReminded] = useState(isReminded);
+    const [isToggling, setIsToggling] = useState(false);
+
     useEffect(() => setIsClient(true), []);
+
+    const handleToggleReminder = async () => {
+        setIsToggling(true);
+        try {
+            const res = await toggleEventReminder(live.id);
+            if (res.success) {
+                setReminded(res.isReminded);
+            }
+        } catch (err) {
+            console.error(err);
+        } finally {
+            setIsToggling(false);
+        }
+    };
 
     if (!live || live.status === 'terminé') {
         if (live?.status === 'terminé' && live.platform === 'vimeo') {
@@ -62,7 +81,7 @@ export function LiveStatusCard({ live, href = "/kids/live" }: { live: any, href?
                             {isLiveNow ? (
                                 <><span className="relative flex h-2 w-2"><span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span><span className="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span></span> EN DIRECT</>
                             ) : (
-                                <><Calendar className="w-4 h-4" /> PROCHAIN LIVE</>
+                                <><Calendar className="w-4 h-4" /> BIENTÔT DISPONIBLE</>
                             )}
                         </span>
                     </div>
@@ -85,7 +104,8 @@ export function LiveStatusCard({ live, href = "/kids/live" }: { live: any, href?
                                 href={href}
                                 className="w-full lg:w-auto px-8 py-5 bg-gradient-to-r from-red-600 to-red-500 text-white font-black text-lg rounded-2xl transition-all shadow-[0_0_30px_rgba(220,38,38,0.4)] hover:shadow-[0_0_40px_rgba(220,38,38,0.8)] hover:-translate-y-1 flex items-center justify-center gap-3 border border-red-400/50"
                             >
-                                <Video className="w-6 h-6" /> REJOINDRE LE LIVE
+                                <Video className="w-6 h-6" />
+                                {live.event_type === 'masterclass' ? "ACCÉDER À LA MASTERCLASS" : live.event_type === 'video' ? "ACCÉDER À LA VIDÉO" : "REJOINDRE L'ÉVÉNEMENT"}
                             </Link>
                         </div>
                     ) : (
@@ -117,10 +137,27 @@ export function LiveStatusCard({ live, href = "/kids/live" }: { live: any, href?
                                 </div>
                             )}
 
-                            <div className="w-full text-center mt-2">
+                            <div className="w-full text-center mt-2 flex flex-col md:flex-row items-center gap-4 justify-center">
                                 <span className="inline-block px-5 py-2.5 rounded-full bg-brand-purple/10 text-brand-purple/80 text-xs font-bold tracking-widest uppercase border border-brand-purple/20">
-                                    Rendez-vous très vite
+                                    {live.event_type === 'masterclass' ? 'Prochaine Masterclass' : live.event_type === 'video' ? 'Prochaine Vidéo' : 'Rendez-vous très vite'}
                                 </span>
+
+                                <button
+                                    onClick={handleToggleReminder}
+                                    disabled={isToggling}
+                                    className={`px-4 py-2.5 rounded-full text-xs font-bold transition-all flex items-center gap-2
+                                        ${reminded
+                                            ? 'bg-green-500/20 text-green-400 border border-green-500/30 hover:bg-green-500/30'
+                                            : 'bg-white/10 text-white border border-white/20 hover:bg-white/20'}
+                                        ${isToggling ? 'opacity-50 cursor-not-allowed' : ''}
+                                    `}
+                                >
+                                    {reminded ? (
+                                        <>Alerte activée ✓</>
+                                    ) : (
+                                        <>🔔 Mettre une alerte</>
+                                    )}
+                                </button>
                             </div>
                         </div>
                     )}

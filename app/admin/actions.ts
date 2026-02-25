@@ -97,9 +97,10 @@ export async function saveKidsHomeSettings(config: Record<string, any>) {
     if (profile?.role !== 'admin') throw new Error("Forbidden");
 
     // We store all home configs as a single JSON object or multiple keys
-    // For simplicity and directness based on the plan:
+    // If the key already starts with 'kid_', assume it's a full key.
+    // Otherwise, for backwards compatibility with KidsHomeConfig, prepend 'kid_home_'
     const entries = Object.entries(config).map(([key, value]) => ({
-        key: `kid_home_${key}`,
+        key: key.startsWith('kid_') ? key : `kid_home_${key}`,
         value: typeof value === 'string' ? value : JSON.stringify(value)
     }));
 
@@ -152,6 +153,7 @@ export async function createLive(formData: FormData) {
     const vimeo_id = formData.get("vimeo_id") as string; // Optional replay ID
     const platform = formData.get("platform") as string || 'jitsi';
     const audience = formData.get("audience_override") as string || formData.get("audience") as string || 'adults';
+    const event_type = formData.get("event_type") as string || 'live';
 
     await supabase.from("lives").insert({
         title,
@@ -159,7 +161,8 @@ export async function createLive(formData: FormData) {
         platform_id,
         platform,
         status: 'programmé',
-        audience
+        audience,
+        event_type
     });
 
     revalidatePath("/admin");
@@ -186,6 +189,15 @@ export async function deleteLive(id: string) {
     const supabase = await createClient();
     await supabase.from("lives").delete().eq("id", id);
     revalidatePath("/admin/lives");
+}
+
+export async function updateLiveRoom(id: string, newPlatformId: string, newTitle?: string) {
+    const supabase = await createClient();
+    const updates: any = { platform_id: newPlatformId };
+    if (newTitle) updates.title = newTitle;
+    await supabase.from("lives").update(updates).eq("id", id);
+    revalidatePath("/admin/lives");
+    revalidatePath("/dashboard");
 }
 
 // --- COURSE ACTIONS ---
@@ -382,7 +394,7 @@ export async function createUserManually(formData: FormData) {
         access_level = 'adult';
     } else {
         // kid
-        role = 'user';
+        role = 'kid'; // Fixed from 'user' to ensure visibility in Kids dashboard
         access_level = 'kid';
     }
 
@@ -450,6 +462,12 @@ export async function updateUserAccess(userId: string, formData: FormData) {
     const access_level = formData.get("access_level") as string;
     const is_kid = access_level === 'kid';
 
+    const protectedEmails = ['contact@jeremymarouani.com', 'admin.vente@jeremymarouani.com', 'vente@jeremymarouani.com', 'illusionmental@gmail.com'];
+    const { data: targetProfile } = await supabase.from('profiles').select('email').eq('id', userId).single();
+    if (targetProfile && targetProfile.email && protectedEmails.includes(targetProfile.email)) {
+        return; // Silent fail or could return error
+    }
+
     const { error } = await supabase.from("profiles").update({ access_level, is_kid }).eq("id", userId);
     if (error) console.error("Update Access Error:", error);
 
@@ -467,6 +485,12 @@ export async function deleteUserEntity(userId: string) {
     const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey, {
         auth: { autoRefreshToken: false, persistSession: false }
     });
+
+    const protectedEmails = ['contact@jeremymarouani.com', 'admin.vente@jeremymarouani.com', 'vente@jeremymarouani.com', 'illusionmental@gmail.com'];
+    const { data: targetProfile } = await supabaseAdmin.from('profiles').select('email').eq('id', userId).single();
+    if (targetProfile && targetProfile.email && protectedEmails.includes(targetProfile.email)) {
+        throw new Error("Action interdite : Ce compte est protégé par le système.");
+    }
 
     // Set deleted_at
     const { error } = await supabaseAdmin.from("profiles").update({ deleted_at: new Date().toISOString() }).eq("id", userId);
@@ -647,4 +671,40 @@ export async function sendLiveChatMessage(liveId: string, content: string, type:
     }
 
     return { success: true };
+}
+
+// --- EVENT REMINDERS ACTIONS ---
+export async function toggleEventReminder(eventId: string) {
+    const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+
+    if (!user) return { error: "Unauthorized" };
+
+    // Check if the user already has a reminder for this event
+    const { data: existing } = await supabase
+        .from("event_reminders")
+        .select("id")
+        .eq("event_id", eventId)
+        .eq("user_id", user.id)
+        .single();
+
+    if (existing) {
+        // Remove reminder
+        const { error } = await supabase
+            .from("event_reminders")
+            .delete()
+            .eq("id", existing.id);
+        if (error) return { error: error.message };
+        return { success: true, isReminded: false };
+    } else {
+        // Add reminder
+        const { error } = await supabase
+            .from("event_reminders")
+            .insert({
+                event_id: eventId,
+                user_id: user.id
+            });
+        if (error) return { error: error.message };
+        return { success: true, isReminded: true };
+    }
 }
