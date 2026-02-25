@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { Eye, Monitor, Smartphone, RotateCcw, X, ExternalLink, Info } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -33,7 +34,9 @@ export default function GlobalPreview() {
         );
     }
 
-    return (
+    if (typeof document === 'undefined') return null;
+
+    return createPortal(
         <div className="fixed inset-0 z-[9999] flex flex-col bg-black/90 backdrop-blur-md animate-in fade-in duration-300">
             {/* Header of Preview */}
             <div className="h-16 border-b border-white/10 flex items-center justify-between px-8 bg-brand-bg/50">
@@ -167,6 +170,7 @@ export default function GlobalPreview() {
                     </p>
                 </div>
             </div>
-        </div>
+        </div>,
+        document.body
     );
 }
