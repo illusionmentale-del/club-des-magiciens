@@ -212,7 +212,8 @@ export default async function WatchPage(props: WatchPageProps) {
         )
     }
 
-    // --- CASE B: COURSE (ADULTS) - EXISTING LOGIC ---
+    // --- CASE B: COURSE (ADULTS & KIDS BONUS) ---
+    const isKidsCourse = course.audience === "kids";
 
     // Fetch videos for this course
     const { data: videos } = await supabase
@@ -226,7 +227,7 @@ export default async function WatchPage(props: WatchPageProps) {
         .from("course_comments")
         .select("*")
         .eq("course_id", course.id)
-        .eq("context", "adults")
+        .eq("context", isKidsCourse ? "kids" : "adults")
         .order("created_at", { ascending: true });
 
     let comments: any[] = [];
@@ -234,7 +235,7 @@ export default async function WatchPage(props: WatchPageProps) {
         const userIds = [...new Set(rawComments.map(c => c.user_id))];
         const { data: profiles } = await supabase
             .from("profiles")
-            .select("id, username, magic_level, avatar_url, avatar_url_kids")
+            .select("id, username, full_name, magic_level, avatar_url, avatar_url_kids")
             .in("id", userIds);
 
         comments = rawComments.map(c => ({
@@ -261,20 +262,43 @@ export default async function WatchPage(props: WatchPageProps) {
         ? videos?.find(v => v.id === currentVideoId)
         : videos?.[0];
 
+    // Determine Admin status for Case B Comments
+    const { data: profile } = await supabase
+        .from("profiles")
+        .select("role")
+        .eq("id", user.id)
+        .single();
+    const isAdmin = profile?.role === 'admin' || (user.email?.includes('admin@') ?? false);
+
     return (
-        <div className="min-h-screen bg-[#050507] text-white flex flex-col relative font-sans selection:bg-magic-gold/30">
-            {/* Ambient Background Lights (Adult Theme) */}
-            <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] bg-magic-gold/5 blur-[150px] rounded-full pointer-events-none mix-blend-screen"></div>
-            <div className="absolute top-[30%] right-[-10%] w-[40%] h-[40%] bg-orange-600/5 blur-[120px] rounded-full pointer-events-none mix-blend-screen"></div>
+        <div className={cn(
+            "min-h-screen text-white flex flex-col relative font-sans",
+            isKidsCourse ? "bg-[#050507] selection:bg-brand-purple/30" : "bg-[#050507] selection:bg-magic-gold/30"
+        )}>
+            {/* Ambient Background Lights */}
+            {isKidsCourse ? (
+                <>
+                    <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] bg-brand-purple/10 blur-[150px] rounded-full pointer-events-none mix-blend-screen"></div>
+                    <div className="absolute top-[30%] right-[-10%] w-[40%] h-[40%] bg-brand-blue/5 blur-[120px] rounded-full pointer-events-none mix-blend-screen"></div>
+                </>
+            ) : (
+                <>
+                    <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] bg-magic-gold/5 blur-[150px] rounded-full pointer-events-none mix-blend-screen"></div>
+                    <div className="absolute top-[30%] right-[-10%] w-[40%] h-[40%] bg-orange-600/5 blur-[120px] rounded-full pointer-events-none mix-blend-screen"></div>
+                </>
+            )}
 
             {/* Header */}
             <header className="border-b border-white/10 bg-magic-card/50 backdrop-blur-md sticky top-0 z-50">
                 <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
-                    <Link href="/dashboard" className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors">
+                    <Link href={isKidsCourse ? "/kids/courses" : "/dashboard"} className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors">
                         <ArrowLeft className="w-5 h-5" />
-                        <span className="font-medium">Retour au tableau de bord</span>
+                        <span className="font-medium">{isKidsCourse ? "Retour à la Zone Bonus" : "Retour au tableau de bord"}</span>
                     </Link>
-                    <h1 className="text-lg font-serif text-magic-gold truncate max-w-md hidden md:block">
+                    <h1 className={cn(
+                        "text-lg truncate max-w-md hidden md:block",
+                        isKidsCourse ? "font-black uppercase text-brand-purple" : "font-serif text-magic-gold"
+                    )}>
                         {course.title}
                     </h1>
                     <div className="w-8"></div> {/* Spacer for alignment */}
@@ -291,7 +315,7 @@ export default async function WatchPage(props: WatchPageProps) {
                                 {/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(currentVideo.video_url) ? (
                                     // Bunny Stream Player (IDs are GUIDs)
                                     <iframe
-                                        src={`https://iframe.mediadelivery.net/embed/${process.env.BUNNY_ADULTS_LIBRARY_ID}/${currentVideo.video_url}?autoplay=false&loop=false&muted=false&preload=true&responsive=true`}
+                                        src={`https://iframe.mediadelivery.net/embed/${isKidsCourse ? process.env.BUNNY_KIDS_LIBRARY_ID : process.env.BUNNY_ADULTS_LIBRARY_ID}/${currentVideo.video_url}?autoplay=false&loop=false&muted=false&preload=true&responsive=true`}
                                         className="absolute inset-0 w-full h-full"
                                         frameBorder="0"
                                         allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;"
@@ -327,13 +351,14 @@ export default async function WatchPage(props: WatchPageProps) {
                     {currentVideo && (
                         <div className="space-y-4">
                             <div className="flex justify-between items-start">
-                                <h2 className="text-3xl font-serif text-white">{currentVideo.title}</h2>
+                                <h2 className={cn("text-3xl text-white", isKidsCourse ? "font-black" : "font-serif")}>{currentVideo.title}</h2>
                             </div>
 
                             <VideoPlayerControls
                                 videoId={currentVideo.id}
                                 courseId={course.id}
                                 isCompleted={completedVideoIds.has(currentVideo.id)}
+                                theme={isKidsCourse ? "kids" : "adults"}
                             />
 
                             <div className="prose prose-invert max-w-none text-gray-400">
@@ -343,7 +368,15 @@ export default async function WatchPage(props: WatchPageProps) {
                     )}
 
                     {/* Comments Section */}
-                    {comments && <CommentsSection courseId={course.id} comments={comments} user={user} />}
+                    {comments && isKidsCourse ? (
+                        <KidsCommentsSection
+                            videoId={course.id}
+                            comments={comments || []}
+                            isAdmin={isAdmin}
+                        />
+                    ) : (
+                        comments && <CommentsSection courseId={course.id} comments={comments} user={user} />
+                    )}
                 </div>
 
                 {/* Sidebar (Playlist) */}
@@ -358,7 +391,10 @@ export default async function WatchPage(props: WatchPageProps) {
                             </div>
                             <div className="h-1.5 w-full bg-white/10 rounded-full overflow-hidden">
                                 <div
-                                    className="h-full bg-gradient-to-r from-magic-gold to-orange-500 transition-all duration-500"
+                                    className={cn(
+                                        "h-full transition-all duration-500",
+                                        isKidsCourse ? "bg-brand-purple" : "bg-gradient-to-r from-magic-gold to-orange-500"
+                                    )}
                                     style={{ width: `${progressPercentage}%` }}
                                 ></div>
                             </div>
@@ -376,7 +412,7 @@ export default async function WatchPage(props: WatchPageProps) {
                                         className={cn(
                                             "flex items-center gap-3 p-3 rounded-lg transition-all group relative",
                                             isActive
-                                                ? "bg-magic-gold/10 border border-magic-gold/30"
+                                                ? (isKidsCourse ? "bg-brand-purple/20 border border-brand-purple/50" : "bg-magic-gold/10 border border-magic-gold/30")
                                                 : "hover:bg-white/5 border border-transparent"
                                         )}
                                     >
@@ -386,7 +422,7 @@ export default async function WatchPage(props: WatchPageProps) {
                                                 isCompleted
                                                     ? "bg-green-500 text-black border border-green-400"
                                                     : isActive
-                                                        ? "bg-magic-gold text-black font-bold shadow-[0_0_15px_rgba(238,195,67,0.4)]"
+                                                        ? (isKidsCourse ? "bg-brand-purple text-white shadow-[0_0_15px_rgba(168,85,247,0.4)] font-bold" : "bg-magic-gold text-black font-bold shadow-[0_0_15px_rgba(238,195,67,0.4)]")
                                                         : "bg-[#111] text-gray-500 border border-white/10 group-hover:border-white/30"
                                             )}>
                                                 {isCompleted ? (
@@ -400,7 +436,7 @@ export default async function WatchPage(props: WatchPageProps) {
                                         <div className="flex-1 min-w-0">
                                             <p className={cn(
                                                 "text-sm font-medium leading-tight line-clamp-2 transition-colors",
-                                                isActive ? "text-magic-gold" : "text-gray-300 group-hover:text-white",
+                                                isActive ? (isKidsCourse ? "text-white" : "text-magic-gold") : "text-gray-300 group-hover:text-white",
                                                 isCompleted && !isActive && "text-gray-500"
                                             )}>
                                                 {video.title}
@@ -410,7 +446,10 @@ export default async function WatchPage(props: WatchPageProps) {
                                             </p>
                                         </div>
 
-                                        {isActive && !isCompleted && <PlayCircle className="w-4 h-4 text-magic-gold shrink-0 drop-shadow-[0_0_8px_rgba(238,195,67,0.5)]" />}
+                                        {isActive && !isCompleted && <PlayCircle className={cn(
+                                            "w-4 h-4 shrink-0",
+                                            isKidsCourse ? "text-brand-purple drop-shadow-[0_0_8px_rgba(168,85,247,0.5)]" : "text-magic-gold drop-shadow-[0_0_8px_rgba(238,195,67,0.5)]"
+                                        )} />}
                                     </Link>
                                 )
                             })}

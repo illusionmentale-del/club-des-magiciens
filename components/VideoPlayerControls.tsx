@@ -9,9 +9,10 @@ interface VideoPlayerControlsProps {
     videoId: string;
     courseId: string;
     isCompleted: boolean;
+    theme?: "adults" | "kids";
 }
 
-export default function VideoPlayerControls({ videoId, courseId, isCompleted: initialStatus }: VideoPlayerControlsProps) {
+export default function VideoPlayerControls({ videoId, courseId, isCompleted: initialStatus, theme = "adults" }: VideoPlayerControlsProps) {
     const [isCompleted, setIsCompleted] = useState(initialStatus);
     const [isLoading, setIsLoading] = useState(false);
     const supabase = createClient();
@@ -57,9 +58,13 @@ export default function VideoPlayerControls({ videoId, courseId, isCompleted: in
             <button
                 onClick={toggleCompletion}
                 disabled={isLoading}
-                className={`flex items-center gap-2 px-6 py-3 rounded-full font-bold transition-all shadow-lg ${isCompleted
-                    ? "bg-gradient-to-r from-magic-gold/20 to-orange-500/20 text-magic-gold border border-magic-gold/50 shadow-[0_0_20px_rgba(238,195,67,0.2)]"
-                    : "bg-[#111] text-white border border-white/10 hover:border-magic-gold/50 hover:text-magic-gold hover:shadow-[0_0_15px_rgba(238,195,67,0.15)]"
+                className={`flex items-center gap-2 px-6 py-3 rounded-full font-bold transition-all shadow-lg ${theme === "kids"
+                        ? isCompleted
+                            ? "bg-gradient-to-r from-brand-purple/20 to-blue-500/20 text-brand-purple border border-brand-purple/50 shadow-[0_0_20px_rgba(168,85,247,0.2)]"
+                            : "bg-[#111] text-white border border-white/10 hover:border-brand-purple/50 hover:text-brand-purple hover:shadow-[0_0_15px_rgba(168,85,247,0.3)]"
+                        : isCompleted
+                            ? "bg-gradient-to-r from-magic-gold/20 to-orange-500/20 text-magic-gold border border-magic-gold/50 shadow-[0_0_20px_rgba(238,195,67,0.2)]"
+                            : "bg-[#111] text-white border border-white/10 hover:border-magic-gold/50 hover:text-magic-gold hover:shadow-[0_0_15px_rgba(238,195,67,0.15)]"
                     }`}
             >
                 {isLoading ? (
