@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import { PlayCircle, ArrowRight, Lock, Sparkles, BookOpen, Star, Tv } from "lucide-react";
 import Image from "next/image";
+import AdultHomeHero from "@/components/adults/AdultHomeHero";
 
 export default async function DashboardPage() {
     const supabase = await createClient();
@@ -32,6 +33,20 @@ export default async function DashboardPage() {
 
     const courses = coursesRes.data || [];
     const purchasedCourseIds = new Set(purchasesRes.data?.map(p => p.course_id) || []);
+
+    // 4. Parse Adult Home Featured Config
+    // Format: { title, description, image, link, buttonText, tag }
+    const featuredConfigSetting = settingsRes.data?.find(s => s.key === 'adult_home_featured_config')?.value;
+    let featuredConfig = undefined;
+    if (featuredConfigSetting) {
+        try {
+            featuredConfig = typeof featuredConfigSetting === 'string'
+                ? JSON.parse(featuredConfigSetting)
+                : featuredConfigSetting;
+        } catch (e) {
+            console.error("Error parsing adult_home_featured_config", e);
+        }
+    }
 
     // Quick helper to determine if a course is unlocked
     const isUnlocked = (course: any) => isAdmin || purchasedCourseIds.has(course.id) || course.price === 'Gratuit' || !course.price;
@@ -67,6 +82,11 @@ export default async function DashboardPage() {
             </header>
 
             <div className="max-w-7xl mx-auto relative z-10 space-y-16">
+
+                {/* HERO SECTION / ANNONCE A LA UNE */}
+                {featuredConfig && featuredConfig.title && (
+                    <AdultHomeHero config={featuredConfig} />
+                )}
 
                 {/* Section: Vos Formations et Masterclass (Courses grid) */}
                 <section>

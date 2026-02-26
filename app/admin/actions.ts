@@ -117,6 +117,34 @@ export async function saveKidsHomeSettings(config: Record<string, any>) {
     return { success: true };
 }
 
+export async function saveAdultHomeSettings(config: Record<string, any>) {
+    const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) throw new Error("Unauthorized");
+
+    // Admin check
+    const { data: profile } = await supabase.from('profiles').select('role').eq('id', user.id).single();
+    if (profile?.role !== 'admin') throw new Error("Forbidden");
+
+    // We store all adult home configs as a single JSON object or multiple keys
+    const entries = Object.entries(config).map(([key, value]) => ({
+        key: key.startsWith('adult_home_') ? key : `adult_home_${key}`,
+        value: typeof value === 'string' ? value : JSON.stringify(value)
+    }));
+
+    const { error } = await supabase.from("settings").upsert(entries, { onConflict: 'key' });
+
+    if (error) {
+        console.error("Error saving adult home settings:", error);
+        throw new Error(error.message);
+    }
+
+    revalidatePath("/dashboard");
+    revalidatePath("/admin/adults/settings");
+    revalidatePath("/", "layout"); // Force global refresh
+    return { success: true };
+}
+
 export async function uploadLogo(formData: FormData) {
     const supabase = await createClient();
     const logoFile = formData.get("logo_file") as File;
