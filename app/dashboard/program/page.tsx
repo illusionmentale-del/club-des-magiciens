@@ -18,36 +18,41 @@ export default async function ProgramPage() {
     }
     const isAdmin = profile.role === 'admin';
 
-    // 2. Fetch all courses & user purchases
-    const [coursesRes, purchasesRes] = await Promise.all([
+    // 2. Fetch all courses, user purchases & settings
+    const [coursesRes, purchasesRes, settingsRes] = await Promise.all([
         supabase.from("courses").select("*").neq('audience', 'kids').order("created_at", { ascending: false }),
         supabase.from("user_purchases").select("course_id").eq("user_id", user.id),
+        supabase.from("settings").select("*").eq("key", "adult_home_main_programs")
     ]);
 
     const courses = coursesRes.data || [];
     const purchasedCourseIds = new Set(purchasesRes.data?.map(p => p.course_id) || []);
 
     // 3. Logic: Define "Continuous Training" vs "Isolated Purchases"
-    // Heuristic: If it has "Formation" or "Club" in the title or is specifically flagged, it's main.
-    // For now, let's assume the oldest big courses are the Main Program, and the rest are "Boutique" (or custom flags if you have them).
-    // Let's filter based on tags or types if they exist, otherwise we'll use a simple heuristic or split them.
-
-    // We will consider courses mapped as 'programs' vs 'products'. If they don't have a clear flag,
-    // we assume "Le Club des Magiciens" or large programs are the continuous training.
-
-    // As a robust default for Jérémy's architecture:
-    // Every course is accessible if Admin, OR if in purchased_ids, OR if free.
     const unlockedCourses = courses.filter(c => isAdmin || purchasedCourseIds.has(c.id) || c.price === 'Gratuit' || !c.price);
 
-    // Let's deduce what is "La Formation Continue" vs "Achats Isolés"
-    // Usually, "Mentalisme Pro" or "Le Club des Magiciens" are the main subscriptions.
-    const mainProgramsContext = ['Mentalisme', 'Club', 'Formation'];
+    // Read the admin configuration for main programs
+    const mainProgramsSetting = settingsRes.data?.[0]?.value;
+    let configuredMainProgramIds: string[] = [];
 
-    const mainPrograms = unlockedCourses.filter(c => mainProgramsContext.some(keyword => c.title.toLowerCase().includes(keyword.toLowerCase())));
+    if (mainProgramsSetting) {
+        try {
+            configuredMainProgramIds = JSON.parse(mainProgramsSetting);
+        } catch (e) {
+            console.error("Failed to parse adult_home_main_programs config", e);
+        }
+    }
 
-    // If we can't identify by keyword, just take the first oldest one as the "Main Program".
-    if (mainPrograms.length === 0 && unlockedCourses.length > 0) {
-        mainPrograms.push(unlockedCourses[unlockedCourses.length - 1]); // Oldest unlocked
+    let mainPrograms = [];
+
+    if (configuredMainProgramIds && configuredMainProgramIds.length > 0) {
+        mainPrograms = unlockedCourses.filter(c => configuredMainProgramIds.includes(c.id));
+    } else {
+        // Fallback: If nothing is configured in the admin, take the oldest unlocked course 
+        // (usually the main program like Le Club des Magiciens)
+        if (unlockedCourses.length > 0) {
+            mainPrograms.push(unlockedCourses[unlockedCourses.length - 1]);
+        }
     }
 
     const mainProgramIds = new Set(mainPrograms.map(p => p.id));
