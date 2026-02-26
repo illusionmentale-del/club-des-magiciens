@@ -48,7 +48,8 @@ export async function addComment(courseId: string, content: string) {
     await supabase.from("course_comments").insert({
         user_id: user.id,
         course_id: courseId,
-        content: content.trim()
+        content: content.trim(),
+        context: 'adults'
     });
 
     revalidatePath(`/watch/${courseId}`);

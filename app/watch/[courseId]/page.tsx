@@ -61,6 +61,7 @@ export default async function WatchPage(props: WatchPageProps) {
             .from("course_comments")
             .select("*")
             .eq("course_id", libraryItem.id)
+            .eq("context", "kids")
             .order("created_at", { ascending: true });
 
         let comments: any[] = [];
@@ -225,6 +226,7 @@ export default async function WatchPage(props: WatchPageProps) {
         .from("course_comments")
         .select("*")
         .eq("course_id", course.id)
+        .eq("context", "adults")
         .order("created_at", { ascending: true });
 
     let comments: any[] = [];

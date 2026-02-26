@@ -17,6 +17,12 @@ export default async function KidsLayout({
         redirect("/login");
     }
 
+    // STRICT SEPARATION: Check if user has kids access
+    const { data: profileCheck } = await supabase.from('profiles').select('has_kids_access').eq('id', user.id).single();
+    if (!profileCheck?.has_kids_access) {
+        redirect("/dashboard");
+    }
+
     // SILENT TRACKING: Record the last kid login
     // We execute this asynchronously so it doesn't block the page load
     supabase.from('profiles').update({ last_kids_login: new Date().toISOString() }).eq('id', user.id).then();
@@ -30,13 +36,15 @@ export default async function KidsLayout({
     let siteLogo = "/logo.png";
 
     let isAdmin = false;
+    let hasAdultsAccess = false;
 
     let hasUnreadReplies = false;
 
     if (user) {
         // ... existing admin and settings fetch ...
-        const { data: profile } = await supabase.from('profiles').select('role').eq('id', user.id).single();
+        const { data: profile } = await supabase.from('profiles').select('role, has_adults_access').eq('id', user.id).single();
         isAdmin = profile?.role === 'admin';
+        hasAdultsAccess = profile?.has_adults_access || false;
 
         const { data: settings } = await supabase.from("settings").select("*");
 
@@ -74,7 +82,7 @@ export default async function KidsLayout({
         <KidsLayoutClient
             sidebar={
                 <Suspense fallback={<div className="w-64 bg-magic-card hidden md:block" />}>
-                    <KidsSidebar socialLinks={socialLinks} logoUrl={siteLogo} isAdmin={isAdmin} hasUnreadReplies={hasUnreadReplies} />
+                    <KidsSidebar socialLinks={socialLinks} logoUrl={siteLogo} isAdmin={isAdmin} hasUnreadReplies={hasUnreadReplies} hasAdultsAccess={hasAdultsAccess} />
                 </Suspense>
             }
             mobileNav={

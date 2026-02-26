@@ -7,12 +7,13 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { LogOut, BookOpen, Settings, Video, Star, Youtube, Instagram, Facebook, LayoutDashboard, Shield, Wand2, ShoppingBag, Trophy, Map, Package, Sparkles, Store } from "lucide-react";
 
-export default function KidsSidebar({ socialLinks, logoUrl, isAdmin, hasPurchases, hasUnreadReplies }: {
+export default function KidsSidebar({ socialLinks, logoUrl, isAdmin, hasPurchases, hasUnreadReplies, hasAdultsAccess }: {
     socialLinks?: { youtube: string; instagram: string; facebook: string; tiktok: string };
     logoUrl?: string;
     isAdmin?: boolean;
     hasPurchases?: boolean;
     hasUnreadReplies?: boolean;
+    hasAdultsAccess?: boolean;
 }) {
     const pathname = usePathname();
     const router = useRouter();
@@ -170,10 +171,12 @@ export default function KidsSidebar({ socialLinks, logoUrl, isAdmin, hasPurchase
                             </div>
                         </div>
                     </Link>
-                )}    {isAdmin && (
+                )}
+
+                {(isAdmin || hasAdultsAccess) && (
                     <>
                         <div className="my-2 border-t border-white/10"></div>
-                        <p className="px-4 text-xs font-bold text-gray-400 uppercase tracking-widest mb-1">Admin</p>
+                        <p className="px-4 text-xs font-bold text-gray-400 uppercase tracking-widest mb-1">Passerelle</p>
 
                         <Link
                             href="/dashboard"
@@ -182,7 +185,11 @@ export default function KidsSidebar({ socialLinks, logoUrl, isAdmin, hasPurchase
                             <LayoutDashboard className="w-5 h-5" />
                             Espace Adulte
                         </Link>
+                    </>
+                )}
 
+                {isAdmin && (
+                    <>
                         <Link
                             href="/admin"
                             className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${isActive('/admin') ? 'bg-red-500/20 text-red-400 border border-red-500/20' : 'text-gray-400 hover:bg-white/5 hover:text-white'}`}

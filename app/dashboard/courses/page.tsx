@@ -54,13 +54,13 @@ export default async function CoursesPage() {
                                 key={course.id}
                                 href={href}
                                 target={target}
-                                className={`group relative bg-magic-card border ${isUnlocked ? 'border-white/10 hover:border-magic-purple/50' : 'border-white/5 opacity-80 hover:opacity-100'} rounded-2xl overflow-hidden transition-all hover:shadow-[0_0_30px_rgba(124,58,237,0.1)] flex flex-col`}
+                                className={`group relative bg-magic-card border ${isUnlocked ? 'border-white/10 hover:border-magic-gold/50' : 'border-white/5 opacity-80 hover:opacity-100'} rounded-2xl overflow-hidden transition-all hover:shadow-[0_0_30px_rgba(238,195,67,0.1)] flex flex-col`}
                             >
                                 <div className="aspect-video bg-black relative">
                                     {/* Image/Thumbnail Area */}
                                     <div className="absolute inset-0 bg-gradient-to-br from-gray-900 to-black flex items-center justify-center">
                                         {isUnlocked ? (
-                                            <PlayCircle className="w-12 h-12 text-white/50 group-hover:text-magic-purple transition-colors" />
+                                            <PlayCircle className="w-12 h-12 text-white/50 group-hover:text-magic-gold transition-colors" />
                                         ) : (
                                             <Lock className="w-12 h-12 text-white/30 group-hover:text-red-400 transition-colors" />
                                         )}

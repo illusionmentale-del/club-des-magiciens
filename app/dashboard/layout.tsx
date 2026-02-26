@@ -15,14 +15,15 @@ export default async function DashboardLayout({
         // Redirect to login if not authenticated (though middleware usually handles this)
         // redirect("/login");
     } else {
-        // STRICT SEPARATION: Check if kid
-        const { data: profile } = await supabase.from('profiles').select('access_level').eq('id', user.id).single();
-        if (profile?.access_level === 'kid') {
+        // STRICT SEPARATION: Check if user has adult access
+        const { data: profile } = await supabase.from('profiles').select('has_adults_access').eq('id', user.id).single();
+        if (!profile?.has_adults_access) {
             redirect("/kids");
         }
     }
 
     let isAdmin = false;
+    let hasKidsAccess = false;
     let socialLinks = {
         youtube: "https://youtube.com/@LeMagicienPOV",
         instagram: "https://instagram.com/LeMagicienPOV",
@@ -32,8 +33,9 @@ export default async function DashboardLayout({
     let siteLogo = "/logo.png";
 
     if (user) {
-        const { data: profile } = await supabase.from("profiles").select("role").eq("id", user.id).single();
+        const { data: profile } = await supabase.from("profiles").select("role, has_kids_access").eq("id", user.id).single();
         isAdmin = profile?.role === 'admin';
+        hasKidsAccess = profile?.has_kids_access || false;
 
         const { data: settings } = await supabase.from("settings").select("*");
 
@@ -54,9 +56,9 @@ export default async function DashboardLayout({
 
     return (
         <div className="flex h-screen bg-magic-bg overflow-hidden">
-            <Sidebar isAdmin={isAdmin} socialLinks={socialLinks} logoUrl={siteLogo} />
+            <Sidebar isAdmin={isAdmin} socialLinks={socialLinks} logoUrl={siteLogo} hasKidsAccess={hasKidsAccess} />
             <div className="flex-1 flex flex-col md:pl-0">
-                <MobileNav isAdmin={isAdmin} />
+                <MobileNav isAdmin={isAdmin} hasKidsAccess={hasKidsAccess} />
                 <main className="flex-1 overflow-y-auto bg-magic-bg p-4 md:p-8">
                     {children}
                 </main>

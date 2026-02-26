@@ -7,11 +7,15 @@ import { Send, FileText, Video, File, Check, X, Trash2 } from "lucide-react";
 export default function InboxReplyForm({
     commentId,
     courseId,
-    kidPseudo
+    kidPseudo,
+    targetUserId,
+    context = 'kids'
 }: {
     commentId: string;
     courseId: string;
-    kidPseudo: string;
+    kidPseudo?: string;
+    targetUserId?: string;
+    context?: 'adults' | 'kids';
 }) {
     const [isPending, startTransition] = useTransition();
     const [mediaType, setMediaType] = useState<'text' | 'video_bunny' | 'pdf'>('text');
@@ -25,8 +29,8 @@ export default function InboxReplyForm({
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         startTransition(async () => {
-            await markAsReadAndReply(commentId, courseId, content, mediaType, mediaUrl, mediaTitle, isBroadcast);
-            alert(`Réponse envoyée avec succès à ${kidPseudo} ! 🪄`);
+            await markAsReadAndReply(commentId, courseId, content, mediaType, mediaUrl, mediaTitle, isBroadcast, targetUserId, context);
+            alert(`Réponse envoyée avec succès à ${kidPseudo || "l'étudiant"} ! 🪄`);
             setContent('');
             setMediaUrl('');
             setMediaTitle('');
@@ -35,19 +39,19 @@ export default function InboxReplyForm({
     };
 
     const handleDismiss = () => {
-        if (confirm(`Marquer la question de ${kidPseudo} comme lue sans répondre ?`)) {
+        if (confirm(`Marquer la question de ${kidPseudo || "l'étudiant"} comme lue sans répondre ?`)) {
             startTransition(async () => {
                 await dismissQuestion(commentId);
-                alert(`Question de ${kidPseudo} marquée comme lue !`);
+                alert(`Question de ${kidPseudo || "l'étudiant"} marquée comme lue !`);
             });
         }
     };
 
     const handleDelete = () => {
-        if (confirm(`⚠️ ATTENTION : Supprimer DÉFINITIVEMENT la question de ${kidPseudo} ?`)) {
+        if (confirm(`⚠️ ATTENTION : Supprimer DÉFINITIVEMENT la question de ${kidPseudo || "l'étudiant"} ?`)) {
             startTransition(async () => {
                 await deleteQuestion(commentId);
-                alert(`Question de ${kidPseudo} supprimée avec succès.`);
+                alert(`Question de ${kidPseudo || "l'étudiant"} supprimée avec succès.`);
             });
         }
     };

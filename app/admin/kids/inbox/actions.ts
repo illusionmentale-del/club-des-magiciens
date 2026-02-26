@@ -5,7 +5,17 @@ import { revalidatePath } from "next/cache";
 import { Resend } from "resend";
 import { ReplyNotificationEmail } from "@/components/emails/ReplyNotificationEmail";
 
-export async function markAsReadAndReply(originalCommentId: string, courseId: string, content: string, mediaType: 'text' | 'video_bunny' | 'pdf', mediaUrl: string, mediaTitle: string, isBroadcast: boolean = false) {
+export async function markAsReadAndReply(
+    originalCommentId: string,
+    courseId: string,
+    content: string,
+    mediaType: 'text' | 'video_bunny' | 'pdf',
+    mediaUrl: string,
+    mediaTitle: string,
+    isBroadcast: boolean = false,
+    targetUserId?: string,
+    context: string = 'kids'
+) {
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
 
@@ -34,12 +44,12 @@ export async function markAsReadAndReply(originalCommentId: string, courseId: st
         .eq("id", originalCommentId)
         .single();
 
-    let targetUserId = null;
+    let finalTargetUserId = targetUserId || null;
     let targetEmail = null;
     let targetName = "Apprenti Magicien";
 
     if (originalComment) {
-        targetUserId = originalComment.user_id;
+        finalTargetUserId = finalTargetUserId || originalComment.user_id;
         const profile = Array.isArray(originalComment.profiles) ? originalComment.profiles[0] : originalComment.profiles;
         if (profile) {
             targetEmail = profile.email;
@@ -55,8 +65,9 @@ export async function markAsReadAndReply(originalCommentId: string, courseId: st
         media_type: mediaType,
         media_url: mediaUrl || null,
         media_title: mediaTitle || null,
-        target_user_id: isBroadcast ? null : targetUserId, // If broadcast, no specific target
-        kid_notified: false // Trigger the red badge to the kid(s)
+        target_user_id: isBroadcast ? null : finalTargetUserId, // If broadcast, no specific target
+        kid_notified: false, // Trigger the red badge to the student
+        context: context // Ensure the reply stays within the right ecosystem
     });
 
     // 2. Mark the original kid's question as read

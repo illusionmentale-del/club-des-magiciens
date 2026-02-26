@@ -8,7 +8,7 @@ import { Menu, X, BookOpen, Settings, Video, LogOut, Shield, Star, GraduationCap
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 
-export default function MobileNav({ isAdmin }: { isAdmin: boolean }) {
+export default function MobileNav({ isAdmin, hasKidsAccess }: { isAdmin: boolean; hasKidsAccess?: boolean }) {
     const [isOpen, setIsOpen] = useState(false);
     const pathname = usePathname();
     const router = useRouter();
@@ -67,7 +67,7 @@ export default function MobileNav({ isAdmin }: { isAdmin: boolean }) {
                             <Link
                                 href="/dashboard/feed"
                                 onClick={close}
-                                className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${isActive('/dashboard/feed') ? 'bg-magic-purple/20 text-magic-purple border border-magic-purple/20' : 'text-gray-400 hover:bg-white/5 hover:text-white'}`}
+                                className={`flex items-center gap-3 px-4 py-3 font-medium transition-all ${isActive('/dashboard/feed') ? 'bg-gradient-to-r from-magic-gold/20 to-transparent text-magic-gold border-l-2 border-magic-gold' : 'text-gray-400 hover:bg-white/5 hover:text-white border-l-2 border-transparent'}`}
                             >
                                 <Video className="w-5 h-5" />
                                 Vidéos
@@ -76,7 +76,7 @@ export default function MobileNav({ isAdmin }: { isAdmin: boolean }) {
                             <Link
                                 href="/dashboard"
                                 onClick={close}
-                                className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${isActive('/dashboard') ? 'bg-magic-purple/20 text-magic-purple border border-magic-purple/20' : 'text-gray-400 hover:bg-white/5 hover:text-white'}`}
+                                className={`flex items-center gap-3 px-4 py-3 font-medium transition-all ${isActive('/dashboard') ? 'bg-gradient-to-r from-magic-gold/20 to-transparent text-magic-gold border-l-2 border-magic-gold' : 'text-gray-400 hover:bg-white/5 hover:text-white border-l-2 border-transparent'}`}
                             >
                                 <Star className="w-5 h-5" />
                                 Le QG
@@ -85,7 +85,7 @@ export default function MobileNav({ isAdmin }: { isAdmin: boolean }) {
                             <Link
                                 href="/dashboard/program"
                                 onClick={close}
-                                className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${isActive('/dashboard/program') ? 'bg-magic-purple/20 text-magic-purple border border-magic-purple/20' : 'text-gray-400 hover:bg-white/5 hover:text-white'}`}
+                                className={`flex items-center gap-3 px-4 py-3 font-medium transition-all ${isActive('/dashboard/program') ? 'bg-gradient-to-r from-magic-gold/20 to-transparent text-magic-gold border-l-2 border-magic-gold' : 'text-gray-400 hover:bg-white/5 hover:text-white border-l-2 border-transparent'}`}
                             >
                                 <GraduationCap className="w-5 h-5" />
                                 Mon Programme
@@ -94,7 +94,7 @@ export default function MobileNav({ isAdmin }: { isAdmin: boolean }) {
                             <Link
                                 href="/dashboard/catalog"
                                 onClick={close}
-                                className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${isActive('/dashboard/catalog') ? 'bg-magic-purple/20 text-magic-purple border border-magic-purple/20' : 'text-gray-400 hover:bg-white/5 hover:text-white'}`}
+                                className={`flex items-center gap-3 px-4 py-3 font-medium transition-all ${isActive('/dashboard/catalog') ? 'bg-gradient-to-r from-magic-gold/20 to-transparent text-magic-gold border-l-2 border-magic-gold' : 'text-gray-400 hover:bg-white/5 hover:text-white border-l-2 border-transparent'}`}
                             >
                                 <ShoppingBag className="w-5 h-5" />
                                 Catalogue
@@ -103,7 +103,7 @@ export default function MobileNav({ isAdmin }: { isAdmin: boolean }) {
                             <Link
                                 href="/dashboard/account"
                                 onClick={close}
-                                className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${isActive('/dashboard/account') ? 'bg-magic-purple/20 text-magic-purple border border-magic-purple/20' : 'text-gray-400 hover:bg-white/5 hover:text-white'}`}
+                                className={`flex items-center gap-3 px-4 py-3 font-medium transition-all ${isActive('/dashboard/account') ? 'bg-gradient-to-r from-magic-gold/20 to-transparent text-magic-gold border-l-2 border-magic-gold' : 'text-gray-400 hover:bg-white/5 hover:text-white border-l-2 border-transparent'}`}
                             >
                                 <Settings className="w-5 h-5" />
                                 Mon Compte
@@ -112,21 +112,40 @@ export default function MobileNav({ isAdmin }: { isAdmin: boolean }) {
                             <Link
                                 href="/dashboard/live"
                                 onClick={close}
-                                className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${isActive('/dashboard/live') ? 'bg-magic-purple/20 text-magic-purple border border-magic-purple/20' : 'text-gray-400 hover:bg-white/5 hover:text-white'}`}
+                                className={`flex items-center gap-3 px-4 py-3 font-medium transition-all ${isActive('/dashboard/live') ? 'bg-gradient-to-r from-magic-gold/20 to-transparent text-magic-gold border-l-2 border-magic-gold' : 'text-gray-400 hover:bg-white/5 hover:text-white border-l-2 border-transparent'}`}
                             >
                                 <Video className="w-5 h-5" />
                                 Replays / Lives
                             </Link>
 
+                            {(isAdmin || hasKidsAccess) && (
+                                <>
+                                    <div className="my-2 border-t border-white/10"></div>
+                                    <p className="px-4 text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Passerelle</p>
+                                    <Link
+                                        href="/kids"
+                                        onClick={close}
+                                        className={`flex items-center gap-3 px-4 py-3 font-medium transition-all text-gray-400 hover:bg-white/5 hover:text-white border-l-2 border-transparent`}
+                                    >
+                                        <div className="w-5 h-5 flex items-center justify-center">👶</div>
+                                        Espace Kids
+                                    </Link>
+                                </>
+                            )}
+
                             {isAdmin && (
-                                <Link
-                                    href="/admin"
-                                    onClick={close}
-                                    className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${isActive('/admin') ? 'bg-red-500/20 text-red-400 border border-red-500/20' : 'text-gray-400 hover:bg-white/5 hover:text-white'}`}
-                                >
-                                    <Shield className="w-5 h-5" />
-                                    Accès Admin
-                                </Link>
+                                <>
+                                    <div className="my-2 border-t border-white/10"></div>
+                                    <p className="px-4 text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Admin</p>
+                                    <Link
+                                        href="/admin"
+                                        onClick={close}
+                                        className={`flex items-center gap-3 px-4 py-3 font-medium transition-all ${isActive('/admin') ? 'bg-red-500/20 text-red-400 border-l-2 border-red-500' : 'text-gray-400 hover:bg-white/5 hover:text-white border-l-2 border-transparent'}`}
+                                    >
+                                        <Shield className="w-5 h-5" />
+                                        Accès Admin
+                                    </Link>
+                                </>
                             )}
                         </nav>
 

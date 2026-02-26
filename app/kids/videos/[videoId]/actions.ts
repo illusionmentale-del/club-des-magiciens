@@ -14,7 +14,8 @@ export async function addKidsComment(videoId: string, content: string, currentPa
     await supabase.from("course_comments").insert({
         user_id: user.id,
         course_id: videoId,
-        content: content.trim()
+        content: content.trim(),
+        context: 'kids'
     });
 
     if (currentPath) {

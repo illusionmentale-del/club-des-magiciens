@@ -7,7 +7,7 @@ import {
     BreadcrumbPage,
     BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
-import { Users, LayoutDashboard, BookOpen, ShoppingBag, BarChart, Settings, LogOut, Video } from "lucide-react"
+import { Users, LayoutDashboard, BookOpen, ShoppingBag, BarChart, Settings, LogOut, Video, MessageCircle } from "lucide-react"
 import Link from "next/link"
 
 export default function AdultsAdminLayout({
@@ -56,6 +56,14 @@ export default function AdultsAdminLayout({
                     <Link href="/admin/adults/lives" className="flex items-center gap-3 px-4 py-3 text-sm font-bold uppercase tracking-widest text-brand-text-muted hover:text-white hover:bg-white/5 rounded-xl transition-all group">
                         <Video className="w-5 h-5 group-hover:text-brand-gold transition-colors" />
                         Diffusions Live
+                    </Link>
+
+                    <Separator className="my-6 bg-white/5" />
+                    <p className="px-4 text-[10px] font-black text-brand-cyan uppercase tracking-widest mb-4">Communauté</p>
+
+                    <Link href="/admin/adults/inbox" className="flex items-center gap-3 px-4 py-3 text-sm font-bold uppercase tracking-widest text-brand-text-muted hover:text-white hover:bg-white/5 rounded-xl transition-all group">
+                        <MessageCircle className="w-5 h-5 group-hover:text-brand-gold transition-colors" />
+                        Questions En Attente
                     </Link>
 
                     <Separator className="my-6 bg-white/5" />
