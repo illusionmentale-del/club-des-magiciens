@@ -67,7 +67,7 @@ export default async function ProgramPage() {
                     <span className="text-magic-gold text-sm font-semibold tracking-[0.2em] uppercase">Club des Magiciens</span>
                 </div>
                 <h1 className="text-4xl md:text-5xl font-black text-white tracking-tight leading-none mb-4 font-serif">
-                    Mon Contenu
+                    Ma Formation
                 </h1>
                 <p className="text-lg text-slate-400 font-light max-w-2xl">
                     Retrouvez ici l'ensemble de vos accès : votre programme de formation principal ainsi que vos achats à la carte.

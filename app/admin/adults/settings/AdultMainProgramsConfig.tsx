@@ -74,7 +74,7 @@ export default function AdultMainProgramsConfig({ initialSettings, availableCour
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                     <CardTitle className="text-xl font-serif font-bold tracking-tight flex items-center gap-3 text-white">
                         <GraduationCap className="text-magic-gold w-5 h-5" />
-                        Programmes Principaux (Hub "Mon Contenu")
+                        Programmes Principaux (Hub "Ma Formation")
                     </CardTitle>
                     <Button
                         onClick={handleSave}
@@ -89,7 +89,7 @@ export default function AdultMainProgramsConfig({ initialSettings, availableCour
             <CardContent className="p-8">
 
                 <p className="text-sm text-slate-400 mb-8 font-light max-w-3xl">
-                    Sélectionnez ici les formations qui doivent apparaître dans la section <strong>"La Formation Continue"</strong> tout en haut de la page <em>Mon Contenu</em> de l'adulte. Quotidiennement, cela correspond souvent à l'abonnement du Club ou à de gros cursus (ex: Mentalisme Pro). Tout ce qui n'est pas sélectionné ici finira dans la grille "Mes Achats Isolés" en dessous.
+                    Sélectionnez ici les formations qui doivent apparaître dans la section <strong>"La Formation Continue"</strong> tout en haut de la page <em>Ma Formation</em> de l'adulte. Quotidiennement, cela correspond souvent à l'abonnement du Club ou à de gros cursus (ex: Mentalisme Pro). Tout ce qui n'est pas sélectionné ici finira dans la grille "Mes Achats Isolés" en dessous.
                 </p>
 
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
