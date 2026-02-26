@@ -79,7 +79,7 @@ export default function Sidebar({ isAdmin, socialLinks, logoUrl, hasKidsAccess }
                     className={`flex items-center gap-3 px-4 py-3 font-medium transition-all ${isActive('/dashboard/catalog') ? 'bg-gradient-to-r from-magic-gold/20 to-transparent text-magic-gold border-l-2 border-magic-gold' : 'text-gray-400 hover:bg-white/5 hover:text-white border-l-2 border-transparent'}`}
                 >
                     <ShoppingBag className="w-5 h-5" />
-                    Catalogue
+                    Boutique
                 </Link>
 
                 <Link
