@@ -57,9 +57,9 @@ export default function VideoPlayerControls({ videoId, courseId, isCompleted: in
             <button
                 onClick={toggleCompletion}
                 disabled={isLoading}
-                className={`flex items-center gap-2 px-6 py-3 rounded-full font-bold transition-all ${isCompleted
-                        ? "bg-green-500/10 text-green-500 border border-green-500/20 hover:bg-green-500/20"
-                        : "bg-white/5 text-white border border-white/10 hover:bg-white/10"
+                className={`flex items-center gap-2 px-6 py-3 rounded-full font-bold transition-all shadow-lg ${isCompleted
+                    ? "bg-gradient-to-r from-magic-gold/20 to-orange-500/20 text-magic-gold border border-magic-gold/50 shadow-[0_0_20px_rgba(238,195,67,0.2)]"
+                    : "bg-[#111] text-white border border-white/10 hover:border-magic-gold/50 hover:text-magic-gold hover:shadow-[0_0_15px_rgba(238,195,67,0.15)]"
                     }`}
             >
                 {isLoading ? (

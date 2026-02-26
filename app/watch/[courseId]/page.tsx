@@ -262,7 +262,11 @@ export default async function WatchPage(props: WatchPageProps) {
         : videos?.[0];
 
     return (
-        <div className="min-h-screen bg-magic-bg text-white flex flex-col">
+        <div className="min-h-screen bg-[#050507] text-white flex flex-col relative font-sans selection:bg-magic-gold/30">
+            {/* Ambient Background Lights (Adult Theme) */}
+            <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] bg-magic-gold/5 blur-[150px] rounded-full pointer-events-none mix-blend-screen"></div>
+            <div className="absolute top-[30%] right-[-10%] w-[40%] h-[40%] bg-orange-600/5 blur-[120px] rounded-full pointer-events-none mix-blend-screen"></div>
+
             {/* Header */}
             <header className="border-b border-white/10 bg-magic-card/50 backdrop-blur-md sticky top-0 z-50">
                 <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
@@ -354,7 +358,7 @@ export default async function WatchPage(props: WatchPageProps) {
                             </div>
                             <div className="h-1.5 w-full bg-white/10 rounded-full overflow-hidden">
                                 <div
-                                    className="h-full bg-magic-purple transition-all duration-500"
+                                    className="h-full bg-gradient-to-r from-magic-gold to-orange-500 transition-all duration-500"
                                     style={{ width: `${progressPercentage}%` }}
                                 ></div>
                             </div>
@@ -372,18 +376,18 @@ export default async function WatchPage(props: WatchPageProps) {
                                         className={cn(
                                             "flex items-center gap-3 p-3 rounded-lg transition-all group relative",
                                             isActive
-                                                ? "bg-magic-purple/20 border border-magic-purple/50"
+                                                ? "bg-magic-gold/10 border border-magic-gold/30"
                                                 : "hover:bg-white/5 border border-transparent"
                                         )}
                                     >
                                         <div className="relative shrink-0">
                                             <div className={cn(
-                                                "w-6 h-6 rounded-full flex items-center justify-center text-xs transition-colors",
+                                                "w-6 h-6 rounded-full flex items-center justify-center text-xs transition-colors shadow-lg",
                                                 isCompleted
-                                                    ? "bg-green-500 text-white"
+                                                    ? "bg-green-500 text-black border border-green-400"
                                                     : isActive
-                                                        ? "bg-magic-purple text-white"
-                                                        : "bg-white/10 text-gray-400 group-hover:bg-white/20"
+                                                        ? "bg-magic-gold text-black font-bold shadow-[0_0_15px_rgba(238,195,67,0.4)]"
+                                                        : "bg-[#111] text-gray-500 border border-white/10 group-hover:border-white/30"
                                             )}>
                                                 {isCompleted ? (
                                                     <CheckCircle className="w-3.5 h-3.5" />
@@ -395,18 +399,18 @@ export default async function WatchPage(props: WatchPageProps) {
 
                                         <div className="flex-1 min-w-0">
                                             <p className={cn(
-                                                "text-sm font-medium leading-tight line-clamp-2",
-                                                isActive ? "text-white" : "text-gray-300",
-                                                isCompleted && !isActive && "text-gray-400"
+                                                "text-sm font-medium leading-tight line-clamp-2 transition-colors",
+                                                isActive ? "text-magic-gold" : "text-gray-300 group-hover:text-white",
+                                                isCompleted && !isActive && "text-gray-500"
                                             )}>
                                                 {video.title}
                                             </p>
-                                            <p className="text-xs text-gray-500 mt-1">
+                                            <p className="text-xs text-slate-500 mt-1 font-light">
                                                 {Math.floor(video.duration / 60)} min
                                             </p>
                                         </div>
 
-                                        {isActive && !isCompleted && <PlayCircle className="w-4 h-4 text-magic-purple shrink-0" />}
+                                        {isActive && !isCompleted && <PlayCircle className="w-4 h-4 text-magic-gold shrink-0 drop-shadow-[0_0_8px_rgba(238,195,67,0.5)]" />}
                                     </Link>
                                 )
                             })}
