@@ -59,14 +59,12 @@ export default function AdultHomeHero({
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent z-10 pointer-events-none"></div>
 
                     {/* Premium Tag Badge */}
-                    {tag && (
-                        <div className="absolute top-6 left-6 z-20">
-                            <span className="bg-magic-gold text-black text-[10px] font-black px-4 py-1.5 rounded-full uppercase tracking-[0.2em] shadow-[0_0_20px_rgba(238,195,67,0.3)] flex items-center gap-2">
-                                <Sparkles className="w-3 h-3" />
-                                {tag}
-                            </span>
-                        </div>
-                    )}
+                    <div className="absolute top-6 left-6 z-20">
+                        <span className="bg-magic-gold text-black text-[10px] font-black px-4 py-1.5 rounded-full uppercase tracking-[0.2em] shadow-[0_0_20px_rgba(238,195,67,0.3)] flex items-center gap-2">
+                            <Sparkles className="w-3 h-3" />
+                            Actualité de l'atelier
+                        </span>
+                    </div>
                 </div>
 
                 {/* Content Side */}
