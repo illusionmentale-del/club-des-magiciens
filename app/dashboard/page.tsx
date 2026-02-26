@@ -80,7 +80,7 @@ export default async function DashboardPage() {
                             <span className="text-magic-gold text-sm font-semibold tracking-[0.2em] uppercase">Club des Magiciens</span>
                         </div>
                         <h1 className="text-4xl md:text-6xl font-black text-white tracking-tight leading-none mb-4 font-serif">
-                            Le Quartier Général
+                            L'Actu du Club
                         </h1>
                         <p className="text-lg text-slate-400 font-light flex items-center gap-2">
                             Heureux de vous revoir, <span className="text-white font-medium border-b border-magic-gold/50 pb-0.5">{userName}</span>
