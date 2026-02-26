@@ -10,6 +10,7 @@ export default function KidsCommentsSection({ videoId, comments, isAdmin }: { vi
     const [isPending, startTransition] = useTransition();
     const [isSuccess, setIsSuccess] = useState(false);
     const [deletingId, setDeletingId] = useState<string | null>(null);
+    const [localComments, setLocalComments] = useState(comments);
     const pathname = usePathname();
 
     const handleCommentSubmit = async (formData: FormData) => {
@@ -26,6 +27,8 @@ export default function KidsCommentsSection({ videoId, comments, isAdmin }: { vi
         setDeletingId(commentId);
         try {
             await deleteKidsComment(commentId, pathname);
+            // Optimistically update the UI to remove the deleted comment
+            setLocalComments(prev => prev.filter(c => c.id !== commentId));
         } catch (error) {
             console.error(error);
             alert("Erreur lors de la suppression.");
@@ -86,7 +89,7 @@ export default function KidsCommentsSection({ videoId, comments, isAdmin }: { vi
 
             {/* Comments List */}
             <div className="space-y-6 pt-6">
-                {comments.map((comment) => {
+                {localComments.map((comment) => {
                     // Detect if the message is from Jérémy (the admin)
                     // For kids security logic, the real admin email check on DB is best,
                     // but we can check if the full_name is 'Jérémy Marouani' or 'Admin' as a workaround
@@ -179,7 +182,7 @@ export default function KidsCommentsSection({ videoId, comments, isAdmin }: { vi
                     );
                 })}
 
-                {comments.length === 0 && (
+                {localComments.length === 0 && (
                     <div className="text-center py-12 text-gray-500 border border-dashed border-white/10 rounded-2xl bg-black/20">
                         Sois le premier à poser une question ! 🪄
                     </div>

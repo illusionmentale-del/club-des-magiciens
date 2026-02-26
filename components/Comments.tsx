@@ -2,8 +2,10 @@
 
 import { useFormStatus } from "react-dom";
 import { addComment } from "@/app/watch/[courseId]/actions";
-import { User, MessageCircle, Send } from "lucide-react";
-import { useRef } from "react";
+import { deleteKidsComment } from "@/app/kids/videos/[videoId]/actions"; // Reuse same delete logic
+import { User, MessageCircle, Send, Trash2 } from "lucide-react";
+import { useRef, useState } from "react";
+import { usePathname } from "next/navigation";
 
 function SubmitButton() {
     const { pending } = useFormStatus();
@@ -21,6 +23,26 @@ function SubmitButton() {
 
 export default function CommentsSection({ courseId, comments, user }: { courseId: string, comments: any[], user: any }) {
     const formRef = useRef<HTMLFormElement>(null);
+    const [localComments, setLocalComments] = useState(comments);
+    const [deletingId, setDeletingId] = useState<string | null>(null);
+    const pathname = usePathname();
+
+    const isAdmin = user?.user_metadata?.role === 'admin' || (user?.email?.includes('admin@') ?? false);
+
+    const handleDelete = async (commentId: string) => {
+        if (!confirm("Es-tu sûr de vouloir supprimer définitivement ce message ?")) return;
+
+        setDeletingId(commentId);
+        try {
+            await deleteKidsComment(commentId, pathname);
+            setLocalComments(prev => prev.filter(c => c.id !== commentId));
+        } catch (error) {
+            console.error(error);
+            alert("Erreur lors de la suppression.");
+        } finally {
+            setDeletingId(null);
+        }
+    };
 
     return (
         <div className="space-y-8 mt-12 bg-white p-6 md:p-8 rounded-3xl border border-gray-100 shadow-sm">
@@ -54,7 +76,7 @@ export default function CommentsSection({ courseId, comments, user }: { courseId
 
             {/* Comments List */}
             <div className="space-y-6">
-                {comments.map((comment) => (
+                {localComments.map((comment) => (
                     <div key={comment.id} className="flex gap-4 group">
                         <div className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 font-bold shrink-0 border border-gray-200 overflow-hidden relative">
                             {/* @ts-ignore */}
@@ -96,6 +118,18 @@ export default function CommentsSection({ courseId, comments, user }: { courseId
                                 <p className="text-gray-700">{comment.content}</p>
                             </div>
                         </div>
+
+                        {/* Admin Delete Button */}
+                        {isAdmin && (
+                            <button
+                                onClick={() => handleDelete(comment.id)}
+                                disabled={deletingId === comment.id}
+                                className={`opacity-0 group-hover:opacity-100 transition-opacity p-2 rounded-xl text-gray-500 hover:text-red-400 hover:bg-red-50 self-center ${deletingId === comment.id ? 'opacity-50 cursor-not-allowed animate-pulse' : ''}`}
+                                title="Supprimer ce message"
+                            >
+                                <Trash2 className="w-5 h-5" />
+                            </button>
+                        )}
                     </div>
                 ))}
             </div>
