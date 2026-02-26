@@ -1,14 +1,15 @@
 "use client";
 
-import { Send, Sparkles, File, CheckCircle } from "lucide-react";
+import { Send, Sparkles, File, CheckCircle, Trash2 } from "lucide-react";
 import { useRef, useState, useTransition } from "react";
-import { addKidsComment } from "@/app/kids/videos/[videoId]/actions";
+import { addKidsComment, deleteKidsComment } from "@/app/kids/videos/[videoId]/actions";
 import { usePathname } from "next/navigation";
 
 export default function KidsCommentsSection({ videoId, comments, isAdmin }: { videoId: string, comments: any[], isAdmin: boolean }) {
     const formRef = useRef<HTMLFormElement>(null);
     const [isPending, startTransition] = useTransition();
     const [isSuccess, setIsSuccess] = useState(false);
+    const [deletingId, setDeletingId] = useState<string | null>(null);
     const pathname = usePathname();
 
     const handleCommentSubmit = async (formData: FormData) => {
@@ -17,6 +18,20 @@ export default function KidsCommentsSection({ videoId, comments, isAdmin }: { vi
         formRef.current?.reset();
         setIsSuccess(true);
         setTimeout(() => setIsSuccess(false), 5000);
+    };
+
+    const handleDelete = async (commentId: string) => {
+        if (!confirm("Es-tu sûr de vouloir supprimer définitivement ce message (et sa réponse) ?")) return;
+
+        setDeletingId(commentId);
+        try {
+            await deleteKidsComment(commentId, pathname);
+        } catch (error) {
+            console.error(error);
+            alert("Erreur lors de la suppression.");
+        } finally {
+            setDeletingId(null);
+        }
     };
 
     return (
@@ -148,6 +163,18 @@ export default function KidsCommentsSection({ videoId, comments, isAdmin }: { vi
                                     </div>
                                 )}
                             </div>
+
+                            {/* Admin Delete Button */}
+                            {isAdmin && (
+                                <button
+                                    onClick={() => handleDelete(comment.id)}
+                                    disabled={deletingId === comment.id}
+                                    className={`opacity-0 group-hover:opacity-100 transition-opacity p-2 rounded-xl text-gray-500 hover:text-red-400 hover:bg-red-400/10 self-center ${deletingId === comment.id ? 'opacity-50 cursor-not-allowed animate-pulse' : ''}`}
+                                    title="Supprimer ce message"
+                                >
+                                    <Trash2 className="w-5 h-5" />
+                                </button>
+                            )}
                         </div>
                     );
                 })}

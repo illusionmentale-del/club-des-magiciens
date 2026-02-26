@@ -54,13 +54,12 @@ export default async function KidsVideoPlayerPage({ params }: { params: { videoI
     }
 
     // --- Fetch Comments and Admin Status ---
-    // --- Fetch Comments and Admin Status ---
     // Fetch comments manually to avoid Supabase PGRST200 schema cache bug
     const { data: rawComments } = await supabase
         .from("course_comments")
         .select("*")
         .eq("course_id", params.videoId)
-        .order("created_at", { ascending: false });
+        .order("created_at", { ascending: true });
 
     let comments: any[] = [];
     if (rawComments && rawComments.length > 0) {
