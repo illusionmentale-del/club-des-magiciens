@@ -38,10 +38,11 @@ export default async function KidsPricingPage() {
     const totalUsers = count || 15;
 
     return (
-        <div className="min-h-screen bg-brand-bg text-brand-text font-sans selection:bg-brand-purple/30 relative overflow-hidden">
+        <div className="min-h-screen bg-[#050507] text-white font-sans selection:bg-brand-purple/30 relative overflow-hidden">
             {/* Ambient Background Effects */}
-            <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] bg-brand-purple/20 blur-[150px] rounded-full pointer-events-none mix-blend-screen"></div>
-            <div className="absolute top-[20%] right-[-10%] w-[40%] h-[40%] bg-brand-blue/10 blur-[120px] rounded-full pointer-events-none mix-blend-screen"></div>
+            <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] bg-brand-purple/10 blur-[150px] rounded-full pointer-events-none mix-blend-screen z-0 animate-pulse-slow"></div>
+            <div className="absolute top-[20%] right-[-10%] w-[40%] h-[40%] bg-brand-blue/10 blur-[120px] rounded-full pointer-events-none mix-blend-screen z-0"></div>
+            <div className="absolute bottom-[-10%] left-[20%] w-[50%] h-[50%] bg-pink-600/5 blur-[120px] rounded-full pointer-events-none mix-blend-screen z-0"></div>
 
             {/* Simple Header */}
             <header className="absolute top-0 w-full p-6 flex justify-between items-center z-20">
@@ -65,7 +66,7 @@ export default async function KidsPricingPage() {
             <div className="relative z-10 max-w-5xl mx-auto px-4 pt-32 pb-24">
                 {/* Hero Section */}
                 <div className="text-center space-y-6 mb-16">
-                    <div className="inline-flex items-center gap-2 px-6 py-2 rounded-full border border-brand-purple/30 bg-gradient-to-r from-brand-purple/10 to-transparent text-brand-purple text-sm font-bold uppercase tracking-widest shadow-[0_0_20px_rgba(139,92,246,0.2)]">
+                    <div className="inline-flex items-center gap-2 px-6 py-2 rounded-full border border-brand-purple/30 bg-gradient-to-r from-brand-purple/10 to-transparent text-brand-purple text-sm font-bold uppercase tracking-widest shadow-[0_0_20px_rgba(139,92,246,0.2)] backdrop-blur-md">
                         <Sparkles className="w-4 h-4 animate-pulse" />
                         Le Club des Petits Magiciens
                         <Sparkles className="w-4 h-4 animate-pulse" />
@@ -120,7 +121,7 @@ export default async function KidsPricingPage() {
                 <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 items-stretch max-w-5xl mx-auto pt-20">
 
                     {/* MONTHLY PLAN */}
-                    <div className="bg-white/5 border border-white/10 rounded-[2rem] p-8 flex flex-col relative overflow-hidden backdrop-blur-sm transition-all hover:bg-white/10 mt-8 md:mt-12">
+                    <div className="bg-[#0A0A0E] border border-white/5 rounded-[2rem] p-8 flex flex-col relative overflow-hidden backdrop-blur-sm transition-all hover:bg-white/10 mt-8 md:mt-12 shadow-inner ring-1 ring-white/5 hover:ring-brand-blue/30 group">
                         <div className="mb-6">
                             <h2 className="text-2xl font-black text-white mb-2">Abonnement Mensuel</h2>
                             <p className="text-gray-400 font-medium mb-4">Idéal pour découvrir le club à son rythme.</p>
@@ -179,7 +180,10 @@ export default async function KidsPricingPage() {
                     </div>
 
                     {/* YEARLY PLAN (HIGHLIGHTED) */}
-                    <div className="bg-gradient-to-br from-brand-purple/20 to-pink-600/20 border border-brand-purple/40 rounded-[2rem] p-8 flex flex-col relative overflow-hidden shadow-[0_20px_60px_-15px_rgba(168,85,247,0.4)] transform md:-translate-y-4">
+                    <div className="bg-gradient-to-br from-[#1A0B2E] to-[#14081E] border border-brand-purple/40 rounded-[2rem] p-8 flex flex-col relative overflow-hidden shadow-[0_20px_60px_-15px_rgba(168,85,247,0.4)] transform md:-translate-y-4 ring-1 ring-brand-purple/30">
+                        {/* Inner subtle glow */}
+                        <div className="absolute inset-0 bg-gradient-to-b from-white/5 to-transparent pointer-events-none rounded-[2rem]"></div>
+
                         {/* Glow effect */}
                         <div className="absolute top-0 right-0 w-64 h-64 bg-brand-purple/30 blur-[80px] rounded-full -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
 
@@ -278,38 +282,38 @@ export default async function KidsPricingPage() {
                     <h3 className="text-3xl font-black text-center text-white mb-8">Questions Fréquentes</h3>
 
                     <div className="space-y-4">
-                        <details className="group bg-white/5 border border-white/10 rounded-xl [&_summary::-webkit-details-marker]:hidden">
-                            <summary className="flex items-center justify-between p-6 font-bold cursor-pointer text-white">
+                        <details className="group bg-[#0A0A0E] border border-white/5 rounded-2xl [&_summary::-webkit-details-marker]:hidden transition-all duration-300 open:border-brand-purple/30 ring-1 ring-white/5 hover:ring-white/10">
+                            <summary className="flex items-center justify-between p-6 font-bold cursor-pointer text-white text-lg">
                                 Mon enfant a-t-il besoin de matériel spécifique ?
-                                <span className="transition group-open:rotate-180">
+                                <span className="transition duration-300 group-open:rotate-180 text-brand-purple">
                                     <svg fill="none" height="24" shapeRendering="geometricPrecision" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" viewBox="0 0 24 24" width="24"><path d="M6 9l6 6 6-6"></path></svg>
                                 </span>
                             </summary>
-                            <div className="px-6 pb-6 text-brand-text-muted text-sm leading-relaxed">
+                            <div className="px-6 pb-6 text-gray-400 text-sm leading-relaxed animate-in slide-in-from-top-1 duration-300">
                                 Absolument pas ! 90% des tours de l'académie utilisent des objets du quotidien (pièces, élastiques, cartes classiques, stylos). C'est le principe : apprendre à faire de la magie n'importe quand, n'importe où.
                             </div>
                         </details>
 
-                        <details className="group bg-white/5 border border-white/10 rounded-xl [&_summary::-webkit-details-marker]:hidden">
-                            <summary className="flex items-center justify-between p-6 font-bold cursor-pointer text-white">
+                        <details className="group bg-[#0A0A0E] border border-white/5 rounded-2xl [&_summary::-webkit-details-marker]:hidden transition-all duration-300 open:border-brand-purple/30 ring-1 ring-white/5 hover:ring-white/10">
+                            <summary className="flex items-center justify-between p-6 font-bold cursor-pointer text-white text-lg">
                                 Est-ce compliqué d'annuler si ça ne lui plaît plus ?
-                                <span className="transition group-open:rotate-180">
+                                <span className="transition duration-300 group-open:rotate-180 text-brand-purple">
                                     <svg fill="none" height="24" shapeRendering="geometricPrecision" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" viewBox="0 0 24 24" width="24"><path d="M6 9l6 6 6-6"></path></svg>
                                 </span>
                             </summary>
-                            <div className="px-6 pb-6 text-brand-text-muted text-sm leading-relaxed">
+                            <div className="px-6 pb-6 text-gray-400 text-sm leading-relaxed animate-in slide-in-from-top-1 duration-300">
                                 Non, c'est ultra simple. Sur l'abonnement mensuel, tu es 100% libre. Un bouton "Gérer mon abonnement" dans l'espace parent te permet d'annuler en un clic, sans avoir à nous contacter.
                             </div>
                         </details>
 
-                        <details className="group bg-white/5 border border-white/10 rounded-xl [&_summary::-webkit-details-marker]:hidden">
-                            <summary className="flex items-center justify-between p-6 font-bold cursor-pointer text-white">
+                        <details className="group bg-[#0A0A0E] border border-white/5 rounded-2xl [&_summary::-webkit-details-marker]:hidden transition-all duration-300 open:border-brand-purple/30 ring-1 ring-white/5 hover:ring-white/10">
+                            <summary className="flex items-center justify-between p-6 font-bold cursor-pointer text-white text-lg">
                                 Est-ce que mon paiement est sécurisé ?
-                                <span className="transition group-open:rotate-180">
+                                <span className="transition duration-300 group-open:rotate-180 text-brand-purple">
                                     <svg fill="none" height="24" shapeRendering="geometricPrecision" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" viewBox="0 0 24 24" width="24"><path d="M6 9l6 6 6-6"></path></svg>
                                 </span>
                             </summary>
-                            <div className="px-6 pb-6 text-brand-text-muted text-sm leading-relaxed">
+                            <div className="px-6 pb-6 text-gray-400 text-sm leading-relaxed animate-in slide-in-from-top-1 duration-300">
                                 Oui. Nous utilisons Stripe, le leader mondial du paiement en ligne (utilisé par Amazon, Google, etc.). Nous n'avons jamais accès à tes coordonnées bancaires.
                             </div>
                         </details>
