@@ -81,21 +81,25 @@ export default function LivePage() {
     }
 
     return (
-        <div className="min-h-screen bg-magic-bg text-white p-4 md:p-8">
-            <div className="max-w-6xl mx-auto space-y-12">
+        <div className="min-h-screen bg-[#050507] text-white p-4 md:p-8 relative font-sans selection:bg-magic-gold/30">
+            {/* Ambient Background Lights (Adult Theme) */}
+            <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] bg-magic-gold/5 blur-[150px] rounded-full pointer-events-none mix-blend-screen z-0"></div>
+            <div className="absolute top-[30%] right-[-10%] w-[40%] h-[40%] bg-orange-600/5 blur-[120px] rounded-full pointer-events-none mix-blend-screen z-0"></div>
+
+            <div className="max-w-6xl mx-auto space-y-12 relative z-10">
 
                 {/* ACTIVE / NEXT LIVE SECTION */}
                 <section className="text-center space-y-8 mt-8">
-                    <div className="mx-auto w-24 h-24 bg-magic-purple/20 rounded-full flex items-center justify-center border border-magic-purple/50 shadow-[0_0_50px_rgba(124,58,237,0.3)] animate-pulse">
-                        <Video className="w-12 h-12 text-magic-purple" />
+                    <div className="mx-auto w-24 h-24 bg-magic-gold/10 rounded-full flex items-center justify-center border border-magic-gold/30 shadow-[0_0_50px_rgba(238,195,67,0.2)] animate-pulse">
+                        <Video className="w-12 h-12 text-magic-gold" />
                     </div>
 
-                    <h1 className="text-4xl font-serif font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-amber-200">
+                    <h1 className="text-4xl font-serif font-bold bg-clip-text text-transparent bg-gradient-to-r from-magic-gold to-orange-400">
                         {live?.status === 'en_cours' ? '🔴 LIVE EN COURS !' : 'Salle de Visio Magique'}
                     </h1>
 
                     {live ? (
-                        <div className="max-w-xl mx-auto bg-magic-card border border-magic-purple/30 p-8 rounded-3xl shadow-2xl relative overflow-hidden">
+                        <div className="max-w-xl mx-auto bg-magic-card border border-magic-gold/30 p-8 rounded-3xl shadow-2xl relative overflow-hidden">
                             {live.status === 'en_cours' && (
                                 <div className="absolute top-0 right-0 bg-red-600 text-white text-xs font-bold px-3 py-1 rounded-bl-xl animate-pulse">
                                     EN DIRECT
@@ -138,7 +142,7 @@ export default function LivePage() {
                         </h2>
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                             {replays.map((replay) => (
-                                <div key={replay.id} className="bg-magic-card border border-white/10 rounded-xl overflow-hidden group hover:border-magic-purple/50 transition-all">
+                                <div key={replay.id} className="bg-magic-card border border-white/10 rounded-xl overflow-hidden group hover:border-magic-gold/50 transition-all">
                                     <div className="aspect-video bg-black relative">
                                         <iframe
                                             src={`https://player.vimeo.com/video/${replay.platform_id}?title=0&byline=0&portrait=0`}
@@ -147,7 +151,7 @@ export default function LivePage() {
                                         ></iframe>
                                     </div>
                                     <div className="p-4">
-                                        <h3 className="font-bold text-lg mb-1 group-hover:text-magic-purple transition-colors">{replay.title}</h3>
+                                        <h3 className="font-bold text-lg mb-1 group-hover:text-magic-gold transition-colors">{replay.title}</h3>
                                         <p className="text-xs text-gray-500">{new Date(replay.start_date).toLocaleDateString()}</p>
                                     </div>
                                 </div>
