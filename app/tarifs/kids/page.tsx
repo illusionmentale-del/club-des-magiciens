@@ -121,48 +121,48 @@ export default async function KidsPricingPage() {
                 <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 items-stretch max-w-5xl mx-auto pt-20">
 
                     {/* MONTHLY PLAN */}
-                    <div className="bg-[#0A0A0E] border border-white/5 rounded-[2rem] p-8 flex flex-col relative overflow-hidden backdrop-blur-sm transition-all hover:bg-white/10 mt-8 md:mt-12 shadow-inner ring-1 ring-white/5 hover:ring-brand-blue/30 group">
+                    <div className="bg-white/[0.03] border border-white/5 rounded-[2rem] p-8 md:p-10 flex flex-col relative overflow-hidden backdrop-blur-xl transition-all hover:bg-white/[0.05] mt-8 md:mt-12 shadow-2xl hover:shadow-[0_0_30px_rgba(255,255,255,0.05)] group">
                         <div className="mb-6">
                             <h2 className="text-2xl font-black text-white mb-2">Abonnement Mensuel</h2>
                             <p className="text-gray-400 font-medium mb-4">Idéal pour découvrir le club à son rythme.</p>
-                            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded bg-brand-bg/50 border border-white/5 text-xs text-gray-300 w-fit">
-                                <ShieldCheck className="w-3.5 h-3.5 text-Brand-blue" />
+                            <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-xs font-bold text-gray-300 w-fit">
+                                <ShieldCheck className="w-4 h-4 text-brand-blue" />
                                 100% Sans Engagement
                             </div>
                         </div>
 
                         <div className="mb-8 flex flex-col">
                             <div className="flex items-baseline gap-2">
-                                <span className="text-5xl font-black text-white">{monthlyProduct?.price_label || "9,99€"}</span>
-                                <span className="text-gray-400 font-bold">/mois</span>
+                                <span className="text-5xl md:text-6xl font-black text-white">{monthlyProduct?.price_label || "9,99€"}</span>
+                                <span className="text-gray-400 font-bold text-lg">/mois</span>
                             </div>
-                            <span className="text-xs text-gray-500 mt-1 font-medium italic">Annulable en un clic depuis ton espace.</span>
+                            <span className="text-sm text-gray-500 mt-2 font-medium">Annulable en un clic depuis ton espace.</span>
                         </div>
 
                         <ul className="space-y-6 mb-8 flex-1">
                             <li className="flex items-start gap-4">
-                                <div className="w-8 h-8 rounded-full bg-brand-purple/20 flex items-center justify-center shrink-0 mt-0.5 shadow-sm border border-brand-purple/30">
-                                    <BookOpen className="w-4 h-4 text-brand-purple-light" />
+                                <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center shrink-0 shadow-inner border border-white/10 group-hover:bg-brand-purple/10 transition-colors">
+                                    <BookOpen className="w-5 h-5 text-brand-purple-light" />
                                 </div>
-                                <div>
+                                <div className="mt-0.5">
                                     <strong className="block text-white mb-1">La Formation :</strong>
                                     <span className="text-gray-400 text-sm leading-relaxed">Découvre l'apprentissage d'un nouveau tour de magie chaque semaine.</span>
                                 </div>
                             </li>
                             <li className="flex items-start gap-4">
-                                <div className="w-8 h-8 rounded-full bg-brand-blue/20 flex items-center justify-center shrink-0 mt-0.5 shadow-sm border border-brand-blue/30">
-                                    <PlayCircle className="w-4 h-4 text-brand-blue-light" />
+                                <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center shrink-0 shadow-inner border border-white/10 group-hover:bg-brand-blue/10 transition-colors">
+                                    <PlayCircle className="w-5 h-5 text-brand-blue-light" />
                                 </div>
-                                <div>
+                                <div className="mt-0.5">
                                     <strong className="block text-white mb-1">Les Masterclass :</strong>
                                     <span className="text-gray-400 text-sm leading-relaxed">Tous les mois des vidéos sur des sujets approfondis pour t'aider à mieux progresser.</span>
                                 </div>
                             </li>
                             <li className="flex items-start gap-4">
-                                <div className="w-8 h-8 rounded-full bg-brand-purple/20 flex items-center justify-center shrink-0 mt-0.5 shadow-sm border border-brand-purple/30">
-                                    <ShoppingBag className="w-4 h-4 text-brand-purple-light" />
+                                <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center shrink-0 shadow-inner border border-white/10 group-hover:bg-brand-purple/10 transition-colors">
+                                    <ShoppingBag className="w-5 h-5 text-brand-purple-light" />
                                 </div>
-                                <div>
+                                <div className="mt-0.5">
                                     <strong className="block text-white mb-1">La Boutique Privée :</strong>
                                     <span className="text-gray-400 text-sm leading-relaxed">Achète des tours de magie physiques et des packs vidéos exclusifs au Club.</span>
                                 </div>
@@ -175,7 +175,7 @@ export default async function KidsPricingPage() {
                             space="kids"
                             userLoggedIn={!!user}
                             buttonText="Commencer l'Aventure"
-                            className="bg-white/10 hover:bg-white/20 text-white"
+                            className="bg-white/10 hover:bg-white/20 text-white border border-white/10"
                         />
                     </div>
 
@@ -212,53 +212,58 @@ export default async function KidsPricingPage() {
 
                         <ul className="space-y-6 mb-8 flex-1 relative z-10">
                             <li className="flex items-start gap-4">
-                                <div className="w-8 h-8 rounded-full bg-brand-purple flex items-center justify-center shrink-0 mt-0.5 shadow-lg shadow-brand-purple/50">
-                                    <BookOpen className="w-4 h-4 text-white" />
+                                <div className="w-10 h-10 rounded-full bg-brand-purple flex items-center justify-center shrink-0 shadow-lg shadow-brand-purple/50">
+                                    <BookOpen className="w-5 h-5 text-white" />
                                 </div>
-                                <div>
+                                <div className="mt-0.5">
                                     <strong className="block text-white mb-1">La Formation :</strong>
                                     <span className="text-gray-300 text-sm leading-relaxed">Découvre l'apprentissage d'un nouveau tour de magie chaque semaine.</span>
                                 </div>
                             </li>
                             <li className="flex items-start gap-4">
-                                <div className="w-8 h-8 rounded-full bg-brand-purple flex items-center justify-center shrink-0 mt-0.5 shadow-lg shadow-brand-purple/50">
-                                    <PlayCircle className="w-4 h-4 text-white" />
+                                <div className="w-10 h-10 rounded-full bg-brand-purple flex items-center justify-center shrink-0 shadow-lg shadow-brand-purple/50">
+                                    <PlayCircle className="w-5 h-5 text-white" />
                                 </div>
-                                <div>
+                                <div className="mt-0.5">
                                     <strong className="block text-white mb-1">Les Masterclass :</strong>
                                     <span className="text-gray-300 text-sm leading-relaxed">Tous les mois des vidéos sur des sujets approfondis pour t'aider à mieux progresser.</span>
                                 </div>
                             </li>
                             <li className="flex items-start gap-4">
-                                <div className="w-8 h-8 rounded-full bg-brand-purple flex items-center justify-center shrink-0 mt-0.5 shadow-lg shadow-brand-purple/50">
-                                    <ShoppingBag className="w-4 h-4 text-white" />
+                                <div className="w-10 h-10 rounded-full bg-brand-purple flex items-center justify-center shrink-0 shadow-lg shadow-brand-purple/50">
+                                    <ShoppingBag className="w-5 h-5 text-white" />
                                 </div>
-                                <div>
+                                <div className="mt-0.5">
                                     <strong className="block text-white mb-1">La Boutique Privée :</strong>
                                     <span className="text-gray-300 text-sm leading-relaxed">Achète des tours de magie physiques et des packs exclusifs au Club.</span>
                                 </div>
                             </li>
-                            <li className="flex items-start gap-4 text-brand-purple-light font-black mt-6 bg-brand-purple/20 p-4 rounded-xl border border-brand-purple/30">
-                                <div className="w-8 h-8 rounded-full bg-gradient-to-r from-brand-purple to-pink-500 flex items-center justify-center shrink-0 shadow-lg">
-                                    <Gift className="w-4 h-4 text-white" />
+
+                            {/* Premium Bonus Callout */}
+                            <li className="flex items-start gap-4 text-brand-purple-light font-black mt-8 bg-gradient-to-r from-brand-purple/20 to-brand-blue/20 p-5 rounded-2xl border border-brand-purple/30 shadow-[0_10px_30px_rgba(139,92,246,0.1)] relative">
+                                <div className="absolute top-0 right-0 w-full h-full bg-[url('/noise.png')] opacity-20 pointer-events-none mix-blend-overlay rounded-2xl"></div>
+                                <div className="w-10 h-10 rounded-full bg-gradient-to-r from-brand-purple to-brand-blue flex items-center justify-center shrink-0 shadow-[0_0_20px_rgba(139,92,246,0.5)] z-10">
+                                    <Gift className="w-5 h-5 text-white" />
                                 </div>
-                                <div>
-                                    <span className="block text-white mb-1">CADEAU EXCLUSIF :</span>
+                                <div className="z-10">
+                                    <span className="block text-white mb-1 text-sm tracking-widest uppercase">Cadeau Exclusif :</span>
                                     Débloque 3 Packs Bonus Vidéo de la Boutique automatiquement !
-                                    <span className="block mt-2 text-xs font-bold text-white/50 line-through">Valeur : 150€</span>
-                                    <span className="block text-sm font-black text-pink-400 uppercase tracking-widest mt-1">Totalement GRATUIT</span>
+                                    <div className="flex items-center gap-3 mt-3">
+                                        <span className="text-xs font-bold text-white/50 line-through">Valeur : 150€</span>
+                                        <span className="text-sm font-black text-brand-blue-light uppercase tracking-widest bg-brand-blue/10 px-2 py-1 rounded">100% GRATUIT</span>
+                                    </div>
                                 </div>
                             </li>
                         </ul>
 
-                        <div className="relative z-10">
+                        <div className="relative z-10 mt-4">
                             <SubscribeButton
                                 priceId={yearlyProduct?.stripe_price_id}
                                 productId={yearlyProduct?.id}
                                 space="kids"
                                 userLoggedIn={!!user}
                                 buttonText="Devenir l'Ultime Magicien"
-                                className="bg-gradient-to-r from-brand-purple to-pink-600 hover:from-brand-purple-light hover:to-pink-500 text-white shadow-xl shadow-brand-purple/30"
+                                className="bg-gradient-to-r from-brand-purple to-brand-blue hover:from-purple-500 hover:to-blue-500 text-white shadow-[0_0_30px_rgba(139,92,246,0.4)] border border-brand-purple/50"
                             />
                         </div>
                     </div>
