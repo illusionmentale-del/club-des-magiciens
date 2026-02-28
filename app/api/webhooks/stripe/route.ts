@@ -121,36 +121,47 @@ export async function POST(req: Request) {
                 }).eq('id', userId);
             }
 
-            // Always send the Welcome / Recovery Email for Kids Products
+            // Always send the Welcome / Recovery Email for appropriate space
             if (userId && email) {
                 try {
                     const { Resend } = await import('resend');
                     const resend = new Resend(process.env.RESEND_API_KEY!);
 
+                    const isAdult = session.metadata?.space === 'adults';
+
                     try {
-                        const emailModule = await import('@/components/emails/WelcomeKidEmail');
-                        const WelcomeKidEmail = emailModule.default;
+                        const emailModule = isAdult
+                            ? await import('@/components/emails/WelcomeAdultEmail')
+                            : await import('@/components/emails/WelcomeKidEmail');
+                        const WelcomeEmail = emailModule.default;
+
                         const fromEmail = process.env.NODE_ENV === 'development'
-                            ? 'Club des Petits Magiciens <onboarding@resend.dev>'
-                            : 'Club des Petits Magiciens <contact@clubdespetitsmagiciens.fr>';
+                            ? (isAdult ? "L'Atelier des Magiciens <onboarding@resend.dev>" : 'Club des Petits Magiciens <onboarding@resend.dev>')
+                            : (isAdult ? "L'Atelier des Magiciens <contact@atelierdesmagiciens.fr>" : 'Club des Petits Magiciens <contact@clubdespetitsmagiciens.fr>');
+
+                        const subject = isAdult
+                            ? "Bienvenue dans L'Atelier des Magiciens 🎩✨"
+                            : "Bienvenue au Club des Petits Magiciens ! 🎩✨";
 
                         await resend.emails.send({
                             from: fromEmail,
                             to: [email],
-                            subject: 'Bienvenue au Club des Petits Magiciens ! 🎩✨',
-                            react: WelcomeKidEmail({
+                            subject: subject,
+                            react: WelcomeEmail({
                                 username: email, // display email as username identifier
-                                loginUrl: `${process.env.NEXT_PUBLIC_APP_URL || 'https://clubdespetitsmagiciens.fr'}/login`,
+                                loginUrl: isAdult
+                                    ? 'https://atelierdesmagiciens.fr/login'
+                                    : 'https://clubdespetitsmagiciens.fr/login',
                                 password: generatedPassword || undefined
                             }),
                         });
                         console.log(`[Stripe Webhook] Welcome email sent to ${email}`);
                     } catch (emailImportError) {
-                        console.error("[Stripe Webhook] Could not import WelcomeKidEmail react component. Sending basic text email.", emailImportError);
+                        console.error("[Stripe Webhook] Could not import WelcomeEmail react component. Sending basic text email.", emailImportError);
                         await resend.emails.send({
-                            from: 'Club des Petits Magiciens <contact@clubdespetitsmagiciens.fr>',
+                            from: isAdult ? "L'Atelier des Magiciens <contact@atelierdesmagiciens.fr>" : 'Club des Petits Magiciens <contact@clubdespetitsmagiciens.fr>',
                             to: [email],
-                            subject: 'Bienvenue au Club des Petits Magiciens ! 🎩✨',
+                            subject: isAdult ? "Bienvenue dans l'Atelier ! 🎩✨" : 'Bienvenue au Club des Petits Magiciens ! 🎩✨',
                             html: `<p>Votre compte a été activé avec succès ! Connectez-vous sur notre site avec l'email ${email} ${generatedPassword ? `et le mot de passe provisoire : ${generatedPassword}` : ''}.</p>`
                         });
                     }

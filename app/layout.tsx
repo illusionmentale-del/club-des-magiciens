@@ -8,10 +8,24 @@ const poppins = Poppins({
   variable: "--font-poppins"
 });
 
-export const metadata: Metadata = {
-  title: "Club des Magiciens",
-  description: "Apprenez la magie et le mentalisme",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const { headers } = await import("next/headers");
+  const headerList = await headers();
+  const host = headerList.get("host") || "";
+  const isAdultsDomain = host.includes('atelierdesmagiciens') || host.startsWith('atelier.');
+
+  if (isAdultsDomain) {
+    return {
+      title: "L'Atelier des Magiciens",
+      description: "Le hub des maîtres. Apprenez des illusions incroyables.",
+    };
+  }
+
+  return {
+    title: "Club des Petits Magiciens",
+    description: "Apprenez la magie et le mentalisme",
+  };
+}
 
 import CookieBanner from "@/components/CookieBanner";
 

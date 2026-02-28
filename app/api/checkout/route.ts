@@ -31,29 +31,49 @@ export async function POST(req: Request) {
         let clientReferenceId = undefined;
 
         if (user) {
-            // 1. Get or Create Stripe Customer for logged-in user
+            // 1. Get Stripe Customer for logged-in user
             const { data: profile } = await supabase
                 .from('profiles')
-                .select('stripe_customer_id, email')
+                .select('stripe_customer_id, email, first_name, last_name')
                 .eq('id', user.id)
                 .single();
 
             customerId = profile?.stripe_customer_id;
 
+            // Verify the customer actually exists on Stripe still (in case it was deleted manually)
+            if (customerId) {
+                try {
+                    const existingCustomer = await stripe.customers.retrieve(customerId);
+                    if (existingCustomer.deleted) {
+                        customerId = undefined; // It was deleted, we must recreate it
+                    }
+                } catch (err: any) {
+                    if (err.code === 'resource_missing') {
+                        customerId = undefined; // Not found on Stripe side, recreate
+                    } else {
+                        throw err; // Other network error, fail early
+                    }
+                }
+            }
+
+            // Create a new one if we don't have a valid ID
             if (!customerId) {
                 const customer = await stripe.customers.create({
-                    email: user.email || profile?.email,
+                    email: user.email || profile?.email || undefined,
+                    name: profile?.first_name || profile?.last_name ? `${profile?.first_name || ''} ${profile?.last_name || ''}`.trim() : undefined,
                     metadata: {
                         supabase_user_id: user.id
                     }
                 });
                 customerId = customer.id;
 
-                // Save it
+                // Save it back to Supabase
                 await supabase.from('profiles').update({ stripe_customer_id: customerId }).eq('id', user.id);
             }
             clientReferenceId = user.id;
         }
+
+        const origin = new URL(req.url).origin;
 
         // 2. Create Session
         const sessionConfig: Stripe.Checkout.SessionCreateParams = {
@@ -65,8 +85,8 @@ export async function POST(req: Request) {
                 },
             ],
             mode: isSubscription ? 'subscription' : 'payment',
-            success_url: `${process.env.NEXT_PUBLIC_APP_URL}/success`,
-            cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/${space === 'kids' ? 'tarifs/kids' : 'dashboard'}`,
+            success_url: `${origin}/success`,
+            cancel_url: `${origin}/${space === 'kids' ? 'tarifs/kids' : (user ? 'dashboard' : 'tarifs/atelier-des-magiciens')}`,
             client_reference_id: clientReferenceId,
             metadata: {
                 product_id: productId, // Internal Product ID

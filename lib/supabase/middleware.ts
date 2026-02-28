@@ -34,14 +34,27 @@ export async function updateSession(request: NextRequest) {
         data: { user },
     } = await supabase.auth.getUser()
 
+    // 0. DÉTECTION DU DOMAINE (Multi-Domain Routing)
+    const hostname = request.headers.get('host') || '';
+    // On considère "Atelier" si le host contient atelierdesmagiciens ou commence par atelier.
+    const isAdultsDomain = hostname.includes('atelierdesmagiciens') || hostname.startsWith('atelier.');
+    // Sinon, par défaut ou si clubdespetitsmagiciens, c'est le domaine Kids.
+    const isKidsDomain = !isAdultsDomain;
+
     // 1. PUBLIC ROUTES (No Auth Needed)
-    const publicPaths = ['/login', '/signup', '/auth', '/api', '/_next', '/static', '/favicon.ico', '/pricing', '/', '/success'];
-    const isPublic = publicPaths.some(path => request.nextUrl.pathname.startsWith(path) || request.nextUrl.pathname === '/');
+    const publicPaths = ['/tarifs', '/login', '/signup', '/auth', '/api', '/_next', '/static', '/favicon.ico', '/pricing', '/', '/success'];
+    // Ignore dynamic routes checking on '/' since it's exact match
+    const isPublic = publicPaths.some(path => request.nextUrl.pathname.startsWith(path) && request.nextUrl.pathname !== '/') || request.nextUrl.pathname === '/';
 
     if (!user) {
-        // Redirection racine pour les non-connectés vers la page de vente
+        // Redirection racine pour les non-connectés vers la BONNE page de vente
         if (request.nextUrl.pathname === '/') {
-            return NextResponse.redirect(new URL('/tarifs/kids', request.url));
+            if (isAdultsDomain) {
+                // Redirect unauthenticated Atelier traffic to the sales page
+                return NextResponse.redirect(new URL('/tarifs/atelier-des-magiciens', request.url));
+            } else {
+                return NextResponse.redirect(new URL('/tarifs/kids', request.url));
+            }
         }
 
         if (!isPublic) {
@@ -50,39 +63,46 @@ export async function updateSession(request: NextRequest) {
     }
 
     if (user) {
-        // 2. STRICT RBAC REDIRECTION
-        // We query the profile to get the exact role/access_level
+        // 2. STRICT RBAC REDIRECTION & DOMAIN ROUTING
+        // We query the profile to get the exact access booleans
         const { data: profile } = await supabase
             .from('profiles')
-            .select('access_level, role')
+            .select('access_level, role, has_adults_access, has_kids_access')
             .eq('id', user.id)
             .single();
 
-        const isKid = profile?.access_level === 'kid';
+        const hasKidsAccess = profile?.has_kids_access === true || profile?.access_level === 'kid';
+        const hasAdultsAccess = profile?.has_adults_access === true || profile?.access_level === 'default';
         const isAdmin = profile?.role === 'admin';
         const path = request.nextUrl.pathname;
 
         // KIDS Enforcement
-        if (isKid) {
-            // Kid trying to access Adult/Admin areas
+        if (!hasAdultsAccess && hasKidsAccess) {
+            // Strictly kid trying to access Adult/Admin areas
             if (path.startsWith('/dashboard') || path.startsWith('/admin')) {
                 return NextResponse.redirect(new URL('/kids', request.url));
             }
-            // Allow /kids, /watch, /account
         }
 
         // ADULTS Enforcement
-        else {
-            // Adult trying to access Kids area
-            // Admin MAY access kids area for content check, but Regular Adult should NOT.
+        else if (hasAdultsAccess && !hasKidsAccess) {
+            // Strictly Adult trying to access Kids area
+            // Admin MAY access kids area for content check
             if (!isAdmin && path.startsWith('/kids')) {
                 return NextResponse.redirect(new URL('/dashboard', request.url));
             }
         }
 
-        // Anti-Loop / Root Redirection
+        // Anti-Loop / Root Redirection (L'Aiguilleur)
         if (path === '/') {
-            if (isKid) return NextResponse.redirect(new URL('/kids', request.url));
+            if (isAdultsDomain) {
+                if (hasAdultsAccess) return NextResponse.redirect(new URL('/dashboard', request.url));
+                if (hasKidsAccess) return NextResponse.redirect(new URL('/kids', request.url));
+            } else {
+                if (hasKidsAccess) return NextResponse.redirect(new URL('/kids', request.url));
+                if (hasAdultsAccess) return NextResponse.redirect(new URL('/dashboard', request.url));
+            }
+            // Fallback
             return NextResponse.redirect(new URL('/dashboard', request.url));
         }
     }

@@ -1,6 +1,7 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
+import { headers } from "next/headers";
 
 export async function requestPasswordReset(prevState: any, formData: FormData) {
     const email = formData.get("email") as string;
@@ -8,8 +9,13 @@ export async function requestPasswordReset(prevState: any, formData: FormData) {
     const { data: profile } = await supabase.from('profiles').select('access_level').eq('email', email).maybeSingle();
     const redirectPath = profile?.access_level === 'kid' ? '/kids/account?view=settings' : '/dashboard/settings';
 
+    const headerList = await headers();
+    const host = headerList.get("host") || "clubdespetitsmagiciens.fr";
+    const protocol = host.includes("localhost") ? "http" : "https";
+    const origin = `${protocol}://${host}`;
+
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: `${process.env.NEXT_PUBLIC_APP_URL || 'https://clubdespetitsmagiciens.fr'}/auth/callback?next=${encodeURIComponent(redirectPath)}`,
+        redirectTo: `${origin}/auth/callback?next=${encodeURIComponent(redirectPath)}`,
     });
 
     if (error) {
