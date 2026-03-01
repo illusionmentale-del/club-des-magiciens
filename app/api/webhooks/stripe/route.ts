@@ -114,11 +114,19 @@ export async function POST(req: Request) {
 
             // Always update the profile to link the Stripe customer ID and clear deleted_at (revive zombie accounts)
             if (userId && session.customer && typeof session.customer === 'string') {
-                await supabase.from('profiles').update({
+                const optIn = session.consent?.promotions === 'opt_in';
+                const updateData: any = {
                     stripe_customer_id: session.customer,
                     full_name: session.customer_details?.name || 'Parent',
                     deleted_at: null // Crucial: Restore account if it was previously deleted
-                }).eq('id', userId);
+                };
+
+                // Only update newsletter preference if consent was actually prompted
+                if (session.consent?.promotions) {
+                    updateData.newsletter_opt_in = optIn;
+                }
+
+                await supabase.from('profiles').update(updateData).eq('id', userId);
             }
 
             // Always send the Welcome / Recovery Email for appropriate space

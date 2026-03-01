@@ -93,6 +93,9 @@ export async function POST(req: Request) {
                 space: space,
             },
             allow_promotion_codes: true,
+            consent_collection: {
+                promotions: 'auto',
+            },
         };
 
         if (user) {
