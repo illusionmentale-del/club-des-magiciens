@@ -137,7 +137,8 @@ export async function POST(req: Request) {
 
                         const fromEmail = process.env.NODE_ENV === 'development'
                             ? (isAdult ? "L'Atelier des Magiciens <onboarding@resend.dev>" : 'Club des Petits Magiciens <onboarding@resend.dev>')
-                            : (isAdult ? "L'Atelier des Magiciens <contact@atelierdesmagiciens.fr>" : 'Club des Petits Magiciens <contact@clubdespetitsmagiciens.fr>');
+                            // Use clubdespetitsmagiciens.fr for BOTH to bypass Resend free tier limits (1 domain max)
+                            : (isAdult ? "L'Atelier des Magiciens <contact@clubdespetitsmagiciens.fr>" : 'Club des Petits Magiciens <contact@clubdespetitsmagiciens.fr>');
 
                         const subject = isAdult
                             ? "Bienvenue dans L'Atelier des Magiciens 🎩✨"
