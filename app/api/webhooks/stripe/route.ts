@@ -172,51 +172,74 @@ export async function POST(req: Request) {
 
             console.log(`[Stripe Webhook] Processing completion for User: ${userId}, Product: ${productId}`);
 
-            // 1. If it's a product-based purchase
-            if (productId) {
-                const { data: product } = await supabase
+            // FETCH LINE ITEMS FROM STRIPE TO DETERMINE ALL PURCHASED PRODUCTS
+            const lineItems = await stripe.checkout.sessions.listLineItems(session.id);
+            let grantsAdultAccess = false;
+            let grantsKidsAccess = false;
+
+            // Analyze what the user actually purchased
+            for (const item of lineItems.data) {
+                if (!item.price) continue;
+
+                // Find matching product in Supabase by Stripe Price ID
+                const { data: matchedProduct } = await supabase
                     .from('products')
                     .select('*')
-                    .eq('id', productId)
+                    .eq('stripe_price_id', item.price.id)
                     .single();
 
-                if (product) {
-                    // 1a. Handle Subscriptions
-                    if (product.type === 'subscription') {
-                        console.log(`[Stripe Webhook] Activating subscription for user ${userId}`);
-                        const isKidProduct = product.space === 'kids';
-                        const { error: profileError } = await supabase
-                            .from('profiles')
-                            .update({
-                                subscription_status: 'active',
-                                access_level: isKidProduct ? 'kid' : 'adult',
-                                role: isKidProduct ? 'kid' : 'adult'
-                            })
-                            .eq('id', userId);
+                if (matchedProduct) {
+                    if (matchedProduct.space === 'adults') grantsAdultAccess = true;
+                    if (matchedProduct.space === 'kids') grantsKidsAccess = true;
 
-                        if (profileError) console.error("[Stripe Webhook] Profile update error:", profileError);
-                    }
-
-                    // 1b. Handle One-time items (packs, courses) linked to this product
-                    // Find all library items linked to this product
+                    // Handle One-time items (packs, courses) linked to this product
                     const { data: linkedItems } = await supabase
                         .from('library_items')
                         .select('id')
-                        .eq('linked_product_id', productId);
+                        .eq('linked_product_id', matchedProduct.id);
 
                     if (linkedItems && linkedItems.length > 0) {
-                        for (const item of linkedItems) {
+                        for (const linked of linkedItems) {
                             await supabase.from('user_purchases').upsert({
                                 user_id: userId,
-                                library_item_id: item.id,
-                                product_id: productId,
+                                library_item_id: linked.id,
+                                product_id: matchedProduct.id,
                                 status: 'active',
                                 systeme_io_order_id: session.id
                             }, { onConflict: 'user_id,library_item_id' });
                         }
-                        console.log(`[Stripe Webhook] Unlocked ${linkedItems.length} items for product ${productId}`);
+                        console.log(`[Stripe Webhook] Unlocked ${linkedItems.length} items for product ${matchedProduct.id}`);
                     }
                 }
+            }
+
+            // We have the true access rights based on everything in the cart (Cross-sells included)
+            if (grantsAdultAccess || grantsKidsAccess) {
+                console.log(`[Stripe Webhook] Activating subscription for user ${userId}. Adults: ${grantsAdultAccess}, Kids: ${grantsKidsAccess}`);
+
+                // Fetch existing access to preserve it if they already had something
+                const { data: currentProfile } = await supabase
+                    .from('profiles')
+                    .select('has_adults_access, has_kids_access')
+                    .eq('id', userId)
+                    .single();
+
+                const finalAdultsAccess = grantsAdultAccess || (currentProfile?.has_adults_access === true);
+                const finalKidsAccess = grantsKidsAccess || (currentProfile?.has_kids_access === true);
+
+                const { error: profileError } = await supabase
+                    .from('profiles')
+                    .update({
+                        subscription_status: 'active',
+                        has_adults_access: finalAdultsAccess,
+                        has_kids_access: finalKidsAccess,
+                        // Set legacy role based on primary purchase
+                        access_level: finalAdultsAccess ? 'adult' : 'kid',
+                        role: finalAdultsAccess ? 'adult' : 'kid'
+                    })
+                    .eq('id', userId);
+
+                if (profileError) console.error("[Stripe Webhook] Profile update error:", profileError);
             }
 
             // 2. If it's a specific library item passed directly (fallback/legacy)
