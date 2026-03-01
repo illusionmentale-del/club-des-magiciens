@@ -23,6 +23,7 @@ export default async function KidsPricingPage() {
         .eq("type", "subscription")
         .eq("space", "kids")
         .eq("is_active", true)
+        .not("title", "ilike", "Option%")
         .order("price", { ascending: true });
 
     // Deduce Monthly vs Yearly by price order

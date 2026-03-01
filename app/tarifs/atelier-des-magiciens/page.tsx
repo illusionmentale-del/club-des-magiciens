@@ -21,6 +21,7 @@ export default async function AdultsPricingPage() {
         .eq("type", "subscription")
         .eq("space", "adults")
         .eq("is_active", true)
+        .not("title", "ilike", "Option%")
         .order("price", { ascending: true });
 
     // Deduce Monthly vs Yearly by price order
