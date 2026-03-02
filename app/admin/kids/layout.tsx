@@ -55,7 +55,7 @@ export default async function AdminLayout({
 
                     <Link href="/admin/kids/settings" className="flex items-center gap-3 px-4 py-3 text-sm font-bold uppercase tracking-widest text-brand-text-muted hover:text-white hover:bg-white/5 rounded-xl transition-all group">
                         <Settings className="w-5 h-5 group-hover:text-brand-purple transition-colors" />
-                        Accueil "Actu du Club"
+                        Configuration & Menus
                     </Link>
                     <Link href="/admin/kids/library" className="flex items-center gap-3 px-4 py-3 text-sm font-bold uppercase tracking-widest text-brand-text-muted hover:text-white hover:bg-white/5 rounded-xl transition-all group">
                         <Film className="w-5 h-5 group-hover:text-brand-purple transition-colors" />
@@ -81,6 +81,10 @@ export default async function AdminLayout({
                         <Users className="w-5 h-5 group-hover:text-brand-purple transition-colors" />
                         Élèves
                     </Link>
+                    <Link href="/admin/kids/import" className="flex items-center gap-3 px-4 py-3 text-sm font-bold uppercase tracking-widest text-brand-text-muted hover:text-white hover:bg-white/5 rounded-xl transition-all group">
+                        <Users className="w-5 h-5 group-hover:text-brand-purple transition-colors" />
+                        Importation Contacts
+                    </Link>
                     <Link href="/admin/kids/gamification" className="flex items-center gap-3 px-4 py-3 text-sm font-bold uppercase tracking-widest text-brand-text-muted hover:text-white hover:bg-white/5 rounded-xl transition-all group">
                         <Trophy className="w-5 h-5 group-hover:text-brand-purple transition-colors" />
                         Badges
@@ -91,7 +95,7 @@ export default async function AdminLayout({
 
                     <Link href="/admin/kids/shop" className="flex items-center gap-3 px-4 py-3 text-sm font-bold uppercase tracking-widest text-brand-text-muted hover:text-white hover:bg-white/5 rounded-xl transition-all group">
                         <Lock className="w-5 h-5 group-hover:text-brand-purple transition-colors" />
-                        Boutique
+                        Boutique Premium
                     </Link>
 
                     <Separator className="my-6 bg-white/5" />
