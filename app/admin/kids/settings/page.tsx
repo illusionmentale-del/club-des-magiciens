@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { Sparkles } from "lucide-react";
 import KidsHomeConfig from "./KidsHomeConfig";
+import KidsMenuToggles from "@/components/admin/KidsMenuToggles";
 
 export default async function KidsSettingsPage() {
     const supabase = await createClient();
@@ -37,6 +38,8 @@ export default async function KidsSettingsPage() {
                 initialSettings={settingsMap}
                 libraryItems={libraryItems || []}
             />
+
+            <KidsMenuToggles initialSettings={settingsMap} />
         </div>
     )
 }

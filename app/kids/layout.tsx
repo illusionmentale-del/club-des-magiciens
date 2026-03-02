@@ -40,6 +40,11 @@ export default async function KidsLayout({
 
     let hasUnreadReplies = false;
 
+    let enableProgram = true;
+    let enableMasterclass = true;
+    let enableAccount = true;
+    let enableShop = true;
+
     if (user) {
         // ... existing admin and settings fetch ...
         const { data: profile } = await supabase.from('profiles').select('role, has_adults_access').eq('id', user.id).single();
@@ -56,6 +61,11 @@ export default async function KidsLayout({
         const getSetting = (key: string, defaultVal: string) => {
             return settingsMap[`kid_${key}`] || settingsMap[key] || defaultVal;
         };
+
+        enableProgram = settingsMap["enable_kids_program"] !== "false";
+        enableMasterclass = settingsMap["enable_kids_masterclass"] !== "false";
+        enableAccount = settingsMap["enable_kids_account"] !== "false";
+        enableShop = settingsMap["enable_kids_shop"] !== "false";
 
         socialLinks = {
             youtube: getSetting("social_youtube", "https://youtube.com/@LeMagicienPOV"),
@@ -82,12 +92,12 @@ export default async function KidsLayout({
         <KidsLayoutClient
             sidebar={
                 <Suspense fallback={<div className="w-64 bg-magic-card hidden md:block" />}>
-                    <KidsSidebar socialLinks={socialLinks} logoUrl={siteLogo} isAdmin={isAdmin} hasUnreadReplies={hasUnreadReplies} hasAdultsAccess={hasAdultsAccess} />
+                    <KidsSidebar socialLinks={socialLinks} logoUrl={siteLogo} isAdmin={isAdmin} hasUnreadReplies={hasUnreadReplies} hasAdultsAccess={hasAdultsAccess} enableProgram={enableProgram} enableMasterclass={enableMasterclass} enableAccount={enableAccount} enableShop={enableShop} />
                 </Suspense>
             }
             mobileNav={
                 <Suspense fallback={<div className="h-16 bg-magic-card md:hidden" />}>
-                    <KidsMobileNav logoUrl={siteLogo} isAdmin={isAdmin} hasUnreadReplies={hasUnreadReplies} />
+                    <KidsMobileNav logoUrl={siteLogo} isAdmin={isAdmin} hasUnreadReplies={hasUnreadReplies} enableProgram={enableProgram} enableMasterclass={enableMasterclass} enableAccount={enableAccount} enableShop={enableShop} />
                 </Suspense>
             }
         >

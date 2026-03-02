@@ -8,7 +8,16 @@ import { Menu, X, BookOpen, Settings, Video, LogOut, Star, Play, ShoppingBag, Tr
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 
-export default function KidsMobileNav({ logoUrl, hasPurchases, isAdmin, hasUnreadReplies }: { logoUrl?: string; hasPurchases?: boolean; isAdmin?: boolean; hasUnreadReplies?: boolean; }) {
+export default function KidsMobileNav({ logoUrl, isAdmin, hasPurchases, hasUnreadReplies, enableProgram = true, enableMasterclass = true, enableAccount = true, enableShop = true }: {
+    logoUrl?: string;
+    hasPurchases?: boolean;
+    isAdmin?: boolean;
+    hasUnreadReplies?: boolean;
+    enableProgram?: boolean;
+    enableMasterclass?: boolean;
+    enableAccount?: boolean;
+    enableShop?: boolean;
+}) {
     const [isOpen, setIsOpen] = useState(false);
     const pathname = usePathname();
     const searchParams = useSearchParams();
@@ -104,64 +113,74 @@ export default function KidsMobileNav({ logoUrl, hasPurchases, isAdmin, hasUnrea
                                 </div>
                             </Link>
 
-                            {/* 2. 📖 Le Grimoire (Archives) */}
-                            {/* Menu Programme => La Formation */}
-                            <Link href="/kids/program" onClick={close} className={`group flex items-center justify-between px-4 py-3 rounded-xl transition-all ${isActive('/kids/program') || pathname?.startsWith('/kids/courses') ? 'bg-magic-purple/20 border border-magic-purple/20' : 'hover:bg-white/5'}`}>
-                                <div className="flex items-center gap-4">
-                                    <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-colors ${isActive('/kids/program') || pathname?.startsWith('/kids/courses') ? 'bg-magic-purple text-white shadow-lg shadow-magic-purple/20' : 'bg-white/5 text-gray-400 group-hover:text-white'}`}>
-                                        <BookOpen className="w-5 h-5" />
+                            {/* 2. 📖 La Formation */}
+                            {enableProgram && (
+                                <Link href="/kids/program" onClick={() => setIsOpen(false)} className="block group">
+                                    <div className="flex items-center gap-4">
+                                        <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-colors ${isActive('/kids/program') || pathname?.startsWith('/kids/courses') ? 'bg-magic-purple text-white shadow-lg shadow-magic-purple/20' : 'bg-white/5 text-gray-400 group-hover:bg-white/10 group-hover:text-white'}`}>
+                                            <BookOpen className="w-5 h-5" />
+                                        </div>
+                                        <div>
+                                            <div className={`font-bold ${isActive('/kids/program') || pathname?.startsWith('/kids/courses') ? 'text-magic-purple' : 'text-gray-300 group-hover:text-white'}`}>La Formation</div>
+                                            <div className="text-xs text-gray-500">Accéder aux cours et contenus</div>
+                                        </div>
                                     </div>
-                                    <div>
-                                        <div className={`font-bold ${isActive('/kids/program') || pathname?.startsWith('/kids/courses') ? 'text-magic-purple' : 'text-gray-300 group-hover:text-white'}`}>La Formation</div>
-                                        <div className="text-xs text-gray-500">Accéder aux cours et contenus</div>
-                                    </div>
-                                </div>
-                            </Link>
+                                </Link>
+                            )}
 
                             {/* 3. 🎬 Les Masterclass */}
-                            <Link href="/kids/videos" onClick={close} className={`group flex items-center justify-between px-4 py-3 rounded-xl transition-all ${isActive('/kids/videos') ? 'bg-magic-purple/20 border border-magic-purple/20' : 'hover:bg-white/5'}`}>
-                                <div className="flex items-center gap-4">
-                                    <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-colors ${isActive('/kids/videos') ? 'bg-magic-purple text-white shadow-lg shadow-magic-purple/20' : 'bg-white/5 text-gray-400 group-hover:text-white'}`}>
-                                        <Video className="w-5 h-5" />
+                            {enableMasterclass && (
+                                <Link href="/kids/videos" onClick={() => setIsOpen(false)} className="block group">
+                                    <div className="flex items-center gap-4">
+                                        <div className={`relative w-10 h-10 rounded-xl flex items-center justify-center transition-colors ${isActive('/kids/videos') ? 'bg-magic-purple text-white shadow-lg shadow-magic-purple/20' : 'bg-white/5 text-gray-400 group-hover:bg-white/10 group-hover:text-white'}`}>
+                                            <Video className="w-5 h-5" />
+                                            {hasUnreadReplies && (
+                                                <span className="absolute -top-1 -right-1 flex h-3 w-3">
+                                                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                                                    <span className="relative inline-flex rounded-full h-3 w-3 bg-red-500 border-2 border-magic-card"></span>
+                                                </span>
+                                            )}
+                                        </div>
+                                        <div>
+                                            <div className={`font-bold flex items-center gap-2 ${isActive('/kids/videos') ? 'text-magic-purple' : 'text-gray-300 group-hover:text-white'}`}>
+                                                Les Masterclass
+                                                {hasUnreadReplies && <span className="text-[10px] bg-red-500 text-white px-1.5 py-0.5 rounded-full font-bold">RÉPONSE</span>}
+                                            </div>
+                                            <div className="text-xs text-gray-500">Perfectionne-toi en vidéo</div>
+                                        </div>
                                     </div>
-                                    <div>
-                                        <div className={`font-bold ${isActive('/kids/videos') ? 'text-magic-purple' : 'text-gray-300 group-hover:text-white'}`}>Les Masterclass</div>
-                                        <div className="text-xs text-gray-500">Perfectionne-toi en vidéo</div>
-                                    </div>
-                                </div>
-                                {hasUnreadReplies && (
-                                    <div className="flex items-center gap-2">
-                                        <span className="text-[10px] bg-red-500 text-white px-2 py-1 rounded-full font-bold">RÉPONSE</span>
-                                        <div className="w-2.5 h-2.5 rounded-full bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.8)] animate-pulse"></div>
-                                    </div>
-                                )}
-                            </Link>
+                                </Link>
+                            )}
 
                             {/* 4. 👤 Mes Informations */}
-                            <Link href="/kids/account" onClick={close} className="block group">
-                                <div className="flex items-center gap-4">
-                                    <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-colors ${isActive('/kids/account') ? 'bg-magic-purple text-white shadow-lg shadow-magic-purple/20' : 'bg-white/5 text-gray-400 group-hover:text-white'}`}>
-                                        <Trophy className="w-5 h-5" />
+                            {enableAccount && (
+                                <Link href="/kids/account" onClick={() => setIsOpen(false)} className="block group">
+                                    <div className="flex items-center gap-4">
+                                        <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-colors ${isActive('/kids/account') ? 'bg-magic-purple text-white shadow-lg shadow-magic-purple/20' : 'bg-white/5 text-gray-400 group-hover:bg-white/10 group-hover:text-white'}`}>
+                                            <Trophy className="w-5 h-5" />
+                                        </div>
+                                        <div>
+                                            <div className={`font-bold ${isActive('/kids/account') ? 'text-magic-purple' : 'text-gray-300 group-hover:text-white'}`}>Mes Informations</div>
+                                            <div className="text-xs text-gray-500">Ma progression et mes secrets</div>
+                                        </div>
                                     </div>
-                                    <div>
-                                        <div className={`font-bold ${isActive('/kids/account') ? 'text-magic-purple' : 'text-gray-300 group-hover:text-white'}`}>Mes Informations</div>
-                                        <div className="text-xs text-gray-500">Ma progression et mes secrets</div>
-                                    </div>
-                                </div>
-                            </Link>
+                                </Link>
+                            )}
 
                             {/* 5. 🏪 La Boutique */}
-                            <Link href="/kids/shop" onClick={close} className="block group">
-                                <div className="flex items-center gap-4">
-                                    <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-colors ${isActive('/kids/shop') ? 'bg-magic-purple text-white shadow-lg shadow-magic-purple/20' : 'bg-white/5 text-gray-400 group-hover:text-white'}`}>
-                                        <Store className="w-5 h-5" />
+                            {enableShop && (
+                                <Link href="/kids/shop" onClick={() => setIsOpen(false)} className="block group">
+                                    <div className="flex items-center gap-4">
+                                        <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-colors ${isActive('/kids/shop') ? 'bg-magic-purple text-white shadow-lg shadow-magic-purple/20' : 'bg-white/5 text-gray-400 group-hover:bg-white/10 group-hover:text-white'}`}>
+                                            <Store className="w-5 h-5" />
+                                        </div>
+                                        <div>
+                                            <div className={`font-bold ${isActive('/kids/shop') ? 'text-magic-purple' : 'text-gray-300 group-hover:text-white'}`}>La Boutique</div>
+                                            <div className="text-xs text-gray-500">Découvre les trucs de Jérémy</div>
+                                        </div>
                                     </div>
-                                    <div>
-                                        <div className={`font-bold ${isActive('/kids/shop') ? 'text-magic-purple' : 'text-gray-300 group-hover:text-white'}`}>La Boutique</div>
-                                        <div className="text-xs text-gray-500">Découvre les trucs de Jérémy</div>
-                                    </div>
-                                </div>
-                            </Link>
+                                </Link>
+                            )}
 
                             {/* 📦 Mes Coffres (Purchases) */}
                             {hasPurchases && (

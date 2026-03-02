@@ -63,20 +63,6 @@ export default function AdminUsersClient({ profiles }: AdminUsersClientProps) {
                             </div>
                         )}
                     </div>
-
-                    {/* DELETED USERS - CORBEILLE */}
-                    {deletedProfiles.length > 0 && (
-                        <div className="mt-12 border-t border-white/10 pt-8">
-                            <h2 className="text-xl font-bold text-gray-500 mb-6 flex items-center gap-2">
-                                <Trash2 /> Corbeille ({deletedProfiles.length})
-                            </h2>
-                            <div className="grid grid-cols-1 gap-4 opacity-75">
-                                {deletedProfiles.map((profile) => (
-                                    <UserRow key={profile.id} profile={profile} isProtected={false} basePath="/admin/adults/users" />
-                                ))}
-                            </div>
-                        </div>
-                    )}
                 </div>
             </div>
         </div>

@@ -18,6 +18,7 @@ type Profile = {
     magic_level: string;
     xp: number;
     email?: string; // Often attached to auth user, but maybe we can fetch profile ext
+    newsletter_opt_in?: boolean;
     created_at: string;
 };
 
@@ -136,6 +137,19 @@ export default function AdminUserDetailPage() {
         else fetchData();
     };
 
+    const handleToggleNewsletter = async () => {
+        if (!profile) return;
+        const newStatus = !profile.newsletter_opt_in;
+        // Optimistic UI update
+        setProfile({ ...profile, newsletter_opt_in: newStatus });
+
+        const { error } = await supabase.from("profiles").update({ newsletter_opt_in: newStatus }).eq("id", id);
+        if (error) {
+            alert("Erreur lors de la modification de l'abonnement newsletter");
+            fetchData(); // Rollback
+        }
+    };
+
     const handlePasswordChange = async (e: React.FormEvent) => {
         e.preventDefault();
         if (newPassword.length < 6) {
@@ -231,123 +245,134 @@ export default function AdminUserDetailPage() {
                                         ))}
                                     </select>
                                 </div>
-                            </div>
-                        </div>
 
-                        {/* SECURITE / MOT DE PASSE */}
-                        <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
-                            <h3 className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-4 flex items-center gap-2">
-                                <Key className="w-4 h-4" /> Sécurité
-                            </h3>
-                            <form onSubmit={handlePasswordChange} className="space-y-3">
-                                <div>
-                                    <label className="text-[10px] text-gray-400 uppercase tracking-wider block mb-1">Nouveau mot de passe</label>
-                                    <input
-                                        type="text"
-                                        placeholder="Min. 6 caractères"
-                                        className="w-full bg-black/40 w-full border border-white/10 rounded-lg p-2 text-sm outline-none focus:border-brand-gold transition-colors"
-                                        value={newPassword}
-                                        onChange={(e) => setNewPassword(e.target.value)}
-                                        minLength={6}
-                                    />
+                                <div className="pt-4 border-t border-white/10 mt-4 flex items-center justify-between">
+                                    <label className="text-xs text-white block">Abonné Newsletter</label>
+                                    <button
+                                        onClick={handleToggleNewsletter}
+                                        className={`relative inline-flex h-5 w-9 shrink-0 cursor-pointer items-center justify-center rounded-full transition-colors duration-200 ease-in-out focus:outline-none ${profile.newsletter_opt_in ? 'bg-brand-gold' : 'bg-white/10'}`}
+                                        role="switch"
+                                        aria-checked={profile.newsletter_opt_in}
+                                    >
+                                        <span className={`pointer-events-none inline-block h-3 w-3 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${profile.newsletter_opt_in ? 'translate-x-2' : '-translate-x-2'}`} />
+                                    </button>
                                 </div>
-                                <button
-                                    type="submit"
-                                    disabled={!newPassword || newPassword.length < 6 || isChangingPassword}
-                                    className="w-full bg-brand-gold hover:bg-brand-gold/80 text-black disabled:opacity-50 disabled:cursor-not-allowed text-xs font-bold uppercase tracking-widest py-2 rounded-lg transition-colors"
-                                >
-                                    {isChangingPassword ? "Modification..." : "Forcer ce Mot de Passe"}
-                                </button>
-                                <p className="text-[10px] text-gray-500 text-center mt-2 leading-tight">
-                                    L'ancien mot de passe ne fonctionnera plus. Copiez-le et envoyez-le à l'élève.
-                                </p>
-                            </form>
+                            </div>
                         </div>
-
                     </div>
 
-                    {/* RIGHT COLUMN: PROGRESS & HISTORY */}
-                    <div className="lg:col-span-2 space-y-8">
+                    {/* SECURITE / MOT DE PASSE */}
+                    <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
+                        <h3 className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-4 flex items-center gap-2">
+                            <Key className="w-4 h-4" /> Sécurité
+                        </h3>
+                        <form onSubmit={handlePasswordChange} className="space-y-3">
+                            <div>
+                                <label className="text-[10px] text-gray-400 uppercase tracking-wider block mb-1">Nouveau mot de passe</label>
+                                <input
+                                    type="text"
+                                    placeholder="Min. 6 caractères"
+                                    className="w-full bg-black/40 w-full border border-white/10 rounded-lg p-2 text-sm outline-none focus:border-brand-gold transition-colors"
+                                    value={newPassword}
+                                    onChange={(e) => setNewPassword(e.target.value)}
+                                    minLength={6}
+                                />
+                            </div>
+                            <button
+                                type="submit"
+                                disabled={!newPassword || newPassword.length < 6 || isChangingPassword}
+                                className="w-full bg-brand-gold hover:bg-brand-gold/80 text-black disabled:opacity-50 disabled:cursor-not-allowed text-xs font-bold uppercase tracking-widest py-2 rounded-lg transition-colors"
+                            >
+                                {isChangingPassword ? "Modification..." : "Forcer ce Mot de Passe"}
+                            </button>
+                            <p className="text-[10px] text-gray-500 text-center mt-2 leading-tight">
+                                L'ancien mot de passe ne fonctionnera plus. Copiez-le et envoyez-le à l'élève.
+                            </p>
+                        </form>
+                    </div>
 
-                        {/* PROGRESSION */}
-                        <section>
-                            <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
-                                <History className="text-purple-500" />
-                                Progression ({progress.length} ateliers)
-                            </h2>
-                            <div className="bg-white/5 border border-white/10 rounded-2xl overflow-hidden">
-                                <table className="w-full text-sm text-left">
-                                    <thead className="bg-white/5 text-gray-400 font-bold uppercase text-xs">
-                                        <tr>
-                                            <th className="p-4">Atelier</th>
-                                            <th className="p-4">Date Validation</th>
-                                            <th className="p-4 text-right">Action</th>
+                </div>
+
+                {/* RIGHT COLUMN: PROGRESS & HISTORY */}
+                <div className="lg:col-span-2 space-y-8">
+
+                    {/* PROGRESSION */}
+                    <section>
+                        <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
+                            <History className="text-purple-500" />
+                            Progression ({progress.length} ateliers)
+                        </h2>
+                        <div className="bg-white/5 border border-white/10 rounded-2xl overflow-hidden">
+                            <table className="w-full text-sm text-left">
+                                <thead className="bg-white/5 text-gray-400 font-bold uppercase text-xs">
+                                    <tr>
+                                        <th className="p-4">Atelier</th>
+                                        <th className="p-4">Date Validation</th>
+                                        <th className="p-4 text-right">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody className="divide-y divide-white/5">
+                                    {progress.map((p) => (
+                                        <tr key={p.id} className="hover:bg-white/5 transition-colors">
+                                            <td className="p-4">
+                                                <span className="text-xs text-gray-500 mr-2 font-mono">S{p.library_items?.week_number}</span>
+                                                <span className="font-bold text-white">{p.library_items?.title}</span>
+                                            </td>
+                                            <td className="p-4 text-gray-400">{new Date(p.completed_at).toLocaleDateString()}</td>
+                                            <td className="p-4 text-right">
+                                                <button onClick={() => handleRevokeItem(p.id)} className="text-red-500 hover:text-red-400 text-xs uppercase font-bold px-2 py-1 rounded bg-red-500/10 hover:bg-red-500/20 transition-colors">
+                                                    Annuler
+                                                </button>
+                                            </td>
                                         </tr>
-                                    </thead>
-                                    <tbody className="divide-y divide-white/5">
-                                        {progress.map((p) => (
-                                            <tr key={p.id} className="hover:bg-white/5 transition-colors">
-                                                <td className="p-4">
-                                                    <span className="text-xs text-gray-500 mr-2 font-mono">S{p.library_items?.week_number}</span>
-                                                    <span className="font-bold text-white">{p.library_items?.title}</span>
-                                                </td>
-                                                <td className="p-4 text-gray-400">{new Date(p.completed_at).toLocaleDateString()}</td>
-                                                <td className="p-4 text-right">
-                                                    <button onClick={() => handleRevokeItem(p.id)} className="text-red-500 hover:text-red-400 text-xs uppercase font-bold px-2 py-1 rounded bg-red-500/10 hover:bg-red-500/20 transition-colors">
-                                                        Annuler
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                        ))}
-                                        {progress.length === 0 && (
-                                            <tr>
-                                                <td colSpan={3} className="p-8 text-center text-gray-500 italic">Aucune progression enregistrée.</td>
-                                            </tr>
+                                    ))}
+                                    {progress.length === 0 && (
+                                        <tr>
+                                            <td colSpan={3} className="p-8 text-center text-gray-500 italic">Aucune progression enregistrée.</td>
+                                        </tr>
+                                    )}
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+
+                    {/* BADGES */}
+                    <section>
+                        <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
+                            <Trophy className="text-yellow-500" />
+                            Badges ({userBadges.length})
+                        </h2>
+                        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                            {userBadges.map((ub) => (
+                                <div key={ub.id} className="bg-black/40 border border-white/10 rounded-xl p-4 flex flex-col items-center relative group">
+                                    <button
+                                        onClick={() => handleRevokeBadge(ub.id)}
+                                        className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 bg-red-500 text-white p-1 rounded hover:bg-red-600 transition-all"
+                                        title="Retirer"
+                                    >
+                                        <X className="w-3 h-3" />
+                                    </button>
+                                    <div className="w-12 h-12 bg-white/10 rounded-full mb-2 flex items-center justify-center">
+                                        {ub.badges?.image_url ? (
+                                            <Image src={ub.badges.image_url} alt="" width={32} height={32} className="object-contain" />
+                                        ) : (
+                                            <Trophy className="w-6 h-6 text-yellow-500" />
                                         )}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </section>
-
-                        {/* BADGES */}
-                        <section>
-                            <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
-                                <Trophy className="text-yellow-500" />
-                                Badges ({userBadges.length})
-                            </h2>
-                            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                                {userBadges.map((ub) => (
-                                    <div key={ub.id} className="bg-black/40 border border-white/10 rounded-xl p-4 flex flex-col items-center relative group">
-                                        <button
-                                            onClick={() => handleRevokeBadge(ub.id)}
-                                            className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 bg-red-500 text-white p-1 rounded hover:bg-red-600 transition-all"
-                                            title="Retirer"
-                                        >
-                                            <X className="w-3 h-3" />
-                                        </button>
-                                        <div className="w-12 h-12 bg-white/10 rounded-full mb-2 flex items-center justify-center">
-                                            {ub.badges?.image_url ? (
-                                                <Image src={ub.badges.image_url} alt="" width={32} height={32} className="object-contain" />
-                                            ) : (
-                                                <Trophy className="w-6 h-6 text-yellow-500" />
-                                            )}
-                                        </div>
-                                        <div className="font-bold text-white text-sm text-center">{ub.badges?.name}</div>
-                                        <div className="text-[10px] text-gray-500 mt-1">{new Date(ub.awarded_at).toLocaleDateString()}</div>
                                     </div>
-                                ))}
-                                {userBadges.length === 0 && (
-                                    <div className="col-span-3 text-center py-8 text-gray-500 bg-white/5 rounded-xl border border-dashed border-white/10">
-                                        Aucun badge.
-                                    </div>
-                                )}
-                            </div>
-                        </section>
+                                    <div className="font-bold text-white text-sm text-center">{ub.badges?.name}</div>
+                                    <div className="text-[10px] text-gray-500 mt-1">{new Date(ub.awarded_at).toLocaleDateString()}</div>
+                                </div>
+                            ))}
+                            {userBadges.length === 0 && (
+                                <div className="col-span-3 text-center py-8 text-gray-500 bg-white/5 rounded-xl border border-dashed border-white/10">
+                                    Aucun badge.
+                                </div>
+                            )}
+                        </div>
+                    </section>
 
-                    </div>
                 </div>
             </div>
         </div>
     );
 }
-

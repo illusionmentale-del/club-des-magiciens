@@ -1,19 +1,39 @@
 "use client";
 
 import { useState } from "react";
-import { Mail, Send, AlertTriangle, CheckCircle, Loader2 } from "lucide-react";
+import { Mail, Send, AlertTriangle, Loader2 } from "lucide-react";
 import { toast } from "react-hot-toast";
+import { TemplateSelector, NewsletterTemplate } from "./components/TemplateSelector";
+import { CourseSelector, SpaceType } from "./components/CourseSelector";
+import { ProductSelector } from "./components/ProductSelector";
 
 export default function NewsletterAdminPage() {
     const [subject, setSubject] = useState("");
     const [content, setContent] = useState("");
     const [targetAudience, setTargetAudience] = useState("all");
+    const [template, setTemplate] = useState<NewsletterTemplate>('classic');
+
+    // Dynamic Selections
+    const [selectedCourseId, setSelectedCourseId] = useState<string | null>(null);
+    const [selectedProductId, setSelectedProductId] = useState<string | null>(null);
+
     const [isSending, setIsSending] = useState(false);
     const [isTesting, setIsTesting] = useState(false);
 
+    // Determine the space context based on audience for the selectors
+    const getSelectorSpace = (): SpaceType => {
+        if (targetAudience === 'adults') return 'adults';
+        if (targetAudience === 'kids') return 'kids';
+        return 'all';
+    };
+
     const handleSendAction = async (isTest: boolean) => {
         if (!subject.trim()) return toast.error("Le sujet est requis.");
-        if (!content.trim()) return toast.error("Le message est vide.");
+
+        // Validation basique
+        if (template === 'classic' && !content.trim()) return toast.error("Le message est vide.");
+        if (template === 'course_focus' && !selectedCourseId) return toast.error("Veuillez sélectionner un cours.");
+        if (template === 'product_focus' && !selectedProductId) return toast.error("Veuillez sélectionner un produit.");
 
         if (!isTest) {
             const confirmed = window.confirm(
@@ -33,6 +53,9 @@ export default function NewsletterAdminPage() {
                     subject,
                     content,
                     targetAudience,
+                    template,
+                    selectedCourseId,
+                    selectedProductId,
                     isTest
                 })
             });
@@ -49,6 +72,8 @@ export default function NewsletterAdminPage() {
             if (!isTest) {
                 setSubject("");
                 setContent("");
+                setSelectedCourseId(null);
+                setSelectedProductId(null);
             }
         } catch (error: any) {
             toast.error(error.message);
@@ -64,9 +89,9 @@ export default function NewsletterAdminPage() {
                 <div className="w-16 h-16 bg-brand-gold/10 rounded-2xl flex items-center justify-center mb-6 border border-brand-gold/20 shadow-[0_0_30px_rgba(234,179,8,0.1)]">
                     <Mail className="w-8 h-8 text-brand-gold relative z-10" />
                 </div>
-                <h1 className="text-4xl font-black uppercase tracking-widest text-white mb-3">Newsletter</h1>
+                <h1 className="text-4xl font-black uppercase tracking-widest text-white mb-3">Le Newsletter Builder</h1>
                 <p className="text-brand-text-muted font-light max-w-xl mx-auto">
-                    Rédigez et envoyez vos e-mails directement à vos élèves. Seuls les abonnés ayant donné leur accord lors du paiement (RGPD) recevront ces messages.
+                    Concevoir des e-mails visuels sans coder. Choisissez une trame, sélectionnez votre contenu et envoyez à votre base abonnée.
                 </p>
             </div>
 
@@ -74,43 +99,69 @@ export default function NewsletterAdminPage() {
                 {/* Glow ambiant */}
                 <div className="absolute inset-x-0 -top-px h-px w-full bg-gradient-to-r from-transparent via-brand-gold/30 to-transparent"></div>
 
-                <div className="space-y-6 relative z-10">
-                    <div>
-                        <label className="block text-xs font-bold uppercase tracking-widest text-brand-text-muted mb-2 ml-1">Cible</label>
-                        <select
-                            value={targetAudience}
-                            onChange={(e) => setTargetAudience(e.target.value)}
-                            className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-brand-gold/50 focus:ring-1 focus:ring-brand-gold/50 transition-all font-medium appearance-none"
-                        >
-                            <option value="all">Tous les inscrits consentants (Adultes + Enfants)</option>
-                            <option value="adults">Uniquement les Adultes (L'Atelier des Magiciens)</option>
-                            <option value="kids">Uniquement les Enfants (Club des Petits Magiciens)</option>
-                        </select>
+                <div className="space-y-8 relative z-10">
+
+                    {/* Audience & Trame */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pb-6 border-b border-white/5">
+                        <div>
+                            <label className="block text-xs font-bold uppercase tracking-widest text-brand-text-muted mb-2 ml-1">Audience Cible</label>
+                            <select
+                                value={targetAudience}
+                                onChange={(e) => setTargetAudience(e.target.value)}
+                                className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-brand-gold/50 focus:ring-1 focus:ring-brand-gold/50 transition-all font-medium appearance-none"
+                            >
+                                <option value="all">Tous (Adultes + Enfants)</option>
+                                <option value="adults">Uniquement les Adultes (L'Atelier)</option>
+                                <option value="kids">Uniquement les Enfants (Le Club)</option>
+                            </select>
+                            <p className="text-[10px] text-brand-text-muted mt-2 ml-1">Filtre appliqué pour la liste d'envoi et la liste des contenus.</p>
+                        </div>
+
+                        <div>
+                            <label className="block text-xs font-bold uppercase tracking-widest text-brand-text-muted mb-2 ml-1">Sujet de l'e-mail</label>
+                            <input
+                                type="text"
+                                value={subject}
+                                onChange={(e) => setSubject(e.target.value)}
+                                className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-brand-text-muted/50 focus:outline-none focus:border-brand-gold/50 focus:ring-1 focus:ring-brand-gold/50 transition-all font-bold"
+                                placeholder="La Masterclass de Février est en ligne 🎩"
+                            />
+                        </div>
                     </div>
 
-                    <div>
-                        <label className="block text-xs font-bold uppercase tracking-widest text-brand-text-muted mb-2 ml-1">Sujet de l'e-mail</label>
-                        <input
-                            type="text"
-                            name="subject"
-                            value={subject}
-                            onChange={(e) => setSubject(e.target.value)}
-                            className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-brand-text-muted/50 focus:outline-none focus:border-brand-gold/50 focus:ring-1 focus:ring-brand-gold/50 transition-all font-bold text-lg"
-                            placeholder="Mon nouveau tour de magie incroyable 🎩"
-                        />
-                    </div>
+                    {/* Sélection de la Trame */}
+                    <TemplateSelector selected={template} onSelect={setTemplate} />
 
-                    <div>
-                        <label className="block text-xs font-bold uppercase tracking-widest text-brand-text-muted mb-2 ml-1 flex justify-between">
-                            <span>Contenu (Texte / HTML basic autorisé)</span>
-                        </label>
-                        <textarea
-                            value={content}
-                            onChange={(e) => setContent(e.target.value)}
-                            rows={15}
-                            className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-4 text-white placeholder-brand-text-muted/50 focus:outline-none focus:border-brand-gold/50 focus:ring-1 focus:ring-brand-gold/50 transition-all text-sm leading-relaxed resize-y font-mono"
-                            placeholder={`Bonjour [Prénom],\n\nGrâce à Tailwind et Resend, voici votre nouvelle newsletter...`}
-                        />
+                    {/* Contenu Dynamique selon la Trame */}
+                    <div className="pt-4 border-t border-white/5 space-y-6">
+
+                        <div>
+                            <label className="block text-xs font-bold uppercase tracking-widest text-brand-text-muted mb-2 ml-1">
+                                {template === 'classic' ? 'Message Principal' : 'Texte d\'introduction (Optionnel)'}
+                            </label>
+                            <textarea
+                                value={content}
+                                onChange={(e) => setContent(e.target.value)}
+                                rows={template === 'classic' ? 12 : 4}
+                                className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-4 text-white placeholder-brand-text-muted/50 focus:outline-none focus:border-brand-gold/50 focus:ring-1 focus:ring-brand-gold/50 transition-all text-sm leading-relaxed resize-y font-mono"
+                                placeholder={`Bonjour [Prénom],\n\nVoici le texte de votre e-mail...`}
+                            />
+                        </div>
+
+                        {template === 'course_focus' && (
+                            <CourseSelector
+                                space={getSelectorSpace()}
+                                onSelect={setSelectedCourseId}
+                            />
+                        )}
+
+                        {template === 'product_focus' && (
+                            <ProductSelector
+                                space={getSelectorSpace()}
+                                onSelect={setSelectedProductId}
+                            />
+                        )}
+
                     </div>
 
                     <div className="pt-6 flex flex-col sm:flex-row gap-4 justify-end border-t border-white/5">
@@ -119,7 +170,7 @@ export default function NewsletterAdminPage() {
                             disabled={isTesting || isSending}
                             className="px-6 py-3 rounded-xl font-bold uppercase tracking-widest text-xs border border-white/10 hover:bg-white/5 text-white flex items-center justify-center transition-all min-w-[150px] disabled:opacity-50"
                         >
-                            {isTesting ? <Loader2 className="w-5 h-5 animate-spin mx-auto" /> : "Envoyer un test"}
+                            {isTesting ? <Loader2 className="w-5 h-5 animate-spin mx-auto" /> : "S'envoyer un Test"}
                         </button>
                         <button
                             onClick={() => handleSendAction(false)}
@@ -140,8 +191,8 @@ export default function NewsletterAdminPage() {
             <div className="max-w-4xl mx-auto flex items-start gap-3 p-4 bg-orange-500/10 border border-orange-500/20 rounded-2xl">
                 <AlertTriangle className="w-5 h-5 text-orange-400 shrink-0 mt-0.5" />
                 <div className="text-sm font-light text-orange-200/80">
-                    <strong className="text-orange-400 font-bold block mb-1">Attention, envoi groupé</strong>
-                    Cet outil expédie un message directement dans la boîte mail des utilisateurs. Pour éviter le "Spam Limite" de Resend (compte gratuit), cet expéditeur sera techniquement <strong>contact@clubdespetitsmagiciens.fr</strong>, qu'il s'agisse d'un envoi pour Adultes ou Enfants.
+                    <strong className="text-orange-400 font-bold block mb-1">Protection Anti-Spam (Nouveau Système)</strong>
+                    Cet éditeur visuel générera des blocs HTML robustes (Cartes, Boutons) supportés par Gmail/Apple Mail. L'expéditeur technique reste <strong>contact@clubdespetitsmagiciens.fr</strong> sécurisé par Resend. L'ID du cours ou du produit sélectionné est envoyé au serveur qui s'occupe du reste.
                 </div>
             </div>
 

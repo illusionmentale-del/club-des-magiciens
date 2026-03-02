@@ -117,6 +117,32 @@ export async function saveKidsHomeSettings(config: Record<string, any>) {
     return { success: true };
 }
 
+export async function saveKidsMenuSettings(config: Record<string, boolean>) {
+    const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) throw new Error("Unauthorized");
+
+    // Admin check
+    const { data: profile } = await supabase.from('profiles').select('role').eq('id', user.id).single();
+    if (profile?.role !== 'admin') throw new Error("Forbidden");
+
+    const entries = Object.entries(config).map(([key, value]) => ({
+        key,
+        value: value ? 'true' : 'false'
+    }));
+
+    const { error } = await supabase.from("settings").upsert(entries, { onConflict: 'key' });
+
+    if (error) {
+        console.error("Error saving kids menu settings:", error);
+        throw new Error(error.message);
+    }
+
+    revalidatePath("/kids", "layout");
+    revalidatePath("/admin/kids/settings");
+    return { success: true };
+}
+
 export async function saveAdultHomeSettings(config: Record<string, any>) {
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
@@ -508,7 +534,7 @@ export async function deleteUserEntity(userId: string) {
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
     const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
 
-    // Use Service Role to bypass RLS policies
+    // Use Service Role to bypass RLS policies and access Auth Admin API
     const { createClient } = await import("@supabase/supabase-js");
     const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey, {
         auth: { autoRefreshToken: false, persistSession: false }
@@ -520,12 +546,20 @@ export async function deleteUserEntity(userId: string) {
         throw new Error("Action interdite : Ce compte est protégé par le système.");
     }
 
-    // Set deleted_at
-    const { error } = await supabaseAdmin.from("profiles").update({ deleted_at: new Date().toISOString() }).eq("id", userId);
+    // Delete the profile explicitly first to avoid FK constraint errors 
+    // if 'auth.users' doesn't have ON DELETE CASCADE set up for 'profiles' or other tables
+    const { error: profileDelError } = await supabaseAdmin.from('profiles').delete().eq('id', userId);
+    if (profileDelError) {
+        console.error("Error deleting user profile:", profileDelError);
+        // We continue anyway to try and delete the auth user
+    }
+
+    // Supprimer définitivement l'utilisateur de l'authentification
+    const { error } = await supabaseAdmin.auth.admin.deleteUser(userId);
 
     if (error) {
-        console.error("Error deleting user:", error);
-        throw new Error("Impossible de supprimer l'utilisateur");
+        console.error("Error deleting user from auth:", error);
+        throw new Error("Impossible de supprimer définitivement l'utilisateur.");
     }
 
     revalidatePath("/admin/kids/users");
