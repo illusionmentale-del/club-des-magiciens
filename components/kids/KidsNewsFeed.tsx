@@ -59,9 +59,9 @@ export default function KidsNewsFeed({ items }: { items: NewsItem[] }) {
                                     </div>
 
                                     {/* Info */}
-                                    <div>
-                                        <h4 className="font-bold text-white group-hover:text-brand-purple transition-colors line-clamp-1">{item.title}</h4>
-                                        <p className="text-xs text-brand-text-muted mt-1 flex items-center gap-2">
+                                    <div className="flex-1 min-w-0">
+                                        <h4 className="font-bold text-white group-hover:text-brand-purple transition-colors truncate">{item.title}</h4>
+                                        <p className="text-xs text-brand-text-muted mt-1 flex items-center gap-2 truncate">
                                             {item.week_number ? (
                                                 <>
                                                     <span className="inline-block w-1.5 h-1.5 rounded-full bg-brand-gold"></span>
