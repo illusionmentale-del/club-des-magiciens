@@ -160,17 +160,20 @@ export default function InboxReplyForm({
                     </div>
                 )}
 
-                {/* Broadcast Option */}
                 <div className="flex items-center gap-2 p-3 bg-white/5 border border-white/10 rounded-xl mt-4">
                     <input
                         type="checkbox"
                         id={`broadcast-${commentId}`}
                         checked={isBroadcast}
                         onChange={(e) => setIsBroadcast(e.target.checked)}
-                        className="w-4 h-4 rounded bg-black/50 border-white/20 text-brand-purple focus:ring-brand-purple focus:ring-offset-gray-900"
+                        className={`w-4 h-4 rounded bg-black/50 border-white/20 focus:ring-offset-gray-900 ${context === 'kids' ? 'text-brand-purple focus:ring-brand-purple' : 'text-magic-gold focus:ring-magic-gold'}`}
                     />
                     <label htmlFor={`broadcast-${commentId}`} className="text-sm font-medium text-gray-300 select-none cursor-pointer flex-1">
-                        Notifier <strong className="text-brand-purple">tous les apprentis magiciens</strong> (Broadcast)
+                        {context === 'kids' ? (
+                            <>Notifier <strong className="text-brand-purple">tous les apprentis magiciens</strong> (Broadcast)</>
+                        ) : (
+                            <>Notifier <strong className="text-magic-gold">tous les étudiants premium</strong> (Broadcast)</>
+                        )}
                     </label>
                 </div>
 

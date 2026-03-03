@@ -86,16 +86,19 @@ export async function markAsReadAndReply(
             const videoLink = `${process.env.NEXT_PUBLIC_SITE_URL || 'https://clubdespetitsmagiciens.fr'}/watch/${courseId}`; // Unified link
 
             if (isBroadcast) {
-                // Fetch all kids emails (parents) via admin client to bypass RLS
-                const { data: kidsProfiles } = await supabaseAdmin
+                // Fetch all emails depending on context via admin client to bypass RLS
+                const targetRoleQuery = supabaseAdmin
                     .from("profiles")
                     .select("email")
-                    .eq("role", "kid")
                     .not("email", "is", null);
 
-                if (kidsProfiles && kidsProfiles.length > 0) {
-                    const bccList = kidsProfiles.map(p => p.email).filter(Boolean) as string[];
-                    // Resend allows max 50 recipients per request, loop if necessary (assuming < 50 for now or chunks)
+                const { data: profilesToEmail } = context === 'adults'
+                    ? await targetRoleQuery.neq("role", "admin")
+                    : await targetRoleQuery.eq("role", "kid");
+
+                if (profilesToEmail && profilesToEmail.length > 0) {
+                    const bccList = profilesToEmail.map(p => p.email).filter(Boolean) as string[];
+                    // Resend allows max 50 recipients per request, loop if necessary
                     const chunkSize = 50;
                     for (let i = 0; i < bccList.length; i += chunkSize) {
                         const chunk = bccList.slice(i, i + chunkSize);
@@ -103,9 +106,9 @@ export async function markAsReadAndReply(
                             from: fromEmail,
                             to: ['notifications@clubdespetitsmagiciens.fr'], // Dummy TO
                             bcc: chunk,
-                            subject: '🎩 Nouvelle astuce magique de Jérémy !',
+                            subject: context === 'adults' ? '🎩 Nouveau contenu exclusif de Jérémy !' : '🎩 Nouvelle astuce magique de Jérémy !',
                             react: ReplyNotificationEmail({
-                                kidName: 'Apprentis Magiciens',
+                                kidName: context === 'adults' ? 'Étudiants' : 'Apprentis Magiciens',
                                 videoUrl: videoLink,
                                 messageContent: content.trim(),
                                 mediaTitle: mediaTitle
@@ -121,11 +124,11 @@ export async function markAsReadAndReply(
                     }
                 }
             } else if (targetEmail) {
-                // Standard notification to the single asking child
+                // Standard notification to the single asking user
                 await resend.emails.send({
                     from: fromEmail,
                     to: [targetEmail],
-                    subject: '🎩 Jérémy a répondu à ta question magique !',
+                    subject: context === 'adults' ? '🎩 Jérémy a répondu à votre question !' : '🎩 Jérémy a répondu à ta question magique !',
                     react: ReplyNotificationEmail({
                         kidName: targetName,
                         videoUrl: videoLink,

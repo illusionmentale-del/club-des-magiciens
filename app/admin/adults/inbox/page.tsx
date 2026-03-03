@@ -1,16 +1,24 @@
 import { createClient } from "@/lib/supabase/server";
-import { MessageCircle, Search, Calendar, Video } from "lucide-react";
+import { MessageCircle, Search, Calendar, Video, Clock, CheckCircle } from "lucide-react";
 import InboxReplyForm from "@/components/admin/InboxReplyForm";
 import Link from "next/link";
+import { cn } from "@/lib/utils";
 
-export default async function AdminAdultsInbox() {
+export default async function AdminAdultsInbox({
+    searchParams
+}: {
+    searchParams: { [key: string]: string | string[] | undefined }
+}) {
     const supabase = await createClient();
 
-    // 1. Fetch unread adult questions
+    const resolvedParams = await searchParams;
+    const currentTab = resolvedParams?.tab === 'read' ? 'read' : 'unread';
+
+    // 1. Fetch unread or read adult questions
     const { data: rawComments, error: commentsError } = await supabase
         .from("course_comments")
-        .select("id, content, course_id, created_at, user_id")
-        .eq("is_read", false)
+        .select("id, content, course_id, created_at, user_id, is_read")
+        .eq("is_read", currentTab === 'read')
         .eq("context", "adults")
         .order("created_at", { ascending: false });
 
@@ -64,14 +72,42 @@ export default async function AdminAdultsInbox() {
                 </div>
                 <div className="bg-magic-card border border-white/10 px-6 py-3 rounded-2xl flex items-center gap-3 shadow-[0_0_30px_rgba(238,195,67,0.1)]">
                     <div className="w-3 h-3 rounded-full bg-red-500 animate-pulse"></div>
-                    <span className="font-bold text-white tracking-widest uppercase">{comments.length} Messages Non-lus</span>
+                    <span className="font-bold text-white tracking-widest uppercase">{currentTab === 'unread' ? comments.length : 'Archives'} Messages</span>
                 </div>
             </header>
 
-            <div className="flex gap-4 mb-4">
+            <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
                 <Link href="/admin/kids/inbox" className="px-4 py-2 border border-white/10 text-gray-400 hover:text-white rounded-lg transition-colors text-sm uppercase font-bold tracking-wider">
                     &larr; Basculer vers Inbox Kids
                 </Link>
+
+                {/* Toggle Tabs */}
+                <div className="flex items-center gap-2 p-1 bg-black/40 rounded-xl w-fit border border-white/5 shadow-inner">
+                    <Link
+                        href="/admin/adults/inbox?tab=unread"
+                        className={cn(
+                            "flex items-center gap-2 px-6 py-2.5 rounded-lg text-sm font-bold uppercase tracking-widest transition-all",
+                            currentTab === 'unread'
+                                ? "bg-magic-gold text-black shadow-lg"
+                                : "text-gray-400 hover:text-white hover:bg-white/5"
+                        )}
+                    >
+                        <Clock className="w-4 h-4" />
+                        À Traiter
+                    </Link>
+                    <Link
+                        href="/admin/adults/inbox?tab=read"
+                        className={cn(
+                            "flex items-center gap-2 px-6 py-2.5 rounded-lg text-sm font-bold uppercase tracking-widest transition-all",
+                            currentTab === 'read'
+                                ? "bg-magic-gold text-black shadow-lg"
+                                : "text-gray-400 hover:text-white hover:bg-white/5"
+                        )}
+                    >
+                        <CheckCircle className="w-4 h-4" />
+                        Traitées
+                    </Link>
+                </div>
             </div>
 
             <div className="grid grid-cols-1 gap-6">
@@ -118,8 +154,15 @@ export default async function AdminAdultsInbox() {
                                     </div>
 
                                     {/* Right: Reply Area */}
-                                    <div className="lg:w-96 shrink-0 bg-black/30 rounded-xl p-4 border border-white/5">
-                                        <h4 className="font-bold text-sm text-gray-400 uppercase tracking-widest mb-4">Réponse Administrateur</h4>
+                                    <div className="lg:w-96 shrink-0 bg-black/30 rounded-xl p-4 border border-white/5 flex flex-col justify-end space-y-4">
+                                        {currentTab === 'read' ? (
+                                            <div className="bg-green-500/10 border border-green-500/20 rounded-xl p-2 flex items-center justify-center gap-2 text-green-400 text-xs font-bold uppercase tracking-widest mb-2">
+                                                <CheckCircle className="w-4 h-4" />
+                                                Message déjà traité
+                                            </div>
+                                        ) : (
+                                            <h4 className="font-bold text-sm text-gray-400 uppercase tracking-widest mb-4">Réponse Administrateur</h4>
+                                        )}
                                         <InboxReplyForm
                                             commentId={comment.id}
                                             targetUserId={profile?.id}
