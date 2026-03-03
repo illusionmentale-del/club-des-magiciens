@@ -114,14 +114,14 @@ export default async function WatchPage(props: WatchPageProps) {
 
                 <div className="flex-1 max-w-4xl mx-auto w-full p-4 md:p-8 space-y-8">
                     {/* Video Player */}
-                    <div className="aspect-video bg-black rounded-2xl overflow-hidden shadow-2xl border border-white/10 relative group">
+                    <div className="aspect-video bg-black rounded-2xl overflow-hidden shadow-2xl border border-white/10 relative group z-10">
                         {libraryItem.video_url ? (
                             <>
                                 {/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(libraryItem.video_url) ? (
                                     // Bunny Stream Player (IDs are GUIDs)
                                     <iframe
                                         src={`https://iframe.mediadelivery.net/embed/${process.env.BUNNY_KIDS_LIBRARY_ID}/${libraryItem.video_url}?autoplay=false&loop=false&muted=false&preload=true&responsive=true`}
-                                        className="absolute inset-0 w-full h-full"
+                                        className="absolute inset-0 w-full h-full pointer-events-auto"
                                         frameBorder="0"
                                         allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;"
                                         allowFullScreen
@@ -130,7 +130,7 @@ export default async function WatchPage(props: WatchPageProps) {
                                     // Vimeo Player (IDs are numbers)
                                     <iframe
                                         src={`https://player.vimeo.com/video/${libraryItem.video_url}?h=0&title=0&byline=0&portrait=0`}
-                                        className="absolute inset-0 w-full h-full"
+                                        className="absolute inset-0 w-full h-full pointer-events-auto"
                                         frameBorder="0"
                                         allow="autoplay; fullscreen; picture-in-picture"
                                         allowFullScreen
@@ -139,7 +139,7 @@ export default async function WatchPage(props: WatchPageProps) {
                                     // YouTube Player
                                     <iframe
                                         src={`https://www.youtube-nocookie.com/embed/${libraryItem.video_url}?rel=0&modestbranding=1`}
-                                        className="absolute inset-0 w-full h-full"
+                                        className="absolute inset-0 w-full h-full pointer-events-auto"
                                         frameBorder="0"
                                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                                         allowFullScreen
@@ -308,7 +308,7 @@ export default async function WatchPage(props: WatchPageProps) {
             <div className="flex-1 max-w-7xl mx-auto w-full p-4 md:p-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
 
                 {/* Main Content Area (Player) */}
-                <div className="lg:col-span-2 space-y-6">
+                <div className="lg:col-span-2 space-y-6 relative z-10">
                     <div className="aspect-video bg-black rounded-xl overflow-hidden shadow-2xl border border-white/10 relative group">
                         {currentVideo ? (
                             <>
@@ -316,7 +316,7 @@ export default async function WatchPage(props: WatchPageProps) {
                                     // Bunny Stream Player (IDs are GUIDs)
                                     <iframe
                                         src={`https://iframe.mediadelivery.net/embed/${isKidsCourse ? process.env.BUNNY_KIDS_LIBRARY_ID : process.env.BUNNY_ADULTS_LIBRARY_ID}/${currentVideo.video_url}?autoplay=false&loop=false&muted=false&preload=true&responsive=true`}
-                                        className="absolute inset-0 w-full h-full"
+                                        className="absolute inset-0 w-full h-full pointer-events-auto"
                                         frameBorder="0"
                                         allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;"
                                         allowFullScreen
@@ -325,7 +325,7 @@ export default async function WatchPage(props: WatchPageProps) {
                                     // Vimeo Player (IDs are numbers)
                                     <iframe
                                         src={`https://player.vimeo.com/video/${currentVideo.video_url}?h=0&title=0&byline=0&portrait=0`}
-                                        className="absolute inset-0 w-full h-full"
+                                        className="absolute inset-0 w-full h-full pointer-events-auto"
                                         frameBorder="0"
                                         allow="autoplay; fullscreen; picture-in-picture"
                                         allowFullScreen
@@ -334,7 +334,7 @@ export default async function WatchPage(props: WatchPageProps) {
                                     // YouTube Player (IDs are alphanumeric, usually 11 chars)
                                     <iframe
                                         src={`https://www.youtube-nocookie.com/embed/${currentVideo.video_url}?rel=0&modestbranding=1`}
-                                        className="absolute inset-0 w-full h-full"
+                                        className="absolute inset-0 w-full h-full pointer-events-auto"
                                         frameBorder="0"
                                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                                         allowFullScreen
