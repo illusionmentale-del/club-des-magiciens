@@ -164,20 +164,18 @@ export default async function AdminKidsInbox({
                                 </div>
 
                                 {/* Right Side: Interaction / Reply */}
-                                <div className="w-full md:w-[500px] shrink-0">
-                                    {currentTab === 'unread' ? (
-                                        <InboxReplyForm
-                                            commentId={comment.id}
-                                            courseId={comment.course_id}
-                                            kidPseudo={comment.profiles?.full_name || 'cet apprenti'}
-                                        />
-                                    ) : (
-                                        <div className="bg-black/30 border border-white/5 rounded-2xl p-6 h-full flex flex-col items-center justify-center text-center">
-                                            <CheckCircle className="w-10 h-10 text-green-500/50 mb-3" />
-                                            <h4 className="font-bold text-gray-300">Message Traité</h4>
-                                            <p className="text-xs text-gray-500 mt-2">Ce message a déjà reçu une réponse ou a été marqué comme lu.</p>
+                                <div className="w-full md:w-[500px] shrink-0 space-y-4">
+                                    {currentTab === 'read' && (
+                                        <div className="bg-green-500/10 border border-green-500/20 rounded-xl p-3 flex items-center justify-center gap-2 text-green-400 text-sm font-bold">
+                                            <CheckCircle className="w-4 h-4" />
+                                            Message déjà traité
                                         </div>
                                     )}
+                                    <InboxReplyForm
+                                        commentId={comment.id}
+                                        courseId={comment.course_id}
+                                        kidPseudo={comment.profiles?.full_name || 'cet apprenti'}
+                                    />
                                 </div>
                             </div>
                         </div>
