@@ -37,10 +37,7 @@ export async function markAsReadAndReply(
     // Fetch the original comment to get the target_user_id
     const { data: originalComment } = await supabaseAdmin
         .from("course_comments")
-        .select(`
-            user_id,
-            profiles(email, full_name)
-        `)
+        .select("user_id")
         .eq("id", originalCommentId)
         .single();
 
@@ -50,10 +47,18 @@ export async function markAsReadAndReply(
 
     if (originalComment) {
         finalTargetUserId = finalTargetUserId || originalComment.user_id;
-        const profile = Array.isArray(originalComment.profiles) ? originalComment.profiles[0] : originalComment.profiles;
-        if (profile) {
-            targetEmail = profile.email;
-            targetName = profile.full_name || targetName;
+
+        if (finalTargetUserId) {
+            const { data: profile } = await supabaseAdmin
+                .from("profiles")
+                .select("email, full_name")
+                .eq("id", finalTargetUserId)
+                .single();
+
+            if (profile) {
+                targetEmail = profile.email;
+                targetName = profile.full_name || targetName;
+            }
         }
     }
 
