@@ -135,10 +135,12 @@ export default async function DashboardPage() {
                     {/* COLONNE GAUCHE (2/3) */}
                     <div className="lg:col-span-2 space-y-12">
                         {/* NOUVEAUTÉS */}
-                        <AdultNewsFeed items={courses.slice(0, 3).map(c => ({ ...c, type: 'course' }))} />
+                        {settingsMap?.show_adults_news !== 'false' && (
+                            <AdultNewsFeed items={courses.slice(0, 3).map(c => ({ ...c, type: 'course' }))} />
+                        )}
 
                         {/* SECTION PROMO BOUTIQUE (Optional, replacing the grid to keep it balanced) */}
-                        {settingsMap?.enable_adults_catalog !== 'false' && (
+                        {settingsMap?.enable_adults_catalog !== 'false' && settingsMap?.show_adults_catalog_promo !== 'false' && (
                             <section>
                                 <h3 className="text-lg font-bold text-white uppercase tracking-wider mb-6 flex items-center gap-2">
                                     <Star className="w-5 h-5 text-magic-gold" />
@@ -168,15 +170,19 @@ export default async function DashboardPage() {
                     {/* COLONNE DROITE (1/3) */}
                     <div className="space-y-8">
                         {/* PROGRESSION */}
-                        <AdultProgression
-                            validatedCount={validatedCount}
-                            totalCourses={courses.length}
-                        />
+                        {settingsMap?.show_adults_progression !== 'false' && (
+                            <AdultProgression
+                                validatedCount={validatedCount}
+                                totalCourses={courses.length}
+                            />
+                        )}
 
                         {/* SUCCESS */}
-                        <AdultAchievements
-                            recentValids={recentValids}
-                        />
+                        {settingsMap?.show_adults_achievements !== 'false' && (
+                            <AdultAchievements
+                                recentValids={recentValids}
+                            />
+                        )}
                     </div>
                 </div>
 
