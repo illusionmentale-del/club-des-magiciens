@@ -90,8 +90,42 @@ export default async function DashboardPage() {
         }
     }
 
+    const newsConfigSetting = settingsMap['adult_home_news_courses'];
+    let newsConfigIds: string[] = [];
+    if (newsConfigSetting) {
+        try {
+            newsConfigIds = typeof newsConfigSetting === 'string'
+                ? JSON.parse(newsConfigSetting)
+                : newsConfigSetting;
+        } catch (e) {
+            console.error("Error parsing adult_home_news_courses", e);
+        }
+    }
+
+    // Determine which courses to show in the "Nouveautés" block
+    const newsCourses = newsConfigIds.length > 0
+        ? newsConfigIds.map(id => courses.find(c => c.id === id)).filter(c => c !== undefined)
+        : courses.slice(0, 3);
+
     // Quick helper to determine if a course is unlocked
     const isUnlocked = (course: any) => isAdmin || purchasedCourseIds.has(course.id) || course.price === 'Gratuit' || !course.price;
+
+    const promoConfigSetting = settingsMap['adult_home_promo_config'];
+    let promoConfig = {
+        title: "Étendez votre magie !",
+        subtitle: "Accédez à des Masterclass exclusives et du matériel professionnel directement depuis la boutique de l'Atelier.",
+        buttonText: "Visiter la Boutique",
+        link: "/dashboard/catalog"
+    };
+    if (promoConfigSetting) {
+        try {
+            promoConfig = typeof promoConfigSetting === 'string'
+                ? JSON.parse(promoConfigSetting)
+                : promoConfigSetting;
+        } catch (e) {
+            console.error("Error parsing adult_home_promo_config", e);
+        }
+    }
 
     return (
         <div className="min-h-screen bg-[#050507] text-white p-4 md:p-8 pb-32 font-sans selection:bg-magic-gold/30 overflow-hidden relative">
@@ -136,7 +170,7 @@ export default async function DashboardPage() {
                     <div className="lg:col-span-2 space-y-12">
                         {/* NOUVEAUTÉS */}
                         {settingsMap?.show_adults_news !== 'false' && (
-                            <AdultNewsFeed items={courses.slice(0, 3).map(c => ({ ...c, type: 'course' }))} />
+                            <AdultNewsFeed items={newsCourses.map(c => ({ ...c, type: 'course' as const }))} />
                         )}
 
                         {/* SECTION PROMO BOUTIQUE (Optional, replacing the grid to keep it balanced) */}
@@ -152,15 +186,17 @@ export default async function DashboardPage() {
                                     </div>
                                     <div className="flex-1 text-center sm:text-left">
                                         <h4 className="text-xl font-bold text-magic-gold mb-1">
-                                            {purchasedCourseIds.size > 0 ? `Vous possédez ${purchasedCourseIds.size} contenu(s) premium !` : "Étendez votre magie !"}
+                                            {promoConfig.title}
                                         </h4>
-                                        <p className="text-slate-400 text-sm font-light">Accédez à des Masterclass exclusives et du matériel professionnel directement depuis la boutique de l'Atelier.</p>
+                                        <p className="text-slate-400 text-sm font-light">
+                                            {promoConfig.subtitle}
+                                        </p>
                                     </div>
                                     <Link
-                                        href="/dashboard/catalog"
+                                        href={promoConfig.link}
                                         className="bg-magic-gold hover:bg-yellow-400 text-black font-bold py-3 px-6 rounded-xl transition-colors whitespace-nowrap shadow-lg shadow-magic-gold/20"
                                     >
-                                        Visiter la Boutique
+                                        {promoConfig.buttonText}
                                     </Link>
                                 </div>
                             </section>

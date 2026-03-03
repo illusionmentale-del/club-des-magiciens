@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import AdultBoutiqueCard from "@/components/AdultBoutiqueCard";
+import BientotDispo from "@/components/dashboard/BientotDispo";
 import { ShoppingBag, Star } from "lucide-react";
 
 export const metadata = {
@@ -14,6 +15,20 @@ export default async function CatalogPage() {
 
     if (!user) {
         redirect("/login");
+    }
+
+    // Check if the catalog is enabled in settings
+    const { data: setting } = await supabase
+        .from('settings')
+        .select('value')
+        .eq('key', 'enable_adults_catalog')
+        .single();
+
+    if (setting?.value === 'false') {
+        return <BientotDispo
+            title="La Boutique ouvre bientôt"
+            description="Le catalogue premium est actuellement en cours de préparation. De nouvelles ressources exclusives, masterclass et routines avancées y seront dévoilées très prochainement !"
+        />;
     }
 
     // 1. Fetch Products (Packs & Courses for Adults)

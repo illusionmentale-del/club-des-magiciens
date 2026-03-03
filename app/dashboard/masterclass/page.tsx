@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Star, Sparkles, FolderOpen, Play, Lock } from "lucide-react";
 import AdultVideoCard from "@/components/AdultVideoCard";
+import BientotDispo from "@/components/dashboard/BientotDispo";
 
 export const metadata = {
     title: 'Les Masterclass | Club des Magiciens',
@@ -26,18 +27,26 @@ export default async function AdultMasterclassPage() {
     const isAdmin = profile.role === 'admin';
 
     // 2. Fetch all courses (exclude kids), user purchases & settings
-    const [coursesRes, purchasesRes, settingsRes] = await Promise.all([
+    const [coursesRes, purchasesRes, featuredSettingsRes, toggleSettingsRes] = await Promise.all([
         supabase.from("courses").select("*").neq('audience', 'kids').order("created_at", { ascending: false }),
         supabase.from("user_purchases").select("course_id").eq("user_id", user.id),
-        supabase.from("settings").select("*").eq("key", "adult_masterclass_featured_config")
+        supabase.from("settings").select("*").eq("key", "adult_masterclass_featured_config"),
+        supabase.from("settings").select("*").eq("key", "enable_adults_masterclass").single()
     ]);
+
+    if (toggleSettingsRes.data?.value === 'false') {
+        return <BientotDispo
+            title="Les Masterclass arrivent bientôt"
+            description="Le programme Masterclass est actuellement en phase de montage ou préparation avancée. De nouvelles pépites secrètes seront bientôt disponibles !"
+        />;
+    }
 
     const courses = coursesRes.data || [];
     const purchasedCourseIds = new Set(purchasesRes.data?.map(p => p.course_id) || []);
 
     // 3. Featured Masterclass Logic
     // For now, if no setting is defined, we'll just take the most recent course as "À la une"
-    let featuredConfig = settingsRes.data?.[0]?.value ? JSON.parse(settingsRes.data[0].value) : null;
+    let featuredConfig = featuredSettingsRes.data?.[0]?.value ? JSON.parse(featuredSettingsRes.data[0].value) : null;
     let featuredCourse = null;
 
     if (featuredConfig?.id) {
@@ -149,8 +158,8 @@ export default async function AdultMasterclassPage() {
                                     <Link
                                         href={isFeaturedUnlocked ? `/watch/${featuredCourse.id}` : (featuredCourse.sales_page_url || "#")}
                                         className={`inline-flex items-center justify-center gap-3 px-8 py-4 rounded-xl font-bold uppercase tracking-widest text-sm transition-all self-start shadow-lg ${isFeaturedUnlocked
-                                                ? 'bg-gradient-to-r from-magic-gold to-orange-500 text-black hover:shadow-[0_0_30px_rgba(238,195,67,0.4)] hover:scale-105'
-                                                : 'bg-white/10 text-white hover:bg-white/20 border border-white/10'
+                                            ? 'bg-gradient-to-r from-magic-gold to-orange-500 text-black hover:shadow-[0_0_30px_rgba(238,195,67,0.4)] hover:scale-105'
+                                            : 'bg-white/10 text-white hover:bg-white/20 border border-white/10'
                                             }`}
                                     >
                                         {isFeaturedUnlocked ? (
