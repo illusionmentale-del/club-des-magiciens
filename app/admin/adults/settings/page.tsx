@@ -3,6 +3,7 @@ import { Sparkles } from "lucide-react";
 import SettingsForm from "./SettingsForm";
 import AdultHomeConfig from "./AdultHomeConfig";
 import AdultMainProgramsConfig from "./AdultMainProgramsConfig";
+import AdultMenuToggles from "@/components/admin/AdultMenuToggles";
 
 export default async function AdminSettingsPage() {
     const supabase = await createClient();
@@ -34,6 +35,8 @@ export default async function AdminSettingsPage() {
 
             <AdultHomeConfig initialSettings={settingsMap} />
             <AdultMainProgramsConfig initialSettings={settingsMap} availableCourses={availableCourses} />
+
+            <AdultMenuToggles initialSettings={settingsMap} />
 
             <div className="pt-8 border-t border-white/10 mt-12">
                 <h2 className="text-xl font-bold text-white mb-6 uppercase tracking-wider">Réglages Publics (Site vitrine)</h2>

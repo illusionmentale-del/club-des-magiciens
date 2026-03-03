@@ -8,7 +8,16 @@ import { Menu, X, BookOpen, Settings, Video, LogOut, Shield, Star, GraduationCap
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 
-export default function MobileNav({ isAdmin, hasKidsAccess }: { isAdmin: boolean; hasKidsAccess?: boolean }) {
+export default function MobileNav({ isAdmin, hasKidsAccess, toggles }: {
+    isAdmin: boolean;
+    hasKidsAccess?: boolean;
+    toggles?: {
+        enable_adults_program: boolean;
+        enable_adults_masterclass: boolean;
+        enable_adults_account: boolean;
+        enable_adults_catalog: boolean;
+    }
+}) {
     const [isOpen, setIsOpen] = useState(false);
     const pathname = usePathname();
     const router = useRouter();
@@ -82,32 +91,49 @@ export default function MobileNav({ isAdmin, hasKidsAccess }: { isAdmin: boolean
                                 Le QG
                             </Link>
 
-                            <Link
-                                href="/dashboard/program"
-                                onClick={close}
-                                className={`flex items-center gap-3 px-4 py-3 font-medium transition-all ${isActive('/dashboard/program') ? 'bg-gradient-to-r from-magic-gold/20 to-transparent text-magic-gold border-l-2 border-magic-gold' : 'text-gray-400 hover:bg-white/5 hover:text-white border-l-2 border-transparent'}`}
-                            >
-                                <GraduationCap className="w-5 h-5" />
-                                Mon Programme
-                            </Link>
+                            {toggles?.enable_adults_program !== false && (
+                                <Link
+                                    href="/dashboard/program"
+                                    onClick={close}
+                                    className={`flex items-center gap-3 px-4 py-3 font-medium transition-all ${isActive('/dashboard/program') ? 'bg-gradient-to-r from-magic-gold/20 to-transparent text-magic-gold border-l-2 border-magic-gold' : 'text-gray-400 hover:bg-white/5 hover:text-white border-l-2 border-transparent'}`}
+                                >
+                                    <GraduationCap className="w-5 h-5" />
+                                    Mon Programme
+                                </Link>
+                            )}
 
-                            <Link
-                                href="/dashboard/catalog"
-                                onClick={close}
-                                className={`flex items-center gap-3 px-4 py-3 font-medium transition-all ${isActive('/dashboard/catalog') ? 'bg-gradient-to-r from-magic-gold/20 to-transparent text-magic-gold border-l-2 border-magic-gold' : 'text-gray-400 hover:bg-white/5 hover:text-white border-l-2 border-transparent'}`}
-                            >
-                                <ShoppingBag className="w-5 h-5" />
-                                Catalogue
-                            </Link>
+                            {toggles?.enable_adults_masterclass !== false && (
+                                <Link
+                                    href="/dashboard/masterclass"
+                                    onClick={close}
+                                    className={`flex items-center gap-3 px-4 py-3 font-medium transition-all ${isActive('/dashboard/masterclass') ? 'bg-gradient-to-r from-magic-gold/20 to-transparent text-magic-gold border-l-2 border-magic-gold' : 'text-gray-400 hover:bg-white/5 hover:text-white border-l-2 border-transparent'}`}
+                                >
+                                    <Video className="w-5 h-5" />
+                                    Les Masterclass
+                                </Link>
+                            )}
 
-                            <Link
-                                href="/dashboard/account"
-                                onClick={close}
-                                className={`flex items-center gap-3 px-4 py-3 font-medium transition-all ${isActive('/dashboard/account') ? 'bg-gradient-to-r from-magic-gold/20 to-transparent text-magic-gold border-l-2 border-magic-gold' : 'text-gray-400 hover:bg-white/5 hover:text-white border-l-2 border-transparent'}`}
-                            >
-                                <Settings className="w-5 h-5" />
-                                Mon Compte
-                            </Link>
+                            {toggles?.enable_adults_catalog !== false && (
+                                <Link
+                                    href="/dashboard/catalog"
+                                    onClick={close}
+                                    className={`flex items-center gap-3 px-4 py-3 font-medium transition-all ${isActive('/dashboard/catalog') ? 'bg-gradient-to-r from-magic-gold/20 to-transparent text-magic-gold border-l-2 border-magic-gold' : 'text-gray-400 hover:bg-white/5 hover:text-white border-l-2 border-transparent'}`}
+                                >
+                                    <ShoppingBag className="w-5 h-5" />
+                                    Catalogue
+                                </Link>
+                            )}
+
+                            {toggles?.enable_adults_account !== false && (
+                                <Link
+                                    href="/dashboard/account"
+                                    onClick={close}
+                                    className={`flex items-center gap-3 px-4 py-3 font-medium transition-all ${isActive('/dashboard/account') ? 'bg-gradient-to-r from-magic-gold/20 to-transparent text-magic-gold border-l-2 border-magic-gold' : 'text-gray-400 hover:bg-white/5 hover:text-white border-l-2 border-transparent'}`}
+                                >
+                                    <Settings className="w-5 h-5" />
+                                    Mon Compte
+                                </Link>
+                            )}
 
                             <Link
                                 href="/dashboard/live"

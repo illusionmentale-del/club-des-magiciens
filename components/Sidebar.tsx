@@ -6,11 +6,17 @@ import { usePathname, useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { LogOut, BookOpen, Settings, Shield, Video, Star, Youtube, Instagram, Facebook, GraduationCap, ShoppingBag } from "lucide-react";
 
-export default function Sidebar({ isAdmin, socialLinks, logoUrl, hasKidsAccess }: {
+export default function Sidebar({ isAdmin, socialLinks, logoUrl, hasKidsAccess, toggles }: {
     isAdmin: boolean;
     socialLinks?: { youtube: string; instagram: string; facebook: string; tiktok: string };
     logoUrl?: string;
     hasKidsAccess?: boolean;
+    toggles?: {
+        enable_adults_program: boolean;
+        enable_adults_masterclass: boolean;
+        enable_adults_account: boolean;
+        enable_adults_catalog: boolean;
+    };
 }) {
     const pathname = usePathname();
     const router = useRouter();
@@ -66,37 +72,45 @@ export default function Sidebar({ isAdmin, socialLinks, logoUrl, hasKidsAccess }
                     L'Actu du Club
                 </Link>
 
-                <Link
-                    href="/dashboard/program"
-                    className={`flex items-center gap-3 px-4 py-3 font-medium transition-all ${isActive('/dashboard/program') ? 'bg-gradient-to-r from-magic-gold/20 to-transparent text-magic-gold border-l-2 border-magic-gold' : 'text-gray-400 hover:bg-white/5 hover:text-white border-l-2 border-transparent'}`}
-                >
-                    <GraduationCap className="w-5 h-5" />
-                    Ma Formation
-                </Link>
+                {toggles?.enable_adults_program !== false && (
+                    <Link
+                        href="/dashboard/program"
+                        className={`flex items-center gap-3 px-4 py-3 font-medium transition-all ${isActive('/dashboard/program') ? 'bg-gradient-to-r from-magic-gold/20 to-transparent text-magic-gold border-l-2 border-magic-gold' : 'text-gray-400 hover:bg-white/5 hover:text-white border-l-2 border-transparent'}`}
+                    >
+                        <GraduationCap className="w-5 h-5" />
+                        Ma Formation
+                    </Link>
+                )}
 
-                <Link
-                    href="/dashboard/masterclass"
-                    className={`flex items-center gap-3 px-4 py-3 font-medium transition-all ${isActive('/dashboard/masterclass') ? 'bg-gradient-to-r from-magic-gold/20 to-transparent text-magic-gold border-l-2 border-magic-gold' : 'text-gray-400 hover:bg-white/5 hover:text-white border-l-2 border-transparent'}`}
-                >
-                    <Video className="w-5 h-5" />
-                    Les Masterclass
-                </Link>
+                {toggles?.enable_adults_masterclass !== false && (
+                    <Link
+                        href="/dashboard/masterclass"
+                        className={`flex items-center gap-3 px-4 py-3 font-medium transition-all ${isActive('/dashboard/masterclass') ? 'bg-gradient-to-r from-magic-gold/20 to-transparent text-magic-gold border-l-2 border-magic-gold' : 'text-gray-400 hover:bg-white/5 hover:text-white border-l-2 border-transparent'}`}
+                    >
+                        <Video className="w-5 h-5" />
+                        Les Masterclass
+                    </Link>
+                )}
 
-                <Link
-                    href="/dashboard/catalog"
-                    className={`flex items-center gap-3 px-4 py-3 font-medium transition-all ${isActive('/dashboard/catalog') ? 'bg-gradient-to-r from-magic-gold/20 to-transparent text-magic-gold border-l-2 border-magic-gold' : 'text-gray-400 hover:bg-white/5 hover:text-white border-l-2 border-transparent'}`}
-                >
-                    <ShoppingBag className="w-5 h-5" />
-                    Boutique
-                </Link>
+                {toggles?.enable_adults_catalog !== false && (
+                    <Link
+                        href="/dashboard/catalog"
+                        className={`flex items-center gap-3 px-4 py-3 font-medium transition-all ${isActive('/dashboard/catalog') ? 'bg-gradient-to-r from-magic-gold/20 to-transparent text-magic-gold border-l-2 border-magic-gold' : 'text-gray-400 hover:bg-white/5 hover:text-white border-l-2 border-transparent'}`}
+                    >
+                        <ShoppingBag className="w-5 h-5" />
+                        Boutique
+                    </Link>
+                )}
 
-                <Link
-                    href="/dashboard/account"
-                    className={`flex items-center gap-3 px-4 py-3 font-medium transition-all ${isActive('/dashboard/account') ? 'bg-gradient-to-r from-magic-gold/20 to-transparent text-magic-gold border-l-2 border-magic-gold' : 'text-gray-400 hover:bg-white/5 hover:text-white border-l-2 border-transparent'}`}
-                >
-                    <Settings className="w-5 h-5" />
-                    Mon Compte
-                </Link>
+                {toggles?.enable_adults_account !== false && (
+                    <Link
+                        href="/dashboard/account"
+                        className={`flex items-center gap-3 px-4 py-3 font-medium transition-all ${isActive('/dashboard/account') ? 'bg-gradient-to-r from-magic-gold/20 to-transparent text-magic-gold border-l-2 border-magic-gold' : 'text-gray-400 hover:bg-white/5 hover:text-white border-l-2 border-transparent'}`}
+                    >
+                        <Settings className="w-5 h-5" />
+                        Mon Compte
+                    </Link>
+                )}
 
                 <Link
                     href="/dashboard/live"

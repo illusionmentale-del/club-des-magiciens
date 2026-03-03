@@ -143,6 +143,32 @@ export async function saveKidsMenuSettings(config: Record<string, boolean>) {
     return { success: true };
 }
 
+export async function saveAdultsMenuSettings(config: Record<string, boolean>) {
+    const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) throw new Error("Unauthorized");
+
+    // Admin check
+    const { data: profile } = await supabase.from('profiles').select('role').eq('id', user.id).single();
+    if (profile?.role !== 'admin') throw new Error("Forbidden");
+
+    const entries = Object.entries(config).map(([key, value]) => ({
+        key,
+        value: value ? 'true' : 'false'
+    }));
+
+    const { error } = await supabase.from("settings").upsert(entries, { onConflict: 'key' });
+
+    if (error) {
+        console.error("Error saving adults menu settings:", error);
+        throw new Error(error.message);
+    }
+
+    revalidatePath("/dashboard", "layout");
+    revalidatePath("/admin/adults/settings");
+    return { success: true };
+}
+
 export async function saveAdultHomeSettings(config: Record<string, any>) {
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();

@@ -7,6 +7,9 @@ import AdultHomeHero from "@/components/adults/AdultHomeHero";
 import AdultNewsFeed from "@/components/adults/AdultNewsFeed";
 import AdultProgression from "@/components/adults/AdultProgression";
 import AdultAchievements from "@/components/adults/AdultAchievements";
+import GlobalAlertBanner from "@/components/kids/GlobalAlertBanner"; // Reusable component for both spaces
+import { LiveStatusCard } from "@/components/LiveStatusCard"; // Reusable generic live card
+import { ShoppingBag, Star } from "lucide-react";
 
 export default async function DashboardPage() {
     const supabase = await createClient();
@@ -33,14 +36,20 @@ export default async function DashboardPage() {
         settingsRes,
         livesRes,
         validatedProgressionRes,
-        recentValidsRes
+        recentValidsRes,
+        activeLiveRes,
+        alertsRes,
+        readAlertsRes
     ] = await Promise.all([
         supabase.from("courses").select("*").neq('audience', 'kids').order("created_at", { ascending: false }),
         supabase.from("user_purchases").select("course_id").eq("user_id", user.id),
         supabase.from("settings").select("*"),
         supabase.from("lives").select("*").order("start_date", { ascending: true }),
         supabase.from("user_course_progress").select("*", { count: 'exact', head: true }).eq("user_id", user.id),
-        supabase.from("user_course_progress").select("course_id, completed_at, courses(title)").eq("user_id", user.id).eq("is_completed", true).order("completed_at", { ascending: false }).limit(3)
+        supabase.from("user_course_progress").select("course_id, completed_at, courses(title)").eq("user_id", user.id).eq("is_completed", true).order("completed_at", { ascending: false }).limit(3),
+        supabase.from("lives").select("*").or("audience.eq.adults,audience.eq.all").in("status", ["programmé", "en_cours"]).order("start_date", { ascending: true }).limit(1).maybeSingle(),
+        supabase.from("global_alerts").select("*").or("target_audience.eq.adults,target_audience.eq.all").order("created_at", { ascending: false }),
+        supabase.from("user_alerts_read").select("alert_id").eq("user_id", user.id)
     ]);
 
     const courses = coursesRes.data || [];
@@ -48,9 +57,29 @@ export default async function DashboardPage() {
     const validatedCount = validatedProgressionRes.count || 0;
     const recentValids = recentValidsRes.data || [];
 
-    // 4. Parse Adult Home Featured Config
-    // Format: { title, description, image, link, buttonText, tag }
-    const featuredConfigSetting = settingsRes.data?.find(s => s.key === 'adult_home_featured_config')?.value;
+    // Alerts Logic
+    const readAlertIds = readAlertsRes.data?.map(r => r.alert_id) || [];
+    const unreadAlerts = alertsRes.data?.filter(a => !readAlertIds.includes(a.id)) || [];
+
+    // Live Logic
+    const activeLive = activeLiveRes.data;
+    let isReminded = false;
+    if (activeLive && activeLive.status === "programmé") {
+        const { data: reminder } = await supabase
+            .from("event_reminders")
+            .select("id")
+            .eq("event_id", activeLive.id)
+            .eq("user_id", user.id)
+            .single();
+        if (reminder) isReminded = true;
+    }
+
+    const settingsMap = settingsRes.data?.reduce((acc, curr) => {
+        acc[curr.key] = curr.value;
+        return acc;
+    }, {} as Record<string, string>) || {};
+
+    const featuredConfigSetting = settingsMap['adult_home_featured_config'];
     let featuredConfig = undefined;
     if (featuredConfigSetting) {
         try {
@@ -97,6 +126,16 @@ export default async function DashboardPage() {
 
             <div className="max-w-7xl mx-auto relative z-10 space-y-16">
 
+                {/* BLOC: GLOBAL ALERTS */}
+                <GlobalAlertBanner alerts={unreadAlerts} />
+
+                {/* BLOC: LIVE STREAM BANNER */}
+                {activeLive && (
+                    <div className="mb-0">
+                        <LiveStatusCard live={activeLive} isReminded={isReminded} />
+                    </div>
+                )}
+
                 {/* HERO SECTION / ANNONCE A LA UNE */}
                 {featuredConfig && featuredConfig.title && (
                     <AdultHomeHero config={featuredConfig} />
@@ -108,91 +147,32 @@ export default async function DashboardPage() {
                         {/* NOUVEAUTÉS */}
                         <AdultNewsFeed items={courses.slice(0, 3).map(c => ({ ...c, type: 'course' }))} />
 
-                        {/* Section: Vos Formations et Masterclass (Courses grid) */}
-                        <section>
-                            <div className="flex items-center justify-between mb-8">
-                                <h2 className="text-xl font-bold flex items-center gap-3 text-white uppercase tracking-wider">
-                                    <BookOpen className="w-5 h-5 text-magic-gold" />
-                                    Toutes Vos Formations
-                                </h2>
-                                <Link href="/dashboard/catalog" className="text-sm font-bold text-slate-400 hover:text-magic-gold transition-colors uppercase tracking-widest hidden md:inline-block">
-                                    Voir le catalogue complet
-                                </Link>
-                            </div>
-
-                            {/* Simplified Grid to fit within the 2/3 column */}
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                                {courses.length > 0 ? courses.map((course) => {
-                                    const unlocked = isUnlocked(course);
-                                    const href = unlocked ? `/watch/${course.id}` : (course.sales_page_url || "#");
-
-                                    return (
-                                        <Link
-                                            key={course.id}
-                                            href={href}
-                                            className={`group relative bg-black border ${unlocked ? 'border-magic-gold/20 hover:border-magic-gold/50' : 'border-white/5 opacity-80 hover:opacity-100'} rounded-2xl overflow-hidden transition-all hover:shadow-[0_0_40px_rgba(238,195,67,0.15)] flex flex-col`}
-                                        >
-                                            <div className="aspect-video bg-[#0a0a0f] relative overflow-hidden">
-                                                <div className={`absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent z-10 opacity-80 group-hover:opacity-60 transition-opacity`}></div>
-
-                                                {/* Golden Ambient Glow for unlocked */}
-                                                {unlocked && <div className="absolute inset-0 bg-magic-gold/5 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[150%] h-[150%] rounded-full blur-[80px] pointer-events-none group-hover:bg-magic-gold/10 transition-colors"></div>}
-
-                                                <div className="absolute inset-0 flex items-center justify-center z-20">
-                                                    {unlocked ? (
-                                                        <PlayCircle className="w-14 h-14 text-white/50 group-hover:text-magic-gold transition-colors group-hover:scale-110 duration-300 transform" />
-                                                    ) : (
-                                                        <Lock className="w-14 h-14 text-white/30 group-hover:text-red-400 transition-colors" />
-                                                    )}
-                                                </div>
-
-                                                <div className="absolute top-4 right-4 z-20">
-                                                    {unlocked ? (
-                                                        <div className="bg-magic-gold text-black text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest shadow-lg shadow-black/50">
-                                                            Accessible
-                                                        </div>
-                                                    ) : (
-                                                        <div className="bg-red-500/90 text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest backdrop-blur-md">
-                                                            Verrouillé
-                                                        </div>
-                                                    )}
-                                                </div>
-                                            </div>
-
-                                            <div className="p-6 flex flex-1 flex-col justify-between bg-gradient-to-b from-[#111] to-black border-t border-white/5">
-                                                <div>
-                                                    <h3 className="font-serif font-bold text-lg mb-2 group-hover:text-magic-gold transition-colors text-white line-clamp-2">
-                                                        {course.title}
-                                                    </h3>
-                                                    <p className="text-xs text-gray-400 line-clamp-2 font-light leading-relaxed">
-                                                        {course.description}
-                                                    </p>
-                                                </div>
-
-                                                <div className="mt-4 pt-4 border-t border-white/10 flex items-center justify-between text-[10px] font-semibold uppercase tracking-wider">
-                                                    <span className="text-slate-500">
-                                                        Module
-                                                    </span>
-                                                    {unlocked ? (
-                                                        <span className="flex items-center gap-1 text-magic-gold">
-                                                            Visionner <ArrowRight className="w-3 h-3 ml-1" />
-                                                        </span>
-                                                    ) : (
-                                                        <span className="text-red-400">
-                                                            {course.price_label || "Découvrir"}
-                                                        </span>
-                                                    )}
-                                                </div>
-                                            </div>
-                                        </Link>
-                                    );
-                                }) : (
-                                    <div className="col-span-full p-12 text-center border border-dashed border-white/10 rounded-2xl text-gray-500 font-mono">
-                                        // AUCUNE DONNÉE DISPONIBLE //
+                        {/* SECTION PROMO BOUTIQUE (Optional, replacing the grid to keep it balanced) */}
+                        {settingsMap?.enable_adults_catalog !== 'false' && (
+                            <section>
+                                <h3 className="text-lg font-bold text-white uppercase tracking-wider mb-6 flex items-center gap-2">
+                                    <Star className="w-5 h-5 text-magic-gold" />
+                                    Le Catalogue Premium
+                                </h3>
+                                <div className="bg-gradient-to-r from-magic-gold/10 to-transparent border border-magic-gold/20 rounded-2xl p-6 flex flex-col sm:flex-row items-center gap-6">
+                                    <div className="w-16 h-16 bg-magic-gold/20 rounded-full flex items-center justify-center shrink-0">
+                                        <ShoppingBag className="w-8 h-8 text-magic-gold" />
                                     </div>
-                                )}
-                            </div>
-                        </section>
+                                    <div className="flex-1 text-center sm:text-left">
+                                        <h4 className="text-xl font-bold text-magic-gold mb-1">
+                                            {purchasedCourseIds.size > 0 ? `Vous possédez ${purchasedCourseIds.size} contenu(s) premium !` : "Étendez votre magie !"}
+                                        </h4>
+                                        <p className="text-slate-400 text-sm font-light">Accédez à des Masterclass exclusives et du matériel professionnel directement depuis la boutique de l'Atelier.</p>
+                                    </div>
+                                    <Link
+                                        href="/dashboard/catalog"
+                                        className="bg-magic-gold hover:bg-yellow-400 text-black font-bold py-3 px-6 rounded-xl transition-colors whitespace-nowrap shadow-lg shadow-magic-gold/20"
+                                    >
+                                        Visiter la Boutique
+                                    </Link>
+                                </div>
+                            </section>
+                        )}
                     </div>
 
                     {/* COLONNE DROITE (1/3) */}
@@ -210,23 +190,7 @@ export default async function DashboardPage() {
                     </div>
                 </div>
 
-                {/* Optional: Add a subtle section for lives/replays if needed, keeping it minimal */}
-                {livesRes.data && livesRes.data.length > 0 && (
-                    <section className="pt-8 border-t border-white/5">
-                        <div className="flex items-center justify-between mb-6">
-                            <h2 className="text-xl font-bold flex items-center gap-3 text-white uppercase tracking-wider">
-                                <Tv className="w-5 h-5 text-gray-400" />
-                                Contenus Vidéos (Lives & Replays)
-                            </h2>
-                            <Link href="/dashboard/live" className="text-sm font-bold text-slate-400 hover:text-white transition-colors">
-                                Tout voir &rarr;
-                            </Link>
-                        </div>
-                        <p className="text-slate-400 text-sm max-w-2xl font-light">
-                            Ne manquez pas les prochaines diffusions en direct ou rattrapez les anciens épisodes directement depuis la salle de projection.
-                        </p>
-                    </section>
-                )}
+
 
             </div>
         </div>

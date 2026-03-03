@@ -32,6 +32,13 @@ export default async function DashboardLayout({
     };
     let siteLogo = "/logo.png";
 
+    let toggles = {
+        enable_adults_program: true,
+        enable_adults_masterclass: true,
+        enable_adults_account: true,
+        enable_adults_catalog: true,
+    };
+
     if (user) {
         const { data: profile } = await supabase.from("profiles").select("role, has_kids_access").eq("id", user.id).single();
         isAdmin = profile?.role === 'admin';
@@ -43,6 +50,13 @@ export default async function DashboardLayout({
             acc[curr.key] = curr.value;
             return acc;
         }, {} as Record<string, string>) || {};
+
+        toggles = {
+            enable_adults_program: settingsMap["enable_adults_program"] !== "false",
+            enable_adults_masterclass: settingsMap["enable_adults_masterclass"] !== "false",
+            enable_adults_account: settingsMap["enable_adults_account"] !== "false",
+            enable_adults_catalog: settingsMap["enable_adults_catalog"] !== "false",
+        };
 
         socialLinks = {
             youtube: settingsMap["social_youtube"] || "https://youtube.com/@LeMagicienPOV",
@@ -56,9 +70,9 @@ export default async function DashboardLayout({
 
     return (
         <div className="flex h-screen bg-magic-bg overflow-hidden">
-            <Sidebar isAdmin={isAdmin} socialLinks={socialLinks} logoUrl={siteLogo} hasKidsAccess={hasKidsAccess} />
+            <Sidebar isAdmin={isAdmin} socialLinks={socialLinks} logoUrl={siteLogo} hasKidsAccess={hasKidsAccess} toggles={toggles} />
             <div className="flex-1 flex flex-col md:pl-0">
-                <MobileNav isAdmin={isAdmin} hasKidsAccess={hasKidsAccess} />
+                <MobileNav isAdmin={isAdmin} hasKidsAccess={hasKidsAccess} toggles={toggles} />
                 <main className="flex-1 overflow-y-auto bg-magic-bg p-4 md:p-8">
                     {children}
                 </main>
