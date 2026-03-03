@@ -1,7 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import { PlayCircle, ArrowRight, Lock, BookOpen, Tv } from "lucide-react";
+import { PlayCircle, ArrowRight, Lock, BookOpen, Tv, ShoppingBag, Star, Sparkles } from "lucide-react";
 import Image from "next/image";
 import AdultHomeHero from "@/components/adults/AdultHomeHero";
 import AdultNewsFeed from "@/components/adults/AdultNewsFeed";
@@ -9,7 +9,6 @@ import AdultProgression from "@/components/adults/AdultProgression";
 import AdultAchievements from "@/components/adults/AdultAchievements";
 import GlobalAlertBanner from "@/components/kids/GlobalAlertBanner"; // Reusable component for both spaces
 import { LiveStatusCard } from "@/components/LiveStatusCard"; // Reusable generic live card
-import { ShoppingBag, Star } from "lucide-react";
 
 export default async function DashboardPage() {
     const supabase = await createClient();
@@ -101,30 +100,23 @@ export default async function DashboardPage() {
             <div className="absolute top-[-20%] left-1/2 -translate-x-1/2 w-[80%] h-[60%] bg-magic-gold/5 blur-[120px] rounded-full pointer-events-none mix-blend-screen"></div>
 
             {/* Premium Header / Hero */}
-            <header className="mb-12 max-w-7xl mx-auto relative z-10 pt-8">
-                <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 border-b border-white/10 pb-8">
-                    <div>
-                        <div className="flex items-center gap-3 mb-4">
-                            <div className="w-8 h-1 bg-gradient-to-r from-magic-gold to-transparent"></div>
-                            <span className="text-magic-gold text-sm font-semibold tracking-[0.2em] uppercase">Club des Magiciens</span>
-                        </div>
-                        <h1 className="text-4xl md:text-6xl font-black text-white tracking-tight leading-none mb-4 font-serif">
-                            L'Actu du Club
-                        </h1>
-                        <p className="text-lg text-slate-400 font-light flex items-center gap-2">
-                            Heureux de vous revoir, <span className="text-white font-medium border-b border-magic-gold/50 pb-0.5">{userName}</span>
-                        </p>
+            {/* Premium Header / Hero */}
+            <header className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 pt-4 max-w-5xl mx-auto relative z-10">
+                <div className="flex-1">
+                    <div className="flex items-center gap-2 text-magic-gold mb-2">
+                        <Sparkles className="w-5 h-5 animate-pulse" />
+                        <span className="text-xs font-bold uppercase tracking-widest">Le Club des Magiciens</span>
                     </div>
-
-                    <div className="flex items-center gap-3">
-                        <Link href="/dashboard/program" className="hidden md:flex items-center gap-2 px-6 py-3 bg-magic-gold text-black font-bold rounded-lg hover:bg-yellow-400 transition-colors shadow-lg shadow-magic-gold/20">
-                            Continuer la formation <ArrowRight className="w-4 h-4" />
-                        </Link>
-                    </div>
+                    <h1 className="text-3xl md:text-5xl font-black text-white tracking-tight">
+                        Bienvenue, <span className="text-magic-gold">{userName}</span> ! ✨
+                    </h1>
+                    <p className="text-slate-400 mt-2 text-lg">
+                        Prêt à découvrir de nouveaux secrets ?
+                    </p>
                 </div>
             </header>
 
-            <div className="max-w-7xl mx-auto relative z-10 space-y-16">
+            <div className="max-w-5xl mx-auto relative z-10 space-y-12 mt-12">
 
                 {/* BLOC: GLOBAL ALERTS */}
                 <GlobalAlertBanner alerts={unreadAlerts} />
@@ -136,10 +128,8 @@ export default async function DashboardPage() {
                     </div>
                 )}
 
-                {/* HERO SECTION / ANNONCE A LA UNE */}
-                {featuredConfig && featuredConfig.title && (
-                    <AdultHomeHero config={featuredConfig} />
-                )}
+                {/* HERO SECTION / ANNONCE A LA UNE (Always show something) */}
+                <AdultHomeHero config={featuredConfig || { title: "", description: "", image: "", link: "", buttonText: "", tag: "" }} />
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                     {/* COLONNE GAUCHE (2/3) */}
