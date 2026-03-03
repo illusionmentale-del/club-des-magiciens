@@ -121,15 +121,15 @@ export default async function DashboardPage() {
                 {/* BLOC: GLOBAL ALERTS */}
                 <GlobalAlertBanner alerts={unreadAlerts} />
 
-                {/* BLOC: LIVE STREAM BANNER */}
-                {activeLive && (
+                {/* BLOC: LIVE STREAM BANNER OR HERO SECTION */}
+                {/* Rule: If there is a Live, it takes the main spot. If not, the Hero takes it. */}
+                {activeLive ? (
                     <div className="mb-0">
                         <LiveStatusCard live={activeLive} isReminded={isReminded} />
                     </div>
+                ) : (
+                    <AdultHomeHero config={featuredConfig || { title: "", description: "", image: "", link: "", buttonText: "", tag: "" }} />
                 )}
-
-                {/* HERO SECTION / ANNONCE A LA UNE (Always show something) */}
-                <AdultHomeHero config={featuredConfig || { title: "", description: "", image: "", link: "", buttonText: "", tag: "" }} />
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                     {/* COLONNE GAUCHE (2/3) */}
