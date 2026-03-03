@@ -248,6 +248,8 @@ export default async function KidsHomePage({ searchParams }: { searchParams: Pro
     const userName = profile.username || profile.full_name || profile.display_name || profile.first_name || user.user_metadata?.full_name || "Jeune Magicien";
     const userGrade = profile.magic_level || "Apprenti";
 
+    const isShopEnabled = settingsMap.enable_kids_shop !== 'false';
+
     return (
         <div className="min-h-screen bg-brand-bg text-brand-text p-4 md:p-8 pb-32 font-sans overflow-hidden relative selection:bg-brand-purple/30">
             {/* Background Ambience */}
@@ -307,29 +309,31 @@ export default async function KidsHomePage({ searchParams }: { searchParams: Pro
                         <KidsNewsFeed items={recentItems} />
 
                         {/* BLOC 6: MES COFFRES (Always Visible or Logic based) */}
-                        <section>
-                            <h3 className="text-lg font-bold text-white uppercase tracking-wider mb-6 flex items-center gap-2">
-                                <Package className="w-5 h-5 text-brand-gold" />
-                                La Boutique Magique
-                            </h3>
-                            <div className="bg-gradient-to-r from-brand-gold/10 to-transparent border border-brand-gold/20 rounded-2xl p-6 flex flex-col sm:flex-row items-center gap-6">
-                                <div className="w-16 h-16 bg-brand-gold/20 rounded-full flex items-center justify-center shrink-0">
-                                    <ShoppingBag className="w-8 h-8 text-brand-gold" />
+                        {isShopEnabled && (
+                            <section>
+                                <h3 className="text-lg font-bold text-white uppercase tracking-wider mb-6 flex items-center gap-2">
+                                    <Package className="w-5 h-5 text-brand-gold" />
+                                    La Boutique Magique
+                                </h3>
+                                <div className="bg-gradient-to-r from-brand-gold/10 to-transparent border border-brand-gold/20 rounded-2xl p-6 flex flex-col sm:flex-row items-center gap-6">
+                                    <div className="w-16 h-16 bg-brand-gold/20 rounded-full flex items-center justify-center shrink-0">
+                                        <ShoppingBag className="w-8 h-8 text-brand-gold" />
+                                    </div>
+                                    <div className="flex-1 text-center sm:text-left">
+                                        <h4 className="text-xl font-bold text-brand-gold mb-1">
+                                            {hasPurchases ? `Tu as déjà ${purchaseCount} coffres !` : "Découvre les secrets du Club !"}
+                                        </h4>
+                                        <p className="text-brand-text-muted text-sm">Équipe-toi avec le meilleur matériel de magicien pro.</p>
+                                    </div>
+                                    <Link
+                                        href="/kids/courses?filter=owned"
+                                        className="bg-brand-gold hover:bg-brand-gold/80 text-black font-bold py-3 px-6 rounded-xl transition-colors whitespace-nowrap"
+                                    >
+                                        Faire un tour à la boutique
+                                    </Link>
                                 </div>
-                                <div className="flex-1 text-center sm:text-left">
-                                    <h4 className="text-xl font-bold text-brand-gold mb-1">
-                                        {hasPurchases ? `Tu as déjà ${purchaseCount} coffres !` : "Découvre les secrets du Club !"}
-                                    </h4>
-                                    <p className="text-brand-text-muted text-sm">Équipe-toi avec le meilleur matériel de magicien pro.</p>
-                                </div>
-                                <Link
-                                    href="/kids/courses?filter=owned"
-                                    className="bg-brand-gold hover:bg-brand-gold/80 text-black font-bold py-3 px-6 rounded-xl transition-colors whitespace-nowrap"
-                                >
-                                    Faire un tour à la boutique
-                                </Link>
-                            </div>
-                        </section>
+                            </section>
+                        )}
                     </div>
 
                     {/* COLONNE DROITE (1/3) */}
