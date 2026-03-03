@@ -1,17 +1,27 @@
 import { createClient } from "@/lib/supabase/server";
-import { MessageCircle, Search, Calendar, Video } from "lucide-react";
+import { MessageCircle, Search, Calendar, Video, CheckCircle, Clock } from "lucide-react";
 import InboxReplyForm from "@/components/admin/InboxReplyForm";
+import Link from "next/link";
+import { cn } from "@/lib/utils";
 
-export default async function AdminKidsInbox() {
+export default async function AdminKidsInbox({
+    searchParams
+}: {
+    searchParams: { [key: string]: string | string[] | undefined }
+}) {
     const supabase = await createClient();
+
+    // Determine which tab to show based on URL param
+    const resolvedParams = await searchParams;
+    const currentTab = resolvedParams?.tab === 'read' ? 'read' : 'unread';
 
     // 1. Fetch unread questions
     // Since the foreign key relationship might be missing in the schema cache,
     // we fetch comments first, then manually join profiles.
     const { data: rawComments, error: commentsError } = await supabase
         .from("course_comments")
-        .select("id, content, course_id, created_at, user_id")
-        .eq("is_read", false)
+        .select("id, content, course_id, created_at, user_id, is_read")
+        .eq("is_read", currentTab === 'read')
         .order("created_at", { ascending: false });
 
     if (commentsError) {
@@ -72,9 +82,37 @@ export default async function AdminKidsInbox() {
                         Boîte de Réception
                     </h1>
                     <p className="text-brand-text-muted mt-2">
-                        Questions en attente des apprentis magiciens ({comments.length})
+                        Questions en attente des apprentis magiciens ({currentTab === 'unread' ? comments.length : 'Archives'})
                     </p>
                 </div>
+            </div>
+
+            {/* Toggle Tabs */}
+            <div className="flex items-center gap-2 p-1 bg-black/40 rounded-xl w-fit border border-white/5 shadow-inner">
+                <Link
+                    href="/admin/kids/inbox?tab=unread"
+                    className={cn(
+                        "flex items-center gap-2 px-6 py-2.5 rounded-lg text-sm font-bold uppercase tracking-widest transition-all",
+                        currentTab === 'unread'
+                            ? "bg-brand-purple text-white shadow-lg"
+                            : "text-gray-400 hover:text-white hover:bg-white/5"
+                    )}
+                >
+                    <Clock className="w-4 h-4" />
+                    À Traiter
+                </Link>
+                <Link
+                    href="/admin/kids/inbox?tab=read"
+                    className={cn(
+                        "flex items-center gap-2 px-6 py-2.5 rounded-lg text-sm font-bold uppercase tracking-widest transition-all",
+                        currentTab === 'read'
+                            ? "bg-brand-purple text-white shadow-lg"
+                            : "text-gray-400 hover:text-white hover:bg-white/5"
+                    )}
+                >
+                    <CheckCircle className="w-4 h-4" />
+                    Traitées
+                </Link>
             </div>
 
             {comments.length === 0 ? (
@@ -127,11 +165,19 @@ export default async function AdminKidsInbox() {
 
                                 {/* Right Side: Interaction / Reply */}
                                 <div className="w-full md:w-[500px] shrink-0">
-                                    <InboxReplyForm
-                                        commentId={comment.id}
-                                        courseId={comment.course_id}
-                                        kidPseudo={comment.profiles?.full_name || 'cet apprenti'}
-                                    />
+                                    {currentTab === 'unread' ? (
+                                        <InboxReplyForm
+                                            commentId={comment.id}
+                                            courseId={comment.course_id}
+                                            kidPseudo={comment.profiles?.full_name || 'cet apprenti'}
+                                        />
+                                    ) : (
+                                        <div className="bg-black/30 border border-white/5 rounded-2xl p-6 h-full flex flex-col items-center justify-center text-center">
+                                            <CheckCircle className="w-10 h-10 text-green-500/50 mb-3" />
+                                            <h4 className="font-bold text-gray-300">Message Traité</h4>
+                                            <p className="text-xs text-gray-500 mt-2">Ce message a déjà reçu une réponse ou a été marqué comme lu.</p>
+                                        </div>
+                                    )}
                                 </div>
                             </div>
                         </div>
