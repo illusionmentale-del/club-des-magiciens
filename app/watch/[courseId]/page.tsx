@@ -120,7 +120,7 @@ export default async function WatchPage(props: WatchPageProps) {
                                 {/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(libraryItem.video_url) ? (
                                     // Bunny Stream Player (IDs are GUIDs)
                                     <iframe
-                                        src={`https://iframe.mediadelivery.net/embed/${process.env.BUNNY_KIDS_LIBRARY_ID}/${libraryItem.video_url}?autoplay=false&loop=false&muted=false&preload=true&responsive=true&playsinline=true`}
+                                        src={`https://iframe.mediadelivery.net/embed/${process.env.BUNNY_KIDS_LIBRARY_ID}/${libraryItem.video_url}?autoplay=false&loop=false&muted=false&preload=false&responsive=true&playsinline=true`}
                                         className="absolute inset-0 w-full h-full pointer-events-auto"
                                         frameBorder="0"
                                         allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture; fullscreen;"
@@ -315,7 +315,7 @@ export default async function WatchPage(props: WatchPageProps) {
                                 {/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(currentVideo.video_url) ? (
                                     // Bunny Stream Player (IDs are GUIDs)
                                     <iframe
-                                        src={`https://iframe.mediadelivery.net/embed/${isKidsCourse ? process.env.BUNNY_KIDS_LIBRARY_ID : process.env.BUNNY_ADULTS_LIBRARY_ID}/${currentVideo.video_url}?autoplay=false&loop=false&muted=false&preload=true&responsive=true&playsinline=true`}
+                                        src={`https://iframe.mediadelivery.net/embed/${isKidsCourse ? process.env.BUNNY_KIDS_LIBRARY_ID : process.env.BUNNY_ADULTS_LIBRARY_ID}/${currentVideo.video_url}?autoplay=false&loop=false&muted=false&preload=false&responsive=true&playsinline=true`}
                                         className="absolute inset-0 w-full h-full pointer-events-auto"
                                         frameBorder="0"
                                         allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture; fullscreen;"
