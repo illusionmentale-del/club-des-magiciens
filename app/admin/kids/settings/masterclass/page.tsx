@@ -27,8 +27,8 @@ export default async function KidsMasterclassSettingsPage() {
                         <Sparkles className="w-6 h-6 text-brand-purple" />
                     </div>
                     <div>
-                        <h1 className="text-3xl font-black text-white uppercase tracking-tighter">Paramètres Les Masterclass</h1>
-                        <p className="text-brand-text-muted text-sm uppercase tracking-widest font-bold opacity-60">Personnalisez la page des Masterclass enfant</p>
+                        <h1 className="text-3xl font-black text-white uppercase tracking-tighter">Paramètres Les Ateliers</h1>
+                        <p className="text-brand-text-muted text-sm uppercase tracking-widest font-bold opacity-60">Personnalisez la page des Ateliers enfant</p>
                     </div>
                 </div>
             </div>

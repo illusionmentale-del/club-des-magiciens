@@ -43,7 +43,7 @@ export default function KidsMenuToggles({ initialSettings }: KidsMenuTogglesProp
 
     const menus = [
         { key: 'enable_kids_program' as const, label: 'La Formation', desc: 'Accéder aux cours et textes' },
-        { key: 'enable_kids_masterclass' as const, label: 'Les Masterclass', desc: 'Perfectionnement en vidéo' },
+        { key: 'enable_kids_masterclass' as const, label: 'Les Ateliers', desc: 'Perfectionnement en vidéo' },
         { key: 'enable_kids_account' as const, label: 'Mes Informations', desc: 'Progression et profil' },
         { key: 'enable_kids_shop' as const, label: 'La Boutique', desc: 'Produits et articles' },
     ];

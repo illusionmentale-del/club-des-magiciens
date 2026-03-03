@@ -135,11 +135,11 @@ export default function KidsMasterclassConfig({ initialSettings, libraryItems }:
 
                                 {/* Section 2: Featured Masterclass */}
                                 <div className="space-y-6">
-                                    <h3 className="text-lg font-bold text-white border-b border-white/10 pb-2">Masterclass à la Une</h3>
+                                    <h3 className="text-lg font-bold text-white border-b border-white/10 pb-2">Atelier à la Une</h3>
 
                                     <div className="space-y-4">
                                         <label className="text-xs font-black uppercase tracking-widest text-brand-text-muted">Sélection de la vidéo</label>
-                                        <p className="text-[10px] text-brand-text-muted -mt-2 mb-2">Choisissez la formation ou masterclass à mettre en valeur en haut de la page.</p>
+                                        <p className="text-[10px] text-brand-text-muted -mt-2 mb-2">Choisissez la formation ou l'atelier à mettre en valeur en haut de la page.</p>
                                         <select
                                             value={featuredConfig.id}
                                             onChange={(e) => setFeaturedConfig({ ...featuredConfig, id: e.target.value })}
@@ -161,7 +161,7 @@ export default function KidsMasterclassConfig({ initialSettings, libraryItems }:
                                                     value={featuredConfig.title}
                                                     onChange={(e) => setFeaturedConfig({ ...featuredConfig, title: e.target.value })}
                                                     className="w-full bg-brand-bg border border-white/10 rounded-xl p-4 text-white focus:outline-none focus:border-brand-purple/50"
-                                                    placeholder="Ex: Nouvelle Masterclass !"
+                                                    placeholder="Ex: Nouvel Atelier !"
                                                 />
                                             </div>
 

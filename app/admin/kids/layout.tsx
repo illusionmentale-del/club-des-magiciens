@@ -63,7 +63,7 @@ export default async function AdminLayout({
                     </Link>
                     <Link href="/admin/kids/settings/masterclass" className="flex items-center gap-3 px-4 py-3 text-sm font-bold uppercase tracking-widest text-brand-text-muted hover:text-white hover:bg-white/5 rounded-xl transition-all group">
                         <Sparkles className="w-5 h-5 group-hover:text-brand-purple transition-colors" />
-                        Bannière Masterclass
+                        Bannière Ateliers
                     </Link>
                     <Link href="/admin/kids/lives" className="flex items-center gap-3 px-4 py-3 text-sm font-bold uppercase tracking-widest text-brand-text-muted hover:text-white hover:bg-white/5 rounded-xl transition-all group">
                         <Calendar className="w-4 h-4 group-hover:text-brand-purple transition-colors" />

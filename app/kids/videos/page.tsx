@@ -6,7 +6,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 
 export const metadata = {
-    title: 'Les Masterclass | Club des Magiciens',
+    title: 'Les Ateliers | Club des Magiciens',
     description: 'Regarde les replays de tes cours de magie et bien plus encore !',
 };
 
@@ -29,7 +29,7 @@ export default async function KidsVideosPage() {
 
     const pageConfig = settingsMap.kid_masterclass_page_config
         ? JSON.parse(settingsMap.kid_masterclass_page_config)
-        : { title: "Les Masterclass", description: "Apprends à te perfectionner avec des vidéos approfondies et des conseils inédits !" };
+        : { title: "Les Ateliers", description: "Des ateliers sur des thèmes précis pour approfondir ta magie !" };
 
     const featuredConfig = settingsMap.kid_masterclass_featured_config
         ? JSON.parse(settingsMap.kid_masterclass_featured_config)
@@ -74,10 +74,10 @@ export default async function KidsVideosPage() {
                             <span className="text-xs font-bold uppercase tracking-widest">Le Club des Petits Magiciens</span>
                         </div>
                         <h1 className="text-3xl md:text-5xl font-black text-white tracking-tight">
-                            Les <span className="text-brand-purple">Masterclass</span>
+                            Les <span className="text-brand-purple">Ateliers</span>
                         </h1>
                         <p className="text-brand-text-muted mt-2 text-lg">
-                            {pageConfig.description || "Perfectionne toi avec des masterclass exclusives et des replays inédits !"}
+                            {pageConfig.description || "Des ateliers sur des thèmes précis pour approfondir ta magie !"}
                         </p>
                     </div>
                 </header>
@@ -124,7 +124,7 @@ export default async function KidsVideosPage() {
                                         </h3>
                                     )}
                                     <p className="text-brand-text-muted text-sm md:text-base leading-relaxed mb-8">
-                                        {featuredConfig.description || featuredVideo.description || "Découvre cette masterclass spéciale !"}
+                                        {featuredConfig.description || featuredVideo.description || "Découvre cet atelier spécial !"}
                                     </p>
 
                                     <Link
@@ -158,7 +158,7 @@ export default async function KidsVideosPage() {
                                 </div>
                                 <h3 className="text-xl font-bold text-white mb-2 uppercase tracking-wide">Aucune vidéo pour le moment</h3>
                                 <p className="text-brand-text-muted max-w-md mx-auto text-sm">
-                                    L'espace Masterclass est en cours de préparation... Les premières vidéos arriveront très bientôt !
+                                    L'espace Ateliers est en cours de préparation... Les premières vidéos arriveront très bientôt !
                                 </p>
                             </div>
                         </div>

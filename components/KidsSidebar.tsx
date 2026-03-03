@@ -115,7 +115,7 @@ export default function KidsSidebar({ socialLinks, logoUrl, isAdmin, hasPurchase
                     </Link>
                 )}
 
-                {/* 3. 🎬 Les Masterclass */}
+                {/* 3. 🎬 Les Ateliers */}
                 {enableMasterclass && (
                     <Link href="/kids/videos" className="block group">
                         <div className="flex items-center gap-4">
@@ -130,10 +130,10 @@ export default function KidsSidebar({ socialLinks, logoUrl, isAdmin, hasPurchase
                             </div>
                             <div>
                                 <div className={`font-bold flex items-center gap-2 ${isActive('/kids/videos') ? 'text-magic-purple' : 'text-gray-300 group-hover:text-white'}`}>
-                                    Les Masterclass
+                                    Les Ateliers
                                     {hasUnreadReplies && <span className="text-[10px] bg-red-500 text-white px-1.5 py-0.5 rounded-full font-bold">RÉPONSE</span>}
                                 </div>
-                                <div className="text-xs text-gray-500">Perfectionne-toi en vidéo</div>
+                                <div className="text-xs text-gray-500">Ateliers à thèmes pour approfondir la magie</div>
                             </div>
                         </div>
                     </Link>
