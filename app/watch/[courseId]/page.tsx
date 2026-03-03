@@ -129,7 +129,7 @@ export default async function WatchPage(props: WatchPageProps) {
                                 ) : /^\d+$/.test(libraryItem.video_url) ? (
                                     // Vimeo Player (IDs are numbers)
                                     <iframe
-                                        src={`https://player.vimeo.com/video/${libraryItem.video_url}?h=0&title=0&byline=0&portrait=0`}
+                                        src={`https://player.vimeo.com/video/${libraryItem.video_url}?h=0&title=0&byline=0&portrait=0&playsinline=1&autopause=0`}
                                         className="absolute inset-0 w-full h-full pointer-events-auto"
                                         frameBorder="0"
                                         allow="autoplay; fullscreen; picture-in-picture"
@@ -324,7 +324,7 @@ export default async function WatchPage(props: WatchPageProps) {
                                 ) : /^\d+$/.test(currentVideo.video_url) ? (
                                     // Vimeo Player (IDs are numbers)
                                     <iframe
-                                        src={`https://player.vimeo.com/video/${currentVideo.video_url}?h=0&title=0&byline=0&portrait=0`}
+                                        src={`https://player.vimeo.com/video/${currentVideo.video_url}?h=0&title=0&byline=0&portrait=0&playsinline=1&autopause=0`}
                                         className="absolute inset-0 w-full h-full pointer-events-auto"
                                         frameBorder="0"
                                         allow="autoplay; fullscreen; picture-in-picture"
