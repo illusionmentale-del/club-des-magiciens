@@ -145,7 +145,7 @@ export default async function KidsVideosPage() {
                     <div className="flex items-center justify-between mb-8">
                         <h2 className="text-2xl font-bold text-white flex items-center gap-3">
                             <Sparkles className="w-6 h-6 text-brand-gold" />
-                            Dernières Vidéos
+                            Les Vidéos
                         </h2>
                     </div>
 
