@@ -40,7 +40,7 @@ export default async function DashboardPage() {
         alertsRes,
         readAlertsRes
     ] = await Promise.all([
-        supabase.from("courses").select("*").neq('audience', 'kids').or("status.eq.published,and(status.eq.scheduled,published_at.lte.now())").order("created_at", { ascending: false }),
+        supabase.from("library_items").select("*").eq("audience", "adults").order("created_at", { ascending: false }),
         supabase.from("user_purchases").select("course_id").eq("user_id", user.id),
         supabase.from("settings").select("*"),
         supabase.from("lives").select("*").order("start_date", { ascending: true }),
@@ -51,7 +51,7 @@ export default async function DashboardPage() {
         supabase.from("user_alerts_read").select("alert_id").eq("user_id", user.id)
     ]);
 
-    const courses = coursesRes.data || [];
+    const libraryItems = coursesRes.data || [];
     const purchasedCourseIds = new Set(purchasesRes.data?.map(p => p.course_id) || []);
     const validatedCount = validatedProgressionRes.count || 0;
     const recentValids = recentValidsRes.data || [];
@@ -102,14 +102,14 @@ export default async function DashboardPage() {
         }
     }
 
-    // Determine which courses to show in the "Nouveautés" block
+    // Determine which items to show in the "Nouveautés" block
     const newsItems = newsConfigIds.length > 0
         ? newsConfigIds.map((item: any) => {
             if (typeof item === 'string') {
-                const c = courses.find(course => course.id === item);
+                const c = libraryItems.find(course => course.id === item);
                 return c ? { ...c, type: 'course' } : null;
             } else if (item.type === 'course') {
-                const c = courses.find(course => course.id === item.id);
+                const c = libraryItems.find(course => course.id === item.id);
                 return c ? { ...c, type: 'course' } : null;
             } else {
                 return {
@@ -121,10 +121,10 @@ export default async function DashboardPage() {
                 };
             }
         }).filter(Boolean)
-        : courses.slice(0, 3).map(c => ({ ...c, type: 'course' }));
+        : libraryItems.slice(0, 3).map(c => ({ ...c, type: 'course' }));
 
-    // Quick helper to determine if a course is unlocked
-    const isUnlocked = (course: any) => isAdmin || purchasedCourseIds.has(course.id) || course.price === 'Gratuit' || !course.price;
+    // Quick helper to determine if an item is unlocked
+    const isUnlocked = (item: any) => isAdmin || purchasedCourseIds.has(item.id) || !item.price_label;
 
     const promoConfigSetting = settingsMap['adult_home_promo_config'];
     let promoConfig = {
@@ -225,7 +225,7 @@ export default async function DashboardPage() {
                         {settingsMap?.show_adults_progression !== 'false' && (
                             <AdultProgression
                                 validatedCount={validatedCount}
-                                totalCourses={courses.length}
+                                totalCourses={libraryItems.length}
                             />
                         )}
 

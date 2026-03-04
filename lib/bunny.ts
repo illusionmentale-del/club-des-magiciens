@@ -6,6 +6,9 @@
 const BUNNY_KIDS_LIBRARY_ID = process.env.BUNNY_KIDS_LIBRARY_ID;
 const BUNNY_KIDS_API_KEY = process.env.BUNNY_KIDS_API_KEY;
 
+const BUNNY_ADULTS_LIBRARY_ID = process.env.BUNNY_ADULTS_LIBRARY_ID;
+const BUNNY_ADULTS_API_KEY = process.env.BUNNY_ADULTS_API_KEY;
+
 export interface BunnyVideo {
     videoLibraryId: number;
     guid: string;
@@ -78,6 +81,43 @@ export async function getKidsVideos(page = 1, itemsPerPage = 100, collectionId?:
         return data.items as BunnyVideo[];
     } catch (error) {
         console.error("Failed to fetch videos from Bunny Stream:", error);
+        return [];
+    }
+}
+
+/**
+ * Fetch all videos from the Adults Video Library
+ */
+export async function getAdultVideos(page = 1, itemsPerPage = 100, collectionId?: string): Promise<BunnyVideo[]> {
+    if (!BUNNY_ADULTS_LIBRARY_ID || !BUNNY_ADULTS_API_KEY) {
+        console.error("Bunny Stream credentials for Adults are missing in environment variables.");
+        return [];
+    }
+
+    let url = `https://video.bunnycdn.com/library/${BUNNY_ADULTS_LIBRARY_ID}/videos?page=${page}&itemsPerPage=${itemsPerPage}&orderBy=date`;
+    if (collectionId) {
+        url += `&collection=${collectionId}`;
+    }
+
+    try {
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'AccessKey': BUNNY_ADULTS_API_KEY,
+                'Accept': 'application/json',
+            },
+            next: { revalidate: 60 }
+        });
+
+        if (!response.ok) {
+            console.error(`Error fetching adult Bunny videos: ${response.status} ${response.statusText}`);
+            return [];
+        }
+
+        const data = await response.json();
+        return data.items as BunnyVideo[];
+    } catch (error) {
+        console.error("Failed to fetch adult videos from Bunny Stream:", error);
         return [];
     }
 }

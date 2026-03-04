@@ -206,7 +206,7 @@ export async function saveAdultHomeSettings(config: Record<string, any>) {
 
     // We store all adult home configs as a single JSON object or multiple keys
     const entries = Object.entries(config).map(([key, value]) => ({
-        key: key.startsWith('adult_home_') ? key : `adult_home_${key}`,
+        key: key.startsWith('adult_') ? key : `adult_home_${key}`,
         value: typeof value === 'string' ? value : JSON.stringify(value)
     }));
 

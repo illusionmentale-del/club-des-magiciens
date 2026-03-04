@@ -30,7 +30,7 @@ export default async function WatchPage(props: WatchPageProps) {
         .eq("id", params.courseId)
         .single();
 
-    // 2. If no course, try Fetching Library Item (Kids)
+    // 2. If no course, try Fetching Library Item (Kids or Adults)
     let libraryItem = null;
     if (!course) {
         const { data: item } = await supabase
@@ -63,8 +63,9 @@ export default async function WatchPage(props: WatchPageProps) {
         }
     }
 
-    // --- CASE A: LIBRARY ITEM (KIDS) ---
+    // --- CASE A: LIBRARY ITEM ---
     if (libraryItem) {
+        const isKidsItem = libraryItem.audience === 'kids';
         // Check Validation Status
         const { data: progress } = await supabase
             .from("library_progress")
@@ -79,7 +80,7 @@ export default async function WatchPage(props: WatchPageProps) {
             .from("course_comments")
             .select("*")
             .eq("course_id", libraryItem.id)
-            .eq("context", "kids")
+            .eq("context", libraryItem.audience)
             .order("created_at", { ascending: true });
 
         let comments: any[] = [];
@@ -109,15 +110,28 @@ export default async function WatchPage(props: WatchPageProps) {
         }
 
         return (
-            <div className="min-h-screen bg-magic-bg text-white flex flex-col font-sans">
+            <div className={cn(
+                "min-h-screen text-white flex flex-col font-sans relative",
+                isKidsItem ? "bg-magic-bg" : "bg-[#050507]"
+            )}>
+                {/* Ambient Background Lights if Adult */}
+                {!isKidsItem && (
+                    <>
+                        <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] bg-magic-gold/10 blur-[150px] rounded-full pointer-events-none mix-blend-screen"></div>
+                        <div className="absolute top-[30%] right-[-10%] w-[40%] h-[40%] bg-orange-600/10 blur-[120px] rounded-full pointer-events-none mix-blend-screen"></div>
+                    </>
+                )}
                 <header className="border-b border-white/10 bg-magic-card/50 backdrop-blur-md sticky top-0 z-50">
                     <div className="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
-                        <Link href="/kids" className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors">
+                        <Link href={isKidsItem ? "/kids" : "/dashboard"} className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors">
                             <ArrowLeft className="w-5 h-5" />
-                            <span className="font-bold uppercase tracking-wider text-xs">Retour au Club</span>
+                            <span className="font-bold uppercase tracking-wider text-xs">Retour au {isKidsItem ? "Club" : "QG"}</span>
                         </Link>
                         <div className="flex items-center gap-2">
-                            <div className="px-3 py-1 bg-purple-500/20 text-purple-400 rounded-full text-[10px] font-bold uppercase tracking-widest border border-purple-500/30">
+                            <div className={cn(
+                                "px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest border",
+                                isKidsItem ? "bg-purple-500/20 text-purple-400 border-purple-500/30" : "bg-magic-gold/20 text-magic-gold border-magic-gold/30"
+                            )}>
                                 Semaine {libraryItem.week_number}
                             </div>
                         </div>
@@ -132,7 +146,7 @@ export default async function WatchPage(props: WatchPageProps) {
                                 {/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(libraryItem.video_url) ? (
                                     // Bunny Stream Player (IDs are GUIDs)
                                     <iframe
-                                        src={`https://iframe.mediadelivery.net/embed/${process.env.BUNNY_KIDS_LIBRARY_ID}/${libraryItem.video_url}?autoplay=false&loop=false&muted=false&preload=false&responsive=true&playsinline=true`}
+                                        src={`https://iframe.mediadelivery.net/embed/${isKidsItem ? process.env.BUNNY_KIDS_LIBRARY_ID : process.env.BUNNY_ADULTS_LIBRARY_ID}/${libraryItem.video_url}?autoplay=false&loop=false&muted=false&preload=false&responsive=true&playsinline=true`}
                                         className="absolute inset-0 w-full h-full pointer-events-auto"
                                         frameBorder="0"
                                         allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture; fullscreen;"
@@ -200,11 +214,13 @@ export default async function WatchPage(props: WatchPageProps) {
                                             user_id: user.id,
                                             item_id: libraryItem.id
                                         });
-                                        // TODO: Check for badges logic here if needed, or DB Trigger
                                         redirect(`/watch/${libraryItem.id}`);
                                     }}>
-                                        <button className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 text-white font-bold py-4 rounded-xl transition-all shadow-lg hover:shadow-purple-500/30 active:scale-95 flex items-center justify-center gap-2 group">
-                                            <Star className="w-5 h-5 group-hover:rotate-12 transition-transform" />
+                                        <button className={cn(
+                                            "w-full text-white font-bold py-4 rounded-xl transition-all shadow-lg active:scale-95 flex items-center justify-center gap-2 group",
+                                            isKidsItem ? "bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 hover:shadow-purple-500/30" : "bg-gradient-to-r from-magic-gold to-orange-500 text-black hover:from-yellow-400 hover:to-orange-400 hover:shadow-magic-gold/30"
+                                        )}>
+                                            <Star className={cn("w-5 h-5 group-hover:rotate-12 transition-transform", isKidsItem ? "" : "text-black")} />
                                             JE VALIDE !
                                         </button>
                                     </form>
@@ -213,12 +229,16 @@ export default async function WatchPage(props: WatchPageProps) {
                         </div>
                     </div>
 
-                    {/* Kids Comments Section */}
-                    <KidsCommentsSection
-                        videoId={libraryItem.id}
-                        comments={comments || []}
-                        isAdmin={isAdmin}
-                    />
+                    {/* Comments Section */}
+                    {isKidsItem ? (
+                        <KidsCommentsSection
+                            videoId={libraryItem.id}
+                            comments={comments || []}
+                            isAdmin={isAdmin}
+                        />
+                    ) : (
+                        <CommentsSection courseId={libraryItem.id} comments={comments} user={user} />
+                    )}
                 </div>
             </div>
         )

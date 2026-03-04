@@ -1,0 +1,192 @@
+import { createClient } from "@/lib/supabase/server";
+import { redirect } from "next/navigation";
+import Image from "next/image";
+import Link from "next/link";
+import { Lock, Play, Star, CheckCircle, Trophy, BookOpen } from "lucide-react";
+
+export default async function AdultLibraryPage() {
+    const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+
+    if (!user) {
+        redirect("/login");
+    }
+
+    const { data: profile } = await supabase
+        .from("profiles")
+        .select("*")
+        .eq("id", user.id)
+        .single();
+
+    if (!profile || (!profile.has_adults_access && profile.role !== 'admin')) {
+        redirect("/kids");
+    }
+
+    const createdAt = new Date(profile.created_at);
+    const now = new Date();
+    const diffTime = Math.abs(now.getTime() - createdAt.getTime());
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    const currentWeek = Math.floor(diffDays / 7) + 1;
+
+    // 2. Fetch All Items
+    const { data: unlockedItems } = await supabase
+        .from("library_items")
+        .select("*")
+        .eq("audience", "adults")
+        .lte("week_number", currentWeek)
+        .order("week_number", { ascending: false });
+
+    // Group items by week
+    const weeksData: Record<number, any[]> = {};
+    if (unlockedItems) {
+        unlockedItems.forEach(item => {
+            if (!item.week_number) return;
+            if (!weeksData[item.week_number]) weeksData[item.week_number] = [];
+            weeksData[item.week_number].push(item);
+        });
+    }
+
+    // Generate List of Weeks
+    const displayWeeks = [];
+    const SHOW_FUTURE_WEEKS = 4;
+
+    // 1. Contenu disponible (Semaine actuelle jusqu'à la semaine 1)
+    for (let i = currentWeek; i >= 1; i--) {
+        displayWeeks.push(i);
+    }
+
+    // 2. Contenu à venir (Semaine actuelle + 1 jusqu'à la limite)
+    for (let i = currentWeek + 1; i <= currentWeek + SHOW_FUTURE_WEEKS; i++) {
+        displayWeeks.push(i);
+    }
+
+    return (
+        <div className="min-h-screen bg-[#050507] text-white p-4 md:p-8 pb-32 font-sans overflow-hidden relative selection:bg-magic-gold/30">
+
+            {/* Ambient Background Lights */}
+            <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] bg-magic-gold/10 blur-[150px] rounded-full pointer-events-none mix-blend-screen"></div>
+            <div className="absolute top-[20%] right-[-10%] w-[40%] h-[40%] bg-orange-600/10 blur-[120px] rounded-full pointer-events-none mix-blend-screen"></div>
+
+            {/* Main Wrapper Container */}
+            <div className="max-w-5xl mx-auto relative z-10 space-y-12">
+
+                {/* Header (Homogenized with Home) */}
+                <header className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 pt-4">
+                    <div className="flex-1">
+                        <div className="flex items-center gap-2 text-magic-gold mb-2">
+                            <Star className="w-5 h-5 fill-current animate-pulse text-magic-gold" />
+                            <span className="text-xs font-bold uppercase tracking-widest">Le QG de la Magie</span>
+                        </div>
+                        <h1 className="text-3xl md:text-5xl font-black text-white tracking-tight">
+                            La <span className="text-transparent bg-clip-text bg-gradient-to-r from-magic-gold to-orange-400">Bibliothèque</span>
+                        </h1>
+                        <p className="text-slate-400 mt-2 text-lg">
+                            Retrouvez ici votre parcours d'apprentissage de la magie.
+                        </p>
+                    </div>
+                </header>
+
+                {/* Missions List */}
+                <div className="space-y-6">
+                    {displayWeeks.map(week => {
+                        const isLocked = week > currentWeek;
+                        const isCurrent = week === currentWeek;
+                        const isCompleted = week < currentWeek;
+
+                        const items = weeksData[week] || [];
+                        const mainItem = items.find(i => i.is_main) || items[0];
+
+                        return (
+                            <div key={week} className="relative group">
+                                {!isLocked && (
+                                    <div className={`absolute -inset-1 bg-gradient-to-r from-magic-gold to-orange-400 rounded-3xl blur-lg transition duration-1000 pointer-events-none ${isCurrent ? 'opacity-30 group-hover:opacity-50' : 'opacity-0 group-hover:opacity-30'}`}></div>
+                                )}
+                                <div
+                                    className={`
+                                    relative p-6 rounded-2xl border transition-all duration-300
+                                    ${isLocked
+                                            ? 'bg-brand-bg/50 border-white/5 opacity-60'
+                                            : isCurrent
+                                                ? 'bg-[#111] border-magic-gold shadow-[0_0_30px_rgba(238,195,67,0.15)] scale-[1.02] z-10'
+                                                : 'bg-[#1a1a1f] border border-emerald-500/20 hover:bg-[#222]'
+                                        }
+                                `}
+                                >
+                                    {/* Status Indicator */}
+                                    <div className="flex items-center justify-between mb-4">
+                                        <div className="flex items-center gap-3">
+                                            <div className={`
+                                        w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm
+                                        ${isLocked ? 'bg-[#111] border border-white/10 text-slate-400' : ''}
+                                        ${isCurrent ? 'bg-magic-gold text-black shadow-lg' : ''}
+                                        ${isCompleted ? 'bg-green-500/20 text-green-400 border border-green-500/30' : ''}
+                                    `}>
+                                                {isLocked && <Lock className="w-4 h-4" />}
+                                                {isCurrent && <Star className="w-5 h-5 fill-current animate-pulse" />}
+                                                {isCompleted && <CheckCircle className="w-5 h-5" />}
+                                            </div>
+                                            <div>
+                                                <h2 className={`font-bold uppercase tracking-tight text-lg ${isLocked ? 'text-slate-400' : 'text-white'}`}>
+                                                    Semaine {week}
+                                                </h2>
+                                                {isCurrent && <span className="text-[10px] text-magic-gold font-bold uppercase tracking-widest">En cours</span>}
+                                                {isCompleted && <span className="text-[10px] text-brand-green font-bold uppercase tracking-widest">Terminée</span>}
+                                                {isLocked && <span className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">À venir</span>}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {/* Content Preview */}
+                                    {!isLocked ? (
+                                        <div className="flex flex-col sm:flex-row gap-4">
+                                            {/* Thumbnail */}
+                                            <div className="sm:w-1/3 aspect-video relative rounded-lg overflow-hidden bg-black border border-white/10">
+                                                {mainItem?.thumbnail_url ? (
+                                                    <Image src={mainItem.thumbnail_url} alt="" fill className="object-cover opacity-80" />
+                                                ) : (
+                                                    <div className="w-full h-full flex items-center justify-center bg-brand-surface"><Play className="w-8 h-8 text-white/20" /></div>
+                                                )}
+                                            </div>
+
+                                            {/* Info */}
+                                            <div className="flex-1 flex flex-col justify-center">
+                                                <h3 className="text-xl font-bold text-white mb-2">{mainItem?.title || "Mission Mystère"}</h3>
+                                                <p className="text-sm text-slate-400 line-clamp-2 mb-4">
+                                                    {mainItem?.description || "Le secret n'a pas encore été révélé..."}
+                                                </p>
+
+                                                <div className="flex gap-2 mt-auto">
+                                                    <Link
+                                                        href={mainItem ? `/watch/${mainItem.id}` : '#'}
+                                                        className={`
+                                                    flex-1 items-center justify-center gap-2 px-4 py-2 rounded-lg text-sm font-bold uppercase tracking-wide transition-colors flex
+                                                    ${isCurrent ? 'bg-magic-gold text-black hover:bg-yellow-400' : 'bg-[#111] border border-white/10 hover:bg-white/10 text-white'}
+                                                `}
+                                                    >
+                                                        <Play className="w-4 h-4" />
+                                                        Voir
+                                                    </Link>
+                                                    {isCurrent && (
+                                                        <div className="px-3 py-2 rounded-lg bg-magic-gold/10 border border-magic-gold/20 text-magic-gold">
+                                                            <Trophy className="w-4 h-4" />
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ) : (
+                                        <div className="p-4 bg-brand-bg/30 rounded-lg border border-dashed border-white/10 flex items-center justify-center gap-2 text-slate-400">
+                                            <Lock className="w-4 h-4" />
+                                            <span className="text-sm font-mono uppercase">Contenu Classifié</span>
+                                        </div>
+                                    )}
+
+                                </div>
+                            </div>
+                        );
+                    })}
+                </div>
+            </div>
+        </div>
+    );
+}

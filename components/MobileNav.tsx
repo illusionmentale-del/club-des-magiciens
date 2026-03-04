@@ -93,12 +93,12 @@ export default function MobileNav({ isAdmin, hasKidsAccess, toggles }: {
 
                             {toggles?.enable_adults_program !== false && (
                                 <Link
-                                    href="/dashboard/program"
+                                    href="/dashboard/library"
                                     onClick={close}
-                                    className={`flex items-center gap-3 px-4 py-3 font-medium transition-all ${isActive('/dashboard/program') ? 'bg-gradient-to-r from-magic-gold/20 to-transparent text-magic-gold border-l-2 border-magic-gold' : 'text-gray-400 hover:bg-white/5 hover:text-white border-l-2 border-transparent'}`}
+                                    className={`flex items-center gap-3 px-4 py-3 font-medium transition-all ${isActive('/dashboard/library') ? 'bg-gradient-to-r from-magic-gold/20 to-transparent text-magic-gold border-l-2 border-magic-gold' : 'text-gray-400 hover:bg-white/5 hover:text-white border-l-2 border-transparent'}`}
                                 >
-                                    <GraduationCap className="w-5 h-5" />
-                                    Mon Programme
+                                    <BookOpen className="w-5 h-5" />
+                                    Bibliothèque
                                 </Link>
                             )}
 
@@ -109,7 +109,7 @@ export default function MobileNav({ isAdmin, hasKidsAccess, toggles }: {
                                     className={`flex items-center gap-3 px-4 py-3 font-medium transition-all ${isActive('/dashboard/masterclass') ? 'bg-gradient-to-r from-magic-gold/20 to-transparent text-magic-gold border-l-2 border-magic-gold' : 'text-gray-400 hover:bg-white/5 hover:text-white border-l-2 border-transparent'}`}
                                 >
                                     <Video className="w-5 h-5" />
-                                    Les Masterclass
+                                    Les Ateliers
                                 </Link>
                             )}
 
