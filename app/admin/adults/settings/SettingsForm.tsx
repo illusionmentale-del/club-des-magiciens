@@ -27,7 +27,7 @@ export default function SettingsForm({ settings }: SettingsFormProps) {
                             </Link>
                             <h1 className="text-3xl font-bold flex items-center gap-2 text-white">
                                 <Shield className="w-8 h-8 text-blue-400" />
-                                Paramètres du QG
+                                Paramètres de la Vitrine <span className="text-sm font-normal text-slate-400 mt-2 ml-2">(Logo, Textes, RS)</span>
                             </h1>
                         </div>
                     </header>
