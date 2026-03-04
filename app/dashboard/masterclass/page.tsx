@@ -28,7 +28,7 @@ export default async function AdultMasterclassPage() {
 
     // 2. Fetch all courses (exclude kids), user purchases & settings
     const [coursesRes, purchasesRes, featuredSettingsRes, toggleSettingsRes] = await Promise.all([
-        supabase.from("courses").select("*").neq('audience', 'kids').order("created_at", { ascending: false }),
+        supabase.from("courses").select("*").neq('audience', 'kids').or("status.eq.published,and(status.eq.scheduled,published_at.lte.now())").order("created_at", { ascending: false }),
         supabase.from("user_purchases").select("course_id").eq("user_id", user.id),
         supabase.from("settings").select("*").eq("key", "adult_masterclass_featured_config"),
         supabase.from("settings").select("*").eq("key", "enable_adults_masterclass").single()

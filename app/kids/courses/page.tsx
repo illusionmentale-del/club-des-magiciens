@@ -15,6 +15,7 @@ export default async function KidsCoursesPage() {
         .from("courses")
         .select("*")
         .in('audience', ['kids', 'all'])
+        .or("status.eq.published,and(status.eq.scheduled,published_at.lte.now())")
         .order("created_at", { ascending: false });
 
     const coursesWithStats = await Promise.all((rawCourses || []).map(async (course) => {

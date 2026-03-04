@@ -317,9 +317,16 @@ export async function createCourse(formData: FormData) {
     const description = formData.get("description") as string;
     const imageUrl = formData.get("imageUrl") as string;
     const audience = formData.get("audience") as string || 'adults';
+    const status = formData.get("status") as string || 'published';
+    const publishedAtStr = formData.get("published_at") as string;
+
+    let published_at = null;
+    if (status === 'scheduled' && publishedAtStr) {
+        published_at = new Date(publishedAtStr).toISOString();
+    }
 
     const { error } = await supabase.from("courses").insert({
-        title, description, image_url: imageUrl, audience
+        title, description, image_url: imageUrl, audience, status, published_at
     });
 
     if (error) {
@@ -328,8 +335,59 @@ export async function createCourse(formData: FormData) {
     }
 
     revalidatePath("/dashboard/courses");
+    revalidatePath("/kids");
     revalidatePath("/admin");
-    redirect("/admin");
+    redirect("/admin/adults/courses");
+}
+
+export async function updateCourse(id: string, formData: FormData) {
+    const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) throw new Error("Unauthorized");
+
+    const title = formData.get("title") as string;
+    const description = formData.get("description") as string;
+    const imageUrl = formData.get("imageUrl") as string;
+    const audience = formData.get("audience") as string || 'adults';
+    const status = formData.get("status") as string || 'published';
+    const publishedAtStr = formData.get("published_at") as string;
+
+    let published_at = null;
+    if (status === 'scheduled' && publishedAtStr) {
+        published_at = new Date(publishedAtStr).toISOString();
+    }
+
+    const { error } = await supabase.from("courses").update({
+        title, description, image_url: imageUrl, audience, status, published_at
+    }).eq('id', id);
+
+    if (error) {
+        console.error("Error updating course:", error);
+        throw new Error(error.message);
+    }
+
+    revalidatePath("/dashboard/courses");
+    revalidatePath("/kids");
+    revalidatePath("/admin");
+    redirect("/admin/adults/courses"); // We'll redirect to the list
+}
+
+export async function deleteCourse(id: string) {
+    const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) throw new Error("Unauthorized");
+
+    const { error } = await supabase.from("courses").delete().eq('id', id);
+
+    if (error) {
+        console.error("Error deleting course:", error);
+        throw new Error(error.message);
+    }
+
+    revalidatePath("/dashboard/courses");
+    revalidatePath("/kids");
+    revalidatePath("/admin");
+    redirect("/admin/adults/courses");
 }
 
 // --- VIDEO ACTIONS ---

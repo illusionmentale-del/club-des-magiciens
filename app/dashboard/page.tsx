@@ -40,7 +40,7 @@ export default async function DashboardPage() {
         alertsRes,
         readAlertsRes
     ] = await Promise.all([
-        supabase.from("courses").select("*").neq('audience', 'kids').order("created_at", { ascending: false }),
+        supabase.from("courses").select("*").neq('audience', 'kids').or("status.eq.published,and(status.eq.scheduled,published_at.lte.now())").order("created_at", { ascending: false }),
         supabase.from("user_purchases").select("course_id").eq("user_id", user.id),
         supabase.from("settings").select("*"),
         supabase.from("lives").select("*").order("start_date", { ascending: true }),
@@ -103,9 +103,25 @@ export default async function DashboardPage() {
     }
 
     // Determine which courses to show in the "Nouveautés" block
-    const newsCourses = newsConfigIds.length > 0
-        ? newsConfigIds.map(id => courses.find(c => c.id === id)).filter(c => c !== undefined)
-        : courses.slice(0, 3);
+    const newsItems = newsConfigIds.length > 0
+        ? newsConfigIds.map((item: any) => {
+            if (typeof item === 'string') {
+                const c = courses.find(course => course.id === item);
+                return c ? { ...c, type: 'course' } : null;
+            } else if (item.type === 'course') {
+                const c = courses.find(course => course.id === item.id);
+                return c ? { ...c, type: 'course' } : null;
+            } else {
+                return {
+                    id: item.id,
+                    type: item.type,
+                    title: item.data?.title || 'Nouveau',
+                    url: item.data?.url,
+                    thumbnail_url: item.data?.image,
+                };
+            }
+        }).filter(Boolean)
+        : courses.slice(0, 3).map(c => ({ ...c, type: 'course' }));
 
     // Quick helper to determine if a course is unlocked
     const isUnlocked = (course: any) => isAdmin || purchasedCourseIds.has(course.id) || course.price === 'Gratuit' || !course.price;
@@ -170,7 +186,7 @@ export default async function DashboardPage() {
                     <div className="lg:col-span-2 space-y-12">
                         {/* NOUVEAUTÉS */}
                         {settingsMap?.show_adults_news !== 'false' && (
-                            <AdultNewsFeed items={newsCourses.map(c => ({ ...c, type: 'course' as const }))} />
+                            <AdultNewsFeed items={newsItems as any} />
                         )}
 
                         {/* SECTION PROMO BOUTIQUE (Optional, replacing the grid to keep it balanced) */}

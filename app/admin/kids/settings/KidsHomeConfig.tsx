@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { Sparkles, Megaphone, Trophy, ShoppingBag, Eye, Save, ExternalLink, X } from "lucide-react";
+import { Sparkles, Megaphone, Trophy, ShoppingBag, Eye, Save, ExternalLink, X, Video } from "lucide-react";
 import { saveKidsHomeSettings } from "@/app/admin/actions";
 import CoverImageUpload from "@/components/admin/CoverImageUpload";
 import { useAdmin } from "@/app/admin/AdminContext";
@@ -259,7 +259,7 @@ export default function KidsHomeConfig({ initialSettings, libraryItems }: KidsHo
                                 <Separator className="my-6 bg-white/5" />
 
                                 <div className="space-y-4">
-                                    <h3 className="text-sm font-bold text-white uppercase tracking-widest bg-brand-gold/10 p-2 rounded-lg border border-brand-gold/20 text-brand-gold">
+                                    <h3 className="text-sm font-bold text-black uppercase tracking-widest bg-brand-gold p-2 rounded-lg border border-brand-gold shadow-[0_0_15px_rgba(255,215,0,0.3)]">
                                         Contenu Personnalisé
                                     </h3>
 
@@ -270,10 +270,11 @@ export default function KidsHomeConfig({ initialSettings, libraryItems }: KidsHo
                                                 <select
                                                     value={newCustomItem.type}
                                                     onChange={(e) => setNewCustomItem({ ...newCustomItem, type: e.target.value })}
-                                                    className="w-full bg-brand-bg border border-white/10 rounded-lg p-2 text-white text-sm focus:border-brand-gold/50 outline-none"
+                                                    className="w-full bg-brand-bg border border-white/10 rounded-lg p-2 text-white text-sm focus:border-brand-purple/50 outline-none"
                                                 >
                                                     <option value="custom_link">Lien Externe</option>
                                                     <option value="tip">Conseil / Astuce</option>
+                                                    <option value="product">Produit Boutique</option>
                                                 </select>
                                             </div>
                                             <div className="space-y-2">
@@ -282,7 +283,7 @@ export default function KidsHomeConfig({ initialSettings, libraryItems }: KidsHo
                                                     type="text"
                                                     value={newCustomItem.title}
                                                     onChange={(e) => setNewCustomItem({ ...newCustomItem, title: e.target.value })}
-                                                    className="w-full bg-brand-bg border border-white/10 rounded-lg p-2 text-white text-sm focus:border-brand-gold/50 outline-none"
+                                                    className="w-full bg-brand-bg border border-white/10 rounded-lg p-2 text-white text-sm focus:border-brand-purple/50 outline-none"
                                                     placeholder="Titre de l'élément..."
                                                 />
                                             </div>
@@ -294,7 +295,7 @@ export default function KidsHomeConfig({ initialSettings, libraryItems }: KidsHo
                                                 type="text"
                                                 value={newCustomItem.url}
                                                 onChange={(e) => setNewCustomItem({ ...newCustomItem, url: e.target.value })}
-                                                className="w-full bg-brand-bg border border-white/10 rounded-lg p-2 text-white text-sm focus:border-brand-gold/50 outline-none"
+                                                className="w-full bg-brand-bg border border-white/10 rounded-lg p-2 text-white text-sm focus:border-brand-purple/50 outline-none"
                                                 placeholder={newCustomItem.type === 'tip' ? "Texte du conseil..." : "https://..."}
                                             />
                                         </div>
@@ -310,18 +311,7 @@ export default function KidsHomeConfig({ initialSettings, libraryItems }: KidsHo
                                         <Button
                                             onClick={() => {
                                                 if (!newCustomItem.title) return;
-                                                // Generate a random ID for custom items
                                                 const id = `custom_${Date.now()}`;
-                                                // We need to store the custom data somewhere since newsConfig is just IDs + Types
-                                                // For now, we'll embed the data in the ID string with a separator or handle it differently?
-                                                // Actually, simpler approach: The backend/frontend expects structured data.
-                                                // Let's store the full object in newsConfig which is flexible.
-                                                // Wait, newsConfig was typed as {id, type}. To support custom data, we need to expand that type.
-                                                // For this MVP, let's assume we store the custom data directly in the 'id' field as a JSON string or manage a separate 'customItems' list.
-                                                // Better approach: Simply add it to newsConfig with type 'custom' and store data in 'meta' field if we change the structure.
-                                                // BUT, to avoid big refactors, let's just create a `custom_items` config separately?
-                                                // No, unification is better. Let's expand newsConfig to hold optional `data` property.
-
                                                 const newItem = {
                                                     id: id,
                                                     type: newCustomItem.type,
@@ -331,50 +321,83 @@ export default function KidsHomeConfig({ initialSettings, libraryItems }: KidsHo
                                                         image: newCustomItem.image
                                                     }
                                                 };
-
-                                                // We need to cast or update the state type definition above
                                                 setNewsConfig([...newsConfig, newItem as any]);
                                                 setNewCustomItem({ type: 'custom_link', title: '', url: '', image: '' });
                                             }}
-                                            className="w-full bg-brand-gold/20 text-brand-gold border border-brand-gold/50 hover:bg-brand-gold hover:text-black"
+                                            className="w-full bg-brand-purple/20 text-brand-purple border border-brand-purple/50 hover:bg-brand-purple hover:text-white"
                                         >
-                                            + Ajouter à la liste
+                                            + Ajouter du contenu
                                         </Button>
                                     </div>
 
-                                    {/* List of Custom Items */}
-                                    <div className="space-y-2">
-                                        {newsConfig.filter(n => ['custom_link', 'tip', 'product'].includes(n.type)).map((item, index) => (
-                                            <div key={item.id || index} className="flex items-center justify-between p-3 bg-white/5 border border-white/10 rounded-lg">
-                                                <div className="flex items-center gap-3">
-                                                    {item.data?.image ? (
-                                                        <img src={item.data.image} className="w-10 h-10 rounded-lg object-cover border border-white/10" />
-                                                    ) : (
-                                                        <div className="w-10 h-10 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center">
-                                                            {item.type === 'tip' && <Megaphone className="w-5 h-5 text-brand-text-muted" />}
-                                                            {item.type === 'custom_link' && <ExternalLink className="w-5 h-5 text-brand-text-muted" />}
+                                    {/* List of ALL Selected Items (Unified) */}
+                                    {newsConfig.length > 0 && (
+                                        <div className="mt-8">
+                                            <h3 className="text-sm font-bold text-white uppercase tracking-widest mb-4 flex items-center justify-between">
+                                                <span>Sélection Actuelle ({newsConfig.length})</span>
+                                            </h3>
+                                            <div className="space-y-2">
+                                                {newsConfig.map((item, idx) => {
+                                                    const isCourse = item.type === 'course';
+                                                    const course = isCourse ? libraryItems.find(c => c.id === item.id) : null;
+                                                    const title = isCourse ? (course?.title || 'Cours introuvable') : item.data?.title;
+
+                                                    return (
+                                                        <div key={item.id || idx} className="flex items-center justify-between p-3 bg-white/5 border border-white/10 rounded-lg">
+                                                            <div className="flex items-center gap-3">
+                                                                <span className="text-xs text-brand-text-muted uppercase tracking-widest w-6 shrink-0">#{idx + 1}</span>
+
+                                                                {isCourse ? (
+                                                                    <div className="flex items-center gap-3">
+                                                                        {course?.thumbnail_url ? (
+                                                                            <img src={course.thumbnail_url} className="w-10 h-10 rounded-lg object-cover border border-white/10 shrink-0" alt="" />
+                                                                        ) : (
+                                                                            <div className="w-10 h-10 rounded-lg bg-black border border-white/10 flex items-center justify-center shrink-0">
+                                                                                <Video className="w-4 h-4 text-slate-400" />
+                                                                            </div>
+                                                                        )}
+                                                                        <div className="flex flex-col">
+                                                                            <p className="text-sm font-bold text-white max-w-[200px] sm:max-w-none truncate">{title}</p>
+                                                                            <span className="text-[10px] font-bold uppercase tracking-widest bg-brand-purple/20 px-1.5 py-0.5 rounded text-brand-purple w-fit">
+                                                                                Catalogue Vidéo
+                                                                            </span>
+                                                                        </div>
+                                                                    </div>
+                                                                ) : (
+                                                                    <div className="flex items-center gap-3">
+                                                                        {item.data?.image ? (
+                                                                            <img src={item.data.image} className="w-10 h-10 rounded-lg object-cover border border-white/10 shrink-0" alt="" />
+                                                                        ) : (
+                                                                            <div className="w-10 h-10 rounded-lg bg-black border border-white/10 flex items-center justify-center shrink-0">
+                                                                                {item.type === 'tip' && <Trophy className="w-4 h-4 text-slate-400" />}
+                                                                                {item.type === 'custom_link' && <ExternalLink className="w-4 h-4 text-slate-400" />}
+                                                                                {item.type === 'product' && <ShoppingBag className="w-4 h-4 text-slate-400" />}
+                                                                            </div>
+                                                                        )}
+                                                                        <div className="flex flex-col">
+                                                                            <p className="text-sm font-bold text-white max-w-[200px] sm:max-w-none truncate">{title}</p>
+                                                                            <div className="flex items-center gap-2">
+                                                                                <span className="text-[10px] font-bold uppercase tracking-widest bg-white/10 px-1.5 py-0.5 rounded text-slate-400">
+                                                                                    {item.type === 'custom_link' ? 'LIEN' : item.type === 'product' ? 'BOUTIQUE' : 'CONSEIL'}
+                                                                                </span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                )}
+                                                            </div>
+                                                            <button
+                                                                onClick={() => setNewsConfig(newsConfig.filter((_, i) => i !== idx))}
+                                                                className="p-2 hover:bg-red-500/20 text-slate-400 hover:text-red-400 rounded-lg transition-colors shrink-0"
+                                                                title="Supprimer"
+                                                            >
+                                                                <X className="w-4 h-4" />
+                                                            </button>
                                                         </div>
-                                                    )}
-                                                    <div>
-                                                        <p className="text-sm font-bold text-white">{item.data?.title || "Sans titre"}</p>
-                                                        <div className="flex items-center gap-2">
-                                                            <span className="text-[10px] font-bold uppercase tracking-widest bg-white/10 px-1.5 py-0.5 rounded text-brand-text-muted">
-                                                                {item.type === 'custom_link' ? 'LIEN' : 'CONSEIL'}
-                                                            </span>
-                                                            <p className="text-[10px] text-brand-text-muted truncate max-w-[150px]">{item.data?.url}</p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <button
-                                                    onClick={() => setNewsConfig(newsConfig.filter(n => n.id !== item.id))}
-                                                    className="p-2 hover:bg-red-500/20 text-brand-text-muted hover:text-red-400 rounded-lg transition-colors"
-                                                    title="Supprimer"
-                                                >
-                                                    <X className="w-4 h-4" />
-                                                </button>
+                                                    );
+                                                })}
                                             </div>
-                                        ))}
-                                    </div>
+                                        </div>
+                                    )}
                                 </div>
                             </div>
                         )}

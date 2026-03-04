@@ -1,7 +1,8 @@
 import { createClient } from "@/lib/supabase/server";
 import { addVideo, deleteVideo } from "../../../actions";
 import Link from "next/link";
-import { ArrowLeft, Trash2, Video, Clock, Plus } from "lucide-react";
+import { ArrowLeft, Trash2, Video, Clock, Plus, Settings } from "lucide-react";
+import CourseForm from "@/components/admin/CourseForm";
 import { redirect, notFound } from "next/navigation";
 
 // Client Component wrapper for delete button to handle binding
@@ -128,6 +129,15 @@ export default async function AdminCoursePage(props: { params: Promise<{ id: str
                         </p>
                     </form>
                 </div>
+            </div>
+
+            {/* Course Settings and Danger Zone */}
+            <div className="border-t border-brand-border pt-12 mt-12">
+                <h2 className="text-2xl font-serif text-brand-text mb-6 flex items-center gap-2">
+                    <Settings className="w-6 h-6 text-brand-text-muted" />
+                    Paramètres de la formation
+                </h2>
+                <CourseForm course={course} isEditing={true} />
             </div>
         </div>
     );

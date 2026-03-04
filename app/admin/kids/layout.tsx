@@ -53,10 +53,6 @@ export default async function AdminLayout({
                     <Separator className="my-6 bg-white/5" />
                     <p className="px-4 text-[10px] font-black text-brand-purple uppercase tracking-widest mb-4">Gestion du Contenu</p>
 
-                    <Link href="/admin/kids/settings" className="flex items-center gap-3 px-4 py-3 text-sm font-bold uppercase tracking-widest text-brand-text-muted hover:text-white hover:bg-white/5 rounded-xl transition-all group">
-                        <Settings className="w-5 h-5 group-hover:text-brand-purple transition-colors" />
-                        Configuration & Menus
-                    </Link>
                     <Link href="/admin/kids/library" className="flex items-center gap-3 px-4 py-3 text-sm font-bold uppercase tracking-widest text-brand-text-muted hover:text-white hover:bg-white/5 rounded-xl transition-all group">
                         <Film className="w-5 h-5 group-hover:text-brand-purple transition-colors" />
                         Vidéos & Ateliers
@@ -65,9 +61,13 @@ export default async function AdminLayout({
                         <Sparkles className="w-5 h-5 group-hover:text-brand-purple transition-colors" />
                         Page "Les Ateliers"
                     </Link>
+                    <Link href="/admin/kids/shop" className="flex items-center gap-3 px-4 py-3 text-sm font-bold uppercase tracking-widest text-brand-text-muted hover:text-white hover:bg-white/5 rounded-xl transition-all group">
+                        <Lock className="w-5 h-5 group-hover:text-brand-purple transition-colors" />
+                        La Boutique
+                    </Link>
                     <Link href="/admin/kids/lives" className="flex items-center gap-3 px-4 py-3 text-sm font-bold uppercase tracking-widest text-brand-text-muted hover:text-white hover:bg-white/5 rounded-xl transition-all group">
                         <Calendar className="w-4 h-4 group-hover:text-brand-purple transition-colors" />
-                        Agenda & Événements
+                        Diffusions Live
                     </Link>
 
                     <Separator className="my-6 bg-white/5" />
@@ -75,32 +75,28 @@ export default async function AdminLayout({
 
                     <Link href="/admin/kids/inbox" className="flex items-center gap-3 px-4 py-3 text-sm font-bold uppercase tracking-widest text-brand-text-muted hover:text-white hover:bg-white/5 rounded-xl transition-all group">
                         <MessageCircle className="w-5 h-5 group-hover:text-brand-purple transition-colors" />
-                        Questions En Attente
+                        Questions Élèves
                     </Link>
                     <Link href="/admin/kids/users" className="flex items-center gap-3 px-4 py-3 text-sm font-bold uppercase tracking-widest text-brand-text-muted hover:text-white hover:bg-white/5 rounded-xl transition-all group">
                         <Users className="w-5 h-5 group-hover:text-brand-purple transition-colors" />
-                        Élèves
+                        Liste des Élèves
                     </Link>
                     <Link href="/admin/kids/import" className="flex items-center gap-3 px-4 py-3 text-sm font-bold uppercase tracking-widest text-brand-text-muted hover:text-white hover:bg-white/5 rounded-xl transition-all group">
                         <Users className="w-5 h-5 group-hover:text-brand-purple transition-colors" />
-                        Importation Contacts
+                        Importation CSV
                     </Link>
+
+                    <Separator className="my-6 bg-white/5" />
+                    <p className="px-4 text-[10px] font-black text-brand-text-muted uppercase tracking-widest mb-4">Pilotage & Système</p>
+
                     <Link href="/admin/kids/gamification" className="flex items-center gap-3 px-4 py-3 text-sm font-bold uppercase tracking-widest text-brand-text-muted hover:text-white hover:bg-white/5 rounded-xl transition-all group">
                         <Trophy className="w-5 h-5 group-hover:text-brand-purple transition-colors" />
-                        Badges
+                        Badges & Évolution
                     </Link>
-
-                    <Separator className="my-6 bg-white/5" />
-                    <p className="px-4 text-[10px] font-black text-brand-gold uppercase tracking-widest mb-4">Commercial</p>
-
-                    <Link href="/admin/kids/shop" className="flex items-center gap-3 px-4 py-3 text-sm font-bold uppercase tracking-widest text-brand-text-muted hover:text-white hover:bg-white/5 rounded-xl transition-all group">
-                        <Lock className="w-5 h-5 group-hover:text-brand-purple transition-colors" />
-                        Boutique Premium
+                    <Link href="/admin/kids/settings" className="flex items-center gap-3 px-4 py-3 text-sm font-bold uppercase tracking-widest text-brand-text-muted hover:text-white hover:bg-white/5 rounded-xl transition-all group">
+                        <Settings className="w-5 h-5 group-hover:text-brand-purple transition-colors" />
+                        Réglages Dashboard
                     </Link>
-
-                    <Separator className="my-6 bg-white/5" />
-                    <p className="px-4 text-[10px] font-black text-brand-text-muted uppercase tracking-widest mb-4">Système</p>
-
                     <Link href="/admin/legal" className="flex items-center gap-3 px-4 py-3 text-sm font-bold uppercase tracking-widest text-brand-text-muted hover:text-white hover:bg-white/5 rounded-xl transition-all group">
                         <BookOpen className="w-5 h-5 group-hover:text-brand-purple transition-colors" />
                         Textes Légaux

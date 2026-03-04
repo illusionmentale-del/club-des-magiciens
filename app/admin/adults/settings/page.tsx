@@ -2,8 +2,6 @@ import { createClient } from "@/lib/supabase/server";
 import { Sparkles } from "lucide-react";
 import SettingsForm from "./SettingsForm";
 import AdultHomeConfig from "./AdultHomeConfig";
-import AdultMainProgramsConfig from "./AdultMainProgramsConfig";
-import AdultHomeNewsConfig from "./AdultHomeNewsConfig";
 import AdultMenuToggles from "@/components/admin/AdultMenuToggles";
 import AdultHomeBlockToggles from "@/components/admin/AdultHomeBlockToggles";
 
@@ -35,11 +33,7 @@ export default async function AdminSettingsPage() {
                 </div>
             </div>
 
-            <AdultHomeConfig initialSettings={settingsMap} />
-            <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
-                <AdultMainProgramsConfig initialSettings={settingsMap} availableCourses={availableCourses} />
-                <AdultHomeNewsConfig initialSettings={settingsMap} availableCourses={availableCourses} />
-            </div>
+            <AdultHomeConfig initialSettings={settingsMap} availableCourses={availableCourses} />
 
             <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
                 <AdultMenuToggles initialSettings={settingsMap} />

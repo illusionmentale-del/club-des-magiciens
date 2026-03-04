@@ -20,7 +20,7 @@ export default async function ProgramPage() {
 
     // 2. Fetch all courses, user purchases & settings
     const [coursesRes, purchasesRes, settingsRes] = await Promise.all([
-        supabase.from("courses").select("*").neq('audience', 'kids').order("created_at", { ascending: false }),
+        supabase.from("courses").select("*").neq('audience', 'kids').or("status.eq.published,and(status.eq.scheduled,published_at.lte.now())").order("created_at", { ascending: false }),
         supabase.from("user_purchases").select("course_id").eq("user_id", user.id),
         supabase.from("settings").select("*").eq("key", "adult_home_main_programs")
     ]);

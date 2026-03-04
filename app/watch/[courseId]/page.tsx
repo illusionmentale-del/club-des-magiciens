@@ -45,6 +45,24 @@ export default async function WatchPage(props: WatchPageProps) {
         notFound();
     }
 
+    // 3. Early profile check for admin rights & draft protection
+    const { data: profile } = await supabase
+        .from("profiles")
+        .select("role")
+        .eq("id", user.id)
+        .single();
+    const isAdmin = profile?.role === 'admin' || (user.email?.includes('admin@') ?? false);
+
+    // 4. Draft/Scheduled Course Protection
+    if (course && !isAdmin) {
+        if (course.status === 'draft') {
+            notFound();
+        }
+        if (course.status === 'scheduled' && course.published_at && new Date(course.published_at) > new Date()) {
+            notFound();
+        }
+    }
+
     // --- CASE A: LIBRARY ITEM (KIDS) ---
     if (libraryItem) {
         // Check Validation Status
@@ -78,13 +96,7 @@ export default async function WatchPage(props: WatchPageProps) {
             }));
         }
 
-        // Check if user is admin
-        const { data: profile } = await supabase
-            .from("profiles")
-            .select("role")
-            .eq("id", user.id)
-            .single();
-        const isAdmin = profile?.role === 'admin' || (user.email?.includes('admin@') ?? false);
+        // (Admin check already done above)
 
         // Mark any pending notifications as read for this kid on this video
         if (!isAdmin) {
@@ -262,13 +274,7 @@ export default async function WatchPage(props: WatchPageProps) {
         ? videos?.find(v => v.id === currentVideoId)
         : videos?.[0];
 
-    // Determine Admin status for Case B Comments
-    const { data: profile } = await supabase
-        .from("profiles")
-        .select("role")
-        .eq("id", user.id)
-        .single();
-    const isAdmin = profile?.role === 'admin' || (user.email?.includes('admin@') ?? false);
+    // Determine Admin status for Case B Comments (Already done above)
 
     return (
         <div className={cn(

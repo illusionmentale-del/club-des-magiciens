@@ -35,23 +35,16 @@ export default function AdultsAdminLayout({
                     </Link>
 
                     <Separator className="my-6 bg-white/5" />
-                    <p className="px-4 text-[10px] font-black text-brand-gold uppercase tracking-widest mb-4">Business</p>
+                    <Separator className="my-6 bg-white/5" />
+                    <p className="px-4 text-[10px] font-black text-brand-gold uppercase tracking-widest mb-4">Gestion du Contenu</p>
 
-                    <Link href="/admin/adults/users" className="flex items-center gap-3 px-4 py-3 text-sm font-bold uppercase tracking-widest text-brand-text-muted hover:text-white hover:bg-white/5 rounded-xl transition-all group">
-                        <Users className="w-5 h-5 group-hover:text-brand-gold transition-colors" />
-                        Élèves
-                    </Link>
                     <Link href="/admin/adults/courses" className="flex items-center gap-3 px-4 py-3 text-sm font-bold uppercase tracking-widest text-brand-text-muted hover:text-white hover:bg-white/5 rounded-xl transition-all group">
                         <BookOpen className="w-5 h-5 group-hover:text-brand-gold transition-colors" />
                         Formations
                     </Link>
                     <Link href="/admin/adults/products" className="flex items-center gap-3 px-4 py-3 text-sm font-bold uppercase tracking-widest text-brand-text-muted hover:text-white hover:bg-white/5 rounded-xl transition-all group">
                         <ShoppingBag className="w-5 h-5 group-hover:text-brand-gold transition-colors" />
-                        Ventes & Abos
-                    </Link>
-                    <Link href="/admin/adults/analytics" className="flex items-center gap-3 px-4 py-3 text-sm font-bold uppercase tracking-widest text-brand-text-muted hover:text-white hover:bg-white/5 rounded-xl transition-all group">
-                        <BarChart className="w-5 h-5 group-hover:text-brand-gold transition-colors" />
-                        Analytics
+                        La Boutique
                     </Link>
                     <Link href="/admin/adults/lives" className="flex items-center gap-3 px-4 py-3 text-sm font-bold uppercase tracking-widest text-brand-text-muted hover:text-white hover:bg-white/5 rounded-xl transition-all group">
                         <Video className="w-5 h-5 group-hover:text-brand-gold transition-colors" />
@@ -59,23 +52,31 @@ export default function AdultsAdminLayout({
                     </Link>
 
                     <Separator className="my-6 bg-white/5" />
-                    <p className="px-4 text-[10px] font-black text-brand-cyan uppercase tracking-widest mb-4">Communauté</p>
+                    <p className="px-4 text-[10px] font-black text-brand-cyan uppercase tracking-widest mb-4">Suivi & Communauté</p>
 
+                    <Link href="/admin/adults/inbox" className="flex items-center gap-3 px-4 py-3 text-sm font-bold uppercase tracking-widest text-brand-text-muted hover:text-white hover:bg-white/5 rounded-xl transition-all group">
+                        <MessageCircle className="w-5 h-5 group-hover:text-brand-gold transition-colors" />
+                        Questions Élèves
+                    </Link>
+                    <Link href="/admin/adults/users" className="flex items-center gap-3 px-4 py-3 text-sm font-bold uppercase tracking-widest text-brand-text-muted hover:text-white hover:bg-white/5 rounded-xl transition-all group">
+                        <Users className="w-5 h-5 group-hover:text-brand-gold transition-colors" />
+                        Liste des Élèves
+                    </Link>
                     <Link href="/admin/adults/newsletter" className="flex items-center gap-3 px-4 py-3 text-sm font-bold uppercase tracking-widest text-brand-text-muted hover:text-white hover:bg-white/5 rounded-xl transition-all group">
                         <Mail className="w-5 h-5 group-hover:text-brand-gold transition-colors" />
                         Newsletter
                     </Link>
-                    <Link href="/admin/adults/inbox" className="flex items-center gap-3 px-4 py-3 text-sm font-bold uppercase tracking-widest text-brand-text-muted hover:text-white hover:bg-white/5 rounded-xl transition-all group">
-                        <MessageCircle className="w-5 h-5 group-hover:text-brand-gold transition-colors" />
-                        Questions En Attente
-                    </Link>
 
                     <Separator className="my-6 bg-white/5" />
-                    <p className="px-4 text-[10px] font-black text-brand-text-muted uppercase tracking-widest mb-4">Système</p>
+                    <p className="px-4 text-[10px] font-black text-brand-text-muted uppercase tracking-widest mb-4">Pilotage & Système</p>
 
+                    <Link href="/admin/adults/analytics" className="flex items-center gap-3 px-4 py-3 text-sm font-bold uppercase tracking-widest text-brand-text-muted hover:text-white hover:bg-white/5 rounded-xl transition-all group">
+                        <BarChart className="w-5 h-5 group-hover:text-brand-gold transition-colors" />
+                        Analytics
+                    </Link>
                     <Link href="/admin/adults/settings" className="flex items-center gap-3 px-4 py-3 text-sm font-bold uppercase tracking-widest text-brand-text-muted hover:text-white hover:bg-white/5 rounded-xl transition-all group">
                         <Settings className="w-5 h-5 group-hover:text-brand-gold transition-colors" />
-                        Réglages
+                        Réglages Dashboard
                     </Link>
                     <Link href="/admin/legal" className="flex items-center gap-3 px-4 py-3 text-sm font-bold uppercase tracking-widest text-brand-text-muted hover:text-white hover:bg-white/5 rounded-xl transition-all group">
                         <BookOpen className="w-5 h-5 group-hover:text-brand-gold transition-colors" />
