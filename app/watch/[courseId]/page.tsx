@@ -117,8 +117,8 @@ export default async function WatchPage(props: WatchPageProps) {
                 {/* Ambient Background Lights if Adult */}
                 {!isKidsItem && (
                     <>
-                        <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] bg-magic-gold/10 blur-[150px] rounded-full pointer-events-none mix-blend-screen"></div>
-                        <div className="absolute top-[30%] right-[-10%] w-[40%] h-[40%] bg-orange-600/10 blur-[120px] rounded-full pointer-events-none mix-blend-screen"></div>
+                        <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] bg-magic-cyan/10 blur-[150px] rounded-full pointer-events-none mix-blend-screen"></div>
+                        <div className="absolute top-[30%] right-[-10%] w-[40%] h-[40%] bg-blue-700/10 blur-[120px] rounded-full pointer-events-none mix-blend-screen"></div>
                     </>
                 )}
                 <header className="border-b border-white/10 bg-magic-card/50 backdrop-blur-md sticky top-0 z-50">
@@ -130,7 +130,7 @@ export default async function WatchPage(props: WatchPageProps) {
                         <div className="flex items-center gap-2">
                             <div className={cn(
                                 "px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest border",
-                                isKidsItem ? "bg-purple-500/20 text-purple-400 border-purple-500/30" : "bg-magic-gold/20 text-magic-gold border-magic-gold/30"
+                                isKidsItem ? "bg-purple-500/20 text-purple-400 border-purple-500/30" : "bg-magic-cyan/20 text-magic-cyan border-magic-cyan/30"
                             )}>
                                 Semaine {libraryItem.week_number}
                             </div>
@@ -191,7 +191,7 @@ export default async function WatchPage(props: WatchPageProps) {
                         {/* Validation Card */}
                         <div className="w-full md:w-72 shrink-0">
                             <div className="bg-magic-card border border-white/10 rounded-2xl p-6 sticky top-24 space-y-6 text-center">
-                                <div className="w-16 h-16 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full mx-auto flex items-center justify-center shadow-lg shadow-orange-500/20">
+                                <div className="w-16 h-16 bg-gradient-to-br from-cyan-400 to-blue-600 rounded-full mx-auto flex items-center justify-center shadow-lg shadow-blue-600/20">
                                     <Trophy className="w-8 h-8 text-black" />
                                 </div>
                                 <div>
@@ -218,7 +218,7 @@ export default async function WatchPage(props: WatchPageProps) {
                                     }}>
                                         <button className={cn(
                                             "w-full text-white font-bold py-4 rounded-xl transition-all shadow-lg active:scale-95 flex items-center justify-center gap-2 group",
-                                            isKidsItem ? "bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 hover:shadow-purple-500/30" : "bg-gradient-to-r from-magic-gold to-orange-500 text-black hover:from-yellow-400 hover:to-orange-400 hover:shadow-magic-gold/30"
+                                            isKidsItem ? "bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 hover:shadow-purple-500/30" : "bg-gradient-to-r from-magic-cyan to-blue-600 text-black hover:from-cyan-400 hover:to-blue-500 hover:shadow-magic-cyan/30"
                                         )}>
                                             <Star className={cn("w-5 h-5 group-hover:rotate-12 transition-transform", isKidsItem ? "" : "text-black")} />
                                             JE VALIDE !
@@ -299,7 +299,7 @@ export default async function WatchPage(props: WatchPageProps) {
     return (
         <div className={cn(
             "min-h-screen text-white flex flex-col relative font-sans",
-            isKidsCourse ? "bg-[#050507] selection:bg-brand-purple/30" : "bg-[#050507] selection:bg-magic-gold/30"
+            isKidsCourse ? "bg-[#050507] selection:bg-brand-purple/30" : "bg-[#050507] selection:bg-magic-cyan/30"
         )}>
             {/* Ambient Background Lights */}
             {isKidsCourse ? (
@@ -309,8 +309,8 @@ export default async function WatchPage(props: WatchPageProps) {
                 </>
             ) : (
                 <>
-                    <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] bg-magic-gold/5 blur-[150px] rounded-full pointer-events-none mix-blend-screen"></div>
-                    <div className="absolute top-[30%] right-[-10%] w-[40%] h-[40%] bg-orange-600/5 blur-[120px] rounded-full pointer-events-none mix-blend-screen"></div>
+                    <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] bg-magic-cyan/5 blur-[150px] rounded-full pointer-events-none mix-blend-screen"></div>
+                    <div className="absolute top-[30%] right-[-10%] w-[40%] h-[40%] bg-blue-700/5 blur-[120px] rounded-full pointer-events-none mix-blend-screen"></div>
                 </>
             )}
 
@@ -323,7 +323,7 @@ export default async function WatchPage(props: WatchPageProps) {
                     </Link>
                     <h1 className={cn(
                         "text-lg truncate max-w-md hidden md:block",
-                        isKidsCourse ? "font-black uppercase text-brand-purple" : "font-serif text-magic-gold"
+                        isKidsCourse ? "font-black uppercase text-brand-purple" : "font-serif text-magic-cyan"
                     )}>
                         {course.title}
                     </h1>
@@ -419,7 +419,7 @@ export default async function WatchPage(props: WatchPageProps) {
                                 <div
                                     className={cn(
                                         "h-full transition-all duration-500",
-                                        isKidsCourse ? "bg-brand-purple" : "bg-gradient-to-r from-magic-gold to-orange-500"
+                                        isKidsCourse ? "bg-brand-purple" : "bg-gradient-to-r from-magic-cyan to-blue-600"
                                     )}
                                     style={{ width: `${progressPercentage}%` }}
                                 ></div>
@@ -438,7 +438,7 @@ export default async function WatchPage(props: WatchPageProps) {
                                         className={cn(
                                             "flex items-center gap-3 p-3 rounded-lg transition-all group relative",
                                             isActive
-                                                ? (isKidsCourse ? "bg-brand-purple/20 border border-brand-purple/50" : "bg-magic-gold/10 border border-magic-gold/30")
+                                                ? (isKidsCourse ? "bg-brand-purple/20 border border-brand-purple/50" : "bg-magic-cyan/10 border border-magic-cyan/30")
                                                 : "hover:bg-white/5 border border-transparent"
                                         )}
                                     >
@@ -448,7 +448,7 @@ export default async function WatchPage(props: WatchPageProps) {
                                                 isCompleted
                                                     ? "bg-green-500 text-black border border-green-400"
                                                     : isActive
-                                                        ? (isKidsCourse ? "bg-brand-purple text-white shadow-[0_0_15px_rgba(168,85,247,0.4)] font-bold" : "bg-magic-gold text-black font-bold shadow-[0_0_15px_rgba(238,195,67,0.4)]")
+                                                        ? (isKidsCourse ? "bg-brand-purple text-white shadow-[0_0_15px_rgba(168,85,247,0.4)] font-bold" : "bg-magic-cyan text-black font-bold shadow-[0_0_15px_rgba(238,195,67,0.4)]")
                                                         : "bg-[#111] text-gray-500 border border-white/10 group-hover:border-white/30"
                                             )}>
                                                 {isCompleted ? (
@@ -462,7 +462,7 @@ export default async function WatchPage(props: WatchPageProps) {
                                         <div className="flex-1 min-w-0">
                                             <p className={cn(
                                                 "text-sm font-medium leading-tight line-clamp-2 transition-colors",
-                                                isActive ? (isKidsCourse ? "text-white" : "text-magic-gold") : "text-gray-300 group-hover:text-white",
+                                                isActive ? (isKidsCourse ? "text-white" : "text-magic-cyan") : "text-gray-300 group-hover:text-white",
                                                 isCompleted && !isActive && "text-gray-500"
                                             )}>
                                                 {video.title}
@@ -474,7 +474,7 @@ export default async function WatchPage(props: WatchPageProps) {
 
                                         {isActive && !isCompleted && <PlayCircle className={cn(
                                             "w-4 h-4 shrink-0",
-                                            isKidsCourse ? "text-brand-purple drop-shadow-[0_0_8px_rgba(168,85,247,0.5)]" : "text-magic-gold drop-shadow-[0_0_8px_rgba(238,195,67,0.5)]"
+                                            isKidsCourse ? "text-brand-purple drop-shadow-[0_0_8px_rgba(168,85,247,0.5)]" : "text-magic-cyan drop-shadow-[0_0_8px_rgba(238,195,67,0.5)]"
                                         )} />}
                                     </Link>
                                 )

@@ -17,11 +17,11 @@ export default function BientotDispo({
     return (
         <div className="min-h-[80vh] flex flex-col items-center justify-center p-4 relative overflow-hidden">
             {/* Ambient Background */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-magic-gold/5 blur-[120px] rounded-full pointer-events-none mix-blend-screen" />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-magic-cyan/5 blur-[120px] rounded-full pointer-events-none mix-blend-screen" />
 
             <div className="relative z-10 max-w-2xl mx-auto text-center space-y-8 p-12 bg-black/40 border border-white/10 rounded-3xl backdrop-blur-md">
-                <div className="w-20 h-20 bg-magic-gold/10 rounded-2xl flex items-center justify-center mx-auto border border-magic-gold/20 mb-6 relative">
-                    <Sparkles className="w-10 h-10 text-magic-gold animate-pulse" />
+                <div className="w-20 h-20 bg-magic-cyan/10 rounded-2xl flex items-center justify-center mx-auto border border-magic-cyan/20 mb-6 relative">
+                    <Sparkles className="w-10 h-10 text-magic-cyan animate-pulse" />
                     {/* Sparkle decors */}
                     <Sparkles className="w-4 h-4 text-yellow-300 absolute -top-2 -right-2 rotate-12" />
                     <Sparkles className="w-3 h-3 text-white absolute bottom-1 -left-2 -rotate-12" />

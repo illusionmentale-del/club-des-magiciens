@@ -80,7 +80,7 @@ export default function NewUserPage() {
                         <div className="pt-4">
                             <button
                                 type="submit"
-                                className="w-full bg-magic-purple hover:bg-magic-gold text-white font-bold py-4 rounded-xl transition-all flex items-center justify-center gap-2"
+                                className="w-full bg-magic-purple hover:bg-magic-cyan text-white font-bold py-4 rounded-xl transition-all flex items-center justify-center gap-2"
                             >
                                 <UserPlus className="w-5 h-5" />
                                 Créer l'utilisateur

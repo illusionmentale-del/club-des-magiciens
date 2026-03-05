@@ -76,7 +76,7 @@ export default function OnboardingPage() {
     return (
         <div className="min-h-screen bg-brand-bg text-brand-text flex flex-col items-center justify-center p-4">
             <div className="w-full max-w-lg bg-brand-card border border-brand-border rounded-2xl p-8 shadow-2xl relative overflow-hidden">
-                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-brand-purple to-brand-gold"></div>
+                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-brand-purple to-brand-cyan"></div>
 
                 <h1 className="text-3xl font-serif font-bold mb-2">Bienvenue au Club ! 🎩</h1>
                 <p className="text-brand-text-muted mb-8">

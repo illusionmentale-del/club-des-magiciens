@@ -140,17 +140,17 @@ export default async function KidsVideoPlayerPage({ params }: { params: { videoI
                 {/* Video Player Container */}
                 <div className="bg-[#0A0A0E] border border-white/5 rounded-[2rem] overflow-hidden shadow-[0_0_50px_rgba(124,58,237,0.1)] mb-8 relative ring-1 ring-white/5">
                     {isLockedPremium ? (
-                        <div className="relative pt-[56.25%] w-full bg-black/80 flex flex-col items-center justify-center p-8 text-center border-y border-brand-gold/30">
+                        <div className="relative pt-[56.25%] w-full bg-black/80 flex flex-col items-center justify-center p-8 text-center border-y border-brand-cyan/30">
                             <div className="absolute inset-0 flex flex-col items-center justify-center">
-                                <div className="w-20 h-20 bg-brand-gold/20 rounded-full flex items-center justify-center mb-6 border border-brand-gold/40 shadow-[0_0_30px_rgba(250,204,21,0.3)]">
-                                    <Lock className="w-10 h-10 text-brand-gold" />
+                                <div className="w-20 h-20 bg-brand-cyan/20 rounded-full flex items-center justify-center mb-6 border border-brand-cyan/40 shadow-[0_0_30px_rgba(250,204,21,0.3)]">
+                                    <Lock className="w-10 h-10 text-brand-cyan" />
                                 </div>
                                 <h2 className="text-2xl md:text-3xl font-black uppercase text-white mb-2">Secret Verrouillé</h2>
                                 <p className="text-brand-text-muted mb-8 max-w-md">
                                     Pour regarder <strong className="text-white">{video.title}</strong>, tu dois posséder ce secret dans ta collection.
                                 </p>
 
-                                <a href={salesUrl} target="_blank" rel="noopener noreferrer" className="bg-gradient-to-r from-brand-gold to-yellow-500 text-black font-black py-4 px-8 rounded-xl flex items-center gap-3 hover:scale-105 transition-transform shadow-[0_10px_30px_rgba(250,204,21,0.4)]">
+                                <a href={salesUrl} target="_blank" rel="noopener noreferrer" className="bg-gradient-to-r from-brand-cyan to-yellow-500 text-black font-black py-4 px-8 rounded-xl flex items-center gap-3 hover:scale-105 transition-transform shadow-[0_10px_30px_rgba(250,204,21,0.4)]">
                                     <ShoppingBag className="w-5 h-5" />
                                     Acheter pour débloquer {libraryItem?.price_label ? `(${libraryItem.price_label})` : ''}
                                 </a>

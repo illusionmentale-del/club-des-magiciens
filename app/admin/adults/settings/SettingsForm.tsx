@@ -42,7 +42,7 @@ export default function SettingsForm({ settings }: SettingsFormProps) {
                             </section>
 
                             <section className="space-y-4">
-                                <h2 className="text-xl font-bold text-magic-gold border-b border-white/10 pb-2">Textes Généraux</h2>
+                                <h2 className="text-xl font-bold text-magic-cyan border-b border-white/10 pb-2">Textes Généraux</h2>
 
                                 <div>
                                     <label className="block text-sm font-medium text-gray-400 mb-1">Titre Principal Dashboard</label>
@@ -66,7 +66,7 @@ export default function SettingsForm({ settings }: SettingsFormProps) {
                             </section>
 
                             <section className="space-y-4">
-                                <h2 className="text-xl font-bold text-magic-gold border-b border-white/10 pb-2">Sections</h2>
+                                <h2 className="text-xl font-bold text-magic-cyan border-b border-white/10 pb-2">Sections</h2>
 
                                 <div>
                                     <label className="block text-sm font-medium text-gray-400 mb-1">Titre Section News</label>
@@ -90,7 +90,7 @@ export default function SettingsForm({ settings }: SettingsFormProps) {
                             </section>
 
                             <section className="space-y-4">
-                                <h2 className="text-xl font-bold text-magic-gold border-b border-white/10 pb-2">Réseaux Sociaux (Barre Latérale)</h2>
+                                <h2 className="text-xl font-bold text-magic-cyan border-b border-white/10 pb-2">Réseaux Sociaux (Barre Latérale)</h2>
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     {['youtube', 'instagram', 'facebook', 'tiktok'].map((social) => (
                                         <div key={social}>
@@ -107,7 +107,7 @@ export default function SettingsForm({ settings }: SettingsFormProps) {
                             </section>
 
                             <section className="space-y-4">
-                                <h2 className="text-xl font-bold text-magic-gold border-b border-white/10 pb-2">Contenu Multimédia</h2>
+                                <h2 className="text-xl font-bold text-magic-cyan border-b border-white/10 pb-2">Contenu Multimédia</h2>
 
                                 <div>
                                     <label className="block text-sm font-medium text-gray-400 mb-1">ID Vidéo YouTube à la une</label>

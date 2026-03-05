@@ -46,8 +46,8 @@ export default function AdminProductsPage() {
         return true;
     });
 
-    const themeColor = audience === 'adults' ? 'bg-orange-600' : 'bg-purple-600';
-    const borderColor = audience === 'adults' ? 'border-orange-500/30' : 'border-purple-500/30';
+    const themeColor = audience === 'adults' ? 'bg-blue-700' : 'bg-purple-600';
+    const borderColor = audience === 'adults' ? 'border-blue-600/30' : 'border-purple-500/30';
 
     return (
         <div className={`min-h-screen ${audience === 'adults' ? 'bg-black' : 'bg-[#0F1014]'} text-white p-8 transition-colors duration-500`}>
@@ -57,12 +57,12 @@ export default function AdminProductsPage() {
                     Retour au QG Admin
                 </Link>
                 <div className="flex items-center gap-3">
-                    <div className={`p-2 rounded-lg ${audience === 'adults' ? 'bg-orange-500/20 text-orange-500' : 'bg-purple-500/20 text-purple-500'}`}>
+                    <div className={`p-2 rounded-lg ${audience === 'adults' ? 'bg-blue-600/20 text-blue-600' : 'bg-purple-500/20 text-purple-500'}`}>
                         <ShoppingBag className="w-6 h-6" />
                     </div>
                     <div>
                         <h1 className="text-3xl font-bold">Boutique ({audience === 'adults' ? 'Adulte' : 'Enfant'})</h1>
-                        <div className={`text-sm px-2 py-0.5 rounded inline-block mt-1 uppercase font-bold tracking-wider ${audience === 'adults' ? 'bg-orange-500/20 text-orange-500' : 'bg-purple-600/20 text-purple-400'}`}>
+                        <div className={`text-sm px-2 py-0.5 rounded inline-block mt-1 uppercase font-bold tracking-wider ${audience === 'adults' ? 'bg-blue-600/20 text-blue-600' : 'bg-purple-600/20 text-purple-400'}`}>
                             Mode {audience === 'adults' ? 'Adulte' : 'Enfant'}
                         </div>
                     </div>

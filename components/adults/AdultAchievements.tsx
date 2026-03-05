@@ -20,9 +20,9 @@ export default function AdultAchievements({ recentValids }: { recentValids: any[
 
             <div className="space-y-3">
                 {recentValids.slice(0, 3).map((progress) => (
-                    <div key={progress.course_id} className="flex items-start gap-3 bg-[#111] p-3 rounded-xl border border-white/5 group hover:border-magic-gold/20 transition-colors">
+                    <div key={progress.course_id} className="flex items-start gap-3 bg-[#111] p-3 rounded-xl border border-white/5 group hover:border-magic-cyan/20 transition-colors">
                         <div className="mt-0.5">
-                            <CheckCircle2 className="w-4 h-4 text-magic-gold/70 group-hover:text-magic-gold transition-colors" />
+                            <CheckCircle2 className="w-4 h-4 text-magic-cyan/70 group-hover:text-magic-cyan transition-colors" />
                         </div>
                         <div>
                             <p className="text-sm font-medium text-slate-200 line-clamp-1 group-hover:text-white transition-colors">

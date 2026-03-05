@@ -61,11 +61,11 @@ export default async function AdultLibraryPage() {
     }
 
     return (
-        <div className="min-h-screen bg-[#050507] text-white p-4 md:p-8 pb-32 font-sans overflow-hidden relative selection:bg-magic-gold/30">
+        <div className="min-h-screen bg-[#050507] text-white p-4 md:p-8 pb-32 font-sans overflow-hidden relative selection:bg-magic-cyan/30">
 
             {/* Ambient Background Lights */}
-            <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] bg-magic-gold/10 blur-[150px] rounded-full pointer-events-none mix-blend-screen"></div>
-            <div className="absolute top-[20%] right-[-10%] w-[40%] h-[40%] bg-orange-600/10 blur-[120px] rounded-full pointer-events-none mix-blend-screen"></div>
+            <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] bg-magic-cyan/10 blur-[150px] rounded-full pointer-events-none mix-blend-screen"></div>
+            <div className="absolute top-[20%] right-[-10%] w-[40%] h-[40%] bg-blue-700/10 blur-[120px] rounded-full pointer-events-none mix-blend-screen"></div>
 
             {/* Main Wrapper Container */}
             <div className="max-w-5xl mx-auto relative z-10 space-y-12">
@@ -73,12 +73,12 @@ export default async function AdultLibraryPage() {
                 {/* Header (Homogenized with Home) */}
                 <header className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 pt-4">
                     <div className="flex-1">
-                        <div className="flex items-center gap-2 text-magic-gold mb-2">
-                            <Star className="w-5 h-5 fill-current animate-pulse text-magic-gold" />
+                        <div className="flex items-center gap-2 text-magic-cyan mb-2">
+                            <Star className="w-5 h-5 fill-current animate-pulse text-magic-cyan" />
                             <span className="text-xs font-bold uppercase tracking-widest">Le QG de la Magie</span>
                         </div>
                         <h1 className="text-3xl md:text-5xl font-black text-white tracking-tight">
-                            La <span className="text-transparent bg-clip-text bg-gradient-to-r from-magic-gold to-orange-400">Bibliothèque</span>
+                            Mes <span className="text-transparent bg-clip-text bg-gradient-to-r from-magic-cyan to-blue-500">Vidéos</span>
                         </h1>
                         <p className="text-slate-400 mt-2 text-lg">
                             Retrouvez ici votre parcours d'apprentissage de la magie.
@@ -99,7 +99,7 @@ export default async function AdultLibraryPage() {
                         return (
                             <div key={week} className="relative group">
                                 {!isLocked && (
-                                    <div className={`absolute -inset-1 bg-gradient-to-r from-magic-gold to-orange-400 rounded-3xl blur-lg transition duration-1000 pointer-events-none ${isCurrent ? 'opacity-30 group-hover:opacity-50' : 'opacity-0 group-hover:opacity-30'}`}></div>
+                                    <div className={`absolute -inset-1 bg-gradient-to-r from-magic-cyan to-blue-500 rounded-3xl blur-lg transition duration-1000 pointer-events-none ${isCurrent ? 'opacity-30 group-hover:opacity-50' : 'opacity-0 group-hover:opacity-30'}`}></div>
                                 )}
                                 <div
                                     className={`
@@ -107,7 +107,7 @@ export default async function AdultLibraryPage() {
                                     ${isLocked
                                             ? 'bg-brand-bg/50 border-white/5 opacity-60'
                                             : isCurrent
-                                                ? 'bg-[#111] border-magic-gold shadow-[0_0_30px_rgba(238,195,67,0.15)] scale-[1.02] z-10'
+                                                ? 'bg-[#111] border-magic-cyan shadow-[0_0_30px_rgba(238,195,67,0.15)] scale-[1.02] z-10'
                                                 : 'bg-[#1a1a1f] border border-emerald-500/20 hover:bg-[#222]'
                                         }
                                 `}
@@ -118,7 +118,7 @@ export default async function AdultLibraryPage() {
                                             <div className={`
                                         w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm
                                         ${isLocked ? 'bg-[#111] border border-white/10 text-slate-400' : ''}
-                                        ${isCurrent ? 'bg-magic-gold text-black shadow-lg' : ''}
+                                        ${isCurrent ? 'bg-magic-cyan text-black shadow-lg' : ''}
                                         ${isCompleted ? 'bg-green-500/20 text-green-400 border border-green-500/30' : ''}
                                     `}>
                                                 {isLocked && <Lock className="w-4 h-4" />}
@@ -129,7 +129,7 @@ export default async function AdultLibraryPage() {
                                                 <h2 className={`font-bold uppercase tracking-tight text-lg ${isLocked ? 'text-slate-400' : 'text-white'}`}>
                                                     Semaine {week}
                                                 </h2>
-                                                {isCurrent && <span className="text-[10px] text-magic-gold font-bold uppercase tracking-widest">En cours</span>}
+                                                {isCurrent && <span className="text-[10px] text-magic-cyan font-bold uppercase tracking-widest">En cours</span>}
                                                 {isCompleted && <span className="text-[10px] text-brand-green font-bold uppercase tracking-widest">Terminée</span>}
                                                 {isLocked && <span className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">À venir</span>}
                                             </div>
@@ -160,14 +160,14 @@ export default async function AdultLibraryPage() {
                                                         href={mainItem ? `/watch/${mainItem.id}` : '#'}
                                                         className={`
                                                     flex-1 items-center justify-center gap-2 px-4 py-2 rounded-lg text-sm font-bold uppercase tracking-wide transition-colors flex
-                                                    ${isCurrent ? 'bg-magic-gold text-black hover:bg-yellow-400' : 'bg-[#111] border border-white/10 hover:bg-white/10 text-white'}
+                                                    ${isCurrent ? 'bg-magic-cyan text-black hover:bg-cyan-400' : 'bg-[#111] border border-white/10 hover:bg-white/10 text-white'}
                                                 `}
                                                     >
                                                         <Play className="w-4 h-4" />
                                                         Voir
                                                     </Link>
                                                     {isCurrent && (
-                                                        <div className="px-3 py-2 rounded-lg bg-magic-gold/10 border border-magic-gold/20 text-magic-gold">
+                                                        <div className="px-3 py-2 rounded-lg bg-magic-cyan/10 border border-magic-cyan/20 text-magic-cyan">
                                                             <Trophy className="w-4 h-4" />
                                                         </div>
                                                     )}
