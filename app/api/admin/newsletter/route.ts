@@ -62,7 +62,7 @@ export async function POST(req: Request) {
         let productData = null;
 
         if (template === 'course_focus' && selectedCourseId) {
-            const { data } = await supabase.from('courses').select('id, title, description, thumbnail_url, space').eq('id', selectedCourseId).single();
+            const { data } = await supabase.from('library_items').select('id, title, description, thumbnail_url, audience').eq('id', selectedCourseId).single();
             courseData = data;
         }
 
@@ -89,7 +89,7 @@ export async function POST(req: Request) {
 
             // TRAME 2 : COURSE FOCUS
             else if (template === 'course_focus' && courseData) {
-                const link = `${process.env.NEXT_PUBLIC_BASE_URL || 'https://www.clubdespetitsmagiciens.fr'}/${courseData.space === 'kids' ? 'kids/courses' : 'dashboard/masterclass'}`;
+                const link = `${process.env.NEXT_PUBLIC_BASE_URL || 'https://www.clubdespetitsmagiciens.fr'}/${courseData.audience === 'kids' ? 'kids/library' : 'dashboard/masterclass'}`;
 
                 mainContentHtml = `
                     ${formattedContent}
@@ -140,11 +140,11 @@ export async function POST(req: Request) {
                         ${mainContentHtml}
                     </div>
                     
-                    <hr style="border: 0; border-top: 1px solid #eaeaea; margin: 40px 0;" />
-                    <p style="font-size: 12px; color: #888; text-align: center;">
-                        Vous recevez cet e-mail car vous êtes inscrit(e) aux actualités de L'Atelier / Club des Magiciens communiquée lors de vos achats.<br/>
-                        <a href="${process.env.NEXT_PUBLIC_BASE_URL || 'https://www.clubdespetitsmagiciens.fr'}/login" style="color: #666; text-decoration: underline;">Gérer vos préférences depuis votre compte</a>
-                    </p>
+                        <hr style="border: 0; border-top: 1px solid #eaeaea; margin: 40px 0;" />
+                        <p style="font-size: 12px; color: #888; text-align: center;">
+                            Vous recevez cet e-mail car vous êtes inscrit(e) aux actualités de L'Atelier / Club des Magiciens communiquée lors de vos achats.<br/>
+                            <a href="${process.env.NEXT_PUBLIC_BASE_URL || 'https://www.clubdespetitsmagiciens.fr'}/api/unsubscribe?email={{contact.email}}" style="color: #666; text-decoration: underline;">Se désabonner en 1 clic</a>
+                        </p>
                 </div>
             `;
         };
@@ -164,7 +164,7 @@ export async function POST(req: Request) {
                 from: fromEmail,
                 to: [email],
                 subject: subject,
-                html: finalHtml
+                html: finalHtml.replace('{{contact.email}}', encodeURIComponent(email))
             }));
 
             const { data, error } = await resend.batch.send(payload);

@@ -22,13 +22,13 @@ export function CourseSelector({ space, onSelect }: CourseSelectorProps) {
             try {
                 const supabase = createClient();
                 let query = supabase
-                    .from('courses')
-                    .select('id, title, description, thumbnail_url, space')
+                    .from('library_items')
+                    .select('id, title, description, thumbnail_url, audience')
                     .eq('status', 'published')
                     .order('created_at', { ascending: false });
-                
+
                 if (space !== 'all') {
-                    query = query.eq('space', space);
+                    query = query.eq('audience', space);
                 }
 
                 const { data, error } = await query;
@@ -44,7 +44,7 @@ export function CourseSelector({ space, onSelect }: CourseSelectorProps) {
         fetchCourses();
     }, [space]);
 
-    const filteredCourses = courses.filter(c => 
+    const filteredCourses = courses.filter(c =>
         c.title.toLowerCase().includes(search.toLowerCase())
     );
 
@@ -67,10 +67,10 @@ export function CourseSelector({ space, onSelect }: CourseSelectorProps) {
             <h3 className="font-bold text-sm text-brand-royal uppercase tracking-widest flex items-center gap-2">
                 <PlaySquare className="w-4 h-4" /> Sélectionner un Cours / Masterclass
             </h3>
-            
+
             <div className="relative">
                 <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-white/50" />
-                <input 
+                <input
                     type="text"
                     placeholder="Rechercher par titre..."
                     value={search}
@@ -85,11 +85,10 @@ export function CourseSelector({ space, onSelect }: CourseSelectorProps) {
                         key={course.id}
                         type="button"
                         onClick={() => handleSelect(course.id)}
-                        className={`flex items-center gap-4 p-3 rounded-xl border text-left transition-all ${
-                            selectedId === course.id
+                        className={`flex items-center gap-4 p-3 rounded-xl border text-left transition-all ${selectedId === course.id
                                 ? 'bg-brand-royal/10 border-brand-royal/50 shadow-[0_0_15px_rgba(234,179,8,0.1)]'
                                 : 'bg-white/5 border-white/5 hover:bg-white/10'
-                        }`}
+                            }`}
                     >
                         {course.thumbnail_url ? (
                             <img src={course.thumbnail_url} alt="" className="w-16 h-12 object-cover rounded-lg shrink-0" />
@@ -109,7 +108,7 @@ export function CourseSelector({ space, onSelect }: CourseSelectorProps) {
                         )}
                     </button>
                 ))}
-                
+
                 {filteredCourses.length === 0 && (
                     <p className="text-center text-sm text-white/50 py-4">Aucun résultat trouvé.</p>
                 )}
