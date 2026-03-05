@@ -27,10 +27,10 @@ export default function MagicCard({ user, profile, isKid = false }: MagicCardPro
     // Variant Styles
     const cardBg = isKid
         ? "bg-[#0F1014] border-purple-500/30"
-        : "bg-neutral-900 border-magic-gold/30";
+        : "bg-neutral-900 border-brand-royal/30";
 
-    const textColor = isKid ? "text-purple-400" : "text-magic-gold";
-    const accentColor = isKid ? "bg-purple-500" : "bg-magic-gold";
+    const textColor = isKid ? "text-purple-400" : "text-blue-400";
+    const accentColor = isKid ? "bg-purple-500" : "bg-brand-royal";
 
     return (
         <div className="w-full max-w-2xl mx-auto perspective-1000 min-h-[600px] relative group/card font-sans">
@@ -71,7 +71,7 @@ export default function MagicCard({ user, profile, isKid = false }: MagicCardPro
 
                     {/* Background Effects */}
                     <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none" />
-                    <div className={cn("absolute bottom-0 left-0 w-64 h-64 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2 pointer-events-none", isKid ? "bg-brand-purple/10" : "bg-magic-gold/10")} />
+                    <div className={cn("absolute bottom-0 left-0 w-64 h-64 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2 pointer-events-none", isKid ? "bg-brand-purple/10" : "bg-brand-royal/20")} />
 
                     {/* Header */}
                     <div className="flex justify-between items-start mb-8 relative z-10">
@@ -80,7 +80,7 @@ export default function MagicCard({ user, profile, isKid = false }: MagicCardPro
                                 <span className="text-2xl">🎩</span>
                             </div>
                             <div>
-                                <h1 className={`font-serif text-2xl font-bold ${isKid ? 'text-white' : 'text-magic-gold'}`}>
+                                <h1 className={`font-serif text-2xl font-bold ${isKid ? 'text-white' : 'text-blue-400'}`}>
                                     {isKid ? "Carte d'Apprenti" : "Carte de Membre"}
                                 </h1>
                                 <p className="text-white/50 text-xs tracking-widest uppercase">Club des Magiciens</p>
@@ -97,7 +97,7 @@ export default function MagicCard({ user, profile, isKid = false }: MagicCardPro
                         <div className="flex flex-col items-center gap-4">
                             <div className="relative">
                                 {/* Avatar Container */}
-                                <div className={`relative w-32 h-32 rounded-full p-1 ${isKid ? "bg-gradient-to-tr from-blue-600 to-brand-purple shadow-[0_0_20px_rgba(168,85,247,0.3)]" : "bg-gradient-to-tr from-magic-gold to-orange-500 shadow-[0_0_20px_rgba(238,195,67,0.3)]"} animate-pulse-slow`}>
+                                <div className={`relative w-32 h-32 rounded-full p-1 ${isKid ? "bg-gradient-to-tr from-blue-600 to-brand-purple shadow-[0_0_20px_rgba(168,85,247,0.3)]" : "bg-gradient-to-tr from-brand-royal to-blue-500 shadow-[0_0_20px_rgba(29,78,216,0.3)]"} animate-pulse-slow`}>
                                     <div className="w-full h-full rounded-full overflow-hidden bg-black relative">
                                         <Image
                                             src={isKid ? (profile?.avatar_url_kids || "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='50' fill='%23FFD1DC'/><path d='M30 60h40v30H30z' fill='%23333'/><path d='M20 85h60v5H20z' fill='%23333'/><circle cx='50' cy='60' r='15' fill='%23FFF'/><path d='M40 30c-5-15-15-15-15 0s10 20 15 0zM60 30c5-15 15-15 15 0s-10 20-15 0z' fill='%23FFF'/></svg>") : (profile?.avatar_url || "/default-avatar.png")}
@@ -144,7 +144,7 @@ export default function MagicCard({ user, profile, isKid = false }: MagicCardPro
                                     {/* Animated Liquid Bar */}
                                     {/* Using simpler gradient animation for performance/reliability */}
                                     <div
-                                        className={`h-full relative overflow-hidden ${isKid ? "bg-gradient-to-r from-blue-500 to-purple-500" : "bg-gradient-to-r from-magic-gold to-amber-500"} shadow-[0_0_10px_currentColor] transition-all duration-1000 ease-out`}
+                                        className={`h-full relative overflow-hidden ${isKid ? "bg-gradient-to-r from-blue-500 to-purple-500" : "bg-gradient-to-r from-brand-royal to-blue-400"} shadow-[0_0_10px_currentColor] transition-all duration-1000 ease-out`}
                                         style={{ width: `${Math.min((profile?.xp || 0) / 10 * 10, 100)}%` }} // Example XP logic
                                     >
                                         <div className="absolute inset-0 bg-white/20 animate-[pulse_2s_infinite]"></div>
@@ -158,7 +158,7 @@ export default function MagicCard({ user, profile, isKid = false }: MagicCardPro
                     <div className="mt-12 flex justify-center relative z-10">
                         <button
                             onClick={() => setIsFlipped(true)}
-                            className={`group flex items-center gap-2 px-6 py-3 rounded-full font-bold transition-all ${isKid ? "bg-white text-slate-900 hover:bg-purple-50" : "bg-magic-gold text-black hover:bg-amber-400"} shadow-lg hover:shadow-xl hover:-translate-y-1`}
+                            className={`group flex items-center gap-2 px-6 py-3 rounded-full font-bold transition-all ${isKid ? "bg-white text-slate-900 hover:bg-purple-50" : "bg-brand-royal text-white hover:bg-blue-600"} shadow-[0_0_15px_rgba(29,78,216,0.3)] hover:shadow-[0_0_25px_rgba(29,78,216,0.5)] hover:-translate-y-1`}
                         >
                             <Edit className="w-4 h-4" />
                             Modifier mon profil
@@ -183,7 +183,7 @@ export default function MagicCard({ user, profile, isKid = false }: MagicCardPro
                 >
                     <div className="flex justify-between items-center mb-6 relative z-10 shrink-0">
                         <h2 className="text-xl font-bold text-white flex items-center gap-2">
-                            <Sparkles className={cn("w-5 h-5", isKid ? "text-brand-purple" : "text-magic-gold")} />
+                            <Sparkles className={cn("w-5 h-5", isKid ? "text-brand-purple" : "text-blue-400")} />
                             Mise à jour
                         </h2>
                         <button
