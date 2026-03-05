@@ -39,8 +39,8 @@ export default function AdultVideoCard({ id, title, thumbnailUrl, date, duration
 
     return (
         <div className="relative group/box h-full flex flex-col">
-            <div className="absolute -inset-1 bg-gradient-to-r from-magic-gold to-orange-400 rounded-3xl opacity-0 blur-lg group-hover/box:opacity-40 transition duration-1000 pointer-events-none"></div>
-            <Link href={href} className="relative group flex flex-col bg-[#111] border border-white/5 rounded-3xl overflow-hidden hover:border-magic-gold/50 transition-all flex-1 z-10 shadow-[0_4px_20px_rgba(0,0,0,0.5)]">
+            <div className="absolute -inset-1 bg-gradient-to-r from-magic-royal to-blue-500 rounded-3xl opacity-0 blur-lg group-hover/box:opacity-40 transition duration-1000 pointer-events-none"></div>
+            <Link href={href} className="relative group flex flex-col bg-[#111] border border-white/5 rounded-3xl overflow-hidden hover:border-magic-royal/50 transition-all flex-1 z-10 shadow-[0_4px_20px_rgba(0,0,0,0.5)]">
                 <div className="relative aspect-video w-full overflow-hidden bg-black/40 border-b border-white/5">
                     <Image
                         src={thumbnailUrl}
@@ -57,14 +57,14 @@ export default function AdultVideoCard({ id, title, thumbnailUrl, date, duration
 
                     {/* Play Button Overlay on Hover */}
                     <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                        <div className="w-12 h-12 rounded-full bg-magic-gold text-black flex items-center justify-center shadow-[0_0_20px_rgba(238,195,67,0.5)] transform scale-90 group-hover:scale-100 transition-transform">
+                        <div className="w-12 h-12 rounded-full bg-magic-royal text-black flex items-center justify-center shadow-[0_0_20px_rgba(238,195,67,0.5)] transform scale-90 group-hover:scale-100 transition-transform">
                             <Play className="w-6 h-6 ml-1" />
                         </div>
                     </div>
                 </div>
 
                 <div className="p-5 flex flex-col flex-1">
-                    <h3 className="text-white font-bold line-clamp-2 text-sm leading-snug group-hover:text-magic-gold transition-colors">
+                    <h3 className="text-white font-bold line-clamp-2 text-sm leading-snug group-hover:text-magic-royal transition-colors">
                         {title}
                     </h3>
                     <div className="mt-auto pt-4 flex items-center text-xs text-slate-400 uppercase tracking-widest font-bold">

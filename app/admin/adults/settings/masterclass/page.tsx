@@ -20,11 +20,11 @@ export default async function AdultMasterclassSettingsPage() {
         .order("title");
 
     return (
-        <div className="space-y-10 selection:bg-brand-gold/30">
+        <div className="space-y-10 selection:bg-brand-royal/30">
             <div>
                 <div className="flex items-center gap-3 mb-2">
-                    <div className="w-10 h-10 bg-brand-gold/10 rounded-xl flex items-center justify-center border border-brand-gold/20">
-                        <Sparkles className="w-6 h-6 text-brand-gold" />
+                    <div className="w-10 h-10 bg-brand-royal/10 rounded-xl flex items-center justify-center border border-brand-royal/20">
+                        <Sparkles className="w-6 h-6 text-brand-royal" />
                     </div>
                     <div>
                         <h1 className="text-3xl font-black text-white uppercase tracking-tighter">Paramètres Les Ateliers</h1>

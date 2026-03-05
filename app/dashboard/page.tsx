@@ -144,21 +144,21 @@ export default async function DashboardPage() {
     }
 
     return (
-        <div className="min-h-screen bg-[#050507] text-white p-4 md:p-8 pb-32 font-sans selection:bg-magic-gold/30 overflow-hidden relative">
+        <div className="min-h-screen bg-[#050507] text-white p-4 md:p-8 pb-32 font-sans selection:bg-magic-royal/30 overflow-hidden relative">
 
             {/* Ambient Premium Lighting */}
-            <div className="absolute top-[-20%] left-1/2 -translate-x-1/2 w-[80%] h-[60%] bg-magic-gold/5 blur-[120px] rounded-full pointer-events-none mix-blend-screen"></div>
+            <div className="absolute top-[-20%] left-1/2 -translate-x-1/2 w-[80%] h-[60%] bg-magic-royal/5 blur-[120px] rounded-full pointer-events-none mix-blend-screen"></div>
 
             {/* Premium Header / Hero */}
             {/* Premium Header / Hero */}
             <header className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 pt-4 max-w-5xl mx-auto relative z-10">
                 <div className="flex-1">
-                    <div className="flex items-center gap-2 text-magic-gold mb-2">
+                    <div className="flex items-center gap-2 text-magic-royal mb-2">
                         <Sparkles className="w-5 h-5 animate-pulse" />
                         <span className="text-xs font-bold uppercase tracking-widest">Le Club des Magiciens</span>
                     </div>
                     <h1 className="text-3xl md:text-5xl font-black text-white tracking-tight">
-                        Bienvenue, <span className="text-magic-gold">{userName}</span> ! ✨
+                        Bienvenue, <span className="text-magic-royal">{userName}</span> ! ✨
                     </h1>
                     <p className="text-slate-400 mt-2 text-lg">
                         Prêt à découvrir de nouveaux secrets ?
@@ -193,15 +193,15 @@ export default async function DashboardPage() {
                         {settingsMap?.enable_adults_catalog !== 'false' && settingsMap?.show_adults_catalog_promo !== 'false' && (
                             <section>
                                 <h3 className="text-lg font-bold text-white uppercase tracking-wider mb-6 flex items-center gap-2">
-                                    <Star className="w-5 h-5 text-magic-gold" />
+                                    <Star className="w-5 h-5 text-magic-royal" />
                                     Le Catalogue Premium
                                 </h3>
-                                <div className="bg-gradient-to-r from-magic-gold/10 to-transparent border border-magic-gold/20 rounded-2xl p-6 flex flex-col sm:flex-row items-center gap-6">
-                                    <div className="w-16 h-16 bg-magic-gold/20 rounded-full flex items-center justify-center shrink-0">
-                                        <ShoppingBag className="w-8 h-8 text-magic-gold" />
+                                <div className="bg-gradient-to-r from-magic-royal/10 to-transparent border border-magic-royal/20 rounded-2xl p-6 flex flex-col sm:flex-row items-center gap-6">
+                                    <div className="w-16 h-16 bg-magic-royal/20 rounded-full flex items-center justify-center shrink-0">
+                                        <ShoppingBag className="w-8 h-8 text-magic-royal" />
                                     </div>
                                     <div className="flex-1 text-center sm:text-left">
-                                        <h4 className="text-xl font-bold text-magic-gold mb-1">
+                                        <h4 className="text-xl font-bold text-magic-royal mb-1">
                                             {promoConfig.title}
                                         </h4>
                                         <p className="text-slate-400 text-sm font-light">
@@ -210,7 +210,7 @@ export default async function DashboardPage() {
                                     </div>
                                     <Link
                                         href={promoConfig.link}
-                                        className="bg-magic-gold hover:bg-yellow-400 text-black font-bold py-3 px-6 rounded-xl transition-colors whitespace-nowrap shadow-lg shadow-magic-gold/20"
+                                        className="bg-magic-royal hover:bg-blue-400 text-black font-bold py-3 px-6 rounded-xl transition-colors whitespace-nowrap shadow-lg shadow-magic-royal/20"
                                     >
                                         {promoConfig.buttonText}
                                     </Link>

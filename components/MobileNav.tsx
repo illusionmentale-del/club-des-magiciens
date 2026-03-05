@@ -76,7 +76,7 @@ export default function MobileNav({ isAdmin, hasKidsAccess, toggles }: {
                             <Link
                                 href="/dashboard/feed"
                                 onClick={close}
-                                className={`flex items-center gap-3 px-4 py-3 font-medium transition-all ${isActive('/dashboard/feed') ? 'bg-gradient-to-r from-magic-gold/20 to-transparent text-magic-gold border-l-2 border-magic-gold' : 'text-gray-400 hover:bg-white/5 hover:text-white border-l-2 border-transparent'}`}
+                                className={`flex items-center gap-3 px-4 py-3 font-medium transition-all ${isActive('/dashboard/feed') ? 'bg-gradient-to-r from-magic-royal/20 to-transparent text-magic-royal border-l-2 border-magic-royal' : 'text-gray-400 hover:bg-white/5 hover:text-white border-l-2 border-transparent'}`}
                             >
                                 <Video className="w-5 h-5" />
                                 Vidéos
@@ -85,7 +85,7 @@ export default function MobileNav({ isAdmin, hasKidsAccess, toggles }: {
                             <Link
                                 href="/dashboard"
                                 onClick={close}
-                                className={`flex items-center gap-3 px-4 py-3 font-medium transition-all ${isActive('/dashboard') ? 'bg-gradient-to-r from-magic-gold/20 to-transparent text-magic-gold border-l-2 border-magic-gold' : 'text-gray-400 hover:bg-white/5 hover:text-white border-l-2 border-transparent'}`}
+                                className={`flex items-center gap-3 px-4 py-3 font-medium transition-all ${isActive('/dashboard') ? 'bg-gradient-to-r from-magic-royal/20 to-transparent text-magic-royal border-l-2 border-magic-royal' : 'text-gray-400 hover:bg-white/5 hover:text-white border-l-2 border-transparent'}`}
                             >
                                 <Star className="w-5 h-5" />
                                 Le QG
@@ -95,7 +95,7 @@ export default function MobileNav({ isAdmin, hasKidsAccess, toggles }: {
                                 <Link
                                     href="/dashboard/library"
                                     onClick={close}
-                                    className={`flex items-center gap-3 px-4 py-3 font-medium transition-all ${isActive('/dashboard/library') ? 'bg-gradient-to-r from-magic-gold/20 to-transparent text-magic-gold border-l-2 border-magic-gold' : 'text-gray-400 hover:bg-white/5 hover:text-white border-l-2 border-transparent'}`}
+                                    className={`flex items-center gap-3 px-4 py-3 font-medium transition-all ${isActive('/dashboard/library') ? 'bg-gradient-to-r from-magic-royal/20 to-transparent text-magic-royal border-l-2 border-magic-royal' : 'text-gray-400 hover:bg-white/5 hover:text-white border-l-2 border-transparent'}`}
                                 >
                                     <BookOpen className="w-5 h-5" />
                                     Bibliothèque
@@ -106,7 +106,7 @@ export default function MobileNav({ isAdmin, hasKidsAccess, toggles }: {
                                 <Link
                                     href="/dashboard/masterclass"
                                     onClick={close}
-                                    className={`flex items-center gap-3 px-4 py-3 font-medium transition-all ${isActive('/dashboard/masterclass') ? 'bg-gradient-to-r from-magic-gold/20 to-transparent text-magic-gold border-l-2 border-magic-gold' : 'text-gray-400 hover:bg-white/5 hover:text-white border-l-2 border-transparent'}`}
+                                    className={`flex items-center gap-3 px-4 py-3 font-medium transition-all ${isActive('/dashboard/masterclass') ? 'bg-gradient-to-r from-magic-royal/20 to-transparent text-magic-royal border-l-2 border-magic-royal' : 'text-gray-400 hover:bg-white/5 hover:text-white border-l-2 border-transparent'}`}
                                 >
                                     <Video className="w-5 h-5" />
                                     Les Ateliers
@@ -117,7 +117,7 @@ export default function MobileNav({ isAdmin, hasKidsAccess, toggles }: {
                                 <Link
                                     href="/dashboard/catalog"
                                     onClick={close}
-                                    className={`flex items-center gap-3 px-4 py-3 font-medium transition-all ${isActive('/dashboard/catalog') ? 'bg-gradient-to-r from-magic-gold/20 to-transparent text-magic-gold border-l-2 border-magic-gold' : 'text-gray-400 hover:bg-white/5 hover:text-white border-l-2 border-transparent'}`}
+                                    className={`flex items-center gap-3 px-4 py-3 font-medium transition-all ${isActive('/dashboard/catalog') ? 'bg-gradient-to-r from-magic-royal/20 to-transparent text-magic-royal border-l-2 border-magic-royal' : 'text-gray-400 hover:bg-white/5 hover:text-white border-l-2 border-transparent'}`}
                                 >
                                     <ShoppingBag className="w-5 h-5" />
                                     Catalogue
@@ -128,7 +128,7 @@ export default function MobileNav({ isAdmin, hasKidsAccess, toggles }: {
                                 <Link
                                     href="/dashboard/account"
                                     onClick={close}
-                                    className={`flex items-center gap-3 px-4 py-3 font-medium transition-all ${isActive('/dashboard/account') ? 'bg-gradient-to-r from-magic-gold/20 to-transparent text-magic-gold border-l-2 border-magic-gold' : 'text-gray-400 hover:bg-white/5 hover:text-white border-l-2 border-transparent'}`}
+                                    className={`flex items-center gap-3 px-4 py-3 font-medium transition-all ${isActive('/dashboard/account') ? 'bg-gradient-to-r from-magic-royal/20 to-transparent text-magic-royal border-l-2 border-magic-royal' : 'text-gray-400 hover:bg-white/5 hover:text-white border-l-2 border-transparent'}`}
                                 >
                                     <Settings className="w-5 h-5" />
                                     Mon Compte
@@ -138,7 +138,7 @@ export default function MobileNav({ isAdmin, hasKidsAccess, toggles }: {
                             <Link
                                 href="/dashboard/live"
                                 onClick={close}
-                                className={`flex items-center gap-3 px-4 py-3 font-medium transition-all ${isActive('/dashboard/live') ? 'bg-gradient-to-r from-magic-gold/20 to-transparent text-magic-gold border-l-2 border-magic-gold' : 'text-gray-400 hover:bg-white/5 hover:text-white border-l-2 border-transparent'}`}
+                                className={`flex items-center gap-3 px-4 py-3 font-medium transition-all ${isActive('/dashboard/live') ? 'bg-gradient-to-r from-magic-royal/20 to-transparent text-magic-royal border-l-2 border-magic-royal' : 'text-gray-400 hover:bg-white/5 hover:text-white border-l-2 border-transparent'}`}
                             >
                                 <Video className="w-5 h-5" />
                                 Replays / Lives

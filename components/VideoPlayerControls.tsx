@@ -63,8 +63,8 @@ export default function VideoPlayerControls({ videoId, courseId, isCompleted: in
                             ? "bg-gradient-to-r from-brand-purple/20 to-blue-500/20 text-brand-purple border border-brand-purple/50 shadow-[0_0_20px_rgba(168,85,247,0.2)]"
                             : "bg-[#111] text-white border border-white/10 hover:border-brand-purple/50 hover:text-brand-purple hover:shadow-[0_0_15px_rgba(168,85,247,0.3)]"
                         : isCompleted
-                            ? "bg-gradient-to-r from-magic-gold/20 to-orange-500/20 text-magic-gold border border-magic-gold/50 shadow-[0_0_20px_rgba(238,195,67,0.2)]"
-                            : "bg-[#111] text-white border border-white/10 hover:border-magic-gold/50 hover:text-magic-gold hover:shadow-[0_0_15px_rgba(238,195,67,0.15)]"
+                            ? "bg-gradient-to-r from-magic-royal/20 to-blue-700/20 text-magic-royal border border-magic-royal/50 shadow-[0_0_20px_rgba(238,195,67,0.2)]"
+                            : "bg-[#111] text-white border border-white/10 hover:border-magic-royal/50 hover:text-magic-royal hover:shadow-[0_0_15px_rgba(238,195,67,0.15)]"
                     }`}
             >
                 {isLoading ? (

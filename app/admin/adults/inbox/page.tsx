@@ -65,7 +65,7 @@ export default async function AdminAdultsInbox({
             <header className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-white/10 pb-6">
                 <div>
                     <h1 className="text-3xl font-black text-white flex items-center gap-3">
-                        <MessageCircle className="w-8 h-8 text-magic-gold" />
+                        <MessageCircle className="w-8 h-8 text-magic-royal" />
                         Inbox Adultes
                     </h1>
                     <p className="text-gray-400 mt-2">Gérez les questions et commentaires des étudiants premium.</p>
@@ -88,7 +88,7 @@ export default async function AdminAdultsInbox({
                         className={cn(
                             "flex items-center gap-2 px-6 py-2.5 rounded-lg text-sm font-bold uppercase tracking-widest transition-all",
                             currentTab === 'unread'
-                                ? "bg-magic-gold text-black shadow-lg"
+                                ? "bg-magic-royal text-black shadow-lg"
                                 : "text-gray-400 hover:text-white hover:bg-white/5"
                         )}
                     >
@@ -100,7 +100,7 @@ export default async function AdminAdultsInbox({
                         className={cn(
                             "flex items-center gap-2 px-6 py-2.5 rounded-lg text-sm font-bold uppercase tracking-widest transition-all",
                             currentTab === 'read'
-                                ? "bg-magic-gold text-black shadow-lg"
+                                ? "bg-magic-royal text-black shadow-lg"
                                 : "text-gray-400 hover:text-white hover:bg-white/5"
                         )}
                     >
@@ -123,8 +123,8 @@ export default async function AdminAdultsInbox({
                         const course = sourceCourses.find(c => c.id === comment.course_id);
 
                         return (
-                            <div key={comment.id} className="bg-magic-card border border-white/10 rounded-2xl p-6 relative overflow-hidden group hover:border-magic-gold/30 transition-colors">
-                                <div className="absolute top-0 left-0 w-1 h-full bg-magic-gold"></div>
+                            <div key={comment.id} className="bg-magic-card border border-white/10 rounded-2xl p-6 relative overflow-hidden group hover:border-magic-royal/30 transition-colors">
+                                <div className="absolute top-0 left-0 w-1 h-full bg-magic-royal"></div>
 
                                 <div className="flex flex-col lg:flex-row gap-6">
                                     {/* Left: Comment Info */}
@@ -140,7 +140,7 @@ export default async function AdminAdultsInbox({
                                                 <div className="flex items-center gap-4 text-xs text-gray-400 mt-2 font-mono uppercase">
                                                     <span className="flex items-center gap-1"><Calendar className="w-3 h-3" /> {new Date(comment.created_at).toLocaleString('fr-FR')}</span>
                                                     {course && (
-                                                        <a href={`/watch/${course.id}`} target="_blank" rel="noreferrer" className="flex items-center gap-1 hover:text-magic-gold transition-colors truncate max-w-[200px]" title={course.title}>
+                                                        <a href={`/watch/${course.id}`} target="_blank" rel="noreferrer" className="flex items-center gap-1 hover:text-magic-royal transition-colors truncate max-w-[200px]" title={course.title}>
                                                             <Video className="w-3 h-3" /> {course.title}
                                                         </a>
                                                     )}

@@ -57,7 +57,7 @@ export default function AdultBoutiqueCard({ product, isPurchased }: AdultBoutiqu
     return (
         <div className="relative group h-full flex flex-col hover:-translate-y-2 transition-transform duration-500">
             {/* Adult Theme Glow effect (Magic Gold / Amber instead of Purple / Blue) */}
-            <div className="absolute -inset-1 bg-gradient-to-r from-magic-gold/80 to-amber-600/50 rounded-3xl opacity-0 blur-lg group-hover:opacity-40 transition duration-1000 pointer-events-none"></div>
+            <div className="absolute -inset-1 bg-gradient-to-r from-magic-royal/80 to-amber-600/50 rounded-3xl opacity-0 blur-lg group-hover:opacity-40 transition duration-1000 pointer-events-none"></div>
 
             <div className="relative bg-[#0a0a0f] border border-white/5 rounded-3xl overflow-hidden shadow-[0_10px_40px_rgba(0,0,0,0.5)] flex flex-col h-full">
                 {/* Thumbnail */}
@@ -87,7 +87,7 @@ export default function AdultBoutiqueCard({ product, isPurchased }: AdultBoutiqu
                             </div>
                         ) : (
                             <div className="bg-black/60 backdrop-blur-md text-white px-3 py-1.5 rounded-full text-xs font-bold flex items-center gap-1.5 shadow-lg border border-white/10">
-                                <Lock className="w-3.5 h-3.5 text-magic-gold" />
+                                <Lock className="w-3.5 h-3.5 text-magic-royal" />
                                 Premium
                             </div>
                         )}
@@ -95,7 +95,7 @@ export default function AdultBoutiqueCard({ product, isPurchased }: AdultBoutiqu
 
                     {/* Price Tag (if locked) */}
                     {!isPurchased && (
-                        <div className="absolute bottom-4 left-4 bg-magic-gold text-black font-black px-4 py-1.5 rounded-xl shadow-xl transform -rotate-2 z-10">
+                        <div className="absolute bottom-4 left-4 bg-magic-royal text-black font-black px-4 py-1.5 rounded-xl shadow-xl transform -rotate-2 z-10">
                             {priceString}
                         </div>
                     )}
@@ -103,7 +103,7 @@ export default function AdultBoutiqueCard({ product, isPurchased }: AdultBoutiqu
 
                 {/* Content */}
                 <div className="p-6 flex flex-col flex-1 relative z-20 bg-[#0a0a0f]">
-                    <h3 className="text-xl font-bold text-white mb-2 leading-tight group-hover:text-magic-gold transition-colors">
+                    <h3 className="text-xl font-bold text-white mb-2 leading-tight group-hover:text-magic-royal transition-colors">
                         {product.title}
                     </h3>
                     <p className="text-sm text-slate-400 mb-6 flex-1 line-clamp-3 font-light">
@@ -112,15 +112,15 @@ export default function AdultBoutiqueCard({ product, isPurchased }: AdultBoutiqu
 
                     {/* Action Button */}
                     {isPurchased ? (
-                        <Link href={`/dashboard/program`} className="w-full bg-white/5 hover:bg-white/10 text-white font-bold py-3 px-4 rounded-xl flex items-center justify-center gap-2 transition-colors border border-white/10 hover:border-magic-gold/50">
-                            <Play className="w-5 h-5 text-magic-gold" />
+                        <Link href={`/dashboard/program`} className="w-full bg-white/5 hover:bg-white/10 text-white font-bold py-3 px-4 rounded-xl flex items-center justify-center gap-2 transition-colors border border-white/10 hover:border-magic-royal/50">
+                            <Play className="w-5 h-5 text-magic-royal" />
                             Accéder au contenu
                         </Link>
                     ) : (
                         <button
                             onClick={handlePurchase}
                             disabled={loading || !product.stripe_price_id}
-                            className="w-full bg-gradient-to-r from-magic-gold to-yellow-500 text-black font-black py-3 px-4 rounded-xl flex items-center justify-center gap-2 hover:scale-[1.02] transition-transform shadow-[0_10px_30px_rgba(238,195,67,0.2)] disabled:opacity-50 disabled:hover:scale-100"
+                            className="w-full bg-gradient-to-r from-magic-royal to-yellow-500 text-black font-black py-3 px-4 rounded-xl flex items-center justify-center gap-2 hover:scale-[1.02] transition-transform shadow-[0_10px_30px_rgba(238,195,67,0.2)] disabled:opacity-50 disabled:hover:scale-100"
                         >
                             {loading ? (
                                 <Loader2 className="w-5 h-5 animate-spin" />

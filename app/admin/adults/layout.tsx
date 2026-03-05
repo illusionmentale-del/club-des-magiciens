@@ -16,42 +16,42 @@ export default function AdultsAdminLayout({
     children: React.ReactNode
 }) {
     return (
-        <div className="flex min-h-screen w-full bg-brand-bg text-brand-text font-sans selection:bg-brand-gold/30">
+        <div className="flex min-h-screen w-full bg-brand-bg text-brand-text font-sans selection:bg-brand-royal/30">
             {/* Custom Sidebar for Adults */}
             <aside className="fixed inset-y-0 left-0 z-50 w-64 bg-brand-card border-r border-white/5 hidden md:flex flex-col shadow-2xl">
                 <div className="flex items-center h-20 px-6 border-b border-white/5 bg-gradient-to-r from-brand-card to-brand-bg">
-                    <div className="w-10 h-10 bg-brand-gold/10 rounded-xl flex items-center justify-center mr-3 border border-brand-gold/30">
-                        <Users className="w-6 h-6 text-brand-gold" />
+                    <div className="w-10 h-10 bg-brand-royal/10 rounded-xl flex items-center justify-center mr-3 border border-brand-royal/30">
+                        <Users className="w-6 h-6 text-brand-royal" />
                     </div>
                     <span className="font-black text-xl tracking-tighter uppercase whitespace-nowrap">
-                        Club <span className="text-brand-gold">Adultes</span>
+                        Club <span className="text-brand-royal">Adultes</span>
                     </span>
                 </div>
 
                 <nav className="flex-1 p-4 space-y-2 overflow-y-auto">
                     <Link href="/admin/adults/dashboard" className="flex items-center gap-3 px-4 py-3 text-sm font-bold uppercase tracking-widest text-brand-text-muted hover:text-white hover:bg-white/5 rounded-xl transition-all group">
-                        <LayoutDashboard className="w-5 h-5 group-hover:text-brand-gold transition-colors" />
+                        <LayoutDashboard className="w-5 h-5 group-hover:text-brand-royal transition-colors" />
                         Dashboard
                     </Link>
 
                     <Separator className="my-6 bg-white/5" />
                     <Separator className="my-6 bg-white/5" />
-                    <p className="px-4 text-[10px] font-black text-brand-gold uppercase tracking-widest mb-4">Gestion du Contenu</p>
+                    <p className="px-4 text-[10px] font-black text-brand-royal uppercase tracking-widest mb-4">Gestion du Contenu</p>
 
                     <Link href="/admin/adults/library" className="flex items-center gap-3 px-4 py-3 text-sm font-bold uppercase tracking-widest text-brand-text-muted hover:text-white hover:bg-white/5 rounded-xl transition-all group">
-                        <Video className="w-5 h-5 group-hover:text-brand-gold transition-colors" />
+                        <Video className="w-5 h-5 group-hover:text-brand-royal transition-colors" />
                         Vidéos & Ateliers
                     </Link>
                     <Link href="/admin/adults/settings/masterclass" className="flex items-center gap-3 px-4 py-3 text-sm font-bold uppercase tracking-widest text-brand-text-muted hover:text-white hover:bg-white/5 rounded-xl transition-all group">
-                        <Sparkles className="w-5 h-5 group-hover:text-brand-gold transition-colors" />
+                        <Sparkles className="w-5 h-5 group-hover:text-brand-royal transition-colors" />
                         Page "Les Ateliers"
                     </Link>
                     <Link href="/admin/adults/products" className="flex items-center gap-3 px-4 py-3 text-sm font-bold uppercase tracking-widest text-brand-text-muted hover:text-white hover:bg-white/5 rounded-xl transition-all group">
-                        <ShoppingBag className="w-5 h-5 group-hover:text-brand-gold transition-colors" />
+                        <ShoppingBag className="w-5 h-5 group-hover:text-brand-royal transition-colors" />
                         La Boutique
                     </Link>
                     <Link href="/admin/adults/lives" className="flex items-center gap-3 px-4 py-3 text-sm font-bold uppercase tracking-widest text-brand-text-muted hover:text-white hover:bg-white/5 rounded-xl transition-all group">
-                        <Video className="w-5 h-5 group-hover:text-brand-gold transition-colors" />
+                        <Video className="w-5 h-5 group-hover:text-brand-royal transition-colors" />
                         Diffusions Live
                     </Link>
 
@@ -59,15 +59,15 @@ export default function AdultsAdminLayout({
                     <p className="px-4 text-[10px] font-black text-brand-cyan uppercase tracking-widest mb-4">Suivi & Communauté</p>
 
                     <Link href="/admin/adults/inbox" className="flex items-center gap-3 px-4 py-3 text-sm font-bold uppercase tracking-widest text-brand-text-muted hover:text-white hover:bg-white/5 rounded-xl transition-all group">
-                        <MessageCircle className="w-5 h-5 group-hover:text-brand-gold transition-colors" />
+                        <MessageCircle className="w-5 h-5 group-hover:text-brand-royal transition-colors" />
                         Questions Élèves
                     </Link>
                     <Link href="/admin/adults/users" className="flex items-center gap-3 px-4 py-3 text-sm font-bold uppercase tracking-widest text-brand-text-muted hover:text-white hover:bg-white/5 rounded-xl transition-all group">
-                        <Users className="w-5 h-5 group-hover:text-brand-gold transition-colors" />
+                        <Users className="w-5 h-5 group-hover:text-brand-royal transition-colors" />
                         Liste des Élèves
                     </Link>
                     <Link href="/admin/adults/newsletter" className="flex items-center gap-3 px-4 py-3 text-sm font-bold uppercase tracking-widest text-brand-text-muted hover:text-white hover:bg-white/5 rounded-xl transition-all group">
-                        <Mail className="w-5 h-5 group-hover:text-brand-gold transition-colors" />
+                        <Mail className="w-5 h-5 group-hover:text-brand-royal transition-colors" />
                         Newsletter
                     </Link>
 
@@ -75,15 +75,15 @@ export default function AdultsAdminLayout({
                     <p className="px-4 text-[10px] font-black text-brand-text-muted uppercase tracking-widest mb-4">Pilotage & Système</p>
 
                     <Link href="/admin/adults/analytics" className="flex items-center gap-3 px-4 py-3 text-sm font-bold uppercase tracking-widest text-brand-text-muted hover:text-white hover:bg-white/5 rounded-xl transition-all group">
-                        <BarChart className="w-5 h-5 group-hover:text-brand-gold transition-colors" />
+                        <BarChart className="w-5 h-5 group-hover:text-brand-royal transition-colors" />
                         Analytics
                     </Link>
                     <Link href="/admin/adults/settings" className="flex items-center gap-3 px-4 py-3 text-sm font-bold uppercase tracking-widest text-brand-text-muted hover:text-white hover:bg-white/5 rounded-xl transition-all group">
-                        <Settings className="w-5 h-5 group-hover:text-brand-gold transition-colors" />
+                        <Settings className="w-5 h-5 group-hover:text-brand-royal transition-colors" />
                         Vitrine & Identité
                     </Link>
                     <Link href="/admin/legal" className="flex items-center gap-3 px-4 py-3 text-sm font-bold uppercase tracking-widest text-brand-text-muted hover:text-white hover:bg-white/5 rounded-xl transition-all group">
-                        <BookOpen className="w-5 h-5 group-hover:text-brand-gold transition-colors" />
+                        <BookOpen className="w-5 h-5 group-hover:text-brand-royal transition-colors" />
                         Textes Légaux
                     </Link>
                 </nav>
@@ -99,7 +99,7 @@ export default function AdultsAdminLayout({
             {/* Main Content */}
             <main className="flex-1 md:ml-64 flex flex-col min-h-screen relative">
                 {/* Page Background Glow */}
-                <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-brand-gold/5 blur-[150px] rounded-full pointer-events-none"></div>
+                <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-brand-royal/5 blur-[150px] rounded-full pointer-events-none"></div>
 
                 <header className="h-20 border-b border-white/5 bg-brand-bg/80 backdrop-blur-xl sticky top-0 z-40 px-8">
                     <div className="flex items-center justify-between w-full max-w-7xl mx-auto h-full">
@@ -110,7 +110,7 @@ export default function AdultsAdminLayout({
                                 </BreadcrumbItem>
                                 <BreadcrumbSeparator className="text-white/10" />
                                 <BreadcrumbItem>
-                                    <BreadcrumbPage className="text-brand-gold font-bold uppercase tracking-widest text-xs">Business</BreadcrumbPage>
+                                    <BreadcrumbPage className="text-brand-royal font-bold uppercase tracking-widest text-xs">Business</BreadcrumbPage>
                                 </BreadcrumbItem>
                             </BreadcrumbList>
                         </Breadcrumb>
