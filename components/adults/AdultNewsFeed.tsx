@@ -15,7 +15,7 @@ export default function AdultNewsFeed({ items }: { items: NewsItem[] }) {
     return (
         <section>
             <h3 className="text-xl font-bold flex items-center gap-3 text-white uppercase tracking-wider mb-6">
-                <Bell className="w-5 h-5 text-magic-cyan" />
+                <Bell className="w-5 h-5 text-magic-gold" />
                 Dernières Nouveautés
             </h3>
 
@@ -36,7 +36,7 @@ export default function AdultNewsFeed({ items }: { items: NewsItem[] }) {
                                 target={isExternal ? "_blank" : "_self"}
                                 className="group block"
                             >
-                                <div className="bg-[#111] border border-white/5 rounded-xl p-4 flex items-center gap-4 hover:bg-[#1a1a1f] transition-all hover:border-magic-cyan/30 group-hover:translate-x-1 duration-300 shadow-sm">
+                                <div className="bg-[#111] border border-white/5 rounded-xl p-4 flex items-center gap-4 hover:bg-[#1a1a1f] transition-all hover:border-magic-gold/30 group-hover:translate-x-1 duration-300 shadow-sm">
                                     {/* Thumbnail / Icon */}
                                     <div className="w-16 h-16 bg-black rounded-lg shrink-0 overflow-hidden relative border border-white/5">
                                         {item.thumbnail_url ? (
@@ -44,17 +44,17 @@ export default function AdultNewsFeed({ items }: { items: NewsItem[] }) {
                                         ) : (
                                             <div className="w-full h-full flex items-center justify-center bg-[#0a0a0f]">
                                                 {item.type === 'pdf' ? <FileText className="w-6 h-6 text-slate-500" /> :
-                                                    item.type === 'product' ? <ShoppingBag className="w-6 h-6 text-magic-cyan" /> :
+                                                    item.type === 'product' ? <ShoppingBag className="w-6 h-6 text-magic-gold" /> :
                                                         item.type === 'custom_link' ? <ArrowRight className="w-6 h-6 text-slate-500" /> :
                                                             <Video className="w-6 h-6 text-slate-500" />}
                                             </div>
                                         )}
-                                        <div className="absolute top-1 right-1 bg-magic-cyan text-black text-[8px] font-bold px-1.5 py-0.5 rounded uppercase shadow-sm">New</div>
+                                        <div className="absolute top-1 right-1 bg-magic-gold text-black text-[8px] font-bold px-1.5 py-0.5 rounded uppercase shadow-sm">New</div>
                                     </div>
 
                                     {/* Info */}
                                     <div>
-                                        <h4 className="font-bold text-white group-hover:text-magic-cyan transition-colors line-clamp-1 text-sm md:text-base">{item.title}</h4>
+                                        <h4 className="font-bold text-white group-hover:text-magic-gold transition-colors line-clamp-1 text-sm md:text-base">{item.title}</h4>
                                         <p className="text-xs text-slate-400 mt-1 flex items-center gap-2 font-light">
                                             {item.created_at ? (
                                                 <>
@@ -71,7 +71,7 @@ export default function AdultNewsFeed({ items }: { items: NewsItem[] }) {
 
                                     {/* Arrow */}
                                     <div className="ml-auto opacity-50 group-hover:opacity-100 transition-opacity">
-                                        <ArrowRight className="w-4 h-4 text-slate-500 group-hover:text-magic-cyan transition-colors transform group-hover:translate-x-1 duration-300" />
+                                        <ArrowRight className="w-4 h-4 text-slate-500 group-hover:text-magic-gold transition-colors transform group-hover:translate-x-1 duration-300" />
                                     </div>
                                 </div>
                             </Link>

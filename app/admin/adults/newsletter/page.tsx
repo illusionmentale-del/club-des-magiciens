@@ -86,8 +86,8 @@ export default function NewsletterAdminPage() {
     return (
         <div className="space-y-8">
             <div className="mb-10 text-center flex flex-col items-center">
-                <div className="w-16 h-16 bg-brand-cyan/10 rounded-2xl flex items-center justify-center mb-6 border border-brand-cyan/20 shadow-[0_0_30px_rgba(234,179,8,0.1)]">
-                    <Mail className="w-8 h-8 text-brand-cyan relative z-10" />
+                <div className="w-16 h-16 bg-brand-gold/10 rounded-2xl flex items-center justify-center mb-6 border border-brand-gold/20 shadow-[0_0_30px_rgba(234,179,8,0.1)]">
+                    <Mail className="w-8 h-8 text-brand-gold relative z-10" />
                 </div>
                 <h1 className="text-4xl font-black uppercase tracking-widest text-white mb-3">Le Newsletter Builder</h1>
                 <p className="text-brand-text-muted font-light max-w-xl mx-auto">
@@ -97,7 +97,7 @@ export default function NewsletterAdminPage() {
 
             <div className="bg-brand-card border border-white/5 rounded-3xl p-8 relative overflow-hidden group max-w-4xl mx-auto shadow-2xl">
                 {/* Glow ambiant */}
-                <div className="absolute inset-x-0 -top-px h-px w-full bg-gradient-to-r from-transparent via-brand-cyan/30 to-transparent"></div>
+                <div className="absolute inset-x-0 -top-px h-px w-full bg-gradient-to-r from-transparent via-brand-gold/30 to-transparent"></div>
 
                 <div className="space-y-8 relative z-10">
 
@@ -108,7 +108,7 @@ export default function NewsletterAdminPage() {
                             <select
                                 value={targetAudience}
                                 onChange={(e) => setTargetAudience(e.target.value)}
-                                className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-brand-cyan/50 focus:ring-1 focus:ring-brand-cyan/50 transition-all font-medium appearance-none"
+                                className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-brand-gold/50 focus:ring-1 focus:ring-brand-gold/50 transition-all font-medium appearance-none"
                             >
                                 <option value="all">Tous (Adultes + Enfants)</option>
                                 <option value="adults">Uniquement les Adultes (L'Atelier)</option>
@@ -123,7 +123,7 @@ export default function NewsletterAdminPage() {
                                 type="text"
                                 value={subject}
                                 onChange={(e) => setSubject(e.target.value)}
-                                className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-brand-text-muted/50 focus:outline-none focus:border-brand-cyan/50 focus:ring-1 focus:ring-brand-cyan/50 transition-all font-bold"
+                                className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-brand-text-muted/50 focus:outline-none focus:border-brand-gold/50 focus:ring-1 focus:ring-brand-gold/50 transition-all font-bold"
                                 placeholder="La Masterclass de Février est en ligne 🎩"
                             />
                         </div>
@@ -143,7 +143,7 @@ export default function NewsletterAdminPage() {
                                 value={content}
                                 onChange={(e) => setContent(e.target.value)}
                                 rows={template === 'classic' ? 12 : 4}
-                                className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-4 text-white placeholder-brand-text-muted/50 focus:outline-none focus:border-brand-cyan/50 focus:ring-1 focus:ring-brand-cyan/50 transition-all text-sm leading-relaxed resize-y font-mono"
+                                className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-4 text-white placeholder-brand-text-muted/50 focus:outline-none focus:border-brand-gold/50 focus:ring-1 focus:ring-brand-gold/50 transition-all text-sm leading-relaxed resize-y font-mono"
                                 placeholder={`Bonjour [Prénom],\n\nVoici le texte de votre e-mail...`}
                             />
                         </div>
@@ -175,7 +175,7 @@ export default function NewsletterAdminPage() {
                         <button
                             onClick={() => handleSendAction(false)}
                             disabled={isTesting || isSending}
-                            className="px-8 py-3 rounded-xl font-bold uppercase tracking-widest text-sm bg-gradient-to-r from-brand-cyan to-blue-600 hover:from-brand-cyan/90 hover:to-blue-600/90 text-black flex items-center justify-center transition-all min-w-[200px] shadow-[0_0_20px_rgba(234,179,8,0.2)] disabled:opacity-50"
+                            className="px-8 py-3 rounded-xl font-bold uppercase tracking-widest text-sm bg-gradient-to-r from-brand-gold to-orange-500 hover:from-brand-gold/90 hover:to-orange-500/90 text-black flex items-center justify-center transition-all min-w-[200px] shadow-[0_0_20px_rgba(234,179,8,0.2)] disabled:opacity-50"
                         >
                             {isSending ? <Loader2 className="w-5 h-5 animate-spin mx-auto" /> : (
                                 <>
@@ -188,10 +188,10 @@ export default function NewsletterAdminPage() {
                 </div>
             </div>
 
-            <div className="max-w-4xl mx-auto flex items-start gap-3 p-4 bg-blue-600/10 border border-blue-600/20 rounded-2xl">
-                <AlertTriangle className="w-5 h-5 text-blue-500 shrink-0 mt-0.5" />
+            <div className="max-w-4xl mx-auto flex items-start gap-3 p-4 bg-orange-500/10 border border-orange-500/20 rounded-2xl">
+                <AlertTriangle className="w-5 h-5 text-orange-400 shrink-0 mt-0.5" />
                 <div className="text-sm font-light text-orange-200/80">
-                    <strong className="text-blue-500 font-bold block mb-1">Protection Anti-Spam (Nouveau Système)</strong>
+                    <strong className="text-orange-400 font-bold block mb-1">Protection Anti-Spam (Nouveau Système)</strong>
                     Cet éditeur visuel générera des blocs HTML robustes (Cartes, Boutons) supportés par Gmail/Apple Mail. L'expéditeur technique reste <strong>contact@clubdespetitsmagiciens.fr</strong> sécurisé par Resend. L'ID du cours ou du produit sélectionné est envoyé au serveur qui s'occupe du reste.
                 </div>
             </div>

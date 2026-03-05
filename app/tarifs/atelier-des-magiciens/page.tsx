@@ -29,9 +29,9 @@ export default async function AdultsPricingPage() {
     const yearlyProduct = products && products.length > 1 ? products[1] : null;
 
     return (
-        <div className="min-h-screen bg-[#050507] text-white font-sans selection:bg-magic-cyan/30 relative overflow-hidden">
+        <div className="min-h-screen bg-[#050507] text-white font-sans selection:bg-magic-gold/30 relative overflow-hidden">
             {/* Ambient Background Effects */}
-            <div className="absolute top-[10%] left-[-10%] w-[50%] h-[50%] bg-magic-cyan/10 blur-[150px] rounded-full pointer-events-none mix-blend-screen z-0 animate-pulse-slow"></div>
+            <div className="absolute top-[10%] left-[-10%] w-[50%] h-[50%] bg-magic-gold/10 blur-[150px] rounded-full pointer-events-none mix-blend-screen z-0 animate-pulse-slow"></div>
             <div className="absolute bottom-[20%] right-[-10%] w-[40%] h-[40%] bg-amber-600/10 blur-[120px] rounded-full pointer-events-none mix-blend-screen z-0"></div>
 
             {/* Simple Header */}
@@ -40,7 +40,7 @@ export default async function AdultsPricingPage() {
                     <div className="relative w-8 h-8 md:w-10 md:h-10 transform group-hover:scale-110 transition-all">
                         <Image src="/logo.png" alt="Logo" fill className="object-contain" />
                     </div>
-                    <span className="font-black text-lg md:text-xl tracking-tight uppercase">L'Atelier des <span className="text-magic-cyan">Magiciens</span></span>
+                    <span className="font-black text-lg md:text-xl tracking-tight uppercase">L'Atelier des <span className="text-magic-gold">Magiciens</span></span>
                 </Link>
                 {user ? (
                     <Link href="/dashboard" className="text-sm font-bold bg-white/10 hover:bg-white/20 px-4 py-2 rounded-full transition-colors backdrop-blur-md">
@@ -56,29 +56,29 @@ export default async function AdultsPricingPage() {
             <div className="relative z-10 max-w-6xl mx-auto px-4 pt-32 pb-24">
                 {/* Hero Section */}
                 <div className="mb-12 flex flex-col items-center text-center max-w-4xl mx-auto">
-                    <div className="inline-flex items-center gap-2 px-6 py-2 rounded-full border border-magic-cyan/30 bg-gradient-to-r from-magic-cyan/10 to-transparent text-magic-cyan text-sm font-bold uppercase tracking-widest shadow-[0_0_20px_rgba(255,215,0,0.15)] backdrop-blur-md mb-8">
-                        <Star className="w-4 h-4 fill-magic-cyan" />
+                    <div className="inline-flex items-center gap-2 px-6 py-2 rounded-full border border-magic-gold/30 bg-gradient-to-r from-magic-gold/10 to-transparent text-magic-gold text-sm font-bold uppercase tracking-widest shadow-[0_0_20px_rgba(255,215,0,0.15)] backdrop-blur-md mb-8">
+                        <Star className="w-4 h-4 fill-magic-gold" />
                         L'Atelier des Magiciens
-                        <Star className="w-4 h-4 fill-magic-cyan" />
+                        <Star className="w-4 h-4 fill-magic-gold" />
                     </div>
                     <h1 className="text-5xl md:text-7xl font-black tracking-tight text-white leading-[1.1] mb-6">
                         Passez à la vitesse <br />
-                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-magic-cyan to-yellow-600">supérieure.</span>
+                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-magic-gold to-yellow-600">supérieure.</span>
                     </h1>
                     <p className="text-xl md:text-2xl text-gray-400 font-light leading-relaxed mb-12">
                         Des Masterclass exclusives tournées par des professionnels. Des secrets jalousement gardés, enfin dévoilés étape par étape pour perfectionner votre art.
                     </p>
 
                     {/* Video Teaser Placeholder */}
-                    <div className="w-full max-w-4xl aspect-video bg-black/50 border-2 border-white/10 rounded-3xl overflow-hidden relative shadow-2xl flex items-center justify-center group cursor-pointer hover:border-magic-cyan/50 transition-colors">
+                    <div className="w-full max-w-4xl aspect-video bg-black/50 border-2 border-white/10 rounded-3xl overflow-hidden relative shadow-2xl flex items-center justify-center group cursor-pointer hover:border-magic-gold/50 transition-colors">
                         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent z-10"></div>
-                        <div className="w-20 h-20 bg-magic-cyan/20 backdrop-blur-md rounded-full flex items-center justify-center border border-magic-cyan/50 group-hover:bg-magic-cyan/40 transition-colors z-20">
-                            <svg className="w-8 h-8 text-magic-cyan ml-1" fill="currentColor" viewBox="0 0 24 24">
+                        <div className="w-20 h-20 bg-magic-gold/20 backdrop-blur-md rounded-full flex items-center justify-center border border-magic-gold/50 group-hover:bg-magic-gold/40 transition-colors z-20">
+                            <svg className="w-8 h-8 text-magic-gold ml-1" fill="currentColor" viewBox="0 0 24 24">
                                 <path d="M8 5v14l11-7z" />
                             </svg>
                         </div>
                         <p className="absolute bottom-6 left-8 text-white font-bold text-xl z-20 flex items-center gap-2">
-                            <Star className="w-5 h-5 text-magic-cyan fill-magic-cyan" /> Découvrez l'Atelier en vidéo
+                            <Star className="w-5 h-5 text-magic-gold fill-magic-gold" /> Découvrez l'Atelier en vidéo
                         </p>
                     </div>
                 </div>
@@ -94,20 +94,20 @@ export default async function AdultsPricingPage() {
 
                 {/* Author Block */}
                 <div className="max-w-4xl mx-auto mt-24 mb-16 bg-[#1a1525] rounded-3xl overflow-hidden shadow-2xl border border-white/5 relative">
-                    <div className="absolute top-0 right-0 w-64 h-64 bg-magic-cyan/10 blur-[80px] rounded-full pointer-events-none"></div>
+                    <div className="absolute top-0 right-0 w-64 h-64 bg-magic-gold/10 blur-[80px] rounded-full pointer-events-none"></div>
                     <div className="p-8 md:p-12 flex flex-col items-center text-center relative z-10">
                         <h2 className="text-3xl md:text-4xl font-black text-white mb-8 tracking-tight">
-                            Jérémy Marouani <span className="text-magic-cyan font-light">|</span> LeMagicienPOV
+                            Jérémy Marouani <span className="text-magic-gold font-light">|</span> LeMagicienPOV
                         </h2>
                         <ul className="space-y-4 text-left inline-block">
                             <li className="flex items-center gap-4 text-lg md:text-xl text-gray-200 font-bold">
-                                <span className="text-magic-cyan text-2xl">+</span> de 40 MILLIONS de VUES sur les réseaux
+                                <span className="text-magic-gold text-2xl">+</span> de 40 MILLIONS de VUES sur les réseaux
                             </li>
                             <li className="flex items-center gap-4 text-lg md:text-xl text-gray-200 font-bold">
-                                <span className="text-magic-cyan text-2xl">+</span> de 150 000 Abonnés Cumulés
+                                <span className="text-magic-gold text-2xl">+</span> de 150 000 Abonnés Cumulés
                             </li>
                             <li className="flex items-center gap-4 text-lg md:text-xl text-gray-200 font-bold">
-                                <span className="text-magic-cyan text-2xl">+</span> de 1 500 Ateliers Périscolaires à mon actif
+                                <span className="text-magic-gold text-2xl">+</span> de 1 500 Ateliers Périscolaires à mon actif
                             </li>
                         </ul>
                     </div>
@@ -125,10 +125,10 @@ export default async function AdultsPricingPage() {
                     <h3 className="text-3xl font-black text-center text-white mb-8">Questions Fréquentes</h3>
 
                     <div className="space-y-4">
-                        <details className="group bg-white/[0.02] border border-white/5 rounded-2xl [&_summary::-webkit-details-marker]:hidden transition-all duration-300 open:border-magic-cyan/30 ring-1 ring-white/5 hover:ring-white/10 backdrop-blur-sm">
+                        <details className="group bg-white/[0.02] border border-white/5 rounded-2xl [&_summary::-webkit-details-marker]:hidden transition-all duration-300 open:border-magic-gold/30 ring-1 ring-white/5 hover:ring-white/10 backdrop-blur-sm">
                             <summary className="flex items-center justify-between p-6 font-bold cursor-pointer text-white md:text-lg">
                                 Que contient exactement le catalogue des Masterclass ?
-                                <span className="transition duration-300 group-open:rotate-180 text-magic-cyan">
+                                <span className="transition duration-300 group-open:rotate-180 text-magic-gold">
                                     <svg fill="none" height="24" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" viewBox="0 0 24 24" width="24"><path d="M6 9l6 6 6-6"></path></svg>
                                 </span>
                             </summary>
@@ -137,10 +137,10 @@ export default async function AdultsPricingPage() {
                             </div>
                         </details>
 
-                        <details className="group bg-white/[0.02] border border-white/5 rounded-2xl [&_summary::-webkit-details-marker]:hidden transition-all duration-300 open:border-magic-cyan/30 ring-1 ring-white/5 hover:ring-white/10 backdrop-blur-sm">
+                        <details className="group bg-white/[0.02] border border-white/5 rounded-2xl [&_summary::-webkit-details-marker]:hidden transition-all duration-300 open:border-magic-gold/30 ring-1 ring-white/5 hover:ring-white/10 backdrop-blur-sm">
                             <summary className="flex items-center justify-between p-6 font-bold cursor-pointer text-white md:text-lg">
                                 Puis-je résilier facilement ?
-                                <span className="transition duration-300 group-open:rotate-180 text-magic-cyan">
+                                <span className="transition duration-300 group-open:rotate-180 text-magic-gold">
                                     <svg fill="none" height="24" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" viewBox="0 0 24 24" width="24"><path d="M6 9l6 6 6-6"></path></svg>
                                 </span>
                             </summary>

@@ -21,7 +21,7 @@ export default function AtelierPricingCards({
                 <div className="bg-white/[0.02] border border-white/10 rounded-[2.5rem] p-8 md:p-10 relative h-full flex flex-col transition-colors duration-500 min-w-[320px] hover:bg-white/[0.04]">
                     <div className="flex flex-col justify-between items-start mb-6 gap-6">
                         <div className="flex-shrink-0">
-                            <h3 className="font-bold text-2xl text-white group-hover:text-magic-cyan transition-colors duration-500 mb-2 whitespace-nowrap">Abonnement Mensuel</h3>
+                            <h3 className="font-bold text-2xl text-white group-hover:text-magic-gold transition-colors duration-500 mb-2 whitespace-nowrap">Abonnement Mensuel</h3>
                             <p className="text-gray-400 text-sm whitespace-nowrap">Découvrez l'Atelier sans engagement.</p>
                         </div>
 
@@ -70,7 +70,7 @@ export default function AtelierPricingCards({
             {/* LE CERCLE - RIGHT SIDE */}
             <div className="relative group flex-1 flex flex-col justify-end overflow-hidden origin-bottom">
                 {/* Glow Behind */}
-                <div className="absolute -inset-1 bg-gradient-to-br from-magic-cyan/30 to-amber-700/10 rounded-[2.5rem] blur-xl opacity-80 pointer-events-none"></div>
+                <div className="absolute -inset-1 bg-gradient-to-br from-magic-gold/30 to-amber-700/10 rounded-[2.5rem] blur-xl opacity-80 pointer-events-none"></div>
 
                 <div className="relative bg-[#0A0A0E] border border-white/10 rounded-[2.5rem] p-8 md:p-10 h-full flex flex-col min-w-[320px] transition-colors duration-500 shadow-2xl z-10">
                     {/* Inner Glass border */}
@@ -79,12 +79,12 @@ export default function AtelierPricingCards({
                     <div className="flex flex-col justify-between items-start mb-8 gap-6">
                         <div className="flex-shrink-0">
                             <div className="flex items-center gap-3 mb-2">
-                                <Crown className="w-8 h-8 text-magic-cyan flex-shrink-0" />
+                                <Crown className="w-8 h-8 text-magic-gold flex-shrink-0" />
                                 <h2 className="font-black text-white tracking-tight whitespace-nowrap text-3xl md:text-4xl transition-all duration-300">
                                     Abonnement Annuel
                                 </h2>
                             </div>
-                            <p className="text-magic-cyan/80 font-medium tracking-wide whitespace-nowrap text-sm lg:text-base">
+                            <p className="text-magic-gold/80 font-medium tracking-wide whitespace-nowrap text-sm lg:text-base">
                                 Économisez 2 mois d'abonnement.
                             </p>
                         </div>
@@ -98,7 +98,7 @@ export default function AtelierPricingCards({
                             <div className="text-gray-400 font-medium mt-1 whitespace-nowrap">facturé annuellement</div>
 
                             <div className="mt-2">
-                                <div className="inline-block bg-magic-cyan/10 text-magic-cyan border border-magic-cyan/20 px-3 py-1 rounded-md text-xs font-bold whitespace-nowrap">
+                                <div className="inline-block bg-magic-gold/10 text-magic-gold border border-magic-gold/20 px-3 py-1 rounded-md text-xs font-bold whitespace-nowrap">
                                     Soit 8,33€/mois
                                 </div>
                             </div>
@@ -109,25 +109,25 @@ export default function AtelierPricingCards({
                         <ul className="space-y-4">
                             <li className="flex items-start gap-4">
                                 <div className="w-8 h-8 rounded-full bg-white/5 flex flex-shrink-0 items-center justify-center border border-white/10">
-                                    <PlayCircle className="w-4 h-4 text-magic-cyan" />
+                                    <PlayCircle className="w-4 h-4 text-magic-gold" />
                                 </div>
                                 <span className="text-gray-300 text-base">Accès illimité à <strong className="text-white">l'Atelier</strong></span>
                             </li>
                             <li className="flex items-start gap-4">
                                 <div className="w-8 h-8 rounded-full bg-white/5 flex flex-shrink-0 items-center justify-center border border-white/10">
-                                    <Sparkles className="w-4 h-4 text-magic-cyan" />
+                                    <Sparkles className="w-4 h-4 text-magic-gold" />
                                 </div>
                                 <span className="text-gray-300 text-base"><strong className="text-white">Nouveautés régulières</strong></span>
                             </li>
                             <li className="flex items-start gap-4">
-                                <div className="w-8 h-8 rounded-full bg-magic-cyan/10 flex flex-shrink-0 items-center justify-center border border-magic-cyan/20">
-                                    <Star className="w-4 h-4 text-magic-cyan" />
+                                <div className="w-8 h-8 rounded-full bg-magic-gold/10 flex flex-shrink-0 items-center justify-center border border-magic-gold/20">
+                                    <Star className="w-4 h-4 text-magic-gold" />
                                 </div>
                                 <span className="text-gray-300 text-base">Accès aux <strong className="text-white">Lives privés</strong></span>
                             </li>
                             <li className="flex items-start gap-4">
-                                <div className="w-8 h-8 rounded-full bg-magic-cyan/10 flex flex-shrink-0 items-center justify-center border border-magic-cyan/20">
-                                    <ShieldCheck className="w-4 h-4 text-magic-cyan" />
+                                <div className="w-8 h-8 rounded-full bg-magic-gold/10 flex flex-shrink-0 items-center justify-center border border-magic-gold/20">
+                                    <ShieldCheck className="w-4 h-4 text-magic-gold" />
                                 </div>
                                 <span className="text-gray-300 text-base"><strong className="text-white">Ressources exclusives</strong></span>
                             </li>
@@ -141,7 +141,7 @@ export default function AtelierPricingCards({
                             space="adults"
                             userLoggedIn={userLoggedIn}
                             buttonText="Rejoindre l'Atelier"
-                            className="w-full py-4 text-lg bg-gradient-to-r from-magic-cyan to-yellow-600 hover:from-cyan-400 hover:to-yellow-500 text-black shadow-[0_0_40px_rgba(255,215,0,0.3)] border-none font-bold"
+                            className="w-full py-4 text-lg bg-gradient-to-r from-magic-gold to-yellow-600 hover:from-yellow-400 hover:to-yellow-500 text-black shadow-[0_0_40px_rgba(255,215,0,0.3)] border-none font-bold"
                         />
                     </div>
                 </div>
@@ -153,7 +153,7 @@ export default function AtelierPricingCards({
 
 function CheckIcon() {
     return (
-        <svg className="w-5 h-5 text-magic-cyan flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+        <svg className="w-5 h-5 text-magic-gold flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
         </svg>
     )

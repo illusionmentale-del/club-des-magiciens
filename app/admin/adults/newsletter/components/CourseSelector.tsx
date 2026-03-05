@@ -59,12 +59,12 @@ export function CourseSelector({ space, onSelect }: CourseSelectorProps) {
     };
 
     if (loading) {
-        return <div className="flex justify-center p-8 border border-white/5 rounded-2xl bg-black/20"><Loader2 className="w-6 h-6 animate-spin text-brand-cyan" /></div>;
+        return <div className="flex justify-center p-8 border border-white/5 rounded-2xl bg-black/20"><Loader2 className="w-6 h-6 animate-spin text-brand-gold" /></div>;
     }
 
     return (
         <div className="space-y-4 bg-black/20 p-6 rounded-2xl border border-white/5 shadow-inner">
-            <h3 className="font-bold text-sm text-brand-cyan uppercase tracking-widest flex items-center gap-2">
+            <h3 className="font-bold text-sm text-brand-gold uppercase tracking-widest flex items-center gap-2">
                 <PlaySquare className="w-4 h-4" /> Sélectionner un Cours / Masterclass
             </h3>
             
@@ -75,7 +75,7 @@ export function CourseSelector({ space, onSelect }: CourseSelectorProps) {
                     placeholder="Rechercher par titre..."
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
-                    className="w-full bg-black/40 border border-white/10 rounded-xl pl-10 pr-4 py-2 text-sm text-white focus:outline-none focus:border-brand-cyan/50"
+                    className="w-full bg-black/40 border border-white/10 rounded-xl pl-10 pr-4 py-2 text-sm text-white focus:outline-none focus:border-brand-gold/50"
                 />
             </div>
 
@@ -87,7 +87,7 @@ export function CourseSelector({ space, onSelect }: CourseSelectorProps) {
                         onClick={() => handleSelect(course.id)}
                         className={`flex items-center gap-4 p-3 rounded-xl border text-left transition-all ${
                             selectedId === course.id
-                                ? 'bg-brand-cyan/10 border-brand-cyan/50 shadow-[0_0_15px_rgba(234,179,8,0.1)]'
+                                ? 'bg-brand-gold/10 border-brand-gold/50 shadow-[0_0_15px_rgba(234,179,8,0.1)]'
                                 : 'bg-white/5 border-white/5 hover:bg-white/10'
                         }`}
                     >
@@ -99,12 +99,12 @@ export function CourseSelector({ space, onSelect }: CourseSelectorProps) {
                             </div>
                         )}
                         <div className="flex-1 min-w-0">
-                            <p className={`text-sm font-bold truncate ${selectedId === course.id ? 'text-brand-cyan' : 'text-white'}`}>{course.title}</p>
+                            <p className={`text-sm font-bold truncate ${selectedId === course.id ? 'text-brand-gold' : 'text-white'}`}>{course.title}</p>
                             <p className="text-xs text-brand-text-muted truncate mt-0.5">{course.description || "Aucune description."}</p>
                         </div>
                         {selectedId === course.id && (
-                            <div className="w-6 h-6 rounded-full bg-brand-cyan/20 flex items-center justify-center shrink-0">
-                                <div className="w-2.5 h-2.5 rounded-full bg-brand-cyan"></div>
+                            <div className="w-6 h-6 rounded-full bg-brand-gold/20 flex items-center justify-center shrink-0">
+                                <div className="w-2.5 h-2.5 rounded-full bg-brand-gold"></div>
                             </div>
                         )}
                     </button>

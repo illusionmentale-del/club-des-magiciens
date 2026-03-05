@@ -48,7 +48,7 @@ export default function Sidebar({ isAdmin, socialLinks, logoUrl, hasKidsAccess, 
 
                 <div>
                     <h2 className="font-bold text-white text-sm">Jérémy Marouani</h2>
-                    <p className="text-xs text-magic-cyan font-mono">@LeMagicienPOV</p>
+                    <p className="text-xs text-magic-gold font-mono">@LeMagicienPOV</p>
                 </div>
 
                 <div className="flex items-center gap-3 text-gray-400">
@@ -66,7 +66,7 @@ export default function Sidebar({ isAdmin, socialLinks, logoUrl, hasKidsAccess, 
             <nav className="flex-1 p-4 space-y-2 overflow-y-auto">
                 <Link
                     href="/dashboard"
-                    className={`flex items-center gap-3 px-4 py-3 font-medium transition-all ${isActive('/dashboard') ? 'bg-gradient-to-r from-magic-cyan/20 to-transparent text-magic-cyan border-l-2 border-magic-cyan' : 'text-gray-400 hover:bg-white/5 hover:text-white border-l-2 border-transparent'}`}
+                    className={`flex items-center gap-3 px-4 py-3 font-medium transition-all ${isActive('/dashboard') ? 'bg-gradient-to-r from-magic-gold/20 to-transparent text-magic-gold border-l-2 border-magic-gold' : 'text-gray-400 hover:bg-white/5 hover:text-white border-l-2 border-transparent'}`}
                 >
                     <Star className="w-5 h-5" />
                     L'Actu du Club
@@ -75,27 +75,27 @@ export default function Sidebar({ isAdmin, socialLinks, logoUrl, hasKidsAccess, 
                 {toggles?.enable_adults_program !== false && (
                     <Link
                         href="/dashboard/library"
-                        className={`flex items-center gap-3 px-4 py-3 font-medium transition-all ${isActive('/dashboard/library') ? 'bg-gradient-to-r from-magic-cyan/20 to-transparent text-magic-cyan border-l-2 border-magic-cyan' : 'text-gray-400 hover:bg-white/5 hover:text-white border-l-2 border-transparent'}`}
+                        className={`flex items-center gap-3 px-4 py-3 font-medium transition-all ${isActive('/dashboard/library') ? 'bg-gradient-to-r from-magic-gold/20 to-transparent text-magic-gold border-l-2 border-magic-gold' : 'text-gray-400 hover:bg-white/5 hover:text-white border-l-2 border-transparent'}`}
                     >
                         <BookOpen className="w-5 h-5" />
-                        Mes Vidéos
+                        Bibliothèque
                     </Link>
                 )}
 
                 {toggles?.enable_adults_masterclass !== false && (
                     <Link
                         href="/dashboard/masterclass"
-                        className={`flex items-center gap-3 px-4 py-3 font-medium transition-all ${isActive('/dashboard/masterclass') ? 'bg-gradient-to-r from-magic-cyan/20 to-transparent text-magic-cyan border-l-2 border-magic-cyan' : 'text-gray-400 hover:bg-white/5 hover:text-white border-l-2 border-transparent'}`}
+                        className={`flex items-center gap-3 px-4 py-3 font-medium transition-all ${isActive('/dashboard/masterclass') ? 'bg-gradient-to-r from-magic-gold/20 to-transparent text-magic-gold border-l-2 border-magic-gold' : 'text-gray-400 hover:bg-white/5 hover:text-white border-l-2 border-transparent'}`}
                     >
                         <Video className="w-5 h-5" />
-                        Masterclass
+                        Les Ateliers
                     </Link>
                 )}
 
                 {toggles?.enable_adults_catalog !== false && (
                     <Link
                         href="/dashboard/catalog"
-                        className={`flex items-center gap-3 px-4 py-3 font-medium transition-all ${isActive('/dashboard/catalog') ? 'bg-gradient-to-r from-magic-cyan/20 to-transparent text-magic-cyan border-l-2 border-magic-cyan' : 'text-gray-400 hover:bg-white/5 hover:text-white border-l-2 border-transparent'}`}
+                        className={`flex items-center gap-3 px-4 py-3 font-medium transition-all ${isActive('/dashboard/catalog') ? 'bg-gradient-to-r from-magic-gold/20 to-transparent text-magic-gold border-l-2 border-magic-gold' : 'text-gray-400 hover:bg-white/5 hover:text-white border-l-2 border-transparent'}`}
                     >
                         <ShoppingBag className="w-5 h-5" />
                         Boutique
@@ -105,7 +105,7 @@ export default function Sidebar({ isAdmin, socialLinks, logoUrl, hasKidsAccess, 
                 {toggles?.enable_adults_account !== false && (
                     <Link
                         href="/dashboard/account"
-                        className={`flex items-center gap-3 px-4 py-3 font-medium transition-all ${isActive('/dashboard/account') ? 'bg-gradient-to-r from-magic-cyan/20 to-transparent text-magic-cyan border-l-2 border-magic-cyan' : 'text-gray-400 hover:bg-white/5 hover:text-white border-l-2 border-transparent'}`}
+                        className={`flex items-center gap-3 px-4 py-3 font-medium transition-all ${isActive('/dashboard/account') ? 'bg-gradient-to-r from-magic-gold/20 to-transparent text-magic-gold border-l-2 border-magic-gold' : 'text-gray-400 hover:bg-white/5 hover:text-white border-l-2 border-transparent'}`}
                     >
                         <Settings className="w-5 h-5" />
                         Mon Compte
@@ -114,7 +114,7 @@ export default function Sidebar({ isAdmin, socialLinks, logoUrl, hasKidsAccess, 
 
                 <Link
                     href="/dashboard/live"
-                    className={`flex items-center gap-3 px-4 py-3 font-medium transition-all ${isActive('/dashboard/live') ? 'bg-gradient-to-r from-magic-cyan/20 to-transparent text-magic-cyan border-l-2 border-magic-cyan' : 'text-gray-400 hover:bg-white/5 hover:text-white border-l-2 border-transparent'}`}
+                    className={`flex items-center gap-3 px-4 py-3 font-medium transition-all ${isActive('/dashboard/live') ? 'bg-gradient-to-r from-magic-gold/20 to-transparent text-magic-gold border-l-2 border-magic-gold' : 'text-gray-400 hover:bg-white/5 hover:text-white border-l-2 border-transparent'}`}
                 >
                     <Video className="w-5 h-5" />
                     Replays / Lives

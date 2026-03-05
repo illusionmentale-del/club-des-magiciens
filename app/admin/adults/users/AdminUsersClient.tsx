@@ -31,7 +31,7 @@ export default function AdminUsersClient({ profiles }: AdminUsersClientProps) {
     const activeProfiles = filteredProfiles.filter(p => !p.deleted_at);
     const deletedProfiles = filteredProfiles.filter(p => p.deleted_at);
 
-    const btnColor = 'bg-brand-cyan text-black hover:bg-brand-cyan/90';
+    const btnColor = 'bg-brand-gold text-black hover:bg-brand-gold/90';
 
     return (
         <div className={`w-full text-white transition-colors duration-500`}>
@@ -40,7 +40,7 @@ export default function AdminUsersClient({ profiles }: AdminUsersClientProps) {
                     <div className="flex items-center gap-4">
                         <div>
                             <h1 className="text-3xl font-bold">Gestion des Élèves (Adultes)</h1>
-                            <div className={`text-sm px-2 py-0.5 rounded inline-block mt-1 uppercase font-bold tracking-wider bg-brand-cyan/20 text-brand-cyan`}>
+                            <div className={`text-sm px-2 py-0.5 rounded inline-block mt-1 uppercase font-bold tracking-wider bg-brand-gold/20 text-brand-gold`}>
                                 Vue Business
                             </div>
                         </div>

@@ -67,10 +67,10 @@ export default async function AdultMasterclassPage() {
     const sortedVideos = videos.sort((a, b) => new Date(b.dateUploaded).getTime() - new Date(a.dateUploaded).getTime());
 
     return (
-        <div className="min-h-screen bg-[#050507] text-white p-4 md:p-8 pb-32 font-sans relative selection:bg-magic-cyan/30">
+        <div className="min-h-screen bg-[#050507] text-white p-4 md:p-8 pb-32 font-sans relative selection:bg-magic-gold/30">
             {/* Ambient Background Lights (Homogenized with Home) */}
-            <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] bg-magic-cyan/10 blur-[150px] rounded-full pointer-events-none mix-blend-screen"></div>
-            <div className="absolute top-[20%] right-[-10%] w-[40%] h-[40%] bg-blue-700/10 blur-[120px] rounded-full pointer-events-none mix-blend-screen"></div>
+            <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] bg-magic-gold/10 blur-[150px] rounded-full pointer-events-none mix-blend-screen"></div>
+            <div className="absolute top-[20%] right-[-10%] w-[40%] h-[40%] bg-orange-600/10 blur-[120px] rounded-full pointer-events-none mix-blend-screen"></div>
 
             {/* Main Wrapper Container */}
             <div className="max-w-5xl mx-auto relative z-10 space-y-12">
@@ -78,12 +78,12 @@ export default async function AdultMasterclassPage() {
                 {/* Header (Homogenized with Home) */}
                 <header className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 pt-4">
                     <div className="flex-1">
-                        <div className="flex items-center gap-2 text-magic-cyan mb-2">
-                            <Star className="w-5 h-5 fill-current animate-pulse text-magic-cyan" />
+                        <div className="flex items-center gap-2 text-magic-gold mb-2">
+                            <Star className="w-5 h-5 fill-current animate-pulse text-magic-gold" />
                             <span className="text-xs font-bold uppercase tracking-widest">Le QG de la Magie</span>
                         </div>
                         <h1 className="text-3xl md:text-5xl font-black text-white tracking-tight">
-                            Les <span className="text-transparent bg-clip-text bg-gradient-to-r from-magic-cyan to-blue-500">Ateliers</span>
+                            Les <span className="text-transparent bg-clip-text bg-gradient-to-r from-magic-gold to-orange-400">Ateliers</span>
                         </h1>
                         <p className="text-slate-400 mt-2 text-lg">
                             {pageConfig.description || "Des ateliers sur des thèmes précis pour approfondir ta magie !"}
@@ -94,12 +94,12 @@ export default async function AdultMasterclassPage() {
                 {/* Featured Masterclass Section */}
                 {featuredVideo && (
                     <div className="mb-12">
-                        <h2 className="text-sm font-bold text-magic-cyan uppercase tracking-widest mb-6 flex items-center gap-2 border-b border-white/5 pb-2">
+                        <h2 className="text-sm font-bold text-magic-gold uppercase tracking-widest mb-6 flex items-center gap-2 border-b border-white/5 pb-2">
                             <Sparkles className="w-4 h-4" /> À LA UNE
                         </h2>
                         <div className="relative group">
-                            <div className="absolute -inset-1 bg-gradient-to-r from-magic-cyan to-blue-500 rounded-3xl opacity-0 blur-lg group-hover:opacity-40 transition duration-1000 pointer-events-none"></div>
-                            <div className="relative rounded-3xl overflow-hidden border border-magic-cyan/20 bg-magic-card flex flex-col md:flex-row shadow-[0_10px_40px_rgba(0,0,0,0.5)]">
+                            <div className="absolute -inset-1 bg-gradient-to-r from-magic-gold to-orange-400 rounded-3xl opacity-0 blur-lg group-hover:opacity-40 transition duration-1000 pointer-events-none"></div>
+                            <div className="relative rounded-3xl overflow-hidden border border-magic-gold/20 bg-magic-card flex flex-col md:flex-row shadow-[0_10px_40px_rgba(0,0,0,0.5)]">
 
                                 {/* Featured Image */}
                                 <div className="w-full md:w-1/2 md:aspect-auto aspect-video relative">
@@ -119,7 +119,7 @@ export default async function AdultMasterclassPage() {
                                     <div className="absolute inset-0 bg-gradient-to-t from-magic-card via-transparent to-transparent md:bg-gradient-to-r" />
 
                                     <Link href={`/watch/${featuredVideo.video_url || featuredVideo.id}`} className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-20">
-                                        <div className="w-20 h-20 bg-magic-cyan/90 text-black rounded-full flex items-center justify-center shadow-[0_0_50px_rgba(238,195,67,0.6)] transform scale-50 group-hover:scale-100 transition-all duration-300">
+                                        <div className="w-20 h-20 bg-magic-gold/90 text-black rounded-full flex items-center justify-center shadow-[0_0_50px_rgba(238,195,67,0.6)] transform scale-50 group-hover:scale-100 transition-all duration-300">
                                             <Play className="w-8 h-8 ml-2" />
                                         </div>
                                     </Link>
@@ -138,7 +138,7 @@ export default async function AdultMasterclassPage() {
 
                                     <Link
                                         href={`/watch/${featuredVideo.video_url || featuredVideo.id}`}
-                                        className="inline-flex items-center gap-2 bg-magic-cyan text-black px-8 py-4 rounded-xl font-bold uppercase tracking-widest text-sm hover:bg-cyan-400 transition-colors self-start shadow-[0_0_20px_rgba(238,195,67,0.3)]"
+                                        className="inline-flex items-center gap-2 bg-magic-gold text-black px-8 py-4 rounded-xl font-bold uppercase tracking-widest text-sm hover:bg-yellow-400 transition-colors self-start shadow-[0_0_20px_rgba(238,195,67,0.3)]"
                                     >
                                         <Play className="w-4 h-4" />
                                         Visionner
@@ -153,14 +153,14 @@ export default async function AdultMasterclassPage() {
                 <div className="space-y-6">
                     <div className="flex items-center justify-between mb-8">
                         <h2 className="text-2xl font-bold text-white flex items-center gap-3">
-                            <Sparkles className="w-6 h-6 text-magic-cyan" />
+                            <Sparkles className="w-6 h-6 text-magic-gold" />
                             Les Vidéos
                         </h2>
                     </div>
 
                     {sortedVideos.length === 0 ? (
                         <div className="relative group/box">
-                            <div className="absolute -inset-1 bg-gradient-to-r from-magic-cyan to-blue-500 rounded-3xl opacity-0 blur-lg group-hover/box:opacity-30 transition duration-1000 pointer-events-none"></div>
+                            <div className="absolute -inset-1 bg-gradient-to-r from-magic-gold to-orange-400 rounded-3xl opacity-0 blur-lg group-hover/box:opacity-30 transition duration-1000 pointer-events-none"></div>
                             <div className="relative bg-[#111] border border-white/5 p-12 rounded-3xl text-center flex flex-col items-center justify-center shadow-[0_10px_40px_rgba(0,0,0,0.2)]">
                                 <div className="w-20 h-20 bg-black/50 border border-white/10 rounded-full flex items-center justify-center mb-6 text-slate-500 opacity-50">
                                     <FolderOpen className="w-10 h-10" />

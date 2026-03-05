@@ -206,7 +206,7 @@ export default function AdminUserDetailPage() {
                             <div className="w-full grid grid-cols-2 gap-2 text-left bg-black/20 p-4 rounded-xl">
                                 <div>
                                     <div className="text-[10px] text-gray-500 uppercase">Grade</div>
-                                    <div className="font-bold text-cyan-400">{profile.magic_level || "Apprenti"}</div>
+                                    <div className="font-bold text-yellow-400">{profile.magic_level || "Apprenti"}</div>
                                 </div>
                                 <div>
                                     <div className="text-[10px] text-gray-500 uppercase">XP</div>
@@ -250,7 +250,7 @@ export default function AdminUserDetailPage() {
                                     <label className="text-xs text-white block">Abonné Newsletter</label>
                                     <button
                                         onClick={handleToggleNewsletter}
-                                        className={`relative inline-flex h-5 w-9 shrink-0 cursor-pointer items-center justify-center rounded-full transition-colors duration-200 ease-in-out focus:outline-none ${profile.newsletter_opt_in ? 'bg-brand-cyan' : 'bg-white/10'}`}
+                                        className={`relative inline-flex h-5 w-9 shrink-0 cursor-pointer items-center justify-center rounded-full transition-colors duration-200 ease-in-out focus:outline-none ${profile.newsletter_opt_in ? 'bg-brand-gold' : 'bg-white/10'}`}
                                         role="switch"
                                         aria-checked={profile.newsletter_opt_in}
                                     >
@@ -272,7 +272,7 @@ export default function AdminUserDetailPage() {
                                 <input
                                     type="text"
                                     placeholder="Min. 6 caractères"
-                                    className="w-full bg-black/40 w-full border border-white/10 rounded-lg p-2 text-sm outline-none focus:border-brand-cyan transition-colors"
+                                    className="w-full bg-black/40 w-full border border-white/10 rounded-lg p-2 text-sm outline-none focus:border-brand-gold transition-colors"
                                     value={newPassword}
                                     onChange={(e) => setNewPassword(e.target.value)}
                                     minLength={6}
@@ -281,7 +281,7 @@ export default function AdminUserDetailPage() {
                             <button
                                 type="submit"
                                 disabled={!newPassword || newPassword.length < 6 || isChangingPassword}
-                                className="w-full bg-brand-cyan hover:bg-brand-cyan/80 text-black disabled:opacity-50 disabled:cursor-not-allowed text-xs font-bold uppercase tracking-widest py-2 rounded-lg transition-colors"
+                                className="w-full bg-brand-gold hover:bg-brand-gold/80 text-black disabled:opacity-50 disabled:cursor-not-allowed text-xs font-bold uppercase tracking-widest py-2 rounded-lg transition-colors"
                             >
                                 {isChangingPassword ? "Modification..." : "Forcer ce Mot de Passe"}
                             </button>

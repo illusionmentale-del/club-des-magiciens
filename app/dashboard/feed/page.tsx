@@ -81,8 +81,8 @@ export default async function AdultFeedPage({
 
                     <div className="relative z-10 p-8 md:p-16 max-w-4xl w-full">
                         {featuredItem.subtitle && (
-                            <div className="text-brand-cyan font-bold uppercase tracking-widest text-sm mb-4 flex items-center gap-2">
-                                <div className="w-8 h-0.5 bg-brand-cyan"></div>
+                            <div className="text-brand-gold font-bold uppercase tracking-widest text-sm mb-4 flex items-center gap-2">
+                                <div className="w-8 h-0.5 bg-brand-gold"></div>
                                 {featuredItem.subtitle}
                             </div>
                         )}
@@ -176,7 +176,7 @@ export default async function AdultFeedPage({
                                         {item.subtitle && (
                                             <>
                                                 <span>•</span>
-                                                <span className="text-brand-cyan">{item.subtitle}</span>
+                                                <span className="text-brand-gold">{item.subtitle}</span>
                                             </>
                                         )}
                                     </div>

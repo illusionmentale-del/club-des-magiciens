@@ -68,7 +68,7 @@ export default function AdultMasterclassConfig({ initialSettings, libraryItems }
                         key={tab.id}
                         onClick={() => setActiveTab(tab.id)}
                         className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold uppercase tracking-widest text-xs transition-all ${activeTab === tab.id
-                            ? "bg-brand-cyan text-black shadow-lg shadow-brand-cyan/20"
+                            ? "bg-brand-gold text-black shadow-lg shadow-brand-gold/20"
                             : "text-brand-text-muted hover:bg-white/5"
                             }`}
                     >
@@ -82,7 +82,7 @@ export default function AdultMasterclassConfig({ initialSettings, libraryItems }
                 <Button
                     onClick={handleSave}
                     disabled={loading}
-                    className="w-full bg-brand-cyan text-black hover:bg-brand-cyan/80"
+                    className="w-full bg-brand-gold text-black hover:bg-brand-gold/80"
                 >
                     <Save className="w-4 h-4 mr-2" />
                     {loading ? "Enregistrement..." : "Enregistrer"}
@@ -94,7 +94,7 @@ export default function AdultMasterclassConfig({ initialSettings, libraryItems }
                 <Card className="bg-brand-card border-white/5 shadow-2xl overflow-hidden">
                     <CardHeader className="border-b border-white/5 bg-white/[0.02]">
                         <CardTitle className="text-xl font-black uppercase tracking-tighter flex items-center gap-3 text-white">
-                            <Sparkles className="text-brand-cyan" /> Contenu à la Une
+                            <Sparkles className="text-brand-gold" /> Contenu à la Une
                         </CardTitle>
                     </CardHeader>
                     <CardContent className="p-8">
@@ -112,7 +112,7 @@ export default function AdultMasterclassConfig({ initialSettings, libraryItems }
                                             type="text"
                                             value={pageConfig.title}
                                             onChange={(e) => setPageConfig({ ...pageConfig, title: e.target.value })}
-                                            className="w-full bg-brand-bg border border-white/10 rounded-xl p-4 text-white focus:outline-none focus:border-brand-cyan/50"
+                                            className="w-full bg-brand-bg border border-white/10 rounded-xl p-4 text-white focus:outline-none focus:border-brand-gold/50"
                                             placeholder="Ex: Les Masterclass"
                                         />
                                     </div>
@@ -121,7 +121,7 @@ export default function AdultMasterclassConfig({ initialSettings, libraryItems }
                                         <textarea
                                             value={pageConfig.description}
                                             onChange={(e) => setPageConfig({ ...pageConfig, description: e.target.value })}
-                                            className="w-full h-24 bg-brand-bg border border-white/10 rounded-xl p-4 text-white placeholder:text-white/20 focus:outline-none focus:border-brand-cyan/50 transition-all"
+                                            className="w-full h-24 bg-brand-bg border border-white/10 rounded-xl p-4 text-white placeholder:text-white/20 focus:outline-none focus:border-brand-gold/50 transition-all"
                                             placeholder="Entrez la description pour la page..."
                                         />
                                     </div>
@@ -131,15 +131,15 @@ export default function AdultMasterclassConfig({ initialSettings, libraryItems }
 
                                 {/* Section 2: Featured Masterclass */}
                                 <div className="space-y-6">
-                                    <h3 className="text-lg font-bold text-white border-b border-white/10 pb-2">Masterclass à la Une</h3>
+                                    <h3 className="text-lg font-bold text-white border-b border-white/10 pb-2">Atelier à la Une</h3>
 
                                     <div className="space-y-4">
                                         <label className="text-xs font-black uppercase tracking-widest text-brand-text-muted">Sélection de la vidéo</label>
-                                        <p className="text-[10px] text-brand-text-muted -mt-2 mb-2">Choisissez la formation ou la masterclass à mettre en valeur en haut de la page.</p>
+                                        <p className="text-[10px] text-brand-text-muted -mt-2 mb-2">Choisissez la formation ou l'atelier à mettre en valeur en haut de la page.</p>
                                         <select
                                             value={featuredConfig.id}
                                             onChange={(e) => setFeaturedConfig({ ...featuredConfig, id: e.target.value })}
-                                            className="w-full bg-brand-bg border border-white/10 rounded-xl p-4 text-white focus:outline-none focus:border-brand-cyan/50 appearance-none"
+                                            className="w-full bg-brand-bg border border-white/10 rounded-xl p-4 text-white focus:outline-none focus:border-brand-gold/50 appearance-none"
                                         >
                                             <option value="">-- Ne rien mettre à la une --</option>
                                             {libraryItems.map(item => (
@@ -156,8 +156,8 @@ export default function AdultMasterclassConfig({ initialSettings, libraryItems }
                                                     type="text"
                                                     value={featuredConfig.title}
                                                     onChange={(e) => setFeaturedConfig({ ...featuredConfig, title: e.target.value })}
-                                                    className="w-full bg-brand-bg border border-white/10 rounded-xl p-4 text-white focus:outline-none focus:border-brand-cyan/50"
-                                                    placeholder="Ex: Nouvelle Masterclass !"
+                                                    className="w-full bg-brand-bg border border-white/10 rounded-xl p-4 text-white focus:outline-none focus:border-brand-gold/50"
+                                                    placeholder="Ex: Nouvel Atelier !"
                                                 />
                                             </div>
 
