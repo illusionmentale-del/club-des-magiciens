@@ -7,6 +7,7 @@ import { User, MapPin, Wand2, Lock, AlertCircle, Check, Sparkles } from "lucide-
 import { useState } from "react";
 
 import AvatarUpload from "@/components/AvatarUpload";
+import KidsAvatarSelector from "@/components/KidsAvatarSelector";
 
 function SubmitButton({ theme }: { theme: 'light' | 'dark' }) {
     const { pending } = useFormStatus();
@@ -62,14 +63,21 @@ export default function AccountForm({ user, profile, theme = 'dark', isKidProfil
                 </h2>
 
                 <div className="flex flex-col md:flex-row gap-8 items-start">
-                    {/* Avatar Upload */}
+                    {/* Avatar Upload / Selection */}
                     <div className="shrink-0 mx-auto md:mx-0">
-                        <AvatarUpload
-                            theme={theme}
-                            currentAvatarUrl={isKidProfile ? profile?.avatar_url_kids : profile?.avatar_url}
-                            onUpload={(url) => setAvatarUrl(url)}
-                        />
-                        <input type="hidden" name="avatarUrl" value={avatarUrl || ""} />
+                        {isKidProfile ? (
+                            <KidsAvatarSelector
+                                currentAvatarUrl={profile?.avatar_url_kids || "🎩"}
+                                onSelect={(url) => setAvatarUrl(url)}
+                            />
+                        ) : (
+                            <AvatarUpload
+                                theme={theme}
+                                currentAvatarUrl={profile?.avatar_url}
+                                onUpload={(url) => setAvatarUrl(url)}
+                            />
+                        )}
+                        <input type="hidden" name="avatarUrl" value={avatarUrl !== null ? avatarUrl : (isKidProfile ? (profile?.avatar_url_kids || "🎩") : (profile?.avatar_url || ""))} />
                         <input type="hidden" name="theme" value={theme} />
                         <input type="hidden" name="targetProfile" value={isKidProfile ? 'kid' : 'adult'} />
                     </div>
