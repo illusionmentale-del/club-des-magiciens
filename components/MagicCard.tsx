@@ -42,8 +42,10 @@ export default function MagicCard({ user, profile, isKid = false }: MagicCardPro
     };
 
     // Styling logic based on Rarity
-    let cardBorder = isKid ? "border-purple-500/30" : "border-brand-royal/30";
-    let cardBg = isKid ? "#050507" : "#171717";
+    let cardBorder = isKid ? "border-purple-500/50 shadow-[inset_0_0_20px_rgba(168,85,247,0.2)]" : "border-brand-royal/50 shadow-[inset_0_0_20px_rgba(29,78,216,0.2)]";
+    // Using a rich gradient instead of flat #050507 or #171717
+    let cardBg = isKid ? "bg-gradient-to-b from-[#1a1025] to-[#0A0510]" : "bg-gradient-to-b from-[#101525] to-[#050A10]";
+
 
     if (isLegendary) {
         cardBorder = "border-[#FFD700]/60 ring-1 ring-[#FFD700]/30 shadow-[0_0_30px_rgba(255,215,0,0.3)]";
@@ -71,11 +73,10 @@ export default function MagicCard({ user, profile, isKid = false }: MagicCardPro
                 >
                     {/* FRONT OF CARD */}
                     <div
-                        className={cn("absolute inset-0 w-full h-full backface-hidden border rounded-2xl p-6 overflow-hidden transition-all duration-300", cardBorder)}
+                        className={cn("absolute inset-0 w-full h-full backface-hidden border-2 rounded-2xl p-6 overflow-hidden transition-all duration-300", cardBorder, cardBg)}
                         style={{
                             backfaceVisibility: "hidden",
                             WebkitBackfaceVisibility: "hidden",
-                            backgroundColor: cardBg,
                             zIndex: isFlipped ? 0 : 20,
                         }}
                         onMouseMove={handleMouseMove}
@@ -131,41 +132,50 @@ export default function MagicCard({ user, profile, isKid = false }: MagicCardPro
                             </div>
 
                             {/* Center Avatar Illustration */}
-                            <div className="flex-1 flex flex-col items-center justify-center my-6">
+                            <div className="flex-1 flex flex-col items-center justify-center my-4 relative">
+                                {/* Backdrop glow for avatar */}
+                                <div className={cn("absolute w-48 h-48 rounded-full blur-2xl opacity-40 mix-blend-screen", isKid ? "bg-purple-500" : "bg-brand-royal")}></div>
+
                                 <div className={cn(
-                                    "relative w-40 h-40 rounded-full p-1.5 shadow-2xl flex-shrink-0",
+                                    "relative w-40 h-40 rounded-full p-1.5 shadow-[0_0_30px_rgba(0,0,0,0.8)] flex-shrink-0 z-10",
                                     isLegendary ? "bg-gradient-to-tr from-amber-500 via-yellow-200 to-orange-500" :
-                                        isKid ? "bg-gradient-to-tr from-blue-500 to-brand-purple" : "bg-gradient-to-tr from-brand-royal to-blue-400"
+                                        isKid ? "bg-gradient-to-tr from-blue-500 via-purple-400 to-brand-purple" : "bg-gradient-to-br from-cyan-400 via-brand-royal to-blue-600"
                                 )}>
-                                    <div className="w-full h-full rounded-full bg-[#0A0A0E] overflow-hidden relative flex items-center justify-center">
+                                    <div className="w-full h-full rounded-full bg-[#0A0A0E] overflow-hidden relative flex items-center justify-center shadow-inner">
                                         {isEmojiAvatar ? (
-                                            <span className="text-7xl drop-shadow-2xl z-10">{currentAvatar}</span>
+                                            <span className="text-7xl drop-shadow-2xl z-20 relative transform hover:scale-110 transition-transform duration-500">{currentAvatar}</span>
                                         ) : (
-                                            <Image src={currentAvatar} alt="Avatar" fill className="object-cover z-10" />
+                                            <Image src={currentAvatar} alt="Avatar" fill className="object-cover z-20" />
                                         )}
                                         {/* Avatar Background effect */}
-                                        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.1)_0%,transparent_70%)] z-0"></div>
+                                        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.15)_0%,transparent_70%)] z-10"></div>
                                     </div>
                                 </div>
                             </div>
 
                             {/* Footer Info */}
-                            <div className="bg-black/30 backdrop-blur-md border border-white/5 rounded-xl p-4 w-full">
-                                <h2 className={cn("font-serif text-2xl font-bold text-center mb-1 drop-shadow-lg", isLegendary ? "text-[#FFD700]" : "text-white")}>
+                            <div className="bg-black/40 backdrop-blur-xl border border-white/10 shadow-[0_-10px_40px_rgba(0,0,0,0.5)] rounded-2xl p-5 w-full relative overflow-hidden">
+                                {/* Subtle internal reflection */}
+                                <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
+
+                                <h2 className={cn("font-serif text-2xl font-black text-center mb-1 drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)]", isLegendary ? "text-[#FFD700]" : "text-white")}>
                                     {profile?.username || "Le Mystérieux"}
                                 </h2>
-                                <p className="text-white/50 text-[10px] tracking-widest uppercase text-center mb-4">
-                                    {profile?.magic_level || "Apprenti Magicien"}
-                                </p>
 
-                                <div className="grid grid-cols-2 gap-2 text-center border-t border-white/10 pt-3">
-                                    <div>
-                                        <p className="text-white/40 text-[9px] uppercase tracking-wider">QG</p>
-                                        <p className="text-white/90 text-xs font-medium truncate">{profile?.city || "Inconnu"}</p>
+                                <div className="flex justify-center mb-4">
+                                    <span className={cn("text-[10px] tracking-widest uppercase px-3 py-1 rounded-full border bg-black/50 shadow-inner", isLegendary ? "text-amber-300 border-amber-500/30" : isKid ? "text-purple-300 border-purple-500/30" : "text-blue-300 border-blue-500/30")}>
+                                        {profile?.magic_level || "Apprenti Magicien"}
+                                    </span>
+                                </div>
+
+                                <div className="grid grid-cols-2 gap-4 text-center border-t border-white/5 pt-4">
+                                    <div className="flex flex-col items-center bg-white/5 rounded-lg py-2 border border-white/5">
+                                        <p className="text-white/40 text-[9px] uppercase tracking-widest font-bold mb-1">{isKid ? "Faction" : "QG"}</p>
+                                        <p className="text-white/90 text-sm font-bold truncate px-2 w-full">{profile?.city || "Inconnu"}</p>
                                     </div>
-                                    <div>
-                                        <p className="text-white/40 text-[9px] uppercase tracking-wider">Inscrit</p>
-                                        <p className="text-white/90 text-xs font-medium">{new Date(user.created_at).toLocaleDateString()}</p>
+                                    <div className="flex flex-col items-center bg-white/5 rounded-lg py-2 border border-white/5">
+                                        <p className="text-white/40 text-[9px] uppercase tracking-widest font-bold mb-1">Inscrit</p>
+                                        <p className="text-white/90 text-sm font-bold px-2">{new Date(user.created_at).toLocaleDateString()}</p>
                                     </div>
                                 </div>
                             </div>
