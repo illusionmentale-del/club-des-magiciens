@@ -22,6 +22,11 @@ export default function MagicCard({ user, profile, isKid = false }: MagicCardPro
     const isHolo = xp >= 50 && xp < 150;
     const isLegendary = xp >= 150;
 
+    const validFactions = ["Magicien", "Sorcier", "Elfe", "Fée", "Licorne", "Illusionniste"];
+    const displayCityOrFaction = isKid
+        ? (validFactions.includes(profile?.city) ? profile.city : "Non choisie")
+        : (profile?.city || "Inconnu");
+
     // Fallbacks
     const defaultKidAvatar = "🎩";
     const currentAvatar = isKid ? (profile?.avatar_url_kids || defaultKidAvatar) : (profile?.avatar_url || "/default-avatar.png");
@@ -193,7 +198,7 @@ export default function MagicCard({ user, profile, isKid = false }: MagicCardPro
                                 <div className="grid grid-cols-2 gap-4 text-center border-t border-white/5 pt-4">
                                     <div className="flex flex-col items-center bg-white/5 rounded-lg py-2 border border-white/5">
                                         <p className="text-white/40 text-[9px] uppercase tracking-widest font-bold mb-1">{isKid ? "Faction" : "QG"}</p>
-                                        <p className="text-white/90 text-sm font-bold truncate px-2 w-full">{profile?.city || "Inconnu"}</p>
+                                        <p className="text-white/90 text-sm font-bold truncate px-2 w-full">{displayCityOrFaction}</p>
                                     </div>
                                     <div className="flex flex-col items-center bg-white/5 rounded-lg py-2 border border-white/5">
                                         <p className="text-white/40 text-[9px] uppercase tracking-widest font-bold mb-1">Inscrit</p>
