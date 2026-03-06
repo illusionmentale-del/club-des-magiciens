@@ -212,32 +212,68 @@ export default function MagicCard({ user, profile, isKid = false }: MagicCardPro
 
                     {/* BACK OF CARD */}
                     <div
-                        className={cn("absolute inset-0 w-full h-full backface-hidden border rounded-2xl flex flex-col items-center justify-center overflow-hidden", isLegendary ? "border-[#FFD700]/40" : cardBorder)}
+                        className={cn("absolute inset-0 w-full h-full backface-hidden border-2 rounded-2xl flex flex-col items-center justify-center overflow-hidden p-3", cardBorder, cardBg)}
                         style={{
                             transform: "rotateY(180deg)",
                             backfaceVisibility: "hidden",
                             WebkitBackfaceVisibility: "hidden",
-                            backgroundColor: cardBg,
                             zIndex: isFlipped ? 20 : 0,
                         }}
                     >
+                        {/* Inner Borders (Card Sleeve Effect) */}
+                        <div className="absolute inset-2 border border-white/10 rounded-xl pointer-events-none" />
+                        <div className="absolute inset-3 border border-white/5 rounded-lg pointer-events-none" />
+
                         {/* Background Texture Pattern */}
-                        <div className="absolute inset-0 opacity-20 pointer-events-none z-0" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, rgba(255,255,255,0.15) 1px, transparent 0)', backgroundSize: '16px 16px' }}></div>
+                        <div className="absolute inset-0 opacity-30 pointer-events-none z-0 mix-blend-overlay bg-[url('https://grainy-gradients.vercel.app/noise.svg')]"></div>
+                        <div className="absolute inset-0 opacity-10 pointer-events-none z-0" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, rgba(255,255,255,0.3) 1px, transparent 0)', backgroundSize: '24px 24px' }}></div>
 
-                        <div className={cn("w-32 h-32 rounded-full blur-3xl absolute absolute-center", isLegendary ? "bg-amber-600/30" : isKid ? "bg-brand-purple/20" : "bg-brand-royal/20")} />
+                        <div className={cn("w-full h-full absolute top-0 left-0 bg-gradient-to-b from-transparent to-black/60 z-0 pointer-events-none")} />
 
-                        <div className="relative z-10 flex flex-col items-center p-6 text-center">
-                            <Star className={cn("w-12 h-12 mb-4 drop-shadow-lg", isLegendary ? "text-[#FFD700]" : isKid ? "text-brand-purple" : "text-brand-royal")} />
-                            <h3 className="text-xl font-black uppercase tracking-widest text-white mb-2">
-                                {isKid ? "Le Club des Petits Magiciens" : "L'Atelier des Magiciens"}
-                            </h3>
-                            <div className="w-12 h-1 border-t border-white/20 mb-4"></div>
-                            <p className="text-xs text-white/50 leading-relaxed max-w-[200px] mb-8">
-                                "La possession de cette carte officielle confère des privilèges magiques interdits aux moldus."
-                            </p>
+                        {/* Central Glow */}
+                        <div className={cn("w-48 h-48 rounded-full blur-3xl absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-50 pointer-events-none", isLegendary ? "bg-amber-600" : isKid ? "bg-purple-600" : "bg-blue-600")} />
 
-                            <div className="text-[10px] text-white/30 font-mono">
-                                ID: {user.id.slice(0, 12)}
+                        <div className="relative z-10 flex flex-col items-center p-3 text-center h-full justify-center w-full">
+                            <div className="flex-1 flex flex-col items-center justify-center w-full mt-4">
+
+                                {/* Geometric Emblem */}
+                                <div className="relative w-20 h-20 mb-6 flex items-center justify-center">
+                                    <div className={cn("absolute inset-0 rotate-45 border shadow-[inset_0_0_10px_rgba(255,255,255,0.1)]", isLegendary ? "border-amber-500/30" : isKid ? "border-purple-500/30" : "border-blue-500/30")} />
+                                    <div className={cn("absolute inset-2 rotate-12 border", isLegendary ? "border-amber-500/20" : isKid ? "border-purple-500/20" : "border-blue-500/20")} />
+                                    <Star className={cn("w-10 h-10 drop-shadow-2xl relative z-10", isLegendary ? "text-[#FFD700] fill-amber-500/20" : isKid ? "text-purple-400 fill-purple-500/20" : "text-blue-400 fill-blue-500/20")} />
+                                </div>
+
+                                <h3 className="text-xl font-black uppercase tracking-widest text-white mb-2 drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)] leading-tight">
+                                    {isKid ? "Le Club des" : "L'Atelier des"}
+                                    <br />
+                                    <span className={cn("text-lg", isLegendary ? "text-amber-400" : isKid ? "text-purple-400" : "text-blue-400")}>
+                                        {isKid ? "Petits Magiciens" : "Magiciens"}
+                                    </span>
+                                </h3>
+
+                                <div className="w-16 h-px bg-gradient-to-r from-transparent via-white/40 to-transparent my-6"></div>
+
+                                {/* New Impactful Tagline */}
+                                <p className="text-xs text-white/80 leading-relaxed font-serif font-medium px-2 tracking-wide italic shadow-black drop-shadow-md">
+                                    {isKid
+                                        ? "« Garde le secret, pratique avec passion, et émerveille le monde. »"
+                                        : "« L'art de l'illusion s'apprend dans l'ombre. Bienvenue dans la Confrérie. »"}
+                                </p>
+                            </div>
+
+                            {/* Verification Block */}
+                            <div className="mt-auto w-full pt-4">
+                                <div className="bg-black/60 backdrop-blur-md border border-white/10 rounded-lg py-2 px-4 shadow-[inset_0_2px_10px_rgba(0,0,0,0.5)] flex flex-col items-center">
+                                    <div className="w-full flex items-center justify-between mb-1 opacity-40">
+                                        <div className="flex-1 h-px bg-white"></div>
+                                        <p className="text-[7px] text-white uppercase tracking-[0.2em] px-2 font-bold">Authentification</p>
+                                        <div className="flex-1 h-px bg-white"></div>
+                                    </div>
+                                    <div className="text-[10px] text-white/50 font-mono tracking-widest flex items-center gap-2">
+                                        <span className={cn("w-1.5 h-1.5 rounded-full animate-pulse", isLegendary ? "bg-amber-400" : isKid ? "bg-purple-400" : "bg-blue-400")}></span>
+                                        ID-M-{user.id.slice(0, 8).toUpperCase()}
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
