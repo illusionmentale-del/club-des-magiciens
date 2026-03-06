@@ -148,8 +148,8 @@ export default function KidsSidebar({ socialLinks, logoUrl, isAdmin, hasPurchase
                                     <Trophy className="w-5 h-5" />
                                 </div>
                                 <div>
-                                    <div className={`font-bold ${isActive('/kids/account') && searchParams.get('view') !== 'settings' ? 'text-magic-purple' : 'text-gray-300 group-hover:text-white'}`}>Mes Informations</div>
-                                    <div className="text-xs text-gray-500">Ma progression et mes secrets</div>
+                                    <div className={`font-bold ${isActive('/kids/account') && searchParams.get('view') !== 'settings' ? 'text-magic-purple' : 'text-gray-300 group-hover:text-white'}`}>Ma Carte d'Apprenti</div>
+                                    <div className="text-xs text-gray-500">Ton niveau et tes statistiques</div>
                                 </div>
                             </div>
                         </Link>

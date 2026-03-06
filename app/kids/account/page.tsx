@@ -44,7 +44,10 @@ export default async function KidsAccountPage({
                             <span className="text-xs font-bold uppercase tracking-widest">Le Club des Petits Magiciens</span>
                         </div>
                         <h1 className="text-3xl md:text-5xl font-black text-white tracking-tight">
-                            Mes <span className="text-brand-purple">Informations</span>
+                            {isSettingsView ? "Mes " : "Ma "}
+                            <span className="text-brand-purple">
+                                {isSettingsView ? "Paramètres" : "Carte d'Apprenti"}
+                            </span>
                         </h1>
                         <p className="text-brand-text-muted mt-2 text-lg">
                             {isSettingsView

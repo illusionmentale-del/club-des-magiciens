@@ -160,9 +160,9 @@ export function NotificationPreferences({ profile }: { profile: any }) {
                             <Mail className="w-5 h-5" />
                         </div>
                         <div>
-                            <h3 className="text-white font-bold mb-1">Courriers de Jérémy (Newsletter)</h3>
+                            <h3 className="text-white font-bold mb-1">La Newsletter</h3>
                             <p className="text-sm text-brand-text-muted leading-relaxed">
-                                Recevez les actualités du Club, les coulisses et les offres promotionnelles par email.
+                                Recevoir les actualités du Club, les coulisses et les offres promotionnelles par email.
                             </p>
                         </div>
                     </div>
@@ -182,7 +182,7 @@ export function NotificationPreferences({ profile }: { profile: any }) {
                             <BellRing className="w-5 h-5" />
                         </div>
                         <div>
-                            <h3 className="text-white font-bold mb-1">Alertes Importantes par Email</h3>
+                            <h3 className="text-white font-bold mb-1">Alerte par email</h3>
                             <p className="text-sm text-brand-text-muted leading-relaxed">
                                 Être prévenu par email lors des annonces majeures et des sorties de contenus importants sur la plateforme.
                             </p>
@@ -205,7 +205,7 @@ export function NotificationPreferences({ profile }: { profile: any }) {
                         </div>
                         <div>
                             <h3 className="text-white font-bold mb-1 flex items-center gap-2">
-                                Notifications Push (Mobiles & PC)
+                                Activer les notifications push
                             </h3>
                             <p className="text-sm text-brand-text-muted leading-relaxed">
                                 {pushSupported

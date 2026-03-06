@@ -154,51 +154,8 @@ export default function MagicCard({ user, profile, isKid = false }: MagicCardPro
                         </div>
                     </div>
 
-                    {/* Actions */}
-                    <div className="mt-12 flex justify-center relative z-10">
-                        <button
-                            onClick={() => setIsFlipped(true)}
-                            className={`group flex items-center gap-2 px-6 py-3 rounded-full font-bold transition-all ${isKid ? "bg-white text-slate-900 hover:bg-purple-50" : "bg-brand-royal text-white hover:bg-blue-600"} shadow-[0_0_15px_rgba(29,78,216,0.3)] hover:shadow-[0_0_25px_rgba(29,78,216,0.5)] hover:-translate-y-1`}
-                        >
-                            <Edit className="w-4 h-4" />
-                            Modifier mon profil
-                        </button>
-                    </div>
-
                     {/* Holographic Overlay Effect */}
                     <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/5 to-transparent pointer-events-none" style={{ mixBlendMode: 'overlay' }} />
-                </div>
-
-                {/* BACK: Edit Form */}
-                <div
-                    className={`absolute inset-0 w-full h-full backface-hidden ${cardBg} border rounded-3xl p-8 shadow-2xl overflow-hidden flex flex-col`}
-                    style={{
-                        transform: "rotateY(180deg)",
-                        backfaceVisibility: "hidden",
-                        WebkitBackfaceVisibility: "hidden",
-                        backgroundColor: isKid ? "#050507" : "#171717", // Ensure opacity
-                        zIndex: isFlipped ? 20 : 0,
-                        pointerEvents: isFlipped ? "auto" : "none"
-                    }}
-                >
-                    <div className="flex justify-between items-center mb-6 relative z-10 shrink-0">
-                        <h2 className="text-xl font-bold text-white flex items-center gap-2">
-                            <Sparkles className={cn("w-5 h-5", isKid ? "text-brand-purple" : "text-blue-400")} />
-                            Mise à jour
-                        </h2>
-                        <button
-                            onClick={() => setIsFlipped(false)}
-                            className="p-2 hover:bg-white/10 rounded-full transition-colors text-white/60 hover:text-white"
-                        >
-                            <RotateCw className="w-5 h-5" />
-                        </button>
-                    </div>
-
-                    <div className="flex-1 overflow-y-auto customized-scrollbar relative z-10 -mr-4 pr-4 pb-12">
-                        <AccountForm user={user} profile={profile} theme="dark" isKidProfile={isKid} />
-                        {/* Extra spacer at bottom to ensure button is reachable */}
-                        <div className="h-24"></div>
-                    </div>
                 </div>
             </motion.div>
         </div>

@@ -110,7 +110,7 @@ export default function Sidebar({ isAdmin, socialLinks, logoUrl, hasKidsAccess, 
                             className={`flex items-center gap-3 px-4 py-3 font-medium transition-all ${isActive('/dashboard/account') && searchParams?.get('view') !== 'settings' ? 'bg-gradient-to-r from-magic-royal/20 to-transparent text-magic-royal border-l-2 border-magic-royal' : 'text-gray-400 hover:bg-white/5 hover:text-white border-l-2 border-transparent'}`}
                         >
                             <User className="w-5 h-5" />
-                            Mes Informations
+                            Ma Carte de Membre
                         </Link>
                         <Link
                             href="/dashboard/account?view=settings"
