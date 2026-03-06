@@ -1,0 +1,209 @@
+"use client";
+
+import { useState } from "react";
+import { Send, BellRing, Smartphone, AlertTriangle, Loader2 } from "lucide-react";
+import { toast } from "react-hot-toast";
+
+export default function PushAdminPage() {
+    const [title, setTitle] = useState("");
+    const [message, setMessage] = useState("");
+    const [url, setUrl] = useState("/");
+    const [targetAudience, setTargetAudience] = useState("all");
+    const [isSending, setIsSending] = useState(false);
+    const [stats, setStats] = useState<{ sent: number; failed: number; staleRemoved: number } | null>(null);
+
+    const handleSendPush = async () => {
+        if (!title.trim() || !message.trim()) {
+            return toast.error("Le titre et le message sont requis.");
+        }
+
+        const confirmed = window.confirm(
+            `Êtes-vous sûr de vouloir envoyer cette Nofication Push à tous les appareils abonnés (${targetAudience}) ?\nL'envoi est immédiat.`
+        );
+        if (!confirmed) return;
+
+        try {
+            setIsSending(true);
+            setStats(null);
+
+            const reqUrl = typeof window !== 'undefined' ? `${window.location.origin}${url}` : url;
+
+            const res = await fetch("/api/admin/push", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    title,
+                    message,
+                    targetAudience,
+                    url: reqUrl
+                })
+            });
+
+            const data = await res.json();
+
+            if (!res.ok) throw new Error(data.error || "Erreur lors de l'envoi.");
+
+            if (data.count === 0 || data.sent === 0) {
+                toast("Aucun appareil n'a reçu la notification. (0 abonnés actifs)", { icon: "ℹ️" });
+            } else {
+                toast.success(`Push envoyé avec succès à ${data.sent} appareil(s) !`);
+            }
+
+            setStats({
+                sent: data.sent || 0,
+                failed: data.failed || 0,
+                staleRemoved: data.staleRemoved || 0
+            });
+
+            setTitle("");
+            setMessage("");
+
+        } catch (error: any) {
+            toast.error(error.message);
+        } finally {
+            setIsSending(false);
+        }
+    };
+
+    return (
+        <div className="space-y-8 max-w-4xl mx-auto">
+            <div className="mb-10 text-center flex flex-col items-center">
+                <div className="w-16 h-16 bg-brand-royal/10 rounded-2xl flex items-center justify-center mb-6 border border-brand-royal/20 shadow-[0_0_30px_rgba(234,179,8,0.1)]">
+                    <BellRing className="w-8 h-8 text-brand-royal relative z-10" />
+                </div>
+                <h1 className="text-4xl font-black uppercase tracking-widest text-white mb-3">Envoi Rapide Push</h1>
+                <p className="text-brand-text-muted font-light max-w-xl mx-auto">
+                    Envoyez une alerte native sur l'écran d'accueil des téléphones et ordinateurs de vos élèves abonnés aux notifications.
+                </p>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+                {/* Formulaire (2/3 largeur) */}
+                <div className="lg:col-span-2 bg-brand-card border border-white/5 rounded-3xl p-8 relative overflow-hidden shadow-2xl">
+                    <div className="absolute inset-x-0 -top-px h-px w-full bg-gradient-to-r from-transparent via-brand-royal/30 to-transparent"></div>
+
+                    <div className="space-y-6 relative z-10">
+                        <div>
+                            <label className="block text-xs font-bold uppercase tracking-widest text-brand-text-muted mb-2 ml-1">Audience Cible</label>
+                            <select
+                                value={targetAudience}
+                                onChange={(e) => setTargetAudience(e.target.value)}
+                                className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-brand-royal/50 transition-all font-medium appearance-none"
+                            >
+                                <option value="all">Tous (Adultes + Enfants)</option>
+                                <option value="adults">Uniquement les Adultes (L'Atelier)</option>
+                                <option value="kids">Uniquement les Enfants (Le Club)</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label className="block text-xs font-bold uppercase tracking-widest text-brand-text-muted mb-2 ml-1">Titre de l'Alerte</label>
+                            <input
+                                type="text"
+                                value={title}
+                                maxLength={50}
+                                onChange={(e) => setTitle(e.target.value)}
+                                className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-brand-text-muted/50 focus:outline-none focus:border-brand-royal/50 transition-all font-bold"
+                                placeholder="🔴 Le Live Démarre !"
+                            />
+                            <p className="text-[10px] text-right text-white/30 mt-1">{title.length} / 50</p>
+                        </div>
+
+                        <div>
+                            <label className="block text-xs font-bold uppercase tracking-widest text-brand-text-muted mb-2 ml-1">Message Court</label>
+                            <textarea
+                                value={message}
+                                maxLength={100}
+                                onChange={(e) => setMessage(e.target.value)}
+                                rows={2}
+                                className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-brand-text-muted/50 focus:outline-none focus:border-brand-royal/50 transition-all text-sm resize-none"
+                                placeholder="Jérémy est en direct pour le débriefing d'hier. Rejoignez le chat !"
+                            />
+                            <p className="text-[10px] text-right text-white/30 mt-1">{message.length} / 100</p>
+                        </div>
+
+                        <div>
+                            <label className="block text-xs font-bold uppercase tracking-widest text-brand-text-muted mb-2 ml-1">Lien de redirection (Optionnel)</label>
+                            <input
+                                type="text"
+                                value={url}
+                                onChange={(e) => setUrl(e.target.value)}
+                                className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white/70 placeholder-brand-text-muted/50 focus:outline-none focus:border-brand-royal/50 transition-all font-mono text-sm"
+                                placeholder="/dashboard/lives"
+                            />
+                            <p className="text-[10px] text-brand-text-muted mt-1 ml-1">Où l'élève est envoyé quand il clique sur la notification (ex: /kids/lives ou /dashboard/masterclass).</p>
+                        </div>
+
+                        <div className="pt-4 border-t border-white/5">
+                            <button
+                                onClick={handleSendPush}
+                                disabled={isSending}
+                                className="w-full py-4 rounded-xl font-bold uppercase tracking-widest text-sm bg-gradient-to-r from-brand-royal to-blue-700 hover:from-brand-royal/90 hover:to-blue-700/90 text-black flex items-center justify-center transition-all shadow-[0_0_20px_rgba(234,179,8,0.2)] disabled:opacity-50"
+                            >
+                                {isSending ? <Loader2 className="w-5 h-5 animate-spin mx-auto" /> : (
+                                    <>
+                                        <Send className="w-4 h-4 mr-2" />
+                                        Expédier l'Alerte Native
+                                    </>
+                                )}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Prévisualisation & Stats (1/3 largeur) */}
+                <div className="space-y-6">
+                    <div className="bg-black/40 border border-white/5 rounded-3xl p-6 shadow-inner">
+                        <h3 className="text-xs font-bold uppercase tracking-widest text-brand-text-muted mb-4 flex items-center gap-2">
+                            <Smartphone className="w-4 h-4" />
+                            Aperçu simulé
+                        </h3>
+
+                        {/* Fake Mobile Notification Card */}
+                        <div className="mx-auto w-[250px] bg-zinc-800/90 backdrop-blur-md rounded-2xl p-4 shadow-xl border border-white/10 relative overflow-hidden">
+                            <div className="flex items-center gap-2 mb-2">
+                                <img src="/icon-512x512.png" className="w-4 h-4 rounded-sm" />
+                                <span className="text-[10px] text-white/50 font-medium uppercase tracking-wider">Club Magiciens</span>
+                                <span className="text-[10px] text-white/30 ml-auto select-none">maintenant</span>
+                            </div>
+                            <h4 className="text-white text-sm font-bold truncate">{title || "Titre de l'alerte"}</h4>
+                            <p className="text-white/80 text-xs mt-1 leading-snug break-words line-clamp-2">
+                                {message || "Votre message court apparaîtra ici."}
+                            </p>
+                        </div>
+                    </div>
+
+                    {stats && (
+                        <div className="bg-brand-card border border-green-500/20 rounded-3xl p-6 shadow-xl">
+                            <h3 className="text-xs font-bold uppercase tracking-widest text-green-500 mb-4">Dernier Envoi</h3>
+                            <div className="space-y-3">
+                                <div className="flex justify-between items-center pb-2 border-b border-white/5">
+                                    <span className="text-xs text-brand-text-muted tracking-wide">Délivrés :</span>
+                                    <span className="font-mono text-green-400 font-bold">{stats.sent}</span>
+                                </div>
+                                <div className="flex justify-between items-center pb-2 border-b border-white/5">
+                                    <span className="text-xs text-brand-text-muted tracking-wide">Échecs temporaires :</span>
+                                    <span className="font-mono text-orange-400 font-bold">{stats.failed}</span>
+                                </div>
+                                <div className="flex justify-between items-center">
+                                    <span className="text-xs text-brand-text-muted tracking-wide">Appareils obsolètes effacés :</span>
+                                    <span className="font-mono text-red-400 font-bold">{stats.staleRemoved}</span>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    <div className="flex items-start gap-3 p-4 bg-orange-500/10 border border-orange-500/20 rounded-2xl">
+                        <AlertTriangle className="w-5 h-5 text-orange-400 shrink-0 mt-0.5" />
+                        <div className="text-[11px] font-light text-orange-100/70 leading-relaxed">
+                            <strong className="text-orange-400 font-bold block mb-1">Rappel Apple (iOS)</strong>
+                            Pour que les élèves reçoivent ces alertes sur iPhone, ils doivent au préalable enregistrer votre site sur leur écran d'accueil d'iPhone via Safari. Sur ordinateur ou Android, le bouton d'abonnement fonctionne tout seul.
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    );
+}

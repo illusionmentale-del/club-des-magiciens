@@ -28,6 +28,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 import CookieBanner from "@/components/CookieBanner";
+import { PWARegistration } from "@/components/PWARegistration";
 
 export default function RootLayout({
   children,
@@ -39,6 +40,7 @@ export default function RootLayout({
       <body className={`${poppins.variable} font-sans bg-brand-bg text-brand-text antialiased flex flex-col min-h-screen`}>
         {children}
         <CookieBanner />
+        <PWARegistration />
       </body>
     </html>
   );

@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import AccountForm from "./AccountForm";
 import MagicCard from "@/components/MagicCard";
 import MagicParticles from "@/components/MagicParticles";
+import { PushOptInButton } from "@/components/PushOptInButton";
 
 export default async function AccountPage() {
     const supabase = await createClient();
@@ -28,6 +29,12 @@ export default async function AccountPage() {
             <div className="relative z-10 w-full max-w-4xl mx-auto space-y-8">
                 {/* Header is now integrated or minimized as card is the Hero */}
                 <MagicCard user={user} profile={profile} />
+
+                {/* Section Notifications */}
+                <div className="mt-12 space-y-4">
+                    <h2 className="text-xl font-black uppercase tracking-widest text-brand-royal text-center">Préférences</h2>
+                    <PushOptInButton />
+                </div>
             </div>
         </div>
     );
