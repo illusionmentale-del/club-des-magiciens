@@ -2,7 +2,8 @@ import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import MagicCard from "@/components/MagicCard";
 import AccountForm from "@/app/dashboard/account/AccountForm"; // Reusing form for settings
-import { Settings, Trophy, Shield, Star } from "lucide-react";
+import { Settings, Trophy, Shield, Star, Bell } from "lucide-react";
+import { PushOptInButton } from "@/components/PushOptInButton";
 
 export default async function KidsAccountPage({
     searchParams,
@@ -64,6 +65,15 @@ export default async function KidsAccountPage({
                                         Informations Personnelles
                                     </h2>
                                     <AccountForm user={user} profile={profile} theme="dark" isKidProfile={true} />
+
+                                    {/* Section Notifications */}
+                                    <div className="mt-12 space-y-4">
+                                        <h2 className="text-xl font-bold text-white mb-2 flex items-center gap-2">
+                                            <Bell className="w-5 h-5 text-brand-blue" />
+                                            Préférences d'alertes
+                                        </h2>
+                                        <PushOptInButton />
+                                    </div>
 
                                     {/* Additional settings could go here (e.g. Subscription status) */}
                                     <div className="mt-8 pt-8 border-t border-white/10 text-center">
