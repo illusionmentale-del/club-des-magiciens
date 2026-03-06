@@ -2,9 +2,9 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
-import { LogOut, BookOpen, Settings, Shield, Video, Star, Youtube, Instagram, Facebook, GraduationCap, ShoppingBag } from "lucide-react";
+import { LogOut, BookOpen, Settings, Shield, Video, Star, Youtube, Instagram, Facebook, GraduationCap, ShoppingBag, User } from "lucide-react";
 
 export default function Sidebar({ isAdmin, socialLinks, logoUrl, hasKidsAccess, toggles }: {
     isAdmin: boolean;
@@ -20,6 +20,7 @@ export default function Sidebar({ isAdmin, socialLinks, logoUrl, hasKidsAccess, 
 }) {
     const pathname = usePathname();
     const router = useRouter();
+    const searchParams = useSearchParams();
     const supabase = createClient();
 
     const handleLogout = async () => {
@@ -103,13 +104,22 @@ export default function Sidebar({ isAdmin, socialLinks, logoUrl, hasKidsAccess, 
                 )}
 
                 {toggles?.enable_adults_account !== false && (
-                    <Link
-                        href="/dashboard/account"
-                        className={`flex items-center gap-3 px-4 py-3 font-medium transition-all ${isActive('/dashboard/account') ? 'bg-gradient-to-r from-magic-royal/20 to-transparent text-magic-royal border-l-2 border-magic-royal' : 'text-gray-400 hover:bg-white/5 hover:text-white border-l-2 border-transparent'}`}
-                    >
-                        <Settings className="w-5 h-5" />
-                        Mon Compte
-                    </Link>
+                    <>
+                        <Link
+                            href="/dashboard/account"
+                            className={`flex items-center gap-3 px-4 py-3 font-medium transition-all ${isActive('/dashboard/account') && searchParams?.get('view') !== 'settings' ? 'bg-gradient-to-r from-magic-royal/20 to-transparent text-magic-royal border-l-2 border-magic-royal' : 'text-gray-400 hover:bg-white/5 hover:text-white border-l-2 border-transparent'}`}
+                        >
+                            <User className="w-5 h-5" />
+                            Mes Informations
+                        </Link>
+                        <Link
+                            href="/dashboard/account?view=settings"
+                            className={`flex items-center gap-3 px-4 py-3 font-medium transition-all ${isActive('/dashboard/account') && searchParams?.get('view') === 'settings' ? 'bg-gradient-to-r from-magic-royal/20 to-transparent text-magic-royal border-l-2 border-magic-royal' : 'text-gray-400 hover:bg-white/5 hover:text-white border-l-2 border-transparent'}`}
+                        >
+                            <Settings className="w-5 h-5" />
+                            Mes Paramètres
+                        </Link>
+                    </>
                 )}
 
                 <Link
