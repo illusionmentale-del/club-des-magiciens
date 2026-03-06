@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import MagicCard from "@/components/MagicCard";
 import AccountForm from "@/app/dashboard/account/AccountForm"; // Reusing form for settings
 import { Settings, Trophy, Shield, Star, Bell } from "lucide-react";
-import { PushOptInButton } from "@/components/PushOptInButton";
+import { NotificationPreferences } from "@/components/NotificationPreferences";
 
 export default async function KidsAccountPage({
     searchParams,
@@ -67,12 +67,12 @@ export default async function KidsAccountPage({
                                     <AccountForm user={user} profile={profile} theme="dark" isKidProfile={true} />
 
                                     {/* Section Notifications */}
-                                    <div className="mt-12 space-y-4">
+                                    <div className="mt-12 space-y-6">
                                         <h2 className="text-xl font-bold text-white mb-2 flex items-center gap-2">
                                             <Bell className="w-5 h-5 text-brand-blue" />
-                                            Préférences d'alertes
+                                            Préférences de Communication
                                         </h2>
-                                        <PushOptInButton />
+                                        <NotificationPreferences profile={profile} />
                                     </div>
 
                                     {/* Additional settings could go here (e.g. Subscription status) */}

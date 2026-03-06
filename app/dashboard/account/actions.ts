@@ -69,3 +69,24 @@ export async function updateProfile(prevState: any, formData: FormData) {
     revalidatePath("/kids");
     return { success: "Profil mis à jour avec succès !" };
 }
+
+export async function updateNotificationPreference(key: 'newsletter_opt_in' | 'email_alerts_opt_in', value: boolean) {
+    const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+
+    if (!user) {
+        return { error: "Utilisateur non connecté" };
+    }
+
+    const { error } = await supabase
+        .from('profiles')
+        .update({ [key]: value })
+        .eq('id', user.id);
+
+    if (error) {
+        console.error(`Erreur update ${key}:`, error);
+        return { error: `Erreur lors de la mise à jour de ${key}` };
+    }
+
+    return { success: true };
+}

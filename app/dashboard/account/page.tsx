@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import AccountForm from "./AccountForm";
 import MagicCard from "@/components/MagicCard";
 import MagicParticles from "@/components/MagicParticles";
-import { PushOptInButton } from "@/components/PushOptInButton";
+import { NotificationPreferences } from "@/components/NotificationPreferences";
 
 export default async function AccountPage({
     searchParams,
@@ -44,8 +44,8 @@ export default async function AccountPage({
 
                                 {/* Section Notifications */}
                                 <div className="mt-12 space-y-6 border-t border-white/10 pt-8">
-                                    <h2 className="text-xl font-black uppercase tracking-widest text-brand-royal text-center">Préférences d'alertes</h2>
-                                    <PushOptInButton />
+                                    <h2 className="text-xl font-black uppercase tracking-widest text-brand-royal text-center mb-6">Préférences de Communication</h2>
+                                    <NotificationPreferences profile={profile} />
                                 </div>
                             </div>
                         </div>
