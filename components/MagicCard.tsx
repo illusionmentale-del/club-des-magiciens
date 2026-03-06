@@ -136,36 +136,58 @@ export default function MagicCard({ user, profile, isKid = false }: MagicCardPro
                                 {/* Backdrop glow for avatar */}
                                 <div className={cn("absolute w-48 h-48 rounded-full blur-2xl opacity-40 mix-blend-screen", isKid ? "bg-purple-500" : "bg-brand-royal")}></div>
 
+
                                 <div className={cn(
-                                    "relative w-40 h-40 rounded-full p-1.5 shadow-[0_0_30px_rgba(0,0,0,0.8)] flex-shrink-0 z-10",
+                                    "relative w-44 h-44 rounded-full p-2 shadow-2xl flex-shrink-0 z-10 transition-transform duration-500",
                                     isLegendary ? "bg-gradient-to-tr from-amber-500 via-yellow-200 to-orange-500" :
                                         isKid ? "bg-gradient-to-tr from-blue-500 via-purple-400 to-brand-purple" : "bg-gradient-to-br from-cyan-400 via-brand-royal to-blue-600"
                                 )}>
-                                    <div className="w-full h-full rounded-full bg-[#0A0A0E] overflow-hidden relative flex items-center justify-center shadow-inner">
+                                    <div className="w-full h-full rounded-full bg-gradient-to-b from-[#1a1c29] to-[#0A0A0E] overflow-hidden relative flex flex-col items-center justify-center shadow-inner ring-4 ring-black/50">
                                         {isEmojiAvatar ? (
-                                            <span className="text-7xl drop-shadow-2xl z-20 relative transform hover:scale-110 transition-transform duration-500">{currentAvatar}</span>
+                                            <span className="text-[5rem] drop-shadow-2xl z-20 relative transform hover:scale-110 transition-transform duration-500">{currentAvatar}</span>
                                         ) : (
                                             <Image src={currentAvatar} alt="Avatar" fill className="object-cover z-20" />
                                         )}
                                         {/* Avatar Background effect */}
-                                        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.15)_0%,transparent_70%)] z-10"></div>
+                                        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-overlay z-10"></div>
+                                        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.2)_0%,transparent_60%)] z-10"></div>
+                                    </div>
+
+                                    {/* Level Badge Overlapping Avatar */}
+                                    <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 z-30">
+                                        <div className={cn(
+                                            "px-4 py-1.5 rounded-full text-[10px] font-black tracking-widest uppercase shadow-[0_5px_15px_rgba(0,0,0,0.5)] border-2",
+                                            isLegendary ? "bg-amber-600 text-amber-100 border-yellow-300" : isKid ? "bg-brand-purple text-purple-100 border-purple-300" : "bg-brand-royal text-blue-100 border-blue-300"
+                                        )}>
+                                            {profile?.magic_level || "Apprenti"}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
 
                             {/* Footer Info */}
-                            <div className="bg-black/40 backdrop-blur-xl border border-white/10 shadow-[0_-10px_40px_rgba(0,0,0,0.5)] rounded-2xl p-5 w-full relative overflow-hidden">
+                            <div className="bg-black/40 backdrop-blur-xl border border-white/10 shadow-[0_-10px_40px_rgba(0,0,0,0.5)] rounded-2xl p-4 w-full relative overflow-hidden mt-4">
                                 {/* Subtle internal reflection */}
                                 <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
 
-                                <h2 className={cn("font-serif text-2xl font-black text-center mb-1 drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)]", isLegendary ? "text-[#FFD700]" : "text-white")}>
+                                <h2 className={cn("font-serif text-2xl font-black text-center mb-4 drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)]", isLegendary ? "text-[#FFD700]" : "text-white")}>
                                     {profile?.username || "Le Mystérieux"}
                                 </h2>
 
-                                <div className="flex justify-center mb-4">
-                                    <span className={cn("text-[10px] tracking-widest uppercase px-3 py-1 rounded-full border bg-black/50 shadow-inner", isLegendary ? "text-amber-300 border-amber-500/30" : isKid ? "text-purple-300 border-purple-500/30" : "text-blue-300 border-blue-500/30")}>
-                                        {profile?.magic_level || "Apprenti Magicien"}
-                                    </span>
+                                {/* Inner Card XP Progress Bar */}
+                                <div className="mb-5 px-2">
+                                    <div className="flex justify-between text-[9px] font-bold text-white/50 uppercase tracking-widest mb-1.5">
+                                        <span>Progression</span>
+                                        <span className={isLegendary ? "text-amber-400" : "text-white"}>{xp} XP</span>
+                                    </div>
+                                    <div className="h-1.5 w-full bg-black/60 rounded-full overflow-hidden border border-white/5">
+                                        <div
+                                            className={cn("h-full relative", isLegendary ? "bg-gradient-to-r from-amber-600 to-yellow-400" : isKid ? "bg-gradient-to-r from-purple-600 to-blue-400" : "bg-gradient-to-r from-blue-600 to-cyan-400")}
+                                            style={{ width: `${Math.min((xp / (isLegendary ? 500 : 150)) * 100, 100)}%` }}
+                                        >
+                                            <div className="absolute inset-0 bg-white/30 w-full animate-[pulse_2s_infinite]"></div>
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <div className="grid grid-cols-2 gap-4 text-center border-t border-white/5 pt-4">
