@@ -184,7 +184,7 @@ export async function getSecureBunnyIframeUrl(libraryId: string | number, videoI
     // If no token key is configured, fallback to standard URL
     if (!tokenKey) {
         console.warn(`Bunny Stream Token Key missing for ${isKid ? 'Kids' : 'Adults'}. Falling back to insecure Iframe URL.`);
-        return \`https://iframe.mediadelivery.net/embed/\${libraryId}/\${videoId}?autoplay=true&loop=false&muted=false&preload=true&responsive=true\`;
+        return `https://iframe.mediadelivery.net/embed/${libraryId}/${videoId}?autoplay=true&loop=false&muted=false&preload=true&responsive=true`;
     }
 
     // Bunny Stream Token Auth logic
@@ -192,7 +192,7 @@ export async function getSecureBunnyIframeUrl(libraryId: string | number, videoI
     const expires = Math.floor(Date.now() / 1000) + (6 * 60 * 60);
 
     // 2. Prepare the string to hash: SecurityKey + VideoID + ExpirationTime
-    const rawString = \`\${tokenKey}\${videoId}\${expires}\`;
+    const rawString = `${tokenKey}${videoId}${expires}`;
 
     // 3. Import crypto (only works on Next.js server side environment)
     const crypto = await import('crypto');
@@ -201,6 +201,6 @@ export async function getSecureBunnyIframeUrl(libraryId: string | number, videoI
     const hash = crypto.createHash('sha256').update(rawString).digest('hex');
 
     // 5. Construct secure URL
-    return \`https://iframe.mediadelivery.net/embed/\${libraryId}/\${videoId}?token=\${hash}&expires=\${expires}&autoplay=true&loop=false&muted=false&preload=true&responsive=true\`;
+    return `https://iframe.mediadelivery.net/embed/${libraryId}/${videoId}?token=${hash}&expires=${expires}&autoplay=true&loop=false&muted=false&preload=true&responsive=true`;
 }
 
