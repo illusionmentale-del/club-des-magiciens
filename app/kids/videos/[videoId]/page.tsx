@@ -1,4 +1,4 @@
-import { getKidsVideoById, getBunnyIframeUrl } from '@/lib/bunny';
+import { getKidsVideoById, getSecureBunnyIframeUrl } from '@/lib/bunny';
 import { notFound, redirect } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowLeft, PlayCircle, Eye, Calendar, Clock, Lock, ShoppingBag } from 'lucide-react';
@@ -118,7 +118,7 @@ export default async function KidsVideoPlayerPage({ params }: { params: { videoI
         }
     };
 
-    const iframeUrl = getBunnyIframeUrl(video.videoLibraryId, video.guid);
+    const iframeUrl = await getSecureBunnyIframeUrl(video.videoLibraryId, video.guid, true); // true = isKid
 
     return (
         <div className="min-h-screen bg-[#050507] text-white p-4 md:p-8 relative font-sans selection:bg-brand-purple/30">

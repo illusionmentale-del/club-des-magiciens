@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
+import { getSecureBunnyIframeUrl } from "@/lib/bunny";
 import { redirect, notFound } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, PlayCircle, Lock, CheckCircle, Trophy, Star } from "lucide-react";
@@ -109,6 +110,16 @@ export default async function WatchPage(props: WatchPageProps) {
                 .eq("kid_notified", false);
         }
 
+        // Generate Secure Iframe URL if it's a Bunny video (GUID format)
+        let secureLibraryIframeUrl = "";
+        if (libraryItem.video_url && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(libraryItem.video_url)) {
+            secureLibraryIframeUrl = await getSecureBunnyIframeUrl(
+                isKidsItem ? process.env.BUNNY_KIDS_LIBRARY_ID || "" : process.env.BUNNY_ADULTS_LIBRARY_ID || "",
+                libraryItem.video_url,
+                isKidsItem
+            );
+        }
+
         return (
             <div className={cn(
                 "min-h-screen text-white flex flex-col font-sans relative",
@@ -146,7 +157,7 @@ export default async function WatchPage(props: WatchPageProps) {
                                 {/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(libraryItem.video_url) ? (
                                     // Bunny Stream Player (IDs are GUIDs)
                                     <iframe
-                                        src={`https://iframe.mediadelivery.net/embed/${isKidsItem ? process.env.BUNNY_KIDS_LIBRARY_ID : process.env.BUNNY_ADULTS_LIBRARY_ID}/${libraryItem.video_url}?autoplay=false&loop=false&muted=false&preload=false&responsive=true&playsinline=true`}
+                                        src={secureLibraryIframeUrl}
                                         className="absolute inset-0 w-full h-full pointer-events-auto"
                                         frameBorder="0"
                                         allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture; fullscreen;"
@@ -296,6 +307,16 @@ export default async function WatchPage(props: WatchPageProps) {
 
     // Determine Admin status for Case B Comments (Already done above)
 
+    // Generate Secure Iframe URL for the current course video if it's a Bunny video
+    let secureCourseIframeUrl = "";
+    if (currentVideo && currentVideo.video_url && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(currentVideo.video_url)) {
+        secureCourseIframeUrl = await getSecureBunnyIframeUrl(
+            isKidsCourse ? process.env.BUNNY_KIDS_LIBRARY_ID || "" : process.env.BUNNY_ADULTS_LIBRARY_ID || "",
+            currentVideo.video_url,
+            isKidsCourse
+        );
+    }
+
     return (
         <div className={cn(
             "min-h-screen text-white flex flex-col relative font-sans",
@@ -341,7 +362,7 @@ export default async function WatchPage(props: WatchPageProps) {
                                 {/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(currentVideo.video_url) ? (
                                     // Bunny Stream Player (IDs are GUIDs)
                                     <iframe
-                                        src={`https://iframe.mediadelivery.net/embed/${isKidsCourse ? process.env.BUNNY_KIDS_LIBRARY_ID : process.env.BUNNY_ADULTS_LIBRARY_ID}/${currentVideo.video_url}?autoplay=false&loop=false&muted=false&preload=false&responsive=true&playsinline=true`}
+                                        src={secureCourseIframeUrl}
                                         className="absolute inset-0 w-full h-full pointer-events-auto"
                                         frameBorder="0"
                                         allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture; fullscreen;"

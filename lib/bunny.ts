@@ -9,6 +9,11 @@ const BUNNY_KIDS_API_KEY = process.env.BUNNY_KIDS_API_KEY;
 const BUNNY_ADULTS_LIBRARY_ID = process.env.BUNNY_ADULTS_LIBRARY_ID;
 const BUNNY_ADULTS_API_KEY = process.env.BUNNY_ADULTS_API_KEY;
 
+// Token Keys for Secure URL Generation (from Bunny > Security > Token Authentication)
+const BUNNY_KIDS_TOKEN_KEY = process.env.BUNNY_KIDS_TOKEN_KEY;
+const BUNNY_ADULTS_TOKEN_KEY = process.env.BUNNY_ADULTS_TOKEN_KEY;
+
+
 export interface BunnyVideo {
     videoLibraryId: number;
     guid: string;
@@ -170,8 +175,32 @@ export function getBunnyThumbnailUrl(libraryId: string | number, videoId: string
 }
 
 /**
- * Get iframe embed URL for a video
+ * Get secure iframe embed URL for a video (Token Authentication)
+ * Requires Node.js "crypto" module on the server side.
  */
-export function getBunnyIframeUrl(libraryId: string | number, videoId: string): string {
-    return `https://iframe.mediadelivery.net/embed/${libraryId}/${videoId}?autoplay=true&loop=false&muted=false&preload=true&responsive=true`;
+export async function getSecureBunnyIframeUrl(libraryId: string | number, videoId: string, isKid: boolean = false): Promise<string> {
+    const tokenKey = isKid ? BUNNY_KIDS_TOKEN_KEY : BUNNY_ADULTS_TOKEN_KEY;
+
+    // If no token key is configured, fallback to standard URL
+    if (!tokenKey) {
+        console.warn(`Bunny Stream Token Key missing for ${isKid ? 'Kids' : 'Adults'}. Falling back to insecure Iframe URL.`);
+        return \`https://iframe.mediadelivery.net/embed/\${libraryId}/\${videoId}?autoplay=true&loop=false&muted=false&preload=true&responsive=true\`;
+    }
+
+    // Bunny Stream Token Auth logic
+    // 1. Set Expiration Time (e.g., 6 hours from now)
+    const expires = Math.floor(Date.now() / 1000) + (6 * 60 * 60);
+
+    // 2. Prepare the string to hash: SecurityKey + VideoID + ExpirationTime
+    const rawString = \`\${tokenKey}\${videoId}\${expires}\`;
+
+    // 3. Import crypto (only works on Next.js server side environment)
+    const crypto = await import('crypto');
+
+    // 4. Generate SHA256 Hash
+    const hash = crypto.createHash('sha256').update(rawString).digest('hex');
+
+    // 5. Construct secure URL
+    return \`https://iframe.mediadelivery.net/embed/\${libraryId}/\${videoId}?token=\${hash}&expires=\${expires}&autoplay=true&loop=false&muted=false&preload=true&responsive=true\`;
 }
+
