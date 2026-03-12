@@ -184,7 +184,7 @@ export async function getSecureBunnyIframeUrl(libraryId: string | number, videoI
     // If no token key is configured, fallback to standard URL
     if (!tokenKey) {
         console.warn(`Bunny Stream Token Key missing for ${isKid ? 'Kids' : 'Adults'}. Falling back to insecure Iframe URL.`);
-        return `https://iframe.mediadelivery.net/embed/${libraryId}/${videoId}?autoplay=false&loop=false&muted=false&preload=true&responsive=true`;
+        return `https://iframe.mediadelivery.net/embed/${libraryId}/${videoId}?autoplay=true&loop=false&muted=false&preload=true&responsive=true`;
     }
 
     // Bunny Stream Token Auth logic
@@ -201,6 +201,6 @@ export async function getSecureBunnyIframeUrl(libraryId: string | number, videoI
     const hash = crypto.createHash('sha256').update(rawString).digest('hex');
 
     // 5. Construct secure URL
-    return `https://iframe.mediadelivery.net/embed/${libraryId}/${videoId}?token=${hash}&expires=${expires}&autoplay=false&loop=false&muted=false&preload=true&responsive=true`;
+    return `https://iframe.mediadelivery.net/embed/${libraryId}/${videoId}?token=${hash}&expires=${expires}&autoplay=true&loop=false&muted=false&preload=true&responsive=true`;
 }
 
