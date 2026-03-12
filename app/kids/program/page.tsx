@@ -33,7 +33,9 @@ export default async function KidsProgramPage() {
         .select("*")
         .eq("audience", "kids")
         .lte("week_number", currentWeek)
-        .order("week_number", { ascending: false });
+        .order("week_number", { ascending: false })
+        .order("position", { ascending: true })
+        .order("created_at", { ascending: false });
 
     // Group items by week
     const weeksData: Record<number, any[]> = {};
