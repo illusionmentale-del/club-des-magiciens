@@ -184,7 +184,8 @@ export async function getSecureBunnyIframeUrl(libraryId: string | number, videoI
     // If no token key is configured, fallback to standard URL
     if (!tokenKey) {
         console.warn(`Bunny Stream Token Key missing for ${isKid ? 'Kids' : 'Adults'}. Falling back to insecure Iframe URL.`);
-        return `https://player.mediadelivery.net/embed/${libraryId}/${videoId}?autoplay=false&loop=false&muted=false&preload=true&responsive=true`;
+        const fallbackColor = isKid ? 'a855f7' : '1d4ed8';
+        return `https://player.mediadelivery.net/embed/${libraryId}/${videoId}?autoplay=false&loop=false&muted=false&preload=true&responsive=true&primaryColor=${fallbackColor}`;
     }
 
     // Bunny Stream Token Auth logic
@@ -201,7 +202,8 @@ export async function getSecureBunnyIframeUrl(libraryId: string | number, videoI
     const hash = crypto.createHash('sha256').update(rawString).digest('hex');
 
     // 5. Construct secure URL
-    // Upgraded to next-gen player domain to bypass iOS Safari rendering bugs
-    return `https://player.mediadelivery.net/embed/${libraryId}/${videoId}?token=${hash}&expires=${expires}&autoplay=false&loop=false&muted=false&preload=true&responsive=true`;
+    // Upgraded to next-gen player domain with custom brand colors
+    const brandColor = isKid ? 'a855f7' : '1d4ed8'; // Purple for kids, Royal Blue for adults
+    return `https://player.mediadelivery.net/embed/${libraryId}/${videoId}?token=${hash}&expires=${expires}&autoplay=false&loop=false&muted=false&preload=true&responsive=true&primaryColor=${brandColor}`;
 }
 
