@@ -886,3 +886,33 @@ export async function toggleEventReminder(eventId: string) {
         return { success: true, isReminded: true };
     }
 }
+
+// --- DRAG AND DROP ORDERING ---
+export async function updateLibraryItemsOrder(items: { id: string, position: number }[]) {
+    const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+
+    if (!user) return { error: "Unauthorized" };
+
+    const { data: profile } = await supabase
+        .from('profiles')
+        .select('is_admin')
+        .eq('id', user.id)
+        .single();
+
+    if (!profile?.is_admin) return { error: "Unauthorized" };
+
+    try {
+        const promises = items.map(item => 
+            supabase.from('library_items').update({ position: item.position }).eq('id', item.id)
+        );
+        await Promise.all(promises);
+        
+        revalidatePath('/admin/kids/library');
+        revalidatePath('/kids/program');
+        
+        return { success: true };
+    } catch (e: any) {
+        return { error: e.message };
+    }
+}

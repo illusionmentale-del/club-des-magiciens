@@ -8,6 +8,10 @@ import Image from "next/image";
 
 import BroadcastModal from "@/components/admin/BroadcastModal";
 import { Megaphone } from "lucide-react";
+import { DndContext, closestCenter, KeyboardSensor, PointerSensor, useSensor, useSensors, DragEndEvent } from '@dnd-kit/core';
+import { arrayMove, SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy } from '@dnd-kit/sortable';
+import { SortableItem } from '@/components/admin/SortableItem';
+import { updateLibraryItemsOrder } from '@/app/admin/actions';
 
 type LibraryItem = {
     id: string;
@@ -20,6 +24,7 @@ type LibraryItem = {
     is_main: boolean;
     show_in_news: boolean;
     is_highlighted: boolean;
+    position?: number;
 };
 
 export default function AdminLibraryPage() {
@@ -36,6 +41,7 @@ export default function AdminLibraryPage() {
             .select("*")
             .eq("audience", "kids")
             .order("week_number", { ascending: true })
+            .order("position", { ascending: true })
             .order("created_at", { ascending: false });
 
         if (error) console.error("Error fetching items:", error);
@@ -72,6 +78,10 @@ export default function AdminLibraryPage() {
             groups[week].push(item);
         });
 
+        Object.keys(groups).forEach(key => {
+            groups[Number(key)].sort((a, b) => (a.position || 0) - (b.position || 0));
+        });
+
         return Object.entries(groups).sort(([a], [b]) => Number(a) - Number(b));
     }, [items, search]);
 
@@ -79,6 +89,39 @@ export default function AdminLibraryPage() {
         if (items.length === 0) return 0;
         return Math.max(...items.map(i => i.week_number || 0));
     }, [items]);
+
+    const sensors = useSensors(
+        useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
+        useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
+    );
+
+    const handleDragEnd = async (event: DragEndEvent, currentItems: LibraryItem[]) => {
+        const { active, over } = event;
+        if (!over || active.id === over.id) return;
+
+        const oldIndex = currentItems.findIndex(i => i.id === active.id);
+        const newIndex = currentItems.findIndex(i => i.id === over.id);
+
+        const newItems = arrayMove(currentItems, oldIndex, newIndex);
+        
+        // Optimistic update
+        setItems(prevItems => {
+            const updated = [...prevItems];
+            newItems.forEach((item, index) => {
+                const globalIndex = updated.findIndex(i => i.id === item.id);
+                if (globalIndex !== -1) updated[globalIndex].position = index;
+            });
+            return updated;
+        });
+
+        // Save to DB
+        const payload = newItems.map((item, index) => ({ id: item.id, position: index }));
+        const { error } = await updateLibraryItemsOrder(payload);
+        if (error) {
+            alert("Erreur de sauvegarde de l'ordre: " + error);
+            fetchItems(); // revert
+        }
+    };
 
     return (
         <div className="min-h-screen bg-magic-bg text-white p-8">
@@ -147,11 +190,14 @@ export default function AdminLibraryPage() {
                                     </Link>
                                 </div>
 
-                                <div className="grid grid-cols-1 gap-3">
-                                    {weekItems.map((item) => (
-                                        <div key={item.id} className="bg-magic-card border border-white/5 rounded-xl p-3 flex items-center gap-4 hover:border-white/20 transition-colors group">
-                                            {/* Thumbnail */}
-                                            <div className="w-24 aspect-video bg-black/50 rounded-lg overflow-hidden relative shrink-0 border border-white/5">
+                                <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={(e) => handleDragEnd(e, weekItems)}>
+                                    <SortableContext items={weekItems.map(i => i.id)} strategy={verticalListSortingStrategy}>
+                                        <div className="flex flex-col gap-3">
+                                            {weekItems.map((item) => (
+                                                <SortableItem key={item.id} id={item.id}>
+                                                    <div className="bg-magic-card border border-white/5 rounded-xl p-3 flex items-center gap-4 hover:border-white/20 transition-colors group w-full">
+                                                        {/* Thumbnail */}
+                                                        <div className="w-24 aspect-video bg-black/50 rounded-lg overflow-hidden relative shrink-0 border border-white/5">
                                                 {item.thumbnail_url ? (
                                                     <Image src={item.thumbnail_url} alt={item.title} fill className="object-cover" />
                                                 ) : (
@@ -196,8 +242,11 @@ export default function AdminLibraryPage() {
                                                 </button>
                                             </div>
                                         </div>
-                                    ))}
-                                </div>
+                                    </SortableItem>
+                                ))}
+                            </div>
+                        </SortableContext>
+                    </DndContext>
                             </div>
                         ))}
 

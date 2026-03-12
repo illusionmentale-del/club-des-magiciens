@@ -93,7 +93,6 @@ export default async function KidsProgramPage() {
                         const isCompleted = week < currentWeek;
 
                         const items = weeksData[week] || [];
-                        const mainItem = items.find(i => i.is_main) || items[0];
 
                         return (
                             <div key={week} className="relative group">
@@ -137,41 +136,53 @@ export default async function KidsProgramPage() {
 
                                     {/* Content Preview */}
                                     {!isLocked ? (
-                                        <div className="flex flex-col sm:flex-row gap-4">
-                                            {/* Thumbnail */}
-                                            <div className="sm:w-1/3 aspect-video relative rounded-lg overflow-hidden bg-black border border-white/10">
-                                                {mainItem?.thumbnail_url ? (
-                                                    <Image src={mainItem.thumbnail_url} alt="" fill className="object-cover opacity-80" />
-                                                ) : (
-                                                    <div className="w-full h-full flex items-center justify-center bg-brand-surface"><Play className="w-8 h-8 text-white/20" /></div>
-                                                )}
-                                            </div>
+                                        <div className="flex flex-col gap-4">
+                                            {items.sort((a,b) => (a.position || 0) - (b.position || 0)).map((item, index) => (
+                                                <div key={item.id} className="flex flex-col sm:flex-row gap-4 bg-black/20 p-4 rounded-xl border border-white/5 hover:bg-black/40 transition-colors">
+                                                    {/* Thumbnail */}
+                                                    <div className="sm:w-1/3 aspect-video relative rounded-lg overflow-hidden bg-black border border-white/10 shrink-0">
+                                                        {item.thumbnail_url ? (
+                                                            <Image src={item.thumbnail_url} alt="" fill className="object-cover opacity-80" />
+                                                        ) : (
+                                                            <div className="w-full h-full flex items-center justify-center bg-brand-surface"><Play className="w-8 h-8 text-white/20" /></div>
+                                                        )}
+                                                    </div>
 
-                                            {/* Info */}
-                                            <div className="flex-1 flex flex-col justify-center">
-                                                <h3 className="text-xl font-bold text-white mb-2">{mainItem?.title || "Mission Mystère"}</h3>
-                                                <p className="text-sm text-brand-text-muted line-clamp-2 mb-4">
-                                                    {mainItem?.description || "Le secret n'a pas encore été révélé..."}
-                                                </p>
-
-                                                <div className="flex gap-2 mt-auto">
-                                                    <Link
-                                                        href={mainItem ? `/watch/${mainItem.id}` : '#'}
-                                                        className={`
-                                                    flex-1 items-center justify-center gap-2 px-4 py-2 rounded-lg text-sm font-bold uppercase tracking-wide transition-colors flex
-                                                    ${isCurrent ? 'bg-brand-purple text-white hover:bg-brand-purple/90' : 'bg-brand-surface/50 border border-brand-border hover:bg-white/10 text-white'}
-                                                `}
-                                                    >
-                                                        <Play className="w-4 h-4" />
-                                                        Voir
-                                                    </Link>
-                                                    {isCurrent && (
-                                                        <div className="px-3 py-2 rounded-lg bg-brand-gold/10 border border-brand-gold/20 text-brand-gold">
-                                                            <Trophy className="w-4 h-4" />
+                                                    {/* Info */}
+                                                    <div className="flex-1 flex flex-col justify-center">
+                                                        <div className="flex items-center gap-2 mb-2">
+                                                            <h3 className="text-xl font-bold text-white">{item.title || "Mission Mystère"}</h3>
+                                                            {item.is_main && <span className="bg-brand-gold/20 text-brand-gold text-[10px] font-bold px-2 py-0.5 rounded uppercase">Principal</span>}
                                                         </div>
-                                                    )}
+                                                        <p className="text-sm text-brand-text-muted line-clamp-2 mb-4">
+                                                            {item.description || "Le secret n'a pas encore été révélé..."}
+                                                        </p>
+
+                                                        <div className="flex gap-2 mt-auto">
+                                                            <Link
+                                                                href={`/watch/${item.id}`}
+                                                                className={`
+                                                                    flex-1 items-center justify-center gap-2 px-4 py-2 rounded-lg text-sm font-bold uppercase tracking-wide transition-colors flex
+                                                                    ${isCurrent && item.is_main ? 'bg-brand-purple text-white hover:bg-brand-purple/90' : 'bg-brand-surface/50 border border-brand-border hover:bg-white/10 text-white'}
+                                                                `}
+                                                            >
+                                                                <Play className="w-4 h-4" />
+                                                                Voir
+                                                            </Link>
+                                                            {isCurrent && item.is_main && (
+                                                                <div className="px-3 py-2 rounded-lg bg-brand-gold/10 border border-brand-gold/20 text-brand-gold">
+                                                                    <Trophy className="w-4 h-4" />
+                                                                </div>
+                                                            )}
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                            </div>
+                                            ))}
+                                            {items.length === 0 && (
+                                                <div className="text-center py-6 text-brand-text-muted border border-dashed border-white/10 rounded-xl">
+                                                    Vide... Reviens plus tard pour de nouveaux secrets !
+                                                </div>
+                                            )}
                                         </div>
                                     ) : (
                                         <div className="p-4 bg-brand-bg/30 rounded-lg border border-dashed border-white/10 flex items-center justify-center gap-2 text-brand-text-muted">
