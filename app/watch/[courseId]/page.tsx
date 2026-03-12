@@ -202,8 +202,8 @@ export default async function WatchPage(props: WatchPageProps) {
                     <div className="flex flex-col md:flex-row gap-8 items-start">
                         <div className="flex-1 space-y-4">
                             <h1 className="text-3xl md:text-4xl font-black text-white">{libraryItem.title}</h1>
-                            <div className="prose prose-invert prose-p:text-gray-300 max-w-none">
-                                <p>{libraryItem.description}</p>
+                            <div className="text-base md:text-lg text-gray-300 leading-relaxed md:leading-loose font-light whitespace-pre-wrap tracking-wide max-w-none">
+                                {libraryItem.description}
                             </div>
                             
                             {/* Resource Download Button */}
@@ -443,8 +443,8 @@ export default async function WatchPage(props: WatchPageProps) {
                                 theme={isKidsCourse ? "kids" : "adults"}
                             />
 
-                            <div className="prose prose-invert max-w-none text-gray-400">
-                                <p>{currentVideo.description}</p>
+                            <div className="text-base md:text-lg text-gray-300 leading-relaxed md:leading-loose font-light whitespace-pre-wrap tracking-wide max-w-none">
+                                {currentVideo.description}
                             </div>
 
                             {/* Resource Download Button */}
