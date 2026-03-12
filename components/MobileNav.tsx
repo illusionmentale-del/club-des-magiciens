@@ -19,6 +19,7 @@ export default function MobileNav({ isAdmin, hasKidsAccess, toggles }: {
     }
 }) {
     const [isOpen, setIsOpen] = useState(false);
+    const [isOpening, setIsOpening] = useState(false);
     const pathname = usePathname();
     const router = useRouter();
     const supabase = createClient();
@@ -26,6 +27,15 @@ export default function MobileNav({ isAdmin, hasKidsAccess, toggles }: {
     const isActive = (path: string) => pathname === path;
 
     const close = () => setIsOpen(false);
+
+    const handleOpen = () => {
+        setIsOpening(true);
+        // Defer rendering the heavy overlay/menu to let the browser paint the loading spinner first
+        setTimeout(() => {
+            setIsOpen(true);
+            setIsOpening(false);
+        }, 50);
+    };
 
     const handleLogout = async () => {
         await supabase.auth.signOut();
@@ -48,10 +58,15 @@ export default function MobileNav({ isAdmin, hasKidsAccess, toggles }: {
                     </div>
                 </Link>
                 <button
-                    onClick={() => setIsOpen(true)}
-                    className="p-2 text-white hover:bg-white/10 rounded-lg"
+                    onClick={handleOpen}
+                    disabled={isOpening}
+                    className="p-2 text-white hover:bg-white/10 active:scale-95 transition-transform rounded-lg"
                 >
-                    <Menu className="w-6 h-6" />
+                    {isOpening ? (
+                        <div className="w-6 h-6 rounded-full border-2 border-white/20 border-t-white animate-spin"></div>
+                    ) : (
+                        <Menu className="w-6 h-6" />
+                    )}
                 </button>
             </div>
 
@@ -60,7 +75,7 @@ export default function MobileNav({ isAdmin, hasKidsAccess, toggles }: {
                 <div className="fixed inset-0 z-50 flex">
                     {/* Backdrop */}
                     <div
-                        className="fixed inset-0 bg-black/80 backdrop-blur-sm"
+                        className="fixed inset-0 bg-black/95 transition-opacity"
                         onClick={close}
                     />
 
