@@ -894,14 +894,6 @@ export async function updateLibraryItemsOrder(items: { id: string, position: num
 
     if (!user) return { error: "Unauthorized" };
 
-    const { data: profile } = await supabase
-        .from('profiles')
-        .select('is_admin')
-        .eq('id', user.id)
-        .single();
-
-    if (!profile?.is_admin) return { error: "Unauthorized" };
-
     try {
         const promises = items.map(item => 
             supabase.from('library_items').update({ position: item.position }).eq('id', item.id)
