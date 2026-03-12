@@ -83,20 +83,22 @@ export default function LibraryItemForm({ initialData }: { initialData?: Library
             const fileName = `${Math.random().toString(36).substring(2)}.${fileExt}`;
             const filePath = `library/${fileName}`;
 
+            const bucketName = field === 'thumbnail_url' ? 'avatars' : 'library';
+
             const { error: uploadError } = await supabase.storage
-                .from('avatars') // Using existing bucket for now, ideally 'library'
+                .from(bucketName)
                 .upload(filePath, file);
 
             if (uploadError) throw uploadError;
 
             const { data: { publicUrl } } = supabase.storage
-                .from('avatars')
+                .from(bucketName)
                 .getPublicUrl(filePath);
 
             setFormData(prev => ({ ...prev, [field]: publicUrl }));
         } catch (error) {
-            console.error('Error uploading image:', error);
-            alert('Error uploading image');
+            console.error('Error uploading file:', error);
+            alert('Error uploading file');
         } finally {
             setUploading(false);
         }

@@ -1,8 +1,9 @@
 import { createClient } from "@/lib/supabase/server";
 import { getSecureBunnyIframeUrl } from "@/lib/bunny";
 import { redirect, notFound } from "next/navigation";
+import Image from "next/image";
 import Link from "next/link";
-import { ArrowLeft, PlayCircle, Lock, CheckCircle, Trophy, Star } from "lucide-react";
+import { ArrowLeft, PlayCircle, Lock, CheckCircle, Trophy, Star, Download } from "lucide-react";
 import { cn } from "@/lib/utils";
 import CommentsSection from "@/components/Comments";
 import VideoPlayerControls from "@/components/VideoPlayerControls";
@@ -134,9 +135,9 @@ export default async function WatchPage(props: WatchPageProps) {
                 )}
                 <header className="border-b border-white/10 bg-magic-card/50 backdrop-blur-md sticky top-0 z-50">
                     <div className="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
-                        <Link href={isKidsItem ? "/kids" : "/dashboard"} className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors">
+                        <Link href={isKidsItem ? "/kids/program" : "/dashboard"} className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors">
                             <ArrowLeft className="w-5 h-5" />
-                            <span className="font-bold uppercase tracking-wider text-xs">Retour au {isKidsItem ? "Club" : "QG"}</span>
+                            <span className="font-bold uppercase tracking-wider text-xs">{isKidsItem ? "Retour à la Formation" : "Retour au QG"}</span>
                         </Link>
                         <div className="flex items-center gap-2">
                             <div className={cn(
@@ -183,6 +184,13 @@ export default async function WatchPage(props: WatchPageProps) {
                                     ></iframe>
                                 )}
                             </>
+                        ) : libraryItem.thumbnail_url ? (
+                            <Image
+                                src={libraryItem.thumbnail_url}
+                                alt={libraryItem.title}
+                                fill
+                                className="object-cover"
+                            />
                         ) : (
                             <div className="absolute inset-0 flex items-center justify-center text-gray-500">
                                 <p>Pas de vidéo pour cet atelier.</p>
@@ -197,6 +205,26 @@ export default async function WatchPage(props: WatchPageProps) {
                             <div className="prose prose-invert prose-p:text-gray-300 max-w-none">
                                 <p>{libraryItem.description}</p>
                             </div>
+                            
+                            {/* Resource Download Button */}
+                            {libraryItem.resource_url && (
+                                <div className="pt-4">
+                                    <a 
+                                        href={libraryItem.resource_url} 
+                                        target="_blank" 
+                                        rel="noopener noreferrer"
+                                        className={cn(
+                                            "inline-flex items-center gap-2 px-6 py-3 rounded-xl font-bold uppercase tracking-wider text-sm transition-all shadow-lg active:scale-95",
+                                            isKidsItem 
+                                                ? "bg-brand-purple hover:bg-brand-purple/80 text-white shadow-brand-purple/20" 
+                                                : "bg-magic-card border border-white/10 hover:border-magic-royal hover:bg-white/5 text-magic-royal shadow-black/50"
+                                        )}
+                                    >
+                                        <Download className="w-4 h-4" />
+                                        Télécharger le PDF
+                                    </a>
+                                </div>
+                            )}
                         </div>
 
                         {/* Validation Card */}
@@ -338,9 +366,9 @@ export default async function WatchPage(props: WatchPageProps) {
             {/* Header */}
             <header className="border-b border-white/10 bg-magic-card/50 backdrop-blur-md sticky top-0 z-50">
                 <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
-                    <Link href={isKidsCourse ? "/kids/courses" : "/dashboard"} className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors">
+                    <Link href={isKidsCourse ? "/kids/courses" : "/dashboard/library"} className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors">
                         <ArrowLeft className="w-5 h-5" />
-                        <span className="font-medium">{isKidsCourse ? "Retour à la Zone Bonus" : "Retour au tableau de bord"}</span>
+                        <span className="font-medium">{isKidsCourse ? "Retour à la Zone Bonus" : "Retour à la Formation"}</span>
                     </Link>
                     <h1 className={cn(
                         "text-lg truncate max-w-md hidden md:block",
@@ -388,6 +416,13 @@ export default async function WatchPage(props: WatchPageProps) {
                                     ></iframe>
                                 )}
                             </>
+                        ) : currentVideo?.thumbnail_url ? (
+                            <Image
+                                src={currentVideo.thumbnail_url}
+                                alt={currentVideo.title}
+                                fill
+                                className="object-cover"
+                            />
                         ) : (
                             <div className="absolute inset-0 flex items-center justify-center text-gray-500">
                                 Select a video to start watching
@@ -411,6 +446,26 @@ export default async function WatchPage(props: WatchPageProps) {
                             <div className="prose prose-invert max-w-none text-gray-400">
                                 <p>{currentVideo.description}</p>
                             </div>
+
+                            {/* Resource Download Button */}
+                            {currentVideo.resource_url && (
+                                <div className="pt-4">
+                                    <a 
+                                        href={currentVideo.resource_url} 
+                                        target="_blank" 
+                                        rel="noopener noreferrer"
+                                        className={cn(
+                                            "inline-flex items-center gap-2 px-6 py-3 rounded-xl font-bold uppercase tracking-wider text-sm transition-all shadow-lg active:scale-95",
+                                            isKidsCourse 
+                                                ? "bg-brand-purple hover:bg-brand-purple/80 text-white shadow-brand-purple/20" 
+                                                : "bg-magic-card border border-white/10 hover:border-magic-royal hover:bg-white/5 text-magic-royal shadow-black/50"
+                                        )}
+                                    >
+                                        <Download className="w-4 h-4" />
+                                        Télécharger la Ressource
+                                    </a>
+                                </div>
+                            )}
                         </div>
                     )}
 

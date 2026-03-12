@@ -51,13 +51,9 @@ export default async function KidsProgramPage() {
     const displayWeeks = [];
     const SHOW_FUTURE_WEEKS = 4;
 
-    // 1. Contenu disponible (Semaine actuelle jusqu'à la semaine 1)
-    for (let i = currentWeek; i >= 1; i--) {
-        displayWeeks.push(i);
-    }
-
-    // 2. Contenu à venir (Semaine actuelle + 1 jusqu'à la limite)
-    for (let i = currentWeek + 1; i <= currentWeek + SHOW_FUTURE_WEEKS; i++) {
+    // Affiche les semaines dans l'ordre chronologique (1..N)
+    const targetWeek = currentWeek + SHOW_FUTURE_WEEKS;
+    for (let i = 1; i <= targetWeek; i++) {
         displayWeeks.push(i);
     }
 
@@ -85,6 +81,17 @@ export default async function KidsProgramPage() {
                             Retrouve ici ton parcours d'apprentissage de la magie.
                         </p>
                     </div>
+
+                    {/* Resume Button */}
+                    {(weeksData[currentWeek] && weeksData[currentWeek].length > 0) && (
+                        <Link 
+                            href={`/watch/${weeksData[currentWeek][0].id}`}
+                            className="bg-brand-purple hover:bg-brand-purple/80 text-white px-8 py-4 rounded-xl font-black uppercase tracking-widest text-sm shadow-[0_0_20px_rgba(168,85,247,0.4)] hover:shadow-[0_0_30px_rgba(168,85,247,0.6)] transition-all flex items-center gap-3 w-full md:w-auto mt-6 md:mt-0 justify-center group"
+                        >
+                            <Play className="w-5 h-5 group-hover:scale-110 transition-transform" />
+                            Reprendre ma formation
+                        </Link>
+                    )}
                 </header>
 
                 {/* Missions List */}
