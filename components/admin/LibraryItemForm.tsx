@@ -130,9 +130,9 @@ export default function LibraryItemForm({ initialData }: { initialData?: Library
 
             router.push(formData.audience === 'kids' ? "/admin/kids/library" : "/admin/adults/library");
             router.refresh();
-        } catch (error) {
+        } catch (error: any) {
             console.error("Error saving item:", error);
-            alert("Erreur lors de la sauvegarde.");
+            alert("Erreur lors de la sauvegarde : " + (error?.message || "Erreur inconnue"));
         } finally {
             setLoading(false);
         }
