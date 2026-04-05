@@ -33,6 +33,7 @@ export default async function AdultLibraryPage() {
         .from("library_items")
         .select("*")
         .eq("audience", "adults")
+        .is('sales_page_url', null)
         .lte("week_number", currentWeek)
         .order("week_number", { ascending: false });
 

@@ -32,6 +32,7 @@ export default async function KidsProgramPage() {
         .from("library_items")
         .select("*")
         .eq("audience", "kids")
+        .is('sales_page_url', null)
         .lte("week_number", currentWeek)
         .order("week_number", { ascending: false })
         .order("position", { ascending: true })
