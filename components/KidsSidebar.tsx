@@ -104,11 +104,11 @@ export default function KidsSidebar({ socialLinks, logoUrl, isAdmin, hasPurchase
                 {enableProgram && (
                     <Link href="/kids/program" className="block group">
                         <div className="flex items-center gap-4">
-                            <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-colors ${isActive('/kids/program') || pathname?.startsWith('/kids/courses') ? 'bg-magic-purple text-white shadow-lg shadow-magic-purple/20' : 'bg-white/5 text-gray-400 group-hover:bg-white/10 group-hover:text-white'}`}>
+                            <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-colors ${isActive('/kids/program') ? 'bg-magic-purple text-white shadow-lg shadow-magic-purple/20' : 'bg-white/5 text-gray-400 group-hover:bg-white/10 group-hover:text-white'}`}>
                                 <BookOpen className="w-5 h-5" />
                             </div>
                             <div>
-                                <div className={`font-bold ${isActive('/kids/program') || pathname?.startsWith('/kids/courses') ? 'text-magic-purple' : 'text-gray-300 group-hover:text-white'}`}>La Formation</div>
+                                <div className={`font-bold ${isActive('/kids/program') ? 'text-magic-purple' : 'text-gray-300 group-hover:text-white'}`}>La Formation</div>
                                 <div className="text-xs text-gray-500">Accéder aux cours et contenus</div>
                             </div>
                         </div>

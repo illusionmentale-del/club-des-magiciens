@@ -366,9 +366,9 @@ export default async function WatchPage(props: WatchPageProps) {
             {/* Header */}
             <header className="border-b border-white/10 bg-magic-card/50 backdrop-blur-md sticky top-0 z-50">
                 <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
-                    <Link href={isKidsCourse ? "/kids/courses" : "/dashboard/library"} className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors">
+                    <Link href={isKidsCourse ? "/kids/program" : "/dashboard/library"} className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors">
                         <ArrowLeft className="w-5 h-5" />
-                        <span className="font-medium">{isKidsCourse ? "Retour à la Zone Bonus" : "Retour à la Formation"}</span>
+                        <span className="font-medium">{isKidsCourse ? "Retour au Programme" : "Retour à la Formation"}</span>
                     </Link>
                     <h1 className={cn(
                         "text-lg truncate max-w-md hidden md:block",

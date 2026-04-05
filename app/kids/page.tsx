@@ -326,7 +326,7 @@ export default async function KidsHomePage({ searchParams }: { searchParams: Pro
                                         <p className="text-brand-text-muted text-sm">Équipe-toi avec le meilleur matériel de magicien pro.</p>
                                     </div>
                                     <Link
-                                        href="/kids/courses?filter=owned"
+                                        href="/kids/shop"
                                         className="bg-brand-gold hover:bg-brand-gold/80 text-black font-bold py-3 px-6 rounded-xl transition-colors whitespace-nowrap"
                                     >
                                         Faire un tour à la boutique

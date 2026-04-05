@@ -30,7 +30,7 @@ export async function GET(request: Request) {
                     } else if (profile.has_adults_access) {
                         redirectPath = '/dashboard/courses';
                     } else if (profile.has_kids_access) {
-                        redirectPath = '/kids/courses';
+                        redirectPath = '/kids';
                     } else {
                         // Fallback
                         redirectPath = '/dashboard';

@@ -66,7 +66,7 @@ export async function loginWithPassword(prevState: any, formData: FormData) {
             if (!profile.username || profile.username.trim() === '') {
                 finalRedirectUrl = '/kids/account?view=settings';
             } else if (finalRedirectUrl === '/dashboard') {
-                finalRedirectUrl = '/kids/courses'; // Default safe route for kids
+                finalRedirectUrl = '/kids'; // Default safe route for kids
             }
         }
     }
