@@ -18,12 +18,24 @@ export async function generateMetadata(): Promise<Metadata> {
     return {
       title: "L'Atelier des Magiciens",
       description: "Le hub des maîtres. Apprenez des illusions incroyables.",
+      manifest: "/manifest.json",
+      appleWebApp: {
+        capable: true,
+        statusBarStyle: "black-translucent",
+        title: "L'Atelier",
+      },
     };
   }
 
   return {
     title: "Club des Petits Magiciens",
     description: "Apprenez la magie et le mentalisme",
+    manifest: "/manifest.json",
+    appleWebApp: {
+      capable: true,
+      statusBarStyle: "black-translucent",
+      title: "Le Club",
+    },
   };
 }
 
