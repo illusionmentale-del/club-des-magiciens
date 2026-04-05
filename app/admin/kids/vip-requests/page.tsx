@@ -5,10 +5,15 @@ import RequestItem from "./RequestItem";
 export const dynamic = 'force-dynamic';
 
 export default async function VIPRequestsPage() {
-    const supabase = await createClient();
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+    const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
+    const { createClient: createSupabaseAdmin } = await import("@supabase/supabase-js");
+    const supabaseAdmin = createSupabaseAdmin(supabaseUrl, supabaseServiceKey, {
+        auth: { autoRefreshToken: false, persistSession: false }
+    });
 
-    // Fetch pending VIP requests
-    const { data: requests, error } = await supabase
+    // Fetch pending VIP requests bypassing RLS (secured by admin layout)
+    const { data: requests, error } = await supabaseAdmin
         .from("vip_requests")
         .select("*")
         .eq("status", "en_attente")

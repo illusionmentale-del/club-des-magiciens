@@ -29,14 +29,24 @@ export async function approveVipRequest(requestId: string) {
     if (request.status !== 'en_attente') return { error: "Déjà traité" };
 
     // Check if user already exists
-    const { data: existingUsers } = await supabaseAdmin.auth.admin.listUsers();
-    const userExists = existingUsers?.users.find(u => u.email === request.parent_email);
+    const { data: existingProfile } = await supabaseAdmin
+        .from('profiles')
+        .select('id, access_level, role')
+        .eq('email', request.parent_email)
+        .single();
 
-    if (userExists) {
-        // User already exists, just update request status
+    if (existingProfile) {
+        // User already exists, upgrade access if they don't have it
+        if (existingProfile.access_level !== 'kid') {
+            await supabaseAdmin.from("profiles").update({ 
+                access_level: 'kid', 
+                is_kid: true 
+            }).eq("id", existingProfile.id);
+        }
+        
         await supabaseAdmin.from("vip_requests").update({ status: 'approuve' }).eq("id", requestId);
         revalidatePath("/admin/kids/vip-requests");
-        return { success: true, message: "Utilisateur déjà existant. Statut mis à jour." };
+        return { success: true, message: "Utilisateur déjà existant ! Accès mis à jour." };
     }
 
     // Generate random pass

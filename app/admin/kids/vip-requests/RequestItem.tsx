@@ -17,7 +17,7 @@ export default function RequestItem({ request }: { request: any }) {
         if (res.error) {
             toast.error(res.error);
         } else {
-            toast.success("Demande approuvée avec succès !");
+            toast.success(res.message || "Demande approuvée avec succès ! Un lien vient d'être généré.");
         }
     };
 
