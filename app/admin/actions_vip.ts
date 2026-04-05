@@ -3,7 +3,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { revalidatePath } from "next/cache";
 import { Resend } from "resend";
-import { WelcomeKidEmail } from "@/components/emails/WelcomeKidEmail";
+import { WelcomeVIPEmail } from "@/components/emails/WelcomeVIPEmail";
 
 export async function approveVipRequest(requestId: string) {
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
@@ -43,10 +43,40 @@ export async function approveVipRequest(requestId: string) {
                 is_kid: true 
             }).eq("id", existingProfile.id);
         }
+
+        // Send Welcome Email (Account already exists)
+        try {
+            const resend = new Resend(process.env.RESEND_API_KEY);
+            const fromEmail = process.env.NODE_ENV === 'development'
+                ? 'Club des Petits Magiciens <onboarding@resend.dev>'
+                : 'Club des Petits Magiciens <contact@clubdespetitsmagiciens.fr>';
+
+            const { data: linkData } = await supabaseAdmin.auth.admin.generateLink({
+                type: 'recovery',
+                email: request.parent_email,
+                options: {
+                    redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://clubdespetitsmagiciens.fr'}/login`
+                }
+            });
+
+            await resend.emails.send({
+                from: fromEmail,
+                to: [request.parent_email],
+                subject: 'Magie ! Ton accès offert au Club 🎩✨',
+                react: WelcomeVIPEmail({
+                    childName: request.child_name,
+                    parentEmail: request.parent_email,
+                    loginUrl: "https://clubdespetitsmagiciens.fr/login",
+                    recoveryUrl: linkData?.properties?.action_link
+                }) as React.ReactElement,
+            });
+        } catch (e) {
+            console.error("Error sending VIP welcome email (existing user):", e);
+        }
         
         await supabaseAdmin.from("vip_requests").update({ status: 'approuve' }).eq("id", requestId);
         revalidatePath("/admin/kids/vip-requests");
-        return { success: true, message: "Utilisateur déjà existant ! Accès mis à jour." };
+        return { success: true, message: "Utilisateur déjà existant ! Accès mis à jour et email envoyé." };
     }
 
     // Generate random pass
@@ -95,8 +125,10 @@ export async function approveVipRequest(requestId: string) {
             from: fromEmail,
             to: [request.parent_email],
             subject: 'Magie ! Ton accès offert au Club 🎩✨',
-            react: WelcomeKidEmail({
-                username: request.child_name,
+            react: WelcomeVIPEmail({
+                childName: request.child_name,
+                parentEmail: request.parent_email,
+                password: password,
                 loginUrl: "https://clubdespetitsmagiciens.fr/login",
                 recoveryUrl: linkData?.properties?.action_link
             }) as React.ReactElement,
