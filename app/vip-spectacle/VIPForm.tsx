@@ -87,7 +87,7 @@ export default function VIPForm() {
                     />
                 </div>
                 <label htmlFor="newsletter" className="text-[13px] text-brand-text-muted leading-snug cursor-pointer">
-                    M'inscrire à la newsletter secrète pour recevoir des tours de magie exclusifs (optionnel)
+                    M'inscrire à la newsletter secrète pour recevoir les actualités du club et de la boutique secrète (optionnel)
                 </label>
             </div>
 
