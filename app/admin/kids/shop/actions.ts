@@ -3,7 +3,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { revalidatePath } from "next/cache";
 
-export async function updateShopItem(itemId: string, data: { sales_page_url: string | null; price_label: string | null }) {
+export async function updateShopItem(itemId: string, data: { sales_page_url: string | null; price_label: string | null; public_slug?: string | null }) {
     const supabase = await createClient();
 
     // Verify admin access
@@ -16,13 +16,19 @@ export async function updateShopItem(itemId: string, data: { sales_page_url: str
     // Process empty strings to null
     const urlValue = data.sales_page_url?.trim() === "" ? null : data.sales_page_url;
     const priceValue = data.price_label?.trim() === "" ? null : data.price_label;
+    
+    const payload: any = {
+        sales_page_url: urlValue,
+        price_label: priceValue
+    };
+    
+    if (data.public_slug !== undefined) {
+        payload.public_slug = !data.public_slug || data.public_slug.trim() === "" ? null : data.public_slug.toLowerCase().replace(/[^a-z0-9-]/g, '-').replace(/-+/g, '-');
+    }
 
     const { error } = await supabase
         .from('library_items')
-        .update({
-            sales_page_url: urlValue,
-            price_label: priceValue
-        })
+        .update(payload)
         .eq('id', itemId);
 
     if (error) {

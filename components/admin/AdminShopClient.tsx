@@ -7,7 +7,7 @@ import { Edit2, Sparkles, AlertCircle, ShoppingBag, EyeOff, Save, X } from "luci
 export default function AdminShopClient({ initialItems }: { initialItems: any[] }) {
     const [items, setItems] = useState(initialItems);
     const [editingId, setEditingId] = useState<string | null>(null);
-    const [editForm, setEditForm] = useState({ sales_page_url: "", price_label: "" });
+    const [editForm, setEditForm] = useState({ sales_page_url: "", price_label: "", public_slug: "" });
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
@@ -15,7 +15,8 @@ export default function AdminShopClient({ initialItems }: { initialItems: any[] 
         setEditingId(item.id);
         setEditForm({
             sales_page_url: item.sales_page_url || "",
-            price_label: item.price_label || ""
+            price_label: item.price_label || "",
+            public_slug: item.public_slug || ""
         });
         setError(null);
     };
@@ -35,7 +36,8 @@ export default function AdminShopClient({ initialItems }: { initialItems: any[] 
             setItems(items.map(i => i.id === id ? {
                 ...i,
                 sales_page_url: editForm.sales_page_url || null,
-                price_label: editForm.price_label || null
+                price_label: editForm.price_label || null,
+                public_slug: editForm.public_slug || null
             } : i));
 
             setEditingId(null);
@@ -58,9 +60,9 @@ export default function AdminShopClient({ initialItems }: { initialItems: any[] 
                 <thead>
                     <tr className="border-b border-white/5 bg-white/5 text-xs uppercase tracking-widest text-brand-text-muted">
                         <th className="p-4 font-bold">Vidéo / Formation</th>
-                        <th className="p-4 font-bold">Lien Stripe (Payment Link)</th>
-                        <th className="p-4 font-bold">Prix Affiché</th>
-                        <th className="p-4 font-bold text-center">Statut boutique</th>
+                        <th className="p-4 font-bold">Vente Digitale (Stripe)</th>
+                        <th className="p-4 font-bold">Vente Physique (URL Box)</th>
+                        <th className="p-4 font-bold text-center">Status</th>
                         <th className="p-4 font-bold text-right">Actions</th>
                     </tr>
                 </thead>
@@ -68,11 +70,12 @@ export default function AdminShopClient({ initialItems }: { initialItems: any[] 
                     {items.map((item) => {
                         const isEditing = editingId === item.id;
                         const isPremium = !!item.sales_page_url;
+                        const isPhysical = !!item.public_slug;
 
                         return (
                             <tr key={item.id} className="hover:bg-white/5 transition-colors group">
                                 {/* Title */}
-                                <td className="p-4">
+                                <td className="p-4 min-w-[200px]">
                                     <div className="flex items-center gap-3">
                                         <div className="w-12 h-12 bg-black/50 rounded-lg overflow-hidden shrink-0 relative flex items-center justify-center border border-white/10">
                                             {item.thumbnail_url ? (
@@ -88,64 +91,88 @@ export default function AdminShopClient({ initialItems }: { initialItems: any[] 
                                     </div>
                                 </td>
 
-                                {/* URL Input */}
+                                {/* Digital Sales (Stripe + Price) */}
                                 <td className="p-4">
                                     {isEditing ? (
-                                        <input
-                                            type="url"
-                                            value={editForm.sales_page_url}
-                                            onChange={(e) => setEditForm({ ...editForm, sales_page_url: e.target.value })}
-                                            placeholder="https://buy.stripe.com/..."
-                                            className="w-full bg-black/40 border border-brand-gold/50 rounded-lg px-3 py-2 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-brand-gold"
-                                        />
+                                        <div className="space-y-2">
+                                            <input
+                                                type="url"
+                                                value={editForm.sales_page_url}
+                                                onChange={(e) => setEditForm({ ...editForm, sales_page_url: e.target.value })}
+                                                placeholder="Lien Stripe (https://...)"
+                                                className="w-full bg-black/40 border border-brand-purple/50 rounded-lg px-3 py-2 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-brand-purple"
+                                            />
+                                            <input
+                                                type="text"
+                                                value={editForm.price_label}
+                                                onChange={(e) => setEditForm({ ...editForm, price_label: e.target.value })}
+                                                placeholder="Prix (ex: 47€)"
+                                                className="w-full bg-black/40 border border-brand-purple/50 rounded-lg px-3 py-2 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-brand-purple"
+                                            />
+                                        </div>
                                     ) : (
-                                        <span className={`text-sm ${item.sales_page_url ? 'text-blue-400 hover:underline' : 'text-gray-500 italic'}`}>
-                                            {item.sales_page_url ? (
-                                                <a href={item.sales_page_url} target="_blank" rel="noopener noreferrer" className="line-clamp-1 max-w-[200px]" title={item.sales_page_url}>
-                                                    {item.sales_page_url}
-                                                </a>
-                                            ) : (
-                                                "Aucun lien"
-                                            )}
-                                        </span>
+                                        <div className="flex flex-col gap-1">
+                                            <span className={`text-sm ${item.sales_page_url ? 'text-blue-400 hover:underline' : 'text-gray-500 italic'}`}>
+                                                {item.sales_page_url ? (
+                                                    <a href={item.sales_page_url} target="_blank" rel="noopener noreferrer" className="line-clamp-1 max-w-[200px]" title={item.sales_page_url}>
+                                                        {item.sales_page_url}
+                                                    </a>
+                                                ) : (
+                                                    "Aucun lien digital"
+                                                )}
+                                            </span>
+                                            {item.price_label && <span className="text-xs font-bold text-brand-gold">{item.price_label}</span>}
+                                        </div>
                                     )}
                                 </td>
 
-                                {/* Price Input */}
+                                {/* Physical Sales (Public URL) */}
                                 <td className="p-4">
                                     {isEditing ? (
-                                        <input
-                                            type="text"
-                                            value={editForm.price_label}
-                                            onChange={(e) => setEditForm({ ...editForm, price_label: e.target.value })}
-                                            placeholder="ex: 47€"
-                                            className="w-24 bg-black/40 border border-brand-gold/50 rounded-lg px-3 py-2 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-brand-gold text-center"
-                                        />
+                                        <div className="flex items-center text-sm">
+                                            <span className="text-gray-500 pr-1">/tutoriel/</span>
+                                            <input
+                                                type="text"
+                                                value={editForm.public_slug}
+                                                onChange={(e) => setEditForm({ ...editForm, public_slug: e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, '-').replace(/-+/g, '-') })}
+                                                placeholder="nom-du-tour"
+                                                className="w-full bg-black/40 border border-green-500/50 rounded-lg px-2 py-2 text-white placeholder-gray-600 focus:outline-none focus:border-green-500"
+                                            />
+                                        </div>
                                     ) : (
-                                        <span className={`text-sm font-bold ${item.price_label ? 'text-brand-gold' : 'text-gray-500'}`}>
-                                            {item.price_label || "-"}
+                                        <span className={`text-sm ${item.public_slug ? 'text-green-400 font-medium' : 'text-gray-500 italic'}`}>
+                                            {item.public_slug ? `/tutoriel/${item.public_slug}` : "Non disponible en boîte"}
                                         </span>
                                     )}
                                 </td>
 
                                 {/* Status */}
                                 <td className="p-4 text-center">
-                                    {isPremium ? (
-                                        <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-brand-gold/10 text-brand-gold border border-brand-gold/20 rounded-full text-xs font-bold">
-                                            <ShoppingBag className="w-3.5 h-3.5" />
-                                            En vente
-                                        </span>
-                                    ) : (
-                                        <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-white/5 text-gray-400 border border-white/10 rounded-full text-xs font-bold">
-                                            <EyeOff className="w-3.5 h-3.5" />
-                                            Gratuit
-                                        </span>
-                                    )}
+                                    <div className="flex flex-col gap-2 items-center justify-center">
+                                        {isPremium && (
+                                            <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-brand-purple/10 text-brand-purple border border-brand-purple/20 rounded-full text-[10px] font-bold">
+                                                <ShoppingBag className="w-3 h-3" />
+                                                La Boutique
+                                            </span>
+                                        )}
+                                        {isPhysical && (
+                                            <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-green-500/10 text-green-500 border border-green-500/20 rounded-full text-[10px] font-bold">
+                                                <Sparkles className="w-3 h-3" />
+                                                QR Box
+                                            </span>
+                                        )}
+                                        {!isPremium && !isPhysical && (
+                                            <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-white/5 text-gray-400 border border-white/10 rounded-full text-[10px] font-bold">
+                                                <EyeOff className="w-3 h-3" />
+                                                Standard
+                                            </span>
+                                        )}
+                                    </div>
                                 </td>
 
                                 {/* Actions */}
-                                <td className="p-4 text-right">
-                                    <div className="flex items-center justify-end gap-2">
+                                <td className="p-4 text-right align-top">
+                                    <div className="flex items-center justify-end gap-2 pt-2">
                                         {isEditing ? (
                                             <>
                                                 <button
