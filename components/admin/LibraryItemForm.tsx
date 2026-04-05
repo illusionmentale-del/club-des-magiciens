@@ -26,6 +26,8 @@ type LibraryItem = {
     published_at?: string;
     sales_page_url?: string | null;
     price_label?: string | null;
+    public_slug?: string | null;
+    public_description?: string | null;
 };
 
 export default function LibraryItemForm({ initialData }: { initialData?: LibraryItem }) {
@@ -35,6 +37,7 @@ export default function LibraryItemForm({ initialData }: { initialData?: Library
     const [loading, setLoading] = useState(false);
     const [uploading, setUploading] = useState(false);
     const [isPremium, setIsPremium] = useState(!!initialData?.sales_page_url || !!initialData?.price_label);
+    const [isPublic, setIsPublic] = useState(!!initialData?.public_slug);
 
     const initialWeek = searchParams.get('week');
     const initialAudience = searchParams.get('audience') as 'kids' | 'adults' || 'adults';
@@ -53,7 +56,9 @@ export default function LibraryItemForm({ initialData }: { initialData?: Library
         show_in_news: false,
         published_at: new Date().toISOString().split('T')[0],
         sales_page_url: "",
-        price_label: ""
+        price_label: "",
+        public_slug: "",
+        public_description: ""
     });
 
     useEffect(() => {
@@ -286,6 +291,69 @@ export default function LibraryItemForm({ initialData }: { initialData?: Library
                                         className="w-full bg-brand-bg border border-brand-border rounded-xl p-4 text-brand-text focus:border-brand-purple outline-none transition-all placeholder:text-brand-text-muted/20"
                                         placeholder="Ex: 49,00 €"
                                     />
+                                </div>
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Landing Page (Public QR Code) */}
+                    <div className={`bg-brand-card border border-brand-border p-6 rounded-2xl relative overflow-hidden transition-all duration-300 ${isPublic ? 'space-y-6' : ''}`}>
+                        <div className="absolute top-0 right-0 w-20 h-20 bg-green-500/10 rounded-bl-full pointer-events-none"></div>
+
+                        <div className={`flex items-center justify-between ${isPublic ? 'border-b border-brand-border pb-4' : ''}`}>
+                            <h2 className="text-xl font-bold text-green-500 uppercase tracking-tight">Vente Physique (QR Code)</h2>
+                            <div className="flex items-center gap-3">
+                                <span className={`text-xs font-bold uppercase tracking-wider ${isPublic ? 'text-green-500' : 'text-brand-text-muted'}`}>Landing Page</span>
+                                <label className="relative inline-flex items-center cursor-pointer">
+                                    <input
+                                        type="checkbox"
+                                        checked={isPublic}
+                                        onChange={(e) => {
+                                            const checked = e.target.checked;
+                                            setIsPublic(checked);
+                                            if (!checked) {
+                                                setFormData(prev => ({ ...prev, public_slug: "", public_description: "" }));
+                                            }
+                                        }}
+                                        className="sr-only peer"
+                                    />
+                                    <div className="w-11 h-6 bg-brand-bg rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-brand-text-muted peer-checked:after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-500 border border-brand-border"></div>
+                                </label>
+                            </div>
+                        </div>
+
+                        {isPublic && (
+                            <div className="space-y-4 pt-2 animate-in fade-in slide-in-from-top-4 duration-300">
+                                <div>
+                                    <label className="block text-brand-text-muted text-xs font-bold uppercase tracking-wider mb-2">URL Publique (Slug)</label>
+                                    <div className="flex items-center bg-brand-bg border border-brand-border rounded-xl overflow-hidden focus-within:border-green-500 transition-colors">
+                                        <span className="pl-4 text-brand-text-muted select-none text-sm border-r border-brand-border pr-3 bg-black/20 py-4 h-full">/tutoriel/</span>
+                                        <input
+                                            type="text"
+                                            name="public_slug"
+                                            value={formData.public_slug || ""}
+                                            onChange={(e) => {
+                                                // auto-format slug
+                                                const formatted = e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, '-').replace(/-+/g, '-');
+                                                setFormData(prev => ({ ...prev, public_slug: formatted }));
+                                            }}
+                                            className="w-full bg-transparent p-4 text-brand-text outline-none"
+                                            placeholder="foulard-magique"
+                                        />
+                                    </div>
+                                    <p className="text-[10px] text-brand-text-muted mt-2">C'est ce lien qu'il faudra insérer dans le QR Code de la boîte.</p>
+                                </div>
+                                <div>
+                                    <label className="block text-brand-text-muted text-xs font-bold uppercase tracking-wider mb-2">Message Personnalisé (Optionnel)</label>
+                                    <textarea
+                                        name="public_description"
+                                        value={formData.public_description || ""}
+                                        onChange={handleChange}
+                                        rows={3}
+                                        className="w-full bg-brand-bg border border-brand-border rounded-xl p-4 text-brand-text focus:border-green-500 outline-none transition-all placeholder:text-brand-text-muted/20 resize-none"
+                                        placeholder="Ex: Merci d'avoir acheté ce tour lors d'un de mes spectacles ! Voici l'explication..."
+                                    />
+                                    <p className="text-[10px] text-brand-text-muted mt-2">S'affichera sous la vidéo. Laisse vide pour ne rien afficher.</p>
                                 </div>
                             </div>
                         )}
