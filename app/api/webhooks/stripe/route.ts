@@ -129,8 +129,8 @@ export async function POST(req: Request) {
                 await supabase.from('profiles').update(updateData).eq('id', userId);
             }
 
-            // Always send the Welcome / Recovery Email for appropriate space
-            if (userId && email) {
+            // Send the Welcome Email ONLY to NEW users (Stripe handles receipts for existing users)
+            if (userId && email && isNewUser) {
                 try {
                     const { Resend } = await import('resend');
                     const resend = new Resend(process.env.RESEND_API_KEY!);
@@ -164,7 +164,7 @@ export async function POST(req: Request) {
                                 password: generatedPassword || undefined
                             }),
                         });
-                        console.log(`[Stripe Webhook] Welcome email sent to ${email}`);
+                        console.log(`[Stripe Webhook] Welcome email sent to new user ${email}`);
                     } catch (emailImportError) {
                         console.error("[Stripe Webhook] Could not import WelcomeEmail react component. Sending basic text email.", emailImportError);
                         await resend.emails.send({
@@ -177,6 +177,8 @@ export async function POST(req: Request) {
                 } catch (e) {
                     console.error("[Stripe Webhook] Error sending welcome email:", e);
                 }
+            } else if (userId && email && !isNewUser) {
+                console.log(`[Stripe Webhook] Existing user ${email} bought an item. Skipping Welcome Email (handled by Stripe receipt).`);
             }
 
             console.log(`[Stripe Webhook] Processing completion for User: ${userId}, Product: ${productId}`);
