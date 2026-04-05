@@ -22,9 +22,10 @@ export default function VIPRequestPage() {
                     </div>
                 </div>
                 
-                <h1 className="text-3xl font-black text-white text-center mb-2 tracking-tight">Accès Magique</h1>
-                <p className="text-brand-text-muted text-center mb-8">
-                    Demande ton accès secret au Club des Petits Magiciens suite à notre rencontre en spectacle !
+                <h1 className="text-3xl font-black text-white text-center mb-2 tracking-tight">Accès Magique Offert</h1>
+                <p className="text-brand-text-muted text-center mb-8 text-sm">
+                    Demande ton accès au Club des Petits Magiciens suite à notre rencontre en spectacle.<br/><br/>
+                    <span className="text-white/80 font-medium">Pour rappel, cet accès te sera offert à vie et ne demande aucune coordonnée bancaire.</span>
                 </p>
 
                 <VIPForm />

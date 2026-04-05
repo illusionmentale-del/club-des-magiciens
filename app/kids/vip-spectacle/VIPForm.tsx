@@ -83,8 +83,8 @@ export default function VIPForm() {
                     placeholder="Ex: Spectacle de l'école vendredi dernier"
                     className="w-full bg-black/40 border border-brand-border rounded-xl px-4 py-3 text-white placeholder-brand-text-muted/50 focus:outline-none focus:border-brand-purple transition-colors"
                 />
-                <p className="text-xs text-brand-text-muted/60 pt-1">
-                    Cette question me permet de m'assurer qu'il s'agit bien d'une vraie rencontre.
+                <p className="text-[11px] leading-snug text-brand-text-muted/70 pt-1">
+                    Cette question me permet de m'assurer qu'il s'agit bien d'une vraie rencontre, et **fait l'objet d'une vérification de ma part**. Cela peut prendre jusqu'à 72h pour recevoir l'accès automatique par mail.
                 </p>
             </div>
 
