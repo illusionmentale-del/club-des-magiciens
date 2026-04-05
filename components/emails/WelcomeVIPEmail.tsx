@@ -62,7 +62,7 @@ export const WelcomeVIPEmail = ({
                             🪄 Bienvenue au Club, {childName} !
                         </Heading>
                         <Text className="text-black text-[14px] leading-[24px]">
-                            Comme convenu lors de notre rencontre en spectacle, j'ai le plaisir de t'offrir ton accès à vie au <strong>Club des Petits Magiciens</strong> ! De nombreux secrets t'attendent pour découvrir l'art de la prestidigitation.
+                            Comme convenu lors de notre rencontre, j'ai le plaisir de t'offrir ton accès à vie au <strong>Club des Petits Magiciens</strong> ! De nombreux secrets t'attendent pour découvrir l'art de la prestidigitation.
                         </Text>
                         
                         <Section className="text-center mt-[32px] mb-[32px]">
