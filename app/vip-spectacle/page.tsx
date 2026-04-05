@@ -35,9 +35,9 @@ export default function VIPRequestPage() {
                 <h1 className="text-3xl font-black text-white text-center mb-4 tracking-tight">Accès Magique Offert</h1>
                 
                 <div className="flex flex-wrap justify-center gap-x-4 gap-y-2 mb-8 text-[11px] font-medium text-brand-text-muted">
-                    <div className="flex items-center gap-1.5"><span className="text-brand-purple">✓</span> Vidéos illimitées</div>
+                    <div className="flex items-center gap-1.5"><span className="text-brand-purple">✓</span> Vidéos en illimité</div>
                     <div className="flex items-center gap-1.5"><span className="text-brand-purple">✓</span> Magie pas-à-pas</div>
-                    <div className="flex items-center gap-1.5"><span className="text-brand-purple">✓</span> 100% Gratuit</div>
+                    <div className="flex items-center gap-1.5"><span className="text-brand-purple">✓</span> Sans abonnement</div>
                 </div>
 
                 <VIPForm />
