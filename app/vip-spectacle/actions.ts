@@ -6,6 +6,7 @@ export async function submitVIPRequest(formData: FormData) {
     const childName = formData.get("childName") as string;
     const parentEmail = formData.get("parentEmail") as string;
     const context = formData.get("context") as string;
+    const newsletter = formData.get("newsletter") as string;
 
     if (!childName || !parentEmail || !context) {
         return { success: false, error: "Tous les champs sont requis." };
@@ -23,6 +24,7 @@ export async function submitVIPRequest(formData: FormData) {
                 child_name: childName.trim(),
                 parent_email: parentEmail.trim().toLowerCase(),
                 context: context.trim(),
+                wants_newsletter: newsletter === "yes",
             });
 
         if (error) {

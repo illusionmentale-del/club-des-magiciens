@@ -88,6 +88,7 @@ CREATE TABLE IF NOT EXISTS public.vip_requests (
     parent_email text not null,
     context text not null,
     status text default 'en_attente' check (status in ('en_attente', 'approuve', 'rejete')),
+    wants_newsletter boolean default false,
     created_at timestamp with time zone default timezone('utc'::text, now()) not null
 );
 

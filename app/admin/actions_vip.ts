@@ -74,6 +74,29 @@ export async function approveVipRequest(requestId: string) {
             console.error("Error sending VIP welcome email (existing user):", e);
         }
         
+        // Subscribe to newsletter if requested
+        if (request.wants_newsletter) {
+            try {
+                const resend = new Resend(process.env.RESEND_API_KEY);
+                const audiencesResponse = await resend.audiences.list();
+                const audiences = audiencesResponse.data?.data || [];
+                let audienceId = audiences.find(a => a.name.toLowerCase().includes('kids'))?.id;
+                if (!audienceId) audienceId = audiences.find(a => a.name.toLowerCase() === 'general')?.id;
+                if (!audienceId && audiences.length > 0) audienceId = audiences[0].id;
+
+                if (audienceId) {
+                    await resend.contacts.create({
+                        email: request.parent_email,
+                        firstName: request.child_name,
+                        audienceId: audienceId,
+                        unsubscribed: false,
+                    });
+                }
+            } catch (e) {
+                console.error("Error subscribing existing user to newsletter:", e);
+            }
+        }
+        
         await supabaseAdmin.from("vip_requests").update({ status: 'approuve' }).eq("id", requestId);
         revalidatePath("/admin/kids/vip-requests");
         return { success: true, message: "Utilisateur déjà existant ! Accès mis à jour et email envoyé." };
@@ -137,6 +160,38 @@ export async function approveVipRequest(requestId: string) {
         console.error("Error sending welcome email:", e);
     }
 
+    // Subscribe to newsletter if requested
+    if (request.wants_newsletter) {
+        try {
+            const resend = new Resend(process.env.RESEND_API_KEY);
+            const audiencesResponse = await resend.audiences.list();
+            const audiences = audiencesResponse.data?.data || [];
+            
+            // Prefer an audience for 'Kids', fallback to 'General' or first available
+            let audienceId = audiences.find(a => a.name.toLowerCase().includes('kids'))?.id;
+            if (!audienceId) {
+                audienceId = audiences.find(a => a.name.toLowerCase() === 'general')?.id;
+            }
+            if (!audienceId && audiences.length > 0) {
+                audienceId = audiences[0].id;
+            }
+
+            if (audienceId) {
+                await resend.contacts.create({
+                    email: request.parent_email,
+                    firstName: request.child_name,
+                    audienceId: audienceId,
+                    unsubscribed: false,
+                });
+                console.log(`Successfully added ${request.parent_email} to newsletter audience ${audienceId}`);
+            } else {
+                console.warn("No Resend audience found for newsletter subscription.");
+            }
+        } catch (e) {
+            console.error("Error subscribing user to newsletter:", e);
+        }
+    }
+    
     // Mark as approved
     await supabaseAdmin.from("vip_requests").update({ status: 'approuve' }).eq("id", requestId);
     
