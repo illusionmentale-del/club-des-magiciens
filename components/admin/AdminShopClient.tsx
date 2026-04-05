@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import { updateShopItem } from "@/app/admin/kids/shop/actions";
-import { Edit2, Sparkles, AlertCircle, ShoppingBag, EyeOff, Save, X } from "lucide-react";
+import { Edit2, Sparkles, AlertCircle, ShoppingBag, EyeOff, Save, X, Zap } from "lucide-react";
+import Link from "next/link";
 
 export default function AdminShopClient({ initialItems }: { initialItems: any[] }) {
     const [items, setItems] = useState(initialItems);
@@ -193,13 +194,22 @@ export default function AdminShopClient({ initialItems }: { initialItems: any[] 
                                                 </button>
                                             </>
                                         ) : (
-                                            <button
-                                                onClick={() => handleEdit(item)}
-                                                className="p-2 text-brand-text-muted hover:text-brand-gold hover:bg-brand-gold/10 rounded-lg transition-colors opacity-0 group-hover:opacity-100 focus:opacity-100"
-                                                title="Configurer le prix et le lien"
-                                            >
-                                                <Edit2 className="w-4 h-4" />
-                                            </button>
+                                            <>
+                                                <button
+                                                    onClick={() => handleEdit(item)}
+                                                    className="p-2 text-brand-text-muted hover:text-brand-purple hover:bg-brand-purple/10 rounded-lg transition-colors opacity-0 group-hover:opacity-100 focus:opacity-100"
+                                                    title="Configuration Rapide (Prix/Lien)"
+                                                >
+                                                    <Zap className="w-4 h-4" />
+                                                </button>
+                                                <Link
+                                                    href={`/admin/kids/shop/${item.id}`}
+                                                    className="p-2 text-brand-text-muted hover:text-blue-400 hover:bg-blue-400/10 rounded-lg transition-colors opacity-0 group-hover:opacity-100 focus:opacity-100"
+                                                    title="Modifier le Produit Complet"
+                                                >
+                                                    <Edit2 className="w-4 h-4" />
+                                                </Link>
+                                            </>
                                         )}
                                     </div>
                                 </td>

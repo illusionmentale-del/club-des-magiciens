@@ -2,6 +2,7 @@ import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import { ShoppingBag, Lock, Sparkles } from "lucide-react";
 import AdminShopClient from "@/components/admin/AdminShopClient";
+import Link from "next/link";
 
 export const metadata = {
     title: 'Boutique Premium | Admin Kids',
@@ -37,8 +38,17 @@ export default async function AdminShopPage() {
                         Boutique Premium
                     </h1>
                     <p className="text-brand-text-muted mt-2">
-                        Rendez vos vidéos payantes en leur ajoutant un lien de paiement Stripe (Payment Link) et un prix. Elles apparaîtront automatiquement dans la section "La Boutique".
+                        Gérez vos produits digitaux (Stripe) et physiques (QR Code).
                     </p>
+                </div>
+                <div className="flex items-center gap-4">
+                    <Link
+                        href="/admin/kids/shop/new"
+                        className="bg-brand-purple hover:bg-purple-600 text-white px-6 py-3 rounded-xl font-bold uppercase tracking-wider transition-all shadow-[0_0_20px_rgba(168,85,247,0.5)] flex items-center gap-2"
+                    >
+                        <ShoppingBag className="w-5 h-5" />
+                        Nouveau Produit
+                    </Link>
                 </div>
             </div>
 

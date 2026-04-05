@@ -1,0 +1,19 @@
+{
+  "audiences": [
+    {
+      "id": "a84c7e94-d5ad-40ba-86e0-966371ce0705",
+      "name": "General",
+      "created_at": "2026-02-12 14:52:30.440542+00"
+    }
+  ],
+  "allContacts": {
+    "a84c7e94-d5ad-40ba-86e0-966371ce0705": {
+      "audience_info": {
+        "id": "a84c7e94-d5ad-40ba-86e0-966371ce0705",
+        "name": "General",
+        "created_at": "2026-02-12 14:52:30.440542+00"
+      },
+      "contacts": []
+    }
+  }
+}

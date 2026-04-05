@@ -241,123 +241,126 @@ export default function LibraryItemForm({ initialData }: { initialData?: Library
                         </div>
                     </div>
 
-                    {/* Vente / Boutique */}
-                    <div className={`bg-brand-card border border-brand-border p-6 rounded-2xl relative overflow-hidden transition-all duration-300 ${isPremium ? 'space-y-6' : ''}`}>
-                        <div className="absolute top-0 right-0 w-20 h-20 bg-brand-purple/10 rounded-bl-full pointer-events-none"></div>
+                    {/* Vente / Boutique (Masqué pour Kids, géré dans ShopItemForm) */}
+                    {formData.audience === 'adults' && (
+                        <>
+                            <div className={`bg-brand-card border border-brand-border p-6 rounded-2xl relative overflow-hidden transition-all duration-300 ${isPremium ? 'space-y-6' : ''}`}>
+                                <div className="absolute top-0 right-0 w-20 h-20 bg-brand-purple/10 rounded-bl-full pointer-events-none"></div>
 
-                        <div className={`flex items-center justify-between ${isPremium ? 'border-b border-brand-border pb-4' : ''}`}>
-                            <h2 className="text-xl font-bold text-brand-purple uppercase tracking-tight">Boutique & Vente</h2>
-                            <div className="flex items-center gap-3">
-                                <span className={`text-xs font-bold uppercase tracking-wider ${isPremium ? 'text-brand-purple' : 'text-brand-text-muted'}`}>Contenu Premium</span>
-                                <label className="relative inline-flex items-center cursor-pointer">
-                                    <input
-                                        type="checkbox"
-                                        checked={isPremium}
-                                        onChange={(e) => {
-                                            const checked = e.target.checked;
-                                            setIsPremium(checked);
-                                            if (!checked) {
-                                                setFormData(prev => ({ ...prev, sales_page_url: "", price_label: "" }));
-                                            }
-                                        }}
-                                        className="sr-only peer"
-                                    />
-                                    <div className="w-11 h-6 bg-brand-bg rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-brand-text-muted peer-checked:after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-brand-purple border border-brand-border"></div>
-                                </label>
-                            </div>
-                        </div>
-
-                        {isPremium && (
-                            <div className="space-y-4 pt-2 animate-in fade-in slide-in-from-top-4 duration-300">
-                                <div>
-                                    <label className="block text-brand-text-muted text-xs font-bold uppercase tracking-wider mb-2">URL de la Page de Vente (Lien Stripe)</label>
-                                    <input
-                                        type="url"
-                                        name="sales_page_url"
-                                        value={formData.sales_page_url || ""}
-                                        onChange={handleChange}
-                                        className="w-full bg-brand-bg border border-brand-border rounded-xl p-4 text-brand-text focus:border-brand-purple outline-none transition-all placeholder:text-brand-text-muted/20"
-                                        placeholder="https://buy.stripe.com/live_..."
-                                    />
-                                    <p className="text-[10px] text-brand-text-muted mt-2">Si rempli, ce contenu apparaîtra dans la Boutique (payant).</p>
-                                </div>
-                                <div>
-                                    <label className="block text-brand-text-muted text-xs font-bold uppercase tracking-wider mb-2">Label du Prix</label>
-                                    <input
-                                        type="text"
-                                        name="price_label"
-                                        value={formData.price_label || ""}
-                                        onChange={handleChange}
-                                        className="w-full bg-brand-bg border border-brand-border rounded-xl p-4 text-brand-text focus:border-brand-purple outline-none transition-all placeholder:text-brand-text-muted/20"
-                                        placeholder="Ex: 49,00 €"
-                                    />
-                                </div>
-                            </div>
-                        )}
-                    </div>
-
-                    {/* Landing Page (Public QR Code) */}
-                    <div className={`bg-brand-card border border-brand-border p-6 rounded-2xl relative overflow-hidden transition-all duration-300 ${isPublic ? 'space-y-6' : ''}`}>
-                        <div className="absolute top-0 right-0 w-20 h-20 bg-green-500/10 rounded-bl-full pointer-events-none"></div>
-
-                        <div className={`flex items-center justify-between ${isPublic ? 'border-b border-brand-border pb-4' : ''}`}>
-                            <h2 className="text-xl font-bold text-green-500 uppercase tracking-tight">Vente Physique (QR Code)</h2>
-                            <div className="flex items-center gap-3">
-                                <span className={`text-xs font-bold uppercase tracking-wider ${isPublic ? 'text-green-500' : 'text-brand-text-muted'}`}>Landing Page</span>
-                                <label className="relative inline-flex items-center cursor-pointer">
-                                    <input
-                                        type="checkbox"
-                                        checked={isPublic}
-                                        onChange={(e) => {
-                                            const checked = e.target.checked;
-                                            setIsPublic(checked);
-                                            if (!checked) {
-                                                setFormData(prev => ({ ...prev, public_slug: "", public_description: "" }));
-                                            }
-                                        }}
-                                        className="sr-only peer"
-                                    />
-                                    <div className="w-11 h-6 bg-brand-bg rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-brand-text-muted peer-checked:after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-500 border border-brand-border"></div>
-                                </label>
-                            </div>
-                        </div>
-
-                        {isPublic && (
-                            <div className="space-y-4 pt-2 animate-in fade-in slide-in-from-top-4 duration-300">
-                                <div>
-                                    <label className="block text-brand-text-muted text-xs font-bold uppercase tracking-wider mb-2">URL Publique (Slug)</label>
-                                    <div className="flex items-center bg-brand-bg border border-brand-border rounded-xl overflow-hidden focus-within:border-green-500 transition-colors">
-                                        <span className="pl-4 text-brand-text-muted select-none text-sm border-r border-brand-border pr-3 bg-black/20 py-4 h-full">/tutoriel/</span>
-                                        <input
-                                            type="text"
-                                            name="public_slug"
-                                            value={formData.public_slug || ""}
-                                            onChange={(e) => {
-                                                // auto-format slug
-                                                const formatted = e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, '-').replace(/-+/g, '-');
-                                                setFormData(prev => ({ ...prev, public_slug: formatted }));
-                                            }}
-                                            className="w-full bg-transparent p-4 text-brand-text outline-none"
-                                            placeholder="foulard-magique"
-                                        />
+                                <div className={`flex items-center justify-between ${isPremium ? 'border-b border-brand-border pb-4' : ''}`}>
+                                    <h2 className="text-xl font-bold text-brand-purple uppercase tracking-tight">Boutique & Vente</h2>
+                                    <div className="flex items-center gap-3">
+                                        <span className={`text-xs font-bold uppercase tracking-wider ${isPremium ? 'text-brand-purple' : 'text-brand-text-muted'}`}>Contenu Premium</span>
+                                        <label className="relative inline-flex items-center cursor-pointer">
+                                            <input
+                                                type="checkbox"
+                                                checked={isPremium}
+                                                onChange={(e) => {
+                                                    const checked = e.target.checked;
+                                                    setIsPremium(checked);
+                                                    if (!checked) {
+                                                        setFormData(prev => ({ ...prev, sales_page_url: "", price_label: "" }));
+                                                    }
+                                                }}
+                                                className="sr-only peer"
+                                            />
+                                            <div className="w-11 h-6 bg-brand-bg rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-brand-text-muted peer-checked:after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-brand-purple border border-brand-border"></div>
+                                        </label>
                                     </div>
-                                    <p className="text-[10px] text-brand-text-muted mt-2">C'est ce lien qu'il faudra insérer dans le QR Code de la boîte.</p>
                                 </div>
-                                <div>
-                                    <label className="block text-brand-text-muted text-xs font-bold uppercase tracking-wider mb-2">Message Personnalisé (Optionnel)</label>
-                                    <textarea
-                                        name="public_description"
-                                        value={formData.public_description || ""}
-                                        onChange={handleChange}
-                                        rows={3}
-                                        className="w-full bg-brand-bg border border-brand-border rounded-xl p-4 text-brand-text focus:border-green-500 outline-none transition-all placeholder:text-brand-text-muted/20 resize-none"
-                                        placeholder="Ex: Merci d'avoir acheté ce tour lors d'un de mes spectacles ! Voici l'explication..."
-                                    />
-                                    <p className="text-[10px] text-brand-text-muted mt-2">S'affichera sous la vidéo. Laisse vide pour ne rien afficher.</p>
-                                </div>
+
+                                {isPremium && (
+                                    <div className="space-y-4 pt-2 animate-in fade-in slide-in-from-top-4 duration-300">
+                                        <div>
+                                            <label className="block text-brand-text-muted text-xs font-bold uppercase tracking-wider mb-2">URL de la Page de Vente (Lien Stripe)</label>
+                                            <input
+                                                type="url"
+                                                name="sales_page_url"
+                                                value={formData.sales_page_url || ""}
+                                                onChange={handleChange}
+                                                className="w-full bg-brand-bg border border-brand-border rounded-xl p-4 text-brand-text focus:border-brand-purple outline-none transition-all placeholder:text-brand-text-muted/20"
+                                                placeholder="https://buy.stripe.com/live_..."
+                                            />
+                                            <p className="text-[10px] text-brand-text-muted mt-2">Si rempli, ce contenu apparaîtra dans la Boutique (payant).</p>
+                                        </div>
+                                        <div>
+                                            <label className="block text-brand-text-muted text-xs font-bold uppercase tracking-wider mb-2">Label du Prix</label>
+                                            <input
+                                                type="text"
+                                                name="price_label"
+                                                value={formData.price_label || ""}
+                                                onChange={handleChange}
+                                                className="w-full bg-brand-bg border border-brand-border rounded-xl p-4 text-brand-text focus:border-brand-purple outline-none transition-all placeholder:text-brand-text-muted/20"
+                                                placeholder="Ex: 49,00 €"
+                                            />
+                                        </div>
+                                    </div>
+                                )}
                             </div>
-                        )}
-                    </div>
+
+                            {/* Landing Page (Public QR Code) */}
+                            <div className={`bg-brand-card border border-brand-border p-6 rounded-2xl relative overflow-hidden transition-all duration-300 ${isPublic ? 'space-y-6' : ''}`}>
+                                <div className="absolute top-0 right-0 w-20 h-20 bg-green-500/10 rounded-bl-full pointer-events-none"></div>
+
+                                <div className={`flex items-center justify-between ${isPublic ? 'border-b border-brand-border pb-4' : ''}`}>
+                                    <h2 className="text-xl font-bold text-green-500 uppercase tracking-tight">Vente Physique (QR Code)</h2>
+                                    <div className="flex items-center gap-3">
+                                        <span className={`text-xs font-bold uppercase tracking-wider ${isPublic ? 'text-green-500' : 'text-brand-text-muted'}`}>Landing Page</span>
+                                        <label className="relative inline-flex items-center cursor-pointer">
+                                            <input
+                                                type="checkbox"
+                                                checked={isPublic}
+                                                onChange={(e) => {
+                                                    const checked = e.target.checked;
+                                                    setIsPublic(checked);
+                                                    if (!checked) {
+                                                        setFormData(prev => ({ ...prev, public_slug: "", public_description: "" }));
+                                                    }
+                                                }}
+                                                className="sr-only peer"
+                                            />
+                                            <div className="w-11 h-6 bg-brand-bg rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-brand-text-muted peer-checked:after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-500 border border-brand-border"></div>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                {isPublic && (
+                                    <div className="space-y-4 pt-2 animate-in fade-in slide-in-from-top-4 duration-300">
+                                        <div>
+                                            <label className="block text-brand-text-muted text-xs font-bold uppercase tracking-wider mb-2">URL Publique (Slug)</label>
+                                            <div className="flex items-center bg-brand-bg border border-brand-border rounded-xl overflow-hidden focus-within:border-green-500 transition-colors">
+                                                <span className="pl-4 text-brand-text-muted select-none text-sm border-r border-brand-border pr-3 bg-black/20 py-4 h-full">/tutoriel/</span>
+                                                <input
+                                                    type="text"
+                                                    name="public_slug"
+                                                    value={formData.public_slug || ""}
+                                                    onChange={(e) => {
+                                                        const formatted = e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, '-').replace(/-+/g, '-');
+                                                        setFormData(prev => ({ ...prev, public_slug: formatted }));
+                                                    }}
+                                                    className="w-full bg-transparent p-4 text-brand-text outline-none"
+                                                    placeholder="foulard-magique"
+                                                />
+                                            </div>
+                                            <p className="text-[10px] text-brand-text-muted mt-2">C'est ce lien qu'il faudra insérer dans le QR Code de la boîte.</p>
+                                        </div>
+                                        <div>
+                                            <label className="block text-brand-text-muted text-xs font-bold uppercase tracking-wider mb-2">Message Personnalisé (Optionnel)</label>
+                                            <textarea
+                                                name="public_description"
+                                                value={formData.public_description || ""}
+                                                onChange={handleChange}
+                                                rows={3}
+                                                className="w-full bg-brand-bg border border-brand-border rounded-xl p-4 text-brand-text focus:border-green-500 outline-none transition-all placeholder:text-brand-text-muted/20 resize-none"
+                                                placeholder="Ex: Merci d'avoir acheté ce tour lors d'un de mes spectacles ! Voici l'explication..."
+                                            />
+                                            <p className="text-[10px] text-brand-text-muted mt-2">S'affichera sous la vidéo. Laisse vide pour ne rien afficher.</p>
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                        </>
+                    )}
 
                     {/* Specific Fields based on Audience */}
                     {formData.audience === 'kids' ? (

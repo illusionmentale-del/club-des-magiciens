@@ -40,6 +40,8 @@ export default function AdminLibraryPage() {
             .from("library_items")
             .select("*")
             .eq("audience", "kids")
+            .is("sales_page_url", null)
+            .is("public_slug", null)
             .order("week_number", { ascending: true })
             .order("position", { ascending: true })
             .order("created_at", { ascending: false });
