@@ -141,9 +141,19 @@ export default function AdminShopClient({ initialItems }: { initialItems: any[] 
                                             />
                                         </div>
                                     ) : (
-                                        <span className={`text-sm ${item.public_slug ? 'text-green-400 font-medium' : 'text-gray-500 italic'}`}>
-                                            {item.public_slug ? `/tutoriel/${item.public_slug}` : "Pas de Page Publique"}
-                                        </span>
+                                        item.public_slug ? (
+                                            <a 
+                                                href={`/tutoriel/${item.public_slug}`} 
+                                                target="_blank" 
+                                                rel="noopener noreferrer"
+                                                className="text-sm text-green-400 font-medium hover:text-green-300 hover:underline transition-colors flex items-center gap-1"
+                                                title="Ouvrir la page du tutoriel"
+                                            >
+                                                /tutoriel/{item.public_slug}
+                                            </a>
+                                        ) : (
+                                            <span className="text-sm text-gray-500 italic">Pas de Page Publique</span>
+                                        )
                                     )}
                                 </td>
 
