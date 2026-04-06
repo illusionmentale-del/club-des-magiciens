@@ -62,7 +62,7 @@ export default function AdminShopClient({ initialItems }: { initialItems: any[] 
                     <tr className="border-b border-white/5 bg-white/5 text-xs uppercase tracking-widest text-brand-text-muted">
                         <th className="p-4 font-bold">Vidéo / Formation</th>
                         <th className="p-4 font-bold">Vente Digitale (Stripe)</th>
-                        <th className="p-4 font-bold">Vente Physique (URL Box)</th>
+                        <th className="p-4 font-bold">Tutoriel QR (Accès Offert)</th>
                         <th className="p-4 font-bold text-center">Status</th>
                         <th className="p-4 font-bold text-right">Actions</th>
                     </tr>
@@ -142,7 +142,7 @@ export default function AdminShopClient({ initialItems }: { initialItems: any[] 
                                         </div>
                                     ) : (
                                         <span className={`text-sm ${item.public_slug ? 'text-green-400 font-medium' : 'text-gray-500 italic'}`}>
-                                            {item.public_slug ? `/tutoriel/${item.public_slug}` : "Non disponible en boîte"}
+                                            {item.public_slug ? `/tutoriel/${item.public_slug}` : "Pas de Page Publique"}
                                         </span>
                                     )}
                                 </td>

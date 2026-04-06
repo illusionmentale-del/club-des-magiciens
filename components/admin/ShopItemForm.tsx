@@ -270,14 +270,14 @@ export default function ShopItemForm({ initialData }: { initialData?: ShopItem }
                         )}
                     </div>
 
-                    {/* Vente Physique */}
+                    {/* Page Publique / QR Code */}
                     <div className={`bg-brand-card border ${isPublic ? 'border-green-500 shadow-[0_0_15px_rgba(34,197,94,0.1)]' : 'border-brand-border opacity-60'} p-6 rounded-2xl relative overflow-hidden transition-all duration-300`}>
                         <div className="absolute top-0 right-0 w-20 h-20 bg-green-500/10 rounded-bl-full pointer-events-none"></div>
 
                         <div className={`flex items-center justify-between ${isPublic ? 'border-b border-brand-border pb-4 mb-4' : ''}`}>
                             <h2 className="text-xl font-bold flex items-center gap-2 text-green-500 uppercase tracking-tight">
                                 <Sparkles className="w-5 h-5" />
-                                Boîte Physique (QR)
+                                Page de Tutoriel (QR Code)
                             </h2>
                             <label className="relative inline-flex items-center cursor-pointer">
                                 <input
@@ -292,8 +292,11 @@ export default function ShopItemForm({ initialData }: { initialData?: ShopItem }
 
                         {isPublic && (
                             <div className="space-y-4 pt-2 animate-in fade-in slide-in-from-top-4 duration-300">
+                                <div className="bg-green-500/10 rounded-xl p-3 border border-green-500/20 mb-4">
+                                    <p className="text-xs text-green-400 font-bold">💡 C'est ici que tu génères la page avec "accès offert" pour tes clients physiques. Ils scannent le QR et voient la vidéo, avec un bouton pour s'abonner sous la vidéo !</p>
+                                </div>
                                 <div>
-                                    <label className="block text-brand-text-muted text-xs font-bold uppercase tracking-wider mb-2">Mot de l'URL (Slug du QR Code)</label>
+                                    <label className="block text-brand-text-muted text-xs font-bold uppercase tracking-wider mb-2">Mot du lien de la page (Slug)</label>
                                     <div className="flex items-center bg-brand-bg border border-brand-border rounded-xl overflow-hidden focus-within:border-green-500 transition-colors">
                                         <span className="pl-4 text-brand-text-muted select-none text-sm border-r border-brand-border pr-3 bg-black/20 py-4 h-full">.../tutoriel/</span>
                                         <input
@@ -308,10 +311,10 @@ export default function ShopItemForm({ initialData }: { initialData?: ShopItem }
                                             placeholder="gobelets-magiques"
                                         />
                                     </div>
-                                    <p className="text-[10px] text-brand-text-muted mt-2">C'est ce qui définit le lien final du QR code de ton produit physique.</p>
+                                    <p className="text-[10px] text-brand-text-muted mt-2">Ce mot définira l'adresse de la page (ex: clubdespetitsmagiciens.fr/tutoriel/gobelets-magiques). C'est ce lien qu'il faut mettre dans ton QR code.</p>
                                 </div>
                                 <div>
-                                    <label className="block text-brand-text-muted text-xs font-bold uppercase tracking-wider mb-2">Message de félicitation (Optionnel)</label>
+                                    <label className="block text-brand-text-muted text-xs font-bold uppercase tracking-wider mb-2">Message sous la vidéo (Optionnel)</label>
                                     <textarea
                                         name="public_description"
                                         value={formData.public_description || ""}
