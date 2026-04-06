@@ -4,7 +4,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Sparkles, ArrowRight, PlayCircle } from 'lucide-react';
 
-export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+    const slug = (await params).slug;
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
     const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
     
@@ -15,7 +16,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
     const { data } = await supabaseAdmin
         .from('library_items')
         .select('title, public_description, thumbnail_url')
-        .eq('public_slug', params.slug)
+        .eq('public_slug', slug)
         .single();
 
     if (!data) return { title: "Tutoriel Magique | Club des Petits Magiciens" };
@@ -29,7 +30,8 @@ export async function generateMetadata({ params }: { params: { slug: string } })
     };
 }
 
-export default async function TutorialPage({ params }: { params: { slug: string } }) {
+export default async function TutorialPage({ params }: { params: Promise<{ slug: string }> }) {
+    const slug = (await params).slug;
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
     const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
     
@@ -39,7 +41,7 @@ export default async function TutorialPage({ params }: { params: { slug: string 
     const { data: trick, error } = await supabaseAdmin
         .from('library_items')
         .select('*')
-        .eq('public_slug', params.slug)
+        .eq('public_slug', slug)
         .single();
 
     if (error || !trick) {
