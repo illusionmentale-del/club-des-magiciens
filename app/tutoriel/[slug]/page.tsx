@@ -49,8 +49,17 @@ export default async function TutorialPage({ params }: { params: Promise<{ slug:
     }
 
     // Bunny Video ID
-    const videoId = trick.video_url; // It's usually the Bunny GUID stored here
-    const videoUrl = videoId ? `https://iframe.mediadelivery.net/embed/${process.env.NEXT_PUBLIC_BUNNY_LIBRARY_ID}/${videoId}?autoplay=true&loop=false&muted=false&preload=true&responsive=true` : null;
+    const videoId = trick.video_url;
+    let videoUrl = null;
+    if (videoId) {
+        const { getSecureBunnyIframeUrl } = await import('@/lib/bunny');
+        const libraryId = process.env.BUNNY_KIDS_LIBRARY_ID || process.env.NEXT_PUBLIC_BUNNY_LIBRARY_ID;
+        if (libraryId) {
+            videoUrl = await getSecureBunnyIframeUrl(libraryId, videoId, true);
+            // Replace autoplay=false with true for the landing page
+            videoUrl = videoUrl.replace('autoplay=false', 'autoplay=true');
+        }
+    }
 
     return (
         <div className="min-h-screen bg-brand-bg flex justify-center py-10 px-4 sm:px-6 relative overflow-hidden">
