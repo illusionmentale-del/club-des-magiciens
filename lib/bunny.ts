@@ -178,10 +178,27 @@ export function getBunnyThumbnailUrl(libraryId: string | number, videoId: string
  * Get secure iframe embed URL for a video (Token Authentication)
  * Requires Node.js "crypto" module on the server side.
  */
-export async function getSecureBunnyIframeUrl(libraryId: string | number, videoId: string, isKid: boolean = false): Promise<string> {
-    const tokenKey = isKid ? BUNNY_KIDS_TOKEN_KEY : BUNNY_ADULTS_TOKEN_KEY;
+export async function getSecureBunnyIframeUrl(defaultLibraryId: string | number, rawVideoId: string, isKid: boolean = false): Promise<string> {
+    let tokenKey = isKid ? BUNNY_KIDS_TOKEN_KEY : BUNNY_ADULTS_TOKEN_KEY;
+    let libraryId = defaultLibraryId;
 
-    // If no token key is configured, fallback to standard URL
+    // Smart parsing: If user pasted an entire Direct Play URL (e.g. from a different library)
+    // Format: https://player.mediadelivery.net/play/631687/4ffb57...
+    const urlMatch = rawVideoId.match(/play\/(\d+)\/([a-f0-9-]+)/i);
+    let videoId = rawVideoId;
+    if (urlMatch) {
+        libraryId = urlMatch[1]; // Detect custom library ID automatically
+        videoId = urlMatch[2];
+        // If it's a completely unknown library, we don't have its TokenKey. Reset it to fallback to unsecure URL securely.
+        if (libraryId !== process.env.BUNNY_KIDS_LIBRARY_ID && libraryId !== process.env.BUNNY_ADULTS_LIBRARY_ID) {
+            tokenKey = undefined; 
+        }
+    } else {
+        const uuidMatch = rawVideoId.match(/([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/i);
+        if (uuidMatch) videoId = uuidMatch[1];
+    }
+
+    // If no token key is configured or we're using an external foreign library ID, fallback to standard URL
     if (!tokenKey) {
         console.warn(`Bunny Stream Token Key missing for ${isKid ? 'Kids' : 'Adults'}. Falling back to insecure Iframe URL.`);
         const fallbackColor = isKid ? 'a855f7' : '1d4ed8';

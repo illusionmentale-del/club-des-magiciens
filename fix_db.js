@@ -1,39 +1,10 @@
 const { createClient } = require('@supabase/supabase-js');
 require('dotenv').config({ path: '.env.local' });
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY);
 
-async function run() {
-    try {
-        const response = await fetch(`${supabaseUrl}/rest/v1/rpc/exec_sql`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${supabaseKey}`,
-                'apikey': supabaseKey
-            },
-            body: JSON.stringify({
-                query: 'ALTER TABLE profiles ADD COLUMN IF NOT EXISTS avatar_url_kids text;'
-            })
-        });
-        const text = await response.text();
-        console.log('Result:', text);
-        
-        // Also ensure schema cache is refreshed in case Supabase is stubborn
-        const reloadResponse = await fetch(`${supabaseUrl}/rest/v1/rpc/exec_sql`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${supabaseKey}`,
-                'apikey': supabaseKey
-            },
-            body: JSON.stringify({
-                query: 'NOTIFY pgrst, "reload schema";'
-            })
-        });
-        console.log('Reload Result:', await reloadResponse.text());
-        
-    } catch(e) { console.error(e) }
+async function fix() {
+  await supabase.from('library_items').update({ video_url: 'https://player.mediadelivery.net/play/631687/4ffb5798-7e2d-4c1c-8437-fb0546310468' }).eq('title', 'La Pastille Voyageuse');
+  console.log("Restored full URL so auto-detect can work");
 }
-run();
+fix();
