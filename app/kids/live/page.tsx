@@ -86,7 +86,7 @@ export default function KidsLivePage() {
                             <span className="text-xs font-bold uppercase tracking-widest">Le Club des Petits Magiciens</span>
                         </div>
                         <h1 className="text-3xl md:text-5xl font-black text-white tracking-tight">
-                            Les <span className="text-brand-purple">Masterclass</span>
+                            Les <span className="text-brand-purple">Ateliers</span>
                         </h1>
                         <p className="text-brand-text-muted mt-2 text-lg">
                             Rejoignez les magiciens en direct du QG.
