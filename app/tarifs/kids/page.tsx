@@ -195,7 +195,7 @@ export default async function KidsPricingPage() {
                                 <span className="text-gray-300 font-bold">/an</span>
                             </div>
                             <span className="text-sm font-bold text-pink-400 mt-1 bg-pink-500/10 w-fit px-2 py-0.5 rounded border border-pink-500/20">
-                                Revient à seulement 4,16€/mois !
+                                Paiement en une fois
                             </span>
                         </div>
 
