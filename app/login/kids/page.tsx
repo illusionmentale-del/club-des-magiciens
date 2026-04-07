@@ -36,9 +36,7 @@ export default function KidsLoginPage() {
 
             <div className="w-full max-w-md z-10">
                 <div className="text-center mb-8 relative">
-                    <div className="absolute -top-12 left-1/2 -translate-x-1/2">
-                        <Sparkles className="w-12 h-12 text-brand-gold animate-bounce-slow" />
-                    </div>
+
                     <div className="relative w-48 h-24 mx-auto mb-4 drop-shadow-[0_0_15px_rgba(168,85,247,0.5)]">
                         <Image
                             src="/logo.png"
