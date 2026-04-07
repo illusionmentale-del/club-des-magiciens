@@ -41,6 +41,16 @@ type UserBadge = {
     };
 };
 
+type UserPurchase = {
+    id: string;
+    library_item_id: string;
+    created_at: string;
+    systeme_io_order_id: string;
+    library_items: {
+        title: string;
+    };
+};
+
 type LibraryItem = {
     id: string;
     title: string;
@@ -60,10 +70,12 @@ export default function AdminUserDetailPage() {
     const [profile, setProfile] = useState<Profile | null>(null);
     const [progress, setProgress] = useState<Progress[]>([]);
     const [userBadges, setUserBadges] = useState<UserBadge[]>([]);
+    const [purchases, setPurchases] = useState<UserPurchase[]>([]);
 
     // For selection
     const [allItems, setAllItems] = useState<LibraryItem[]>([]);
     const [allBadges, setAllBadges] = useState<Badge[]>([]);
+    const [shopItems, setShopItems] = useState<LibraryItem[]>([]);
 
     const [loading, setLoading] = useState(true);
     const [newPassword, setNewPassword] = useState("");
@@ -93,9 +105,20 @@ export default function AdminUserDetailPage() {
             .order("awarded_at", { ascending: false });
         setUserBadges(ub || []);
 
+        // Purchases
+        const { data: pu } = await supabase
+            .from("user_purchases")
+            .select("*, library_items(title)")
+            .eq("user_id", id)
+            .order("created_at", { ascending: false });
+        setPurchases(pu || []);
+
         // Form Data
         const { data: items } = await supabase.from("library_items").select("id, title, week_number").eq("audience", "kids").order("week_number");
         setAllItems(items || []);
+
+        const { data: sItems } = await supabase.from("library_items").select("id, title, week_number").eq("audience", "kids").not("sales_page_url", "is", null);
+        setShopItems(sItems || []);
 
         const { data: badges } = await supabase.from("badges").select("id, name");
         setAllBadges(badges || []);
@@ -132,6 +155,26 @@ export default function AdminUserDetailPage() {
     const handleRevokeBadge = async (userBadgeId: string) => {
         if (!confirm("Retirer ce badge ?")) return;
         const { error } = await supabase.from("user_badges").delete().eq("id", userBadgeId);
+        if (error) alert("Erreur");
+        else fetchData();
+    };
+
+    const handleGiveGift = async (itemId: string) => {
+        if (!itemId) return;
+        const { error } = await supabase.from("user_purchases").upsert({
+            user_id: id,
+            library_item_id: itemId,
+            status: 'active',
+            systeme_io_order_id: 'admin_gift'
+        }, { onConflict: 'user_id,library_item_id' });
+        
+        if (error) alert("Erreur lors de l'ajout: " + error.message);
+        else fetchData();
+    };
+
+    const handleRevokeGift = async (purchaseId: string) => {
+        if (!confirm("Attention : Retirer l'accès à ce produit de la boutique pour cet enfant ?")) return;
+        const { error } = await supabase.from("user_purchases").delete().eq("id", purchaseId);
         if (error) alert("Erreur");
         else fetchData();
     };
@@ -228,6 +271,19 @@ export default function AdminUserDetailPage() {
                                         <option value="" disabled>Choisir un badge...</option>
                                         {allBadges.map(badge => (
                                             <option key={badge.id} value={badge.id}>{badge.name}</option>
+                                        ))}
+                                    </select>
+                                </div>
+                                <div className="border-t border-white/10 pt-4 mt-4">
+                                    <label className="text-xs text-green-400 font-bold block mb-1">🎁 Offrir un Secret (Boutique)</label>
+                                    <select
+                                        className="w-full bg-green-500/10 border border-green-500/30 rounded-lg p-2 text-sm outline-none text-green-100"
+                                        onChange={(e) => handleGiveGift(e.target.value)}
+                                        value=""
+                                    >
+                                        <option value="" disabled>Choisir un produit...</option>
+                                        {shopItems.map(item => (
+                                            <option key={item.id} value={item.id}>{item.title}</option>
                                         ))}
                                     </select>
                                 </div>
@@ -341,6 +397,54 @@ export default function AdminUserDetailPage() {
                                         Aucun badge.
                                     </div>
                                 )}
+                            </div>
+                        </section>
+
+                        {/* COFFRETS DEBOQUÉS (BOUTIQUE) */}
+                        <section>
+                            <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
+                                <span className="text-green-500">🎁</span>
+                                Achats & Cadeaux ({purchases.length})
+                            </h2>
+                            <div className="bg-white/5 border border-white/10 rounded-2xl overflow-hidden">
+                                <table className="w-full text-sm text-left">
+                                    <thead className="bg-white/5 text-gray-400 font-bold uppercase text-xs">
+                                        <tr>
+                                            <th className="p-4">Produit Boutique</th>
+                                            <th className="p-4">Détail</th>
+                                            <th className="p-4 text-right">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody className="divide-y divide-white/5">
+                                        {purchases.map((p) => (
+                                            <tr key={p.id} className="hover:bg-white/5 transition-colors">
+                                                <td className="p-4">
+                                                    <span className="font-bold text-green-400 drop-shadow-[0_0_10px_rgba(74,222,128,0.3)]">{p.library_items?.title}</span>
+                                                </td>
+                                                <td className="p-4">
+                                                    <div className="text-xs text-gray-400">
+                                                        Débloqué le : {new Date(p.created_at).toLocaleDateString()}
+                                                    </div>
+                                                    {p.systeme_io_order_id === 'admin_gift' && (
+                                                        <div className="text-[10px] font-bold text-yellow-500 uppercase tracking-wider mt-1">
+                                                            Cadeau Admin
+                                                        </div>
+                                                    )}
+                                                </td>
+                                                <td className="p-4 text-right">
+                                                    <button onClick={() => handleRevokeGift(p.id)} className="text-red-500 hover:text-red-400 text-xs uppercase font-bold px-2 py-1 rounded bg-red-500/10 hover:bg-red-500/20 transition-colors">
+                                                        Retirer
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        ))}
+                                        {purchases.length === 0 && (
+                                            <tr>
+                                                <td colSpan={3} className="p-8 text-center text-gray-500 italic">Aucun achat ou cadeau enregistré.</td>
+                                            </tr>
+                                        )}
+                                    </tbody>
+                                </table>
                             </div>
                         </section>
 
