@@ -8,8 +8,8 @@ type LibraryProgress = {
     } | null; // Join result
 };
 
-export default function KidsAchievements({ recentValids }: { recentValids: any[] }) {
-    if (!recentValids || recentValids.length === 0) return null;
+export default function KidsAchievements({ recentValids, completedQuests }: { recentValids: any[], completedQuests?: any[] }) {
+    if (!recentValids?.length && !completedQuests?.length) return null;
 
     return (
         <section className="bg-brand-card/30 border border-brand-border/50 rounded-2xl p-6 mt-8">
@@ -28,6 +28,20 @@ export default function KidsAchievements({ recentValids }: { recentValids: any[]
                             <p className="text-sm font-bold text-white line-clamp-1">{progress.library_items?.title || "Mission Secrète"}</p>
                             <p className="text-[10px] text-brand-text-muted uppercase tracking-wide">
                                 Validé le {new Date(progress.completed_at).toLocaleDateString('fr-FR')}
+                            </p>
+                        </div>
+                    </div>
+                ))}
+                
+                {completedQuests && completedQuests.slice(0, 3).map((q: any) => (
+                    <div key={Math.random()} className="flex items-center gap-3 bg-brand-bg/50 p-3 rounded-xl border border-green-500/20">
+                        <div className="w-8 h-8 rounded-full bg-green-500/20 flex items-center justify-center shrink-0 border border-green-500/30">
+                            <Trophy className="w-4 h-4 text-green-400" />
+                        </div>
+                        <div className="flex-1">
+                            <p className="text-sm font-bold text-white line-clamp-1">{q.gamification_quests?.title || "Quête Accompli"}</p>
+                            <p className="text-[10px] text-green-400 font-bold uppercase tracking-wide">
+                                + {q.gamification_quests?.reward_xp} XP / Éclats
                             </p>
                         </div>
                     </div>

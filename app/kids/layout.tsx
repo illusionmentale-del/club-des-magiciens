@@ -44,12 +44,24 @@ export default async function KidsLayout({
     let enableMasterclass = true;
     let enableAccount = true;
     let enableShop = true;
+    let currentXP = 0;
+    let lifetimeXP = 0;
+    let magicLevel = "Apprenti";
+    let avatarUrl = "";
+    let userName = "";
 
     if (user) {
         // ... existing admin and settings fetch ...
-        const { data: profile } = await supabase.from('profiles').select('role, has_adults_access').eq('id', user.id).single();
+        const { data: profile } = await supabase.from('profiles').select('role, has_adults_access, magic_level, full_name, avatar_skins(image_url)').eq('id', user.id).single();
         isAdmin = profile?.role === 'admin';
         hasAdultsAccess = profile?.has_adults_access || false;
+        magicLevel = profile?.magic_level || "Apprenti";
+        userName = profile?.full_name || "Jeune Magicien";
+        
+        // Handle avatar skin
+        if (profile?.avatar_skins && !Array.isArray(profile.avatar_skins) && typeof profile.avatar_skins === 'object') {
+             avatarUrl = (profile.avatar_skins as any).image_url || "";
+        }
 
         const { data: settings } = await supabase.from("settings").select("*");
 
@@ -86,18 +98,29 @@ export default async function KidsLayout({
 
             hasUnreadReplies = (count || 0) > 0;
         }
+
+        // Fetch XP Balance
+        try {
+            const { data: xpLogs } = await supabase.from('user_xp_logs').select('xp_awarded').eq('user_id', user.id);
+            if (xpLogs) {
+                currentXP = xpLogs.reduce((acc, log) => acc + log.xp_awarded, 0);
+                lifetimeXP = xpLogs.reduce((acc, log) => acc + (log.xp_awarded > 0 ? log.xp_awarded : 0), 0);
+            }
+        } catch (e) {
+            console.error("Layout could not fetch XP", e);
+        }
     }
 
     return (
         <KidsLayoutClient
             sidebar={
                 <Suspense fallback={<div className="w-64 bg-magic-card hidden md:block" />}>
-                    <KidsSidebar socialLinks={socialLinks} logoUrl={siteLogo} isAdmin={isAdmin} hasUnreadReplies={hasUnreadReplies} hasAdultsAccess={hasAdultsAccess} enableProgram={enableProgram} enableMasterclass={enableMasterclass} enableAccount={enableAccount} enableShop={enableShop} />
+                    <KidsSidebar socialLinks={socialLinks} logoUrl={siteLogo} isAdmin={isAdmin} hasUnreadReplies={hasUnreadReplies} hasAdultsAccess={hasAdultsAccess} enableProgram={enableProgram} enableMasterclass={enableMasterclass} enableAccount={enableAccount} enableShop={enableShop} xpBalance={currentXP} lifetimeXP={lifetimeXP} magicLevel={magicLevel} avatarUrl={avatarUrl} userName={userName} />
                 </Suspense>
             }
             mobileNav={
                 <Suspense fallback={<div className="h-16 bg-magic-card md:hidden" />}>
-                    <KidsMobileNav logoUrl={siteLogo} isAdmin={isAdmin} hasUnreadReplies={hasUnreadReplies} enableProgram={enableProgram} enableMasterclass={enableMasterclass} enableAccount={enableAccount} enableShop={enableShop} />
+                    <KidsMobileNav logoUrl={siteLogo} isAdmin={isAdmin} hasUnreadReplies={hasUnreadReplies} enableProgram={enableProgram} enableMasterclass={enableMasterclass} enableAccount={enableAccount} enableShop={enableShop} xpBalance={currentXP} lifetimeXP={lifetimeXP} magicLevel={magicLevel} avatarUrl={avatarUrl} userName={userName} />
                 </Suspense>
             }
         >

@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils";
 import CommentsSection from "@/components/Comments";
 import VideoPlayerControls from "@/components/VideoPlayerControls";
 import KidsCommentsSection from "@/components/KidsComments";
+import KidsValidateButton from "@/components/kids/KidsValidateButton";
 
 interface WatchPageProps {
     params: Promise<{ courseId: string }>;
@@ -243,6 +244,8 @@ export default async function WatchPage(props: WatchPageProps) {
                                         <CheckCircle className="w-8 h-8 text-green-500" />
                                         <span className="font-bold text-green-400 uppercase tracking-widest text-sm">Atelier Validé !</span>
                                     </div>
+                                ) : isKidsItem ? (
+                                    <KidsValidateButton libraryItemId={libraryItem.id} />
                                 ) : (
                                     <form action={async () => {
                                         "use server";
@@ -255,11 +258,8 @@ export default async function WatchPage(props: WatchPageProps) {
                                         });
                                         redirect(`/watch/${libraryItem.id}`);
                                     }}>
-                                        <button className={cn(
-                                            "w-full text-white font-bold py-4 rounded-xl transition-all shadow-lg active:scale-95 flex items-center justify-center gap-2 group",
-                                            isKidsItem ? "bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 hover:shadow-purple-500/30" : "bg-gradient-to-r from-magic-royal to-blue-700 text-black hover:from-blue-400 hover:to-blue-500 hover:shadow-magic-royal/30"
-                                        )}>
-                                            <Star className={cn("w-5 h-5 group-hover:rotate-12 transition-transform", isKidsItem ? "" : "text-black")} />
+                                        <button className="w-full font-bold py-4 rounded-xl transition-all shadow-lg active:scale-95 flex items-center justify-center gap-2 group bg-gradient-to-r from-magic-royal to-blue-700 text-black hover:from-blue-400 hover:to-blue-500 hover:shadow-magic-royal/30">
+                                            <Star className="w-5 h-5 group-hover:rotate-12 transition-transform text-black" />
                                             JE VALIDE !
                                         </button>
                                     </form>

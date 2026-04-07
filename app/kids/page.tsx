@@ -224,12 +224,19 @@ export default async function KidsHomePage({ searchParams }: { searchParams: Pro
         .select("*", { count: 'exact', head: true })
         .eq("user_id", user.id);
 
-    // Fetch recent successes for Block 5
     const { data: recentValids } = await supabase
         .from("user_library_progress")
         .select("item_id, completed_at, library_items(title)")
         .eq("user_id", user.id)
         .eq("is_completed", true)
+        .order("completed_at", { ascending: false })
+        .limit(3);
+
+    // Fetch Completed Quests for Achievements Block
+    const { data: completedQuests } = await supabase
+        .from("user_quests")
+        .select("completed_at, gamification_quests(title, reward_xp)")
+        .eq("user_id", user.id)
         .order("completed_at", { ascending: false })
         .limit(3);
 
@@ -349,7 +356,7 @@ export default async function KidsHomePage({ searchParams }: { searchParams: Pro
                         />
 
                         {/* BLOC 5: SUCCESS (WINS) */}
-                        <KidsAchievements recentValids={recentValids || []} />
+                        <KidsAchievements recentValids={recentValids || []} completedQuests={completedQuests || []} />
                     </div>
                 </div>
             </div>

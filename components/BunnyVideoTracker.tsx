@@ -2,6 +2,8 @@
 
 import { useEffect, useRef, useState, useCallback } from "react";
 import { saveKidsVideoProgress } from "@/app/kids/videos/actions";
+import GamificationModal, { GamificationEvent } from "./kids/GamificationModal";
+import { useRouter } from "next/navigation";
 
 interface BunnyVideoTrackerProps {
     videoId: string;
@@ -13,12 +15,21 @@ export default function BunnyVideoTracker({ videoId, iframeUrl, totalSeconds }: 
     const iframeRef = useRef<HTMLIFrameElement>(null);
     const [currentTime, setCurrentTime] = useState(0);
     const lastSavedTimeRef = useRef(0);
+    const [event, setEvent] = useState<GamificationEvent | null>(null);
+    const router = useRouter();
 
     // Save progress to DB max once every 10 seconds to avoid spamming the DB
     const handleSaveProgress = useCallback(async (time: number) => {
         if (Math.abs(time - lastSavedTimeRef.current) >= 10 || time >= totalSeconds * 0.9) {
             lastSavedTimeRef.current = time;
-            await saveKidsVideoProgress(videoId, time, totalSeconds);
+            const res = await saveKidsVideoProgress(videoId, time, totalSeconds);
+            if (res?.success && 'gainedXP' in res && (res.gainedXP || res.leveledUpTo || res.unlockedWelcome)) {
+                setEvent({
+                    gainedXP: res.gainedXP as number,
+                    leveledUpTo: res.leveledUpTo as string | null,
+                    unlockedWelcome: res.unlockedWelcome as boolean
+                });
+            }
         }
     }, [videoId, totalSeconds]);
 
@@ -54,13 +65,16 @@ export default function BunnyVideoTracker({ videoId, iframeUrl, totalSeconds }: 
     }, [currentTime, handleSaveProgress, videoId, totalSeconds]);
 
     return (
-        <iframe
-            ref={iframeRef}
-            src={iframeUrl}
-            loading="lazy"
-            allowFullScreen
-            allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;"
-            className="absolute inset-0 w-full h-full border-0"
-        />
+        <>
+            <GamificationModal event={event} onClose={() => { setEvent(null); router.refresh(); }} />
+            <iframe
+                ref={iframeRef}
+                src={iframeUrl}
+                loading="lazy"
+                allowFullScreen
+                allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;"
+                className="absolute inset-0 w-full h-full border-0"
+            />
+        </>
     );
 }

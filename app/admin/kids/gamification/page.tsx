@@ -17,8 +17,19 @@ type Badge = {
 export default function AdminGamificationPage() {
     const supabase = createClient();
     const [badges, setBadges] = useState<Badge[]>([]);
+    const [quests, setQuests] = useState<any[]>([]);
+    const [levels, setLevels] = useState<any[]>([]);
+    const [skins, setSkins] = useState<any[]>([]);
+    const [libraryItems, setLibraryItems] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
     const [showForm, setShowForm] = useState(false);
+    const [showQuestForm, setShowQuestForm] = useState(false);
+    const [showLevelForm, setShowLevelForm] = useState(false);
+    const [showSkinForm, setShowSkinForm] = useState(false);
+    const [activeTab, setActiveTab] = useState<'badges' | 'quests' | 'levels' | 'skins'>('quests');
+
+    const [newLevel, setNewLevel] = useState({ name: "", xp_threshold: 0 });
+    const [newSkin, setNewSkin] = useState({ name: "", image_url: "", price_xp: 0, is_default: false });
 
     // New Badge State
     const [newBadge, setNewBadge] = useState<Partial<Badge>>({
@@ -30,15 +41,43 @@ export default function AdminGamificationPage() {
     });
 
     const fetchBadges = async () => {
-        setLoading(true);
         const { data, error } = await supabase.from("badges").select("*").order("created_at", { ascending: false });
         if (error) console.error("Error fetching badges:", error);
         else setBadges(data || []);
-        setLoading(false);
     };
 
+    const fetchQuests = async () => {
+        const { data, error } = await supabase.from("gamification_quests").select(`
+            *,
+            library_items(title)
+        `).order("created_at", { ascending: false });
+        if (error) console.error("Error fetching quests:", error);
+        else setQuests(data || []);
+    };
+
+    const fetchLevels = async () => {
+        const { data } = await supabase.from("gamification_levels").select("*").order("xp_threshold", { ascending: true });
+        setLevels(data || []);
+    };
+
+    const fetchLibraryItems = async () => {
+        const { data } = await supabase.from("library_items").select("id, title").eq("audience", "kids");
+        setLibraryItems(data || []);
+    };
+
+    const fetchSkins = async () => {
+        const { data } = await supabase.from("avatar_skins").select("*").order("price_xp", { ascending: true });
+        setSkins(data || []);
+    };
+
+    const fetchAll = async () => {
+        setLoading(true);
+        await Promise.all([fetchBadges(), fetchQuests(), fetchLevels(), fetchLibraryItems(), fetchSkins()]);
+        setLoading(false);
+    }
+
     useEffect(() => {
-        fetchBadges();
+        fetchAll();
     }, []);
 
     const handleDelete = async (id: string) => {
@@ -46,6 +85,34 @@ export default function AdminGamificationPage() {
         const { error } = await supabase.from("badges").delete().eq("id", id);
         if (error) alert("Erreur lors de la suppression");
         else fetchBadges();
+    };
+
+    const handleCreateLevel = async () => {
+        if (!newLevel.name) return;
+        await supabase.from("gamification_levels").insert([newLevel]);
+        setShowLevelForm(false);
+        setNewLevel({ name: "", xp_threshold: 0 });
+        fetchLevels();
+    };
+
+    const handleDeleteLevel = async (id: string) => {
+        if (!confirm("Supprimer ce niveau ?")) return;
+        await supabase.from("gamification_levels").delete().eq("id", id);
+        fetchLevels();
+    };
+
+    const handleCreateSkin = async () => {
+        if (!newSkin.name || !newSkin.image_url) return alert("Nom et image requis");
+        await supabase.from("avatar_skins").insert([newSkin]);
+        setShowSkinForm(false);
+        setNewSkin({ name: "", image_url: "", price_xp: 0, is_default: false });
+        fetchSkins();
+    };
+
+    const handleDeleteSkin = async (id: string) => {
+        if (!confirm("Attention: si des enfants utilisent ce skin, ils le perdront. Continuer ?")) return;
+        await supabase.from("avatar_skins").delete().eq("id", id);
+        fetchSkins();
     };
 
     const handleCreate = async () => {
@@ -62,6 +129,43 @@ export default function AdminGamificationPage() {
         }
     };
 
+    const [newQuest, setNewQuest] = useState<any>({
+        title: "",
+        description: "",
+        trigger_type: "videos_watched",
+        trigger_value: 0,
+        reward_xp: 0,
+        reward_item_id: ""
+    });
+
+    const handleCreateQuest = async () => {
+        if (!newQuest.title) return alert("Nom requis");
+
+        const payload = {
+            ...newQuest,
+            trigger_value: parseInt(newQuest.trigger_value),
+            reward_xp: parseInt(newQuest.reward_xp),
+            reward_item_id: newQuest.reward_item_id || null
+        };
+
+        const { error } = await supabase.from("gamification_quests").insert(payload);
+        if (error) {
+            console.error(error);
+            alert("Erreur lors de la création de la quête");
+        } else {
+            setShowQuestForm(false);
+            setNewQuest({ title: "", description: "", trigger_type: "videos_watched", trigger_value: 0, reward_xp: 0, reward_item_id: "" });
+            fetchQuests();
+        }
+    };
+
+    const handleDeleteQuest = async (id: string) => {
+        if (!confirm("Supprimer cette quête ?")) return;
+        const { error } = await supabase.from("gamification_quests").delete().eq("id", id);
+        if (error) alert("Erreur lors de la suppression");
+        else fetchQuests();
+    };
+
     return (
         <div className="min-h-screen bg-magic-bg text-white p-8">
             <div className="max-w-4xl mx-auto">
@@ -70,20 +174,306 @@ export default function AdminGamificationPage() {
                         <h1 className="text-3xl font-bold flex items-center gap-2">
                             <span className="text-yellow-400"><Trophy /></span> Gamification
                         </h1>
-                        <p className="text-gray-400">Gestion des Badges et Récompenses</p>
+                        <p className="text-gray-400">Gestion des Missions et Récompenses</p>
                     </div>
-                    <button
-                        onClick={() => setShowForm(!showForm)}
-                        className="bg-purple-600 hover:bg-purple-500 text-white px-6 py-3 rounded-xl font-bold flex items-center gap-2 transition-all shadow-lg"
-                    >
-                        <Plus className="w-5 h-5" />
-                        Nouveau Badge
-                    </button>
+                    {activeTab === 'badges' && (
+                        <button onClick={() => setShowForm(!showForm)} className="bg-purple-600 hover:bg-purple-500 text-white px-6 py-3 rounded-xl font-bold flex items-center gap-2 transition-all shadow-lg">
+                            <Plus className="w-5 h-5" /> Nouveau Badge
+                        </button>
+                    )}
+                    {activeTab === 'quests' && (
+                        <button onClick={() => setShowQuestForm(!showQuestForm)} className="bg-green-600 hover:bg-green-500 text-white px-6 py-3 rounded-xl font-bold flex items-center gap-2 transition-all shadow-lg">
+                            <Plus className="w-5 h-5" /> Nouvelle Quête
+                        </button>
+                    )}
+                    {activeTab === 'levels' && (
+                        <button onClick={() => setShowLevelForm(!showLevelForm)} className="bg-blue-600 hover:bg-blue-500 text-white px-6 py-3 rounded-xl font-bold flex items-center gap-2 transition-all shadow-lg">
+                            <Plus className="w-5 h-5" /> Nouveau Niveau
+                        </button>
+                    )}
+                    {activeTab === 'skins' && (
+                        <button onClick={() => setShowSkinForm(!showSkinForm)} className="bg-pink-600 hover:bg-pink-500 text-white px-6 py-3 rounded-xl font-bold flex items-center gap-2 transition-all shadow-lg">
+                            <Plus className="w-5 h-5" /> Nouvel Avatar
+                        </button>
+                    )}
                 </header>
 
-                {/* Create Form */}
-                {showForm && (
-                    <div className="bg-magic-card border border-purple-500/30 rounded-2xl p-6 mb-8 animate-in slide-in-from-top-4">
+                <div className="flex gap-4 border-b border-white/10 mb-8 pb-4">
+                    <button
+                        className={`font-bold pb-4 -mb-4 px-4 ${activeTab === 'quests' ? 'text-green-400 border-b-2 border-green-400' : 'text-gray-500 hover:text-white'}`}
+                        onClick={() => setActiveTab('quests')}
+                    >
+                        Quêtes Automatiques
+                    </button>
+                    <button
+                        className={`font-bold pb-4 -mb-4 px-4 ${activeTab === 'levels' ? 'text-blue-400 border-b-2 border-blue-400' : 'text-gray-500 hover:text-white'}`}
+                        onClick={() => setActiveTab('levels')}
+                    >
+                        Niveaux (Grades)
+                    </button>
+                    <button
+                        className={`font-bold pb-4 -mb-4 px-4 ${activeTab === 'skins' ? 'text-pink-400 border-b-2 border-pink-400' : 'text-gray-500 hover:text-white'}`}
+                        onClick={() => setActiveTab('skins')}
+                    >
+                        Avatars (Skins)
+                    </button>
+                    <button
+                        className={`font-bold pb-4 -mb-4 px-4 ${activeTab === 'badges' ? 'text-purple-400 border-b-2 border-purple-400' : 'text-gray-500 hover:text-white'}`}
+                        onClick={() => setActiveTab('badges')}
+                    >
+                        Badges (Ancien système)
+                    </button>
+                </div>
+
+                {activeTab === 'quests' && (
+                    <>
+                        {showQuestForm && (
+                            <div className="bg-magic-card border border-green-500/30 rounded-2xl p-6 mb-8 animate-in slide-in-from-top-4">
+                                <h2 className="font-bold text-lg mb-4 text-green-300">Créer une Quête</h2>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                    <input
+                                        placeholder="Nom de la Quête (Ex: L'Élève Modèle)"
+                                        className="bg-black/40 border border-white/10 rounded-lg p-3 text-white outline-none focus:border-green-500"
+                                        value={newQuest.title}
+                                        onChange={e => setNewQuest({ ...newQuest, title: e.target.value })}
+                                    />
+                                    <div className="flex gap-2">
+                                        <select
+                                            className="w-1/2 bg-black/40 border border-white/10 rounded-lg p-3 text-white outline-none focus:border-green-500"
+                                            value={newQuest.trigger_type}
+                                            onChange={e => setNewQuest({ ...newQuest, trigger_type: e.target.value })}
+                                        >
+                                            <option value="videos_watched">Vidéos Validées</option>
+                                            <option value="lifetime_xp">Total XP Atteint</option>
+                                            <option value="consecutive_days">Jours Consécutifs (Futur)</option>
+                                        </select>
+                                        <input
+                                            type="number"
+                                            placeholder="Valeur requise (Ex: 5)"
+                                            className="w-1/2 bg-black/40 border border-white/10 rounded-lg p-3 text-white outline-none focus:border-green-500 text-center"
+                                            value={newQuest.trigger_value || ""}
+                                            onChange={e => setNewQuest({ ...newQuest, trigger_value: e.target.value })}
+                                        />
+                                    </div>
+                                    <div className="col-span-2">
+                                        <textarea
+                                            placeholder="Description (Ex: Complète 5 vidéos pour obtenir cette récompense)"
+                                            className="w-full bg-black/40 border border-white/10 rounded-lg p-3 text-white outline-none focus:border-green-500"
+                                            value={newQuest.description}
+                                            onChange={e => setNewQuest({ ...newQuest, description: e.target.value })}
+                                        />
+                                    </div>
+                                    <div className="md:col-span-2 flex items-center justify-between bg-white/5 p-4 rounded-xl border border-white/5">
+                                        <div className="text-sm font-bold text-gray-300">Récompense à la clef</div>
+                                        <div className="flex items-center gap-4">
+                                            <div className="flex items-center gap-2">
+                                                <span className="text-yellow-400 font-bold">⭐</span>
+                                                <input
+                                                    type="number"
+                                                    placeholder="0"
+                                                    className="w-20 bg-black/40 border border-yellow-500/50 rounded-lg p-2 text-white outline-none text-center font-black"
+                                                    value={newQuest.reward_xp || ""}
+                                                    onChange={e => setNewQuest({ ...newQuest, reward_xp: e.target.value })}
+                                                />
+                                                <span className="text-yellow-400 font-bold">XP</span>
+                                            </div>
+                                            <span className="text-gray-500 font-bold">ET / OU</span>
+                                            <div className="flex items-center gap-2">
+                                                <span className="text-purple-400 font-bold">🎁</span>
+                                                <select
+                                                    className="bg-black/40 border border-purple-500/50 rounded-lg p-2 text-white outline-none"
+                                                    value={newQuest.reward_item_id || ""}
+                                                    onChange={e => setNewQuest({ ...newQuest, reward_item_id: e.target.value })}
+                                                >
+                                                    <option value="">Aucun cadeau spécifique</option>
+                                                    {libraryItems.map(item => (
+                                                        <option key={item.id} value={item.id}>{item.title}</option>
+                                                    ))}
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="flex justify-end gap-2">
+                                    <button onClick={() => setShowQuestForm(false)} className="px-4 py-2 text-gray-400 hover:text-white">Annuler</button>
+                                    <button onClick={handleCreateQuest} className="bg-green-600 hover:bg-green-500 text-white px-6 py-2 rounded-lg font-bold flex items-center gap-2">
+                                        <Save className="w-4 h-4" /> Activer la Quête
+                                    </button>
+                                </div>
+                            </div>
+                        )}
+
+                        <div className="grid grid-cols-1 gap-4">
+                            {loading ? <div className="text-center py-8">Chargement...</div> : quests.map(quest => (
+                                <div key={quest.id} className="bg-[#1a1025] border border-green-500/20 rounded-xl p-5 flex items-center gap-6 hover:border-green-500/40 transition-colors relative overflow-hidden">
+                                    <div className="absolute top-0 left-0 w-2 h-full bg-green-500"></div>
+                                    <div className="flex-1">
+                                        <h3 className="font-bold text-white text-lg">{quest.title}</h3>
+                                        <p className="text-sm text-gray-400 mb-3">{quest.description}</p>
+                                        <div className="flex items-center gap-3">
+                                            <span className="text-xs uppercase font-bold bg-white/10 px-2.5 py-1 rounded-md text-gray-300 flex items-center gap-1">
+                                                🎯 {quest.trigger_type === 'videos_watched' ? 'Vidéos vues' : 'Total XP'} : <span className="text-green-400">{quest.trigger_value}</span>
+                                            </span>
+                                            {quest.reward_xp > 0 && (
+                                                <span className="text-xs uppercase font-bold bg-yellow-500/10 px-2.5 py-1 rounded-md text-yellow-400 flex items-center gap-1">
+                                                    ⭐ +{quest.reward_xp} XP
+                                                </span>
+                                            )}
+                                            {quest.reward_item_id && (
+                                                <span className="text-xs uppercase font-bold bg-purple-500/10 px-2.5 py-1 rounded-md text-purple-400 flex items-center gap-1">
+                                                    🎁 Débloque : {quest.library_items?.title}
+                                                </span>
+                                            )}
+                                        </div>
+                                    </div>
+                                    <button onClick={() => handleDeleteQuest(quest.id)} className="p-3 text-gray-600 hover:text-red-400 hover:bg-white/5 rounded-full transition-colors">
+                                        <Trash2 className="w-5 h-5" />
+                                    </button>
+                                </div>
+                            ))}
+                            {!loading && quests.length === 0 && <div className="text-center py-12 text-gray-500 border border-dashed border-white/10 rounded-xl">Aucune quête configurée.</div>}
+                        </div>
+                    </>
+                )}
+
+                {activeTab === 'levels' && (
+                    <>
+                        {showLevelForm && (
+                            <div className="bg-magic-card border border-blue-500/30 rounded-2xl p-6 mb-8 animate-in slide-in-from-top-4">
+                                <h2 className="font-bold text-lg mb-4 text-blue-300">Créer un Niveau</h2>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                    <input
+                                        placeholder="Nom du Niveau (Ex: Sorcier Suprême)"
+                                        className="bg-black/40 border border-white/10 rounded-lg p-3 text-white outline-none focus:border-blue-500"
+                                        value={newLevel.name}
+                                        onChange={e => setNewLevel({ ...newLevel, name: e.target.value })}
+                                    />
+                                    <input
+                                        type="number"
+                                        placeholder="XP Requis (Ex: 300)"
+                                        className="bg-black/40 border border-white/10 rounded-lg p-3 text-white outline-none focus:border-blue-500"
+                                        value={newLevel.xp_threshold || ""}
+                                        onChange={e => setNewLevel({ ...newLevel, xp_threshold: parseInt(e.target.value) })}
+                                    />
+                                </div>
+                                <div className="flex justify-end gap-2">
+                                    <button onClick={() => setShowLevelForm(false)} className="px-4 py-2 text-gray-400 hover:text-white">Annuler</button>
+                                    <button onClick={handleCreateLevel} className="bg-blue-600 hover:bg-blue-500 text-white px-6 py-2 rounded-lg font-bold flex items-center gap-2">
+                                        <Save className="w-4 h-4" /> Sauvegarder
+                                    </button>
+                                </div>
+                            </div>
+                        )}
+                        <div className="bg-brand-card/50 border border-white/5 rounded-2xl md:p-8">
+                           <div className="grid grid-cols-1 gap-2 max-w-xl mx-auto">
+                               {levels.map((lvl, index) => (
+                                   <div key={lvl.id} className="flex items-center justify-between p-4 bg-black/40 border border-white/5 rounded-xl">
+                                       <div className="flex items-center gap-4">
+                                           <div className="w-8 h-8 rounded-full bg-blue-500/20 text-blue-400 font-black flex items-center justify-center">
+                                                {index + 1}
+                                           </div>
+                                           <h3 className="font-bold text-white text-lg">{lvl.name}</h3>
+                                       </div>
+                                       <div className="flex items-center gap-4">
+                                           <span className="text-yellow-400 font-bold bg-yellow-500/10 px-3 py-1 rounded-lg">⭐ {lvl.xp_threshold} XP</span>
+                                           <button onClick={() => handleDeleteLevel(lvl.id)} className="text-gray-500 hover:text-red-400 p-2">
+                                               <Trash2 className="w-4 h-4" />
+                                           </button>
+                                       </div>
+                                   </div>
+                               ))}
+                               {levels.length === 0 && <p className="text-center text-gray-500 py-10">Aucun niveau défini.</p>}
+                           </div>
+                        </div>
+                    </>
+                )}
+
+                {activeTab === 'skins' && (
+                    <>
+                        {showSkinForm && (
+                            <div className="bg-magic-card border border-pink-500/30 rounded-2xl p-6 mb-8 animate-in slide-in-from-top-4">
+                                <h2 className="font-bold text-lg mb-4 text-pink-300">Ajouter un Avatar (Skin)</h2>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                    <input
+                                        placeholder="Nom du Skin (Ex: Le Petit Ninja)"
+                                        className="bg-black/40 border border-white/10 rounded-lg p-3 text-white outline-none focus:border-pink-500"
+                                        value={newSkin.name}
+                                        onChange={e => setNewSkin({ ...newSkin, name: e.target.value })}
+                                    />
+                                    <input
+                                        placeholder="URL de l'image (https://...)"
+                                        className="bg-black/40 border border-white/10 rounded-lg p-3 text-white outline-none focus:border-pink-500"
+                                        value={newSkin.image_url}
+                                        onChange={e => setNewSkin({ ...newSkin, image_url: e.target.value })}
+                                    />
+                                    <div className="flex items-center gap-2 bg-white/5 p-3 rounded-lg border border-white/5">
+                                        <span className="text-yellow-400 font-bold">⭐ Prix en Éclats :</span>
+                                        <input
+                                            type="number"
+                                            placeholder="Prix (0 pour gratuit)"
+                                            className="w-24 bg-black/40 border border-yellow-500/50 rounded-lg p-2 text-white outline-none"
+                                            value={newSkin.price_xp || ""}
+                                            onChange={e => setNewSkin({ ...newSkin, price_xp: parseInt(e.target.value) || 0 })}
+                                        />
+                                    </div>
+                                    <label className="flex items-center gap-3 bg-white/5 p-3 rounded-lg border border-white/5 cursor-pointer">
+                                        <input
+                                            type="checkbox"
+                                            className="w-5 h-5 accent-pink-500"
+                                            checked={newSkin.is_default}
+                                            onChange={e => setNewSkin({ ...newSkin, is_default: e.target.checked })}
+                                        />
+                                        <span className="text-sm font-bold text-white">Skin par défaut (Débloqué pour tous)</span>
+                                    </label>
+                                </div>
+                                <div className="flex justify-end gap-2">
+                                    <button onClick={() => setShowSkinForm(false)} className="px-4 py-2 text-gray-400 hover:text-white">Annuler</button>
+                                    <button onClick={handleCreateSkin} className="bg-pink-600 hover:bg-pink-500 text-white px-6 py-2 rounded-lg font-bold flex items-center gap-2">
+                                        <Save className="w-4 h-4" /> Mettre en vente
+                                    </button>
+                                </div>
+                            </div>
+                        )}
+
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            {skins.map((skin) => (
+                                <div key={skin.id} className="bg-brand-card/50 border border-white/5 rounded-2xl p-4 flex flex-col items-center text-center relative hover:border-pink-500/30 transition-colors">
+                                    <button onClick={() => handleDeleteSkin(skin.id)} className="absolute top-2 right-2 p-2 bg-black/50 rounded-full text-gray-400 hover:text-red-400 transition-colors z-10">
+                                        <Trash2 className="w-4 h-4" />
+                                    </button>
+                                    
+                                    <div className="w-24 h-24 rounded-full overflow-hidden border-2 border-white/10 mb-3 bg-black/50 relative">
+                                        {skin.image_url ? (
+                                           <Image src={skin.image_url} alt={skin.name} fill className="object-cover" />
+                                        ) : (
+                                            <div className="w-full h-full flex items-center justify-center text-gray-600 text-xs">No img</div>
+                                        )}
+                                    </div>
+                                    
+                                    <h3 className="font-bold text-white text-lg">{skin.name}</h3>
+                                    
+                                    <div className="mt-2 text-sm font-bold">
+                                        {skin.is_default ? (
+                                            <span className="text-green-400 bg-green-500/10 px-3 py-1 rounded-full border border-green-500/20">Gratuit de base</span>
+                                        ) : skin.price_xp === 0 ? (
+                                            <span className="text-pink-400 bg-pink-500/10 px-3 py-1 rounded-full border border-pink-500/20">Gratuit/Cadeau</span>
+                                        ) : (
+                                            <span className="text-yellow-400 bg-yellow-500/10 px-3 py-1 rounded-full flex items-center justify-center gap-1 border border-yellow-500/20">
+                                                ⭐ {skin.price_xp} Éclats
+                                            </span>
+                                        )}
+                                    </div>
+                                </div>
+                            ))}
+                            {skins.length === 0 && <div className="col-span-3 text-center text-gray-500 py-10">Aucun avatar enregistré.</div>}
+                        </div>
+                    </>
+                )}
+
+                {activeTab === 'badges' && (
+                    <>
+                    {showForm && (
+                        <div className="bg-magic-card border border-purple-500/30 rounded-2xl p-6 mb-8 animate-in slide-in-from-top-4">
                         <h2 className="font-bold text-lg mb-4 text-purple-300">Créer un Badge</h2>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                             <input
@@ -139,7 +529,7 @@ export default function AdminGamificationPage() {
                             </button>
                             <button
                                 onClick={handleCreate}
-                                className="bg-green-600 hover:bg-green-500 text-white px-6 py-2 rounded-lg font-bold flex items-center gap-2"
+                                className="bg-purple-600 hover:bg-purple-500 text-white px-6 py-2 rounded-lg font-bold flex items-center gap-2"
                             >
                                 <Save className="w-4 h-4" /> Enregistrer
                             </button>
@@ -185,6 +575,8 @@ export default function AdminGamificationPage() {
                         </div>
                     )}
                 </div>
+                    </>
+                )}
             </div>
         </div>
     );

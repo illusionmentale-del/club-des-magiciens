@@ -7,8 +7,9 @@ import { usePathname, useSearchParams } from "next/navigation";
 import { Menu, X, BookOpen, Settings, Video, LogOut, Star, Play, ShoppingBag, Trophy, Map, Package, Wand2, Shield, LayoutDashboard, Sparkles, Store } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
+import MagicAvatar from "@/components/kids/MagicAvatar";
 
-export default function KidsMobileNav({ logoUrl, isAdmin, hasPurchases, hasUnreadReplies, enableProgram = true, enableMasterclass = true, enableAccount = true, enableShop = true }: {
+export default function KidsMobileNav({ logoUrl, isAdmin, hasPurchases, hasUnreadReplies, enableProgram = true, enableMasterclass = true, enableAccount = true, enableShop = true, xpBalance = 0, lifetimeXP = 0, magicLevel = "Apprenti", avatarUrl = "", userName = "" }: {
     logoUrl?: string;
     hasPurchases?: boolean;
     isAdmin?: boolean;
@@ -17,6 +18,11 @@ export default function KidsMobileNav({ logoUrl, isAdmin, hasPurchases, hasUnrea
     enableMasterclass?: boolean;
     enableAccount?: boolean;
     enableShop?: boolean;
+    xpBalance?: number;
+    lifetimeXP?: number;
+    magicLevel?: string;
+    avatarUrl?: string;
+    userName?: string;
 }) {
     const [isOpen, setIsOpen] = useState(false);
     const [isOpening, setIsOpening] = useState(false);
@@ -24,6 +30,11 @@ export default function KidsMobileNav({ logoUrl, isAdmin, hasPurchases, hasUnrea
     const searchParams = useSearchParams();
     const router = useRouter();
     const supabase = createClient();
+
+    const isLegendary = (lifetimeXP || 0) >= 150;
+    const isHolo = (lifetimeXP || 0) >= 50 && (lifetimeXP || 0) < 150;
+    const maxForLevel = isLegendary ? 500 : (isHolo ? 150 : 50);
+    const progressPercent = Math.min(((lifetimeXP || 0) / maxForLevel) * 100, 100);
 
     // Support for forced preview modes
     const forcedView = searchParams.get('view');
@@ -104,13 +115,50 @@ export default function KidsMobileNav({ logoUrl, isAdmin, hasPurchases, hasUnrea
 
                     {/* Menu Content */}
                     <div className="relative w-64 h-full bg-magic-card border-r border-white/10 flex flex-col p-4 animate-in slide-in-from-left duration-200">
-                        <div className="flex justify-end mb-4">
+                        <div className="flex justify-between items-start mb-4">
+                            <div className="flex items-center gap-3">
+                                <MagicAvatar imageUrl={avatarUrl} levelName={magicLevel} size="sm" />
+                                <div>
+                                    <h2 className="font-bold text-white text-xs leading-tight line-clamp-1">{userName}</h2>
+                                    <p className="text-[10px] text-brand-gold font-mono">{magicLevel}</p>
+                                </div>
+                            </div>
                             <button onClick={close} className="p-2 text-gray-400 hover:text-white">
                                 <X className="w-6 h-6" />
                             </button>
                         </div>
 
                         <nav className="space-y-2 flex-1">
+                            {/* 👑 Portefeuille & Grade */}
+                            <div className="mx-4 mb-4 p-4 rounded-xl bg-gradient-to-b from-[#1a1025] to-[#0A0510] border border-purple-500/30 flex flex-col shadow-[inset_0_0_20px_rgba(168,85,247,0.1)] group cursor-default">
+                                <div className="flex items-center justify-between mb-3 w-full">
+                                    <div className="flex items-center gap-2">
+                                        <Sparkles className="w-5 h-5 text-yellow-400 group-hover:animate-spin-slow" />
+                                        <span className="font-bold text-white text-sm">Mon Trésor</span>
+                                    </div>
+                                    <div className="font-black text-brand-gold text-lg items-baseline flex gap-1">
+                                        {xpBalance}
+                                        <span className="text-[10px] text-brand-gold/70 uppercase tracking-widest font-bold">XP</span>
+                                    </div>
+                                </div>
+
+                                {/* Progress Bar */}
+                                <div className="pt-3 border-t border-white/10 w-full">
+                                    <div className="flex justify-between text-[10px] font-bold text-white/50 uppercase tracking-widest mb-1.5">
+                                        <span className={isLegendary ? "text-amber-400" : isHolo ? "text-purple-300" : "text-blue-300"}>{magicLevel}</span>
+                                        <span className={isLegendary ? "text-amber-400" : "text-white"}>{lifetimeXP} / {isLegendary && lifetimeXP >= 500 ? "MAX" : maxForLevel} XP</span>
+                                    </div>
+                                    <div className="h-1.5 w-full bg-black/60 rounded-full overflow-hidden border border-white/5">
+                                        <div
+                                            className={`h-full relative ${isLegendary ? "bg-gradient-to-r from-amber-600 to-yellow-400" : isHolo ? "bg-gradient-to-r from-purple-600 to-blue-400" : "bg-gradient-to-r from-blue-600 to-cyan-400"}`}
+                                            style={{ width: `${progressPercent}%` }}
+                                        >
+                                            <div className="absolute inset-0 bg-white/30 w-full animate-[pulse_2s_infinite]"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                             {/* 1. 🏰 Le Club (Home) */}
                             <Link
                                 href="/kids"

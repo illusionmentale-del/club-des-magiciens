@@ -282,10 +282,38 @@ export default function AdminUserDetailPage() {
                                         value=""
                                     >
                                         <option value="" disabled>Choisir un produit...</option>
-                                        {shopItems.map(item => (
-                                            <option key={item.id} value={item.id}>{item.title}</option>
-                                        ))}
                                     </select>
+                                </div>
+                                <div className="border-t border-white/10 pt-4 mt-4">
+                                    <label className="text-xs text-yellow-500 font-bold block mb-1">⭐ Créditer des Éclats / XP (Cadeau Manuel)</label>
+                                    <div className="flex gap-2">
+                                        <input
+                                            type="number"
+                                            className="w-full bg-yellow-500/10 border border-yellow-500/30 rounded-lg p-2 text-sm outline-none text-yellow-100"
+                                            placeholder="Montant (ex: 50)"
+                                            id="xpAmount"
+                                        />
+                                        <button
+                                            onClick={async () => {
+                                                const el = document.getElementById('xpAmount') as HTMLInputElement;
+                                                const val = parseInt(el.value);
+                                                if (isNaN(val) || val === 0) return alert("Montant invalide");
+                                                if (!confirm(`Créditer ${val} Éclats / XP à cet enfant ?`)) return;
+                                                const { grantAwardXP } = await import("@/app/actions/xp");
+                                                const res = await grantAwardXP(id as string, 'admin_manual_gift', val, `admin_gift_${Date.now()}`);
+                                                if (res?.success) {
+                                                    alert("Éclats / XP ajoutés !");
+                                                    el.value = "";
+                                                    fetchData();
+                                                } else {
+                                                    alert(res?.error || res?.warning || "Erreur inconnue");
+                                                }
+                                            }}
+                                            className="bg-yellow-500 hover:bg-yellow-400 text-black font-bold px-4 rounded-lg text-xs tracking-widest uppercase transition-colors"
+                                        >
+                                            Ajouter
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { ShoppingBag, Star, Lock, Play, CheckCircle2, Package } from "lucide-react";
 import CategoryBanner from "@/components/kids/CategoryBanner";
 import ShopBuyWithXP from "@/components/kids/ShopBuyWithXP";
+import SkinLocker from "@/components/kids/SkinLocker";
 
 export const metadata = {
     title: 'La Boutique | Club des Magiciens',
@@ -46,6 +47,16 @@ export default async function KidsShopPage() {
         console.error("Could not fetch xp logs securely (maybe table not ready?)");
     }
 
+    // 4. Fetch Avatars Data
+    const { data: skins } = await supabase.from('avatar_skins').select('*').order('price_xp', { ascending: true });
+    
+    // 5. Fetch Profile (for equipped skin)
+    const { data: profile } = await supabase.from('profiles').select('equipped_skin_id').eq('id', user.id).single();
+    
+    // 6. Fetch Unlocked Skins
+    const { data: unlockedSkins } = await supabase.from('user_unlocked_skins').select('skin_id').eq('user_id', user.id);
+    const unlockedSkinIds = unlockedSkins?.map(s => s.skin_id) || [];
+
     return (
         <div className="min-h-screen bg-brand-bg text-brand-text p-4 md:p-8 pb-32 font-sans relative selection:bg-brand-gold/30">
             {/* Ambient Background Lights (Homogenized with Home) */}
@@ -79,6 +90,15 @@ export default async function KidsShopPage() {
                     colorClass="text-brand-gold"
                     bgClass="bg-brand-gold/10 border-brand-gold/20"
                 />
+
+                {skins && skins.length > 0 && (
+                    <SkinLocker 
+                        skins={skins} 
+                        unlockedSkinIds={unlockedSkinIds} 
+                        equippedSkinId={profile?.equipped_skin_id || null} 
+                        trueXP={trueXP} 
+                    />
+                )}
 
                 {/* Shop Grid */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

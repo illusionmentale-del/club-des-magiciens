@@ -26,6 +26,18 @@ export default async function KidsAccountPage({
 
     const isSettingsView = sParams.view === 'settings';
 
+    // Calculate Lifetime XP (Total accumulated positive XP for the Rank logic)
+    let lifetimeXP = profile?.xp || 0;
+    try {
+        const { data: xpLogs } = await supabase.from('user_xp_logs').select('xp_awarded').eq('user_id', user.id);
+        if (xpLogs) {
+            // Lifetime XP never goes down
+            lifetimeXP = xpLogs.reduce((acc, log) => acc + (log.xp_awarded > 0 ? log.xp_awarded : 0), 0);
+        }
+    } catch (e) {
+        console.error("Could not fetch lifetime XP", e);
+    }
+
     return (
         <div className="min-h-screen bg-brand-bg text-brand-text p-4 md:p-8 pb-32 font-sans selection:bg-brand-purple/30 overflow-hidden relative">
 
@@ -88,7 +100,7 @@ export default async function KidsAccountPage({
                             </div>
                         </div>
                     ) : (
-                        <MagicCard user={user} profile={profile} isKid={true} />
+                        <MagicCard user={user} profile={profile} isKid={true} lifetimeXP={lifetimeXP} />
                     )}
                 </div>
             </div>

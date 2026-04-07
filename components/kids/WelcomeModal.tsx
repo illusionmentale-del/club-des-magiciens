@@ -2,36 +2,44 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Wand2, GraduationCap, Sparkles, ShoppingBag, X, ChevronRight } from "lucide-react";
+import { Sparkles, GraduationCap, Video, ShoppingBag, Trophy, Wand2, X, ChevronRight } from "lucide-react";
 
 const slides = [
     {
         title: "Bienvenue au Club ! 🎩",
-        description: "Prêt à devenir un vrai magicien ? Laisse-moi te montrer comment fonctionne ton nouveau repaire secret !",
+        description: "Laisse-moi te montrer comment fonctionne Le Club des Petits Magiciens !",
         icon: Wand2,
         color: "text-brand-purple",
         bg: "bg-brand-purple/10",
         border: "border-brand-purple/20"
     },
     {
-        title: "Les Ateliers 🎓",
-        description: "C'est ton programme d'entraînement ! Suis les vidéos étape par étape, semaine après semaine, pour maîtriser l'art de l'illusion.",
-        icon: GraduationCap,
+        title: "L'Actu du Club 📢",
+        description: "Retrouve ici toutes les dernières actualités du Club en temps réel.",
+        icon: Sparkles,
         color: "text-brand-cyan",
         bg: "bg-brand-cyan/10",
         border: "border-brand-cyan/20"
     },
     {
-        title: "La Bibliothèque 📚",
-        description: "Envie d'apprendre un secret rapidement ? Explore la Bibliothèque pour piocher des tours et relever des défis magiques !",
-        icon: Sparkles,
+        title: "La Formation 📚",
+        description: "Ici, tu retrouveras toutes les vidéos publiées chaque semaine pour apprendre pas à pas la Magie.",
+        icon: GraduationCap,
         color: "text-brand-blue",
         bg: "bg-brand-blue/10",
         border: "border-brand-blue/20"
     },
     {
+        title: "Les Ateliers 🎬",
+        description: "Une fois par mois, retrouve un atelier complet sur un sujet spécifique (Magie des cartes, sculptures sur ballon...). Ici, ce sont des vidéos plus longues pour approfondir tes connaissances.",
+        icon: Video,
+        color: "text-brand-gold",
+        bg: "bg-brand-gold/10",
+        border: "border-brand-gold/20"
+    },
+    {
         title: "La Boutique VIP 🎁",
-        description: "Besoin de matériel de pro ? Commande tes boîtes physiques secrètes pour épater tes proches sur scène !",
+        description: "Tu peux acheter ici des tours de magie, des tutoriels ou même de nouveaux accessoires. Une boutique privée à un tarif privilégié !",
         icon: ShoppingBag,
         color: "text-green-500",
         bg: "bg-green-500/10",

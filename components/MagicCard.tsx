@@ -10,13 +10,14 @@ interface MagicCardProps {
     user: any;
     profile: any;
     isKid?: boolean;
+    lifetimeXP?: number;
 }
 
-export default function MagicCard({ user, profile, isKid = false }: MagicCardProps) {
+export default function MagicCard({ user, profile, isKid = false, lifetimeXP }: MagicCardProps) {
     const [isFlipped, setIsFlipped] = useState(false);
     const [mousePosition, setMousePosition] = useState({ x: 0, y: 0, percentageX: 50, percentageY: 50 });
 
-    const xp = profile?.xp || 0;
+    const xp = lifetimeXP ?? profile?.xp ?? 0;
 
     // Rarity Tiers Logic
     const isHolo = xp >= 50 && xp < 150;

@@ -6,8 +6,9 @@ import Image from "next/image";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { LogOut, BookOpen, Settings, Video, Star, Youtube, Instagram, Facebook, LayoutDashboard, Shield, Wand2, ShoppingBag, Trophy, Map, Package, Sparkles, Store } from "lucide-react";
+import MagicAvatar from "@/components/kids/MagicAvatar";
 
-export default function KidsSidebar({ socialLinks, logoUrl, isAdmin, hasPurchases, hasUnreadReplies, hasAdultsAccess, enableProgram = true, enableMasterclass = true, enableAccount = true, enableShop = true }: {
+export default function KidsSidebar({ socialLinks, logoUrl, isAdmin, hasPurchases, hasUnreadReplies, hasAdultsAccess, enableProgram = true, enableMasterclass = true, enableAccount = true, enableShop = true, xpBalance = 0, lifetimeXP = 0, magicLevel = "Apprenti", avatarUrl = "", userName = "" }: {
     socialLinks?: { youtube: string; instagram: string; facebook: string; tiktok: string };
     logoUrl?: string;
     isAdmin?: boolean;
@@ -18,6 +19,11 @@ export default function KidsSidebar({ socialLinks, logoUrl, isAdmin, hasPurchase
     enableMasterclass?: boolean;
     enableAccount?: boolean;
     enableShop?: boolean;
+    xpBalance?: number;
+    lifetimeXP?: number;
+    magicLevel?: string;
+    avatarUrl?: string;
+    userName?: string;
 }) {
     const pathname = usePathname();
     const router = useRouter();
@@ -49,6 +55,11 @@ export default function KidsSidebar({ socialLinks, logoUrl, isAdmin, hasPurchase
     const isActive = (path: string) => pathname === path;
     const isHomeActive = isActive('/kids') && (!mounted || !hash);
 
+    const isLegendary = (lifetimeXP || 0) >= 150;
+    const isHolo = (lifetimeXP || 0) >= 50 && (lifetimeXP || 0) < 150;
+    const maxForLevel = isLegendary ? 500 : (isHolo ? 150 : 50);
+    const progressPercent = Math.min(((lifetimeXP || 0) / maxForLevel) * 100, 100);
+
     return (
         <aside className={`w-64 bg-magic-card border-r border-white/10 ${isForcedMobile ? 'hidden' : (isForcedDesktop ? 'flex' : 'hidden md:flex')} flex-col flex-shrink-0 h-full`}>
             {/* Logo Area */}
@@ -65,9 +76,12 @@ export default function KidsSidebar({ socialLinks, logoUrl, isAdmin, hasPurchase
                     </div>
                 </Link>
 
-                <div>
-                    <h2 className="font-bold text-white text-sm">Jérémy Marouani</h2>
-                    <p className="text-xs text-magic-gold font-mono">@LeMagicienPOV</p>
+                <div className="flex flex-col items-center gap-3">
+                    <MagicAvatar imageUrl={avatarUrl} levelName={magicLevel} size="lg" />
+                    <div>
+                        <h2 className="font-bold text-white text-sm leading-tight">{userName}</h2>
+                        <p className="text-xs text-brand-gold font-mono">{magicLevel}</p>
+                    </div>
                 </div>
 
                 <div className="flex items-center gap-3 text-gray-400">
@@ -84,6 +98,36 @@ export default function KidsSidebar({ socialLinks, logoUrl, isAdmin, hasPurchase
             {/* Navigation */}
             {/* Navigation */}
             <nav className="flex-1 p-4 space-y-4 overflow-y-auto">
+                {/* 👑 Portefeuille & Grade */}
+                <div className="mx-4 mb-4 p-4 rounded-xl bg-gradient-to-b from-[#1a1025] to-[#0A0510] border border-purple-500/30 shadow-[inset_0_0_20px_rgba(168,85,247,0.1)] group hover:shadow-[inset_0_0_25px_rgba(168,85,247,0.2)] transition-all cursor-default">
+                    <div className="flex items-center justify-between mb-3">
+                        <div className="flex items-center gap-2">
+                            <Sparkles className="w-5 h-5 text-yellow-400 group-hover:animate-spin-slow" />
+                            <span className="font-bold text-white text-sm">Mon Trésor</span>
+                        </div>
+                        <div className="font-black text-brand-gold text-lg items-baseline flex gap-1">
+                            {xpBalance}
+                            <span className="text-[10px] text-brand-gold/70 uppercase tracking-widest font-bold">XP</span>
+                        </div>
+                    </div>
+                
+                    {/* Progress Bar */}
+                    <div className="pt-3 border-t border-white/10">
+                        <div className="flex justify-between text-[10px] font-bold text-white/50 uppercase tracking-widest mb-1.5">
+                            <span className={isLegendary ? "text-amber-400" : isHolo ? "text-purple-300" : "text-blue-300"}>{magicLevel}</span>
+                            <span className={isLegendary ? "text-amber-400" : "text-white"}>{lifetimeXP} / {isLegendary && lifetimeXP >= 500 ? "MAX" : maxForLevel} XP</span>
+                        </div>
+                        <div className="h-1.5 w-full bg-black/60 rounded-full overflow-hidden border border-white/5">
+                            <div
+                                className={`h-full relative ${isLegendary ? "bg-gradient-to-r from-amber-600 to-yellow-400" : isHolo ? "bg-gradient-to-r from-purple-600 to-blue-400" : "bg-gradient-to-r from-blue-600 to-cyan-400"}`}
+                                style={{ width: `${progressPercent}%` }}
+                            >
+                                <div className="absolute inset-0 bg-white/30 w-full animate-[pulse_2s_infinite]"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 {/* 1. 🏰 Le Club (Home) */}
                 <Link
                     href="/kids"
@@ -91,11 +135,11 @@ export default function KidsSidebar({ socialLinks, logoUrl, isAdmin, hasPurchase
                 >
                     <div className="flex items-center gap-4">
                         <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-colors ${isActive('/kids') && pathname === '/kids' ? 'bg-magic-purple text-white shadow-lg shadow-magic-purple/20' : 'bg-white/5 text-gray-400 group-hover:bg-white/10 group-hover:text-white'}`}>
-                            <Sparkles className="w-5 h-5" />
+                            <LayoutDashboard className="w-5 h-5" />
                         </div>
                         <div>
                             <div className={`font-bold ${isActive('/kids') && pathname === '/kids' ? 'text-magic-purple' : 'text-gray-300 group-hover:text-white'}`}>L'Actu du Club</div>
-                            <div className="text-xs text-gray-500">Retrouve toutes les dernières actualités</div>
+                            <div className="text-xs text-gray-500">Retrouve les nouveautés</div>
                         </div>
                     </div>
                 </Link>

@@ -4,6 +4,8 @@ import { useState } from "react";
 import { CheckCircle, Circle } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
+import { validateKidsCourseVideo } from "@/app/kids/videos/actions";
+import GamificationModal, { GamificationEvent } from "./kids/GamificationModal";
 
 interface VideoPlayerControlsProps {
     videoId: string;
@@ -15,37 +17,54 @@ interface VideoPlayerControlsProps {
 export default function VideoPlayerControls({ videoId, courseId, isCompleted: initialStatus, theme = "adults" }: VideoPlayerControlsProps) {
     const [isCompleted, setIsCompleted] = useState(initialStatus);
     const [isLoading, setIsLoading] = useState(false);
+    const [event, setEvent] = useState<GamificationEvent | null>(null);
     const supabase = createClient();
     const router = useRouter();
 
     const toggleCompletion = async () => {
         setIsLoading(true);
         try {
-            const { data: { user } } = await supabase.auth.getUser();
-            if (!user) return;
-
-            if (isCompleted) {
-                // Unmark
-                await supabase
-                    .from("user_progress")
-                    .delete()
-                    .eq("user_id", user.id)
-                    .eq("video_id", videoId);
-                setIsCompleted(false);
+            if (theme === "kids") {
+                const res = await validateKidsCourseVideo(videoId, courseId, !isCompleted);
+                if (res?.success) {
+                    setIsCompleted(!isCompleted);
+                    if (!isCompleted && 'gainedXP' in res && (res.gainedXP || res.leveledUpTo || res.unlockedWelcome)) {
+                        setEvent({
+                            gainedXP: res.gainedXP as number,
+                            leveledUpTo: res.leveledUpTo as string | null,
+                            unlockedWelcome: res.unlockedWelcome as boolean
+                        });
+                    } else {
+                        router.refresh();
+                    }
+                }
             } else {
-                // Mark as complete
-                await supabase
-                    .from("user_progress")
-                    .insert({
-                        user_id: user.id,
-                        video_id: videoId,
-                        course_id: courseId,
-                        is_completed: true,
-                        last_watched_at: new Date().toISOString()
-                    });
-                setIsCompleted(true);
+                const { data: { user } } = await supabase.auth.getUser();
+                if (!user) return;
+
+                if (isCompleted) {
+                    // Unmark
+                    await supabase
+                        .from("user_progress")
+                        .delete()
+                        .eq("user_id", user.id)
+                        .eq("video_id", videoId);
+                    setIsCompleted(false);
+                } else {
+                    // Mark as complete
+                    await supabase
+                        .from("user_progress")
+                        .insert({
+                            user_id: user.id,
+                            video_id: videoId,
+                            course_id: courseId,
+                            is_completed: true,
+                            last_watched_at: new Date().toISOString()
+                        });
+                    setIsCompleted(true);
+                }
+                router.refresh(); // Refresh server components to update sidebar
             }
-            router.refresh(); // Refresh server components to update sidebar
         } catch (error) {
             console.error("Error toggling completion:", error);
         } finally {
@@ -55,6 +74,7 @@ export default function VideoPlayerControls({ videoId, courseId, isCompleted: in
 
     return (
         <div className="flex items-center gap-4 py-4 border-b border-white/10 mb-4">
+            {theme === "kids" && <GamificationModal event={event} onClose={() => { setEvent(null); router.refresh(); }} />}
             <button
                 onClick={toggleCompletion}
                 disabled={isLoading}

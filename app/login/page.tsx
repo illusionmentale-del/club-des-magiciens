@@ -110,13 +110,15 @@ function LoginFormContent() {
 
 export default function LoginPage() {
     return (
-        <div className="min-h-screen bg-magic-bg text-white flex flex-col items-center justify-center p-4 relative overflow-hidden">
+        <div className="min-h-[100dvh] bg-magic-bg text-white flex flex-col p-4 relative overflow-y-auto">
             {/* Background noise */}
-            <div className="absolute inset-0 bg-[url('/noise.svg')] opacity-20 pointer-events-none"></div>
+            <div className="absolute inset-0 bg-[url('/noise.svg')] opacity-20 pointer-events-none fixed"></div>
 
-            <Suspense fallback={<Loader2 className="w-8 h-8 animate-spin text-magic-purple absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />}>
-                <LoginFormContent />
-            </Suspense>
+            <div className="flex-1 flex flex-col justify-center items-center w-full max-w-md mx-auto py-8">
+                <Suspense fallback={<Loader2 className="w-8 h-8 animate-spin text-magic-purple" />}>
+                    <LoginFormContent />
+                </Suspense>
+            </div>
         </div>
     );
 }

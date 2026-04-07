@@ -51,6 +51,13 @@ export async function grantAwardXP(userId: string, actionType: string, amount: n
     }
 
     console.log(`[XP System] Awarded ${amount} XP to ${userId} for ${actionType}`);
+
+    // Automatically evaluate quests if this is not a quest reward itself (prevent infinite loop)
+    if (!actionType.startsWith('quest_')) {
+        // Fire and forget background evaluation
+        import('./quests').then(({ evaluateQuests }) => evaluateQuests(userId)).catch(console.error);
+    }
+
     return { success: true };
 }
 
@@ -101,6 +108,14 @@ export async function purchaseWithXP(itemId: string) {
         console.error("Failed to grant item after XP deduct:", grantError);
         return { success: false, error: "Achat validé mais objet non reçu, contacte le support !" };
     }
+
+    // 5. Grant +10 XP as Level-up Progression Boost / Cashback
+    await supabase.from("user_xp_logs").insert({
+        user_id: user.id,
+        action_type: 'trick_unlocked_boost',
+        xp_awarded: 10,
+        reference_id: `unlock_boost_${itemId}_${Date.now()}`
+    });
 
     return { success: true };
 }

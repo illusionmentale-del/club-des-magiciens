@@ -187,10 +187,15 @@ export async function POST(req: Request) {
             const lineItems = await stripe.checkout.sessions.listLineItems(session.id);
             let grantsAdultAccess = false;
             let grantsKidsAccess = false;
+            let isAnnualPlan = false;
 
             // Analyze what the user actually purchased
             for (const item of lineItems.data) {
                 if (!item.price) continue;
+
+                if (item.price.recurring?.interval === 'year') {
+                    isAnnualPlan = true;
+                }
 
                 // Find matching product in Supabase by Stripe Price ID
                 const { data: matchedProduct } = await supabase
@@ -218,6 +223,14 @@ export async function POST(req: Request) {
                                 status: 'active',
                                 systeme_io_order_id: session.id
                             }, { onConflict: 'user_id,library_item_id' });
+
+                            // Grant +10 XP (Progression boost & Cashback) for getting a trick
+                            await supabase.from('user_xp_logs').insert({
+                                user_id: userId,
+                                action_type: 'trick_unlocked_boost_stripe',
+                                xp_awarded: 10,
+                                reference_id: `boost_${session.id}_${linked.id}`
+                            });
                         }
                         console.log(`[Stripe Webhook] Unlocked ${linkedItems.length} items for product ${matchedProduct.id}`);
                     }
@@ -246,7 +259,8 @@ export async function POST(req: Request) {
                         has_kids_access: finalKidsAccess,
                         // Set legacy role based on primary purchase
                         access_level: finalAdultsAccess ? 'adult' : 'kid',
-                        role: finalAdultsAccess ? 'adult' : 'kid'
+                        role: finalAdultsAccess ? 'adult' : 'kid',
+                        is_annual_subscriber: isAnnualPlan
                     })
                     .eq('id', userId);
 
@@ -262,6 +276,62 @@ export async function POST(req: Request) {
                     status: 'active',
                     systeme_io_order_id: session.id
                 }, { onConflict: 'user_id,library_item_id' });
+
+                // Grant +10 XP (Progression boost & Cashback) for getting a trick
+                await supabase.from('user_xp_logs').insert({
+                    user_id: userId,
+                    action_type: 'trick_unlocked_boost_stripe_direct',
+                    xp_awarded: 10,
+                    reference_id: `boost_${session.id}_${libraryItemId}`
+                });
+            }
+        }
+
+        if (event.type === 'invoice.paid') {
+            const invoice = event.data.object as Stripe.Invoice;
+            const customerId = invoice.customer as string;
+            const amountPaid = invoice.amount_paid; // in cents (e.g., 499 for 4.99€)
+
+            if (customerId && typeof customerId === 'string') {
+                // Find user by stripe_customer_id
+                const { data: profile } = await supabase
+                    .from('profiles')
+                    .select('id')
+                    .eq('stripe_customer_id', customerId)
+                    .single();
+
+                if (profile && profile.id) {
+                    let xpToAward = 0;
+                    let actionType = '';
+
+                    // Monthly Plan (around 4.99€) -> 499 cents. Using >= 400 and <= 1000 to be safe
+                    if (amountPaid >= 400 && amountPaid <= 1000) {
+                        xpToAward = 100;
+                        actionType = 'abonnement_mensuel';
+                    } 
+                    // Annual Plan (around 49.90€) -> 4990 cents. Using >= 4000
+                    else if (amountPaid >= 4000 && amountPaid <= 10000) {
+                        xpToAward = 500;
+                        actionType = 'premium_annuel_bonus';
+                    }
+
+                    if (xpToAward > 0) {
+                        // Unique invoice.id prevents double accounting
+                        const { error: xpError } = await supabase.from('user_xp_logs').insert({
+                            user_id: profile.id,
+                            action_type: actionType,
+                            xp_awarded: xpToAward,
+                            reference_id: `invoice_${invoice.id}`
+                        });
+                        if (xpError) {
+                            if (xpError.code !== '23505') { // Ignore duplicate key errors
+                                console.error(`[Stripe Webhook] Failed to grant XP:`, xpError);
+                            }
+                        } else {
+                            console.log(`[Stripe Webhook] Granted ${xpToAward} XP to user ${profile.id} for invoice ${invoice.id}`);
+                        }
+                    }
+                }
             }
         }
 
