@@ -78,7 +78,7 @@ export default async function KidsPricingPage() {
                         en ligne pour les <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-purple to-brand-blue">8-14 ans</span>
                     </h1>
                     <p className="text-xl text-gray-400 max-w-2xl mx-auto font-medium">
-                        Rejoins le club. Découvre des tours incroyables, gagne des badges et épate ton entourage avec des illusions impossibles.
+                        Chaque semaine, découvre de nouveaux tours et apprends de véritables secrets de magiciens dans une école de magie en ligne ludique, sécurisée et 100% adaptée.
                     </p>
                 </div>
 
