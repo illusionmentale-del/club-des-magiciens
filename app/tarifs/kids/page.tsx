@@ -93,7 +93,7 @@ export default async function KidsPricingPage() {
                 </section>
 
                 {/* Social Proof dynamique */}
-                <div className="flex flex-col items-center justify-center mt-8 mb-16 relative z-10 w-full mx-auto animate-in slide-in-from-bottom-4 duration-700">
+                <div className="flex flex-col items-center justify-center mt-8 mb-8 relative z-10 w-full mx-auto animate-in slide-in-from-bottom-4 duration-700">
                     <div className="relative group cursor-pointer inline-block">
                         <div className="absolute -inset-1.5 bg-gradient-to-r from-brand-purple via-brand-blue to-purple-600 rounded-full blur opacity-40 group-hover:opacity-75 transition duration-1000 group-hover:duration-200 animate-pulse-slow"></div>
                         <div className="relative text-sm md:text-base font-bold text-gray-200 text-center bg-[#0A0A0E] border border-brand-purple/50 px-8 py-4 rounded-full shadow-[0_0_30px_rgba(139,92,246,0.4)] flex items-center justify-center gap-3">
@@ -107,7 +107,7 @@ export default async function KidsPricingPage() {
                 </div>
 
                 {/* Subscriptions Grid */}
-                <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 items-stretch max-w-5xl mx-auto pt-20">
+                <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 items-stretch max-w-5xl mx-auto pt-4">
 
                     {/* MONTHLY PLAN */}
                     <div className="bg-white/[0.03] border border-white/5 rounded-[2rem] p-8 md:p-10 flex flex-col relative overflow-hidden backdrop-blur-xl transition-all hover:bg-white/[0.05] mt-8 md:mt-12 shadow-2xl hover:shadow-[0_0_30px_rgba(255,255,255,0.05)] group">
@@ -122,7 +122,7 @@ export default async function KidsPricingPage() {
 
                         <div className="mb-8 flex flex-col">
                             <div className="flex items-baseline gap-2">
-                                <span className="text-5xl md:text-6xl font-black text-white">{monthlyProduct?.price_label || "9,99€"}</span>
+                                <span className="text-5xl md:text-6xl font-black text-white">{monthlyProduct?.price_label || "4,99€"}</span>
                                 <span className="text-gray-400 font-bold text-lg">/mois</span>
                             </div>
                             <span className="text-sm text-gray-500 mt-2 font-medium">Annulable en un clic depuis ton espace.</span>
@@ -143,7 +143,7 @@ export default async function KidsPricingPage() {
                                     <PlayCircle className="w-5 h-5 text-brand-blue-light" />
                                 </div>
                                 <div className="mt-0.5">
-                                    <strong className="block text-white mb-1">Les Masterclass :</strong>
+                                    <strong className="block text-white mb-1">Les Ateliers :</strong>
                                     <span className="text-gray-400 text-sm leading-relaxed">Tous les mois des vidéos sur des sujets approfondis pour t'aider à mieux progresser.</span>
                                 </div>
                             </li>
@@ -153,7 +153,7 @@ export default async function KidsPricingPage() {
                                 </div>
                                 <div className="mt-0.5">
                                     <strong className="block text-white mb-1">La Boutique Privée :</strong>
-                                    <span className="text-gray-400 text-sm leading-relaxed">Achète des tours de magie physiques et des packs vidéos exclusifs au Club.</span>
+                                    <span className="text-gray-400 text-sm leading-relaxed">Accède à une boutique privée avec des vidéos et des articles sélectionnés à un tarif préférentiel.</span>
                                 </div>
                             </li>
                         </ul>
@@ -214,7 +214,7 @@ export default async function KidsPricingPage() {
                                     <PlayCircle className="w-5 h-5 text-white" />
                                 </div>
                                 <div className="mt-0.5">
-                                    <strong className="block text-white mb-1">Les Masterclass :</strong>
+                                    <strong className="block text-white mb-1">Les Ateliers :</strong>
                                     <span className="text-gray-300 text-sm leading-relaxed">Tous les mois des vidéos sur des sujets approfondis pour t'aider à mieux progresser.</span>
                                 </div>
                             </li>
@@ -224,7 +224,7 @@ export default async function KidsPricingPage() {
                                 </div>
                                 <div className="mt-0.5">
                                     <strong className="block text-white mb-1">La Boutique Privée :</strong>
-                                    <span className="text-gray-300 text-sm leading-relaxed">Achète des tours de magie physiques et des packs exclusifs au Club.</span>
+                                    <span className="text-gray-300 text-sm leading-relaxed">Accède à une boutique privée avec des vidéos et des articles sélectionnés à un tarif préférentiel.</span>
                                 </div>
                             </li>
 
