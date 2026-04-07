@@ -191,11 +191,11 @@ export default async function KidsPricingPage() {
 
                         <div className="mb-8 relative z-10 flex flex-col">
                             <div className="flex items-baseline gap-2">
-                                <span className="text-5xl font-black text-white">{yearlyProduct?.price_label || "99,99€"}</span>
+                                <span className="text-5xl font-black text-white">{yearlyProduct?.price_label || "49,99€"}</span>
                                 <span className="text-gray-300 font-bold">/an</span>
                             </div>
                             <span className="text-sm font-bold text-pink-400 mt-1 bg-pink-500/10 w-fit px-2 py-0.5 rounded border border-pink-500/20">
-                                Revient à seulement 8,33€/mois !
+                                Revient à seulement 4,16€/mois !
                             </span>
                         </div>
 
@@ -236,9 +236,9 @@ export default async function KidsPricingPage() {
                                 </div>
                                 <div className="z-10">
                                     <span className="block text-white mb-1 text-sm tracking-widest uppercase">Cadeau Exclusif :</span>
-                                    Débloque 3 Packs Bonus Vidéo de la Boutique automatiquement !
+                                    Un tour de magie expliqué en vidéo !
                                     <div className="flex items-center gap-3 mt-3">
-                                        <span className="text-xs font-bold text-white/50 line-through">Valeur : 150€</span>
+                                        <span className="text-xs font-bold text-white/50 line-through">Valeur : 9,99€</span>
                                         <span className="text-sm font-black text-brand-blue-light uppercase tracking-widest bg-brand-blue/10 px-2 py-1 rounded">100% GRATUIT</span>
                                     </div>
                                 </div>
@@ -251,7 +251,7 @@ export default async function KidsPricingPage() {
                                 productId={yearlyProduct?.id}
                                 space="kids"
                                 userLoggedIn={!!user}
-                                buttonText="Devenir l'Ultime Magicien"
+                                buttonText="M'abonner pour 1 an"
                                 className="bg-gradient-to-r from-brand-purple to-brand-blue hover:from-purple-500 hover:to-blue-500 text-white shadow-[0_0_30px_rgba(139,92,246,0.4)] border border-brand-purple/50"
                             />
                         </div>
