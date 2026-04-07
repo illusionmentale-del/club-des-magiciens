@@ -236,7 +236,7 @@ export default async function KidsPricingPage() {
                                 </div>
                                 <div className="z-10">
                                     <span className="block text-white mb-1 text-sm tracking-widest uppercase">Cadeau Exclusif :</span>
-                                    Un tour de magie expliqué en vidéo !
+                                    Un cadeau d'une valeur de 9,99€ à choisir dans la boutique !
                                     <div className="flex items-center gap-3 mt-3">
                                         <span className="text-xs font-bold text-white/50 line-through">Valeur : 9,99€</span>
                                         <span className="text-sm font-black text-brand-blue-light uppercase tracking-widest bg-brand-blue/10 px-2 py-1 rounded">100% GRATUIT</span>
