@@ -94,9 +94,15 @@ export default async function KidsPricingPage() {
 
                 {/* Social Proof dynamique */}
                 <div className="flex flex-col items-center justify-center mt-8 mb-16 relative z-10 w-full mx-auto animate-in slide-in-from-bottom-4 duration-700">
-                    <div className="text-lg font-bold text-gray-200 text-center max-w-md bg-white/5 border border-white/10 px-6 py-3 rounded-full shadow-[0_0_15px_rgba(168,85,247,0.15)] flex items-center gap-2">
-                        <Star className="w-5 h-5 text-brand-gold fill-current" />
-                        Rejoins déjà plus de <strong className="text-white text-xl mx-1">100</strong> apprentis magiciens !
+                    <div className="relative group cursor-pointer inline-block">
+                        <div className="absolute -inset-1.5 bg-gradient-to-r from-brand-purple via-brand-blue to-purple-600 rounded-full blur opacity-40 group-hover:opacity-75 transition duration-1000 group-hover:duration-200 animate-pulse-slow"></div>
+                        <div className="relative text-sm md:text-base font-bold text-gray-200 text-center bg-[#0A0A0E] border border-brand-purple/50 px-8 py-4 rounded-full shadow-[0_0_30px_rgba(139,92,246,0.4)] flex items-center justify-center gap-3">
+                            <Sparkles className="w-5 h-5 text-brand-gold animate-pulse" />
+                            <span>
+                                Rejoins déjà plus de <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-gold to-yellow-300 text-xl font-black mx-1 drop-shadow-[0_0_10px_rgba(252,211,77,0.5)]">100</span> apprentis magiciens !
+                            </span>
+                            <Sparkles className="w-5 h-5 text-brand-gold animate-pulse" />
+                        </div>
                     </div>
                 </div>
 
