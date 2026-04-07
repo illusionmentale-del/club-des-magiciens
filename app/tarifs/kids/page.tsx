@@ -31,13 +31,6 @@ export default async function KidsPricingPage() {
     const monthlyProduct = products && products.length > 0 ? products[0] : null;
     const yearlyProduct = products && products.length > 1 ? products[1] : null;
 
-    // Fetch total active users count for social proof
-    const { count } = await supabase
-        .from("profiles")
-        .select("*", { count: 'exact', head: true });
-
-    // Fallback to 15 if count fails for some reason
-    const totalUsers = count || 15;
 
     return (
         <div className="min-h-screen bg-[#050507] text-white font-sans selection:bg-brand-purple/30 relative overflow-hidden">
@@ -101,21 +94,9 @@ export default async function KidsPricingPage() {
 
                 {/* Social Proof dynamique */}
                 <div className="flex flex-col items-center justify-center mt-8 mb-16 relative z-10 w-full mx-auto animate-in slide-in-from-bottom-4 duration-700">
-                    <div className="flex -space-x-4 mb-4">
-                        {/* Fake avatars for social proof */}
-                        {[...Array(5)].map((_, i) => (
-                            <div key={i} className="w-12 h-12 rounded-full border-2 border-brand-bg bg-gradient-to-br from-brand-purple to-brand-blue flex items-center justify-center shadow-lg overflow-hidden relative">
-                                <img
-                                    src={`https://api.dicebear.com/7.x/notionists/svg?seed=magic${i}&backgroundColor=transparent`}
-                                    alt="Membre du club"
-                                    className="object-cover w-full h-full"
-                                />
-                            </div>
-                        ))}
-                    </div>
                     <div className="text-lg font-bold text-gray-200 text-center max-w-md bg-white/5 border border-white/10 px-6 py-3 rounded-full shadow-[0_0_15px_rgba(168,85,247,0.15)] flex items-center gap-2">
                         <Star className="w-5 h-5 text-brand-gold fill-current" />
-                        Rejoins déjà plus de <strong className="text-white text-xl mx-1">{totalUsers > 15 ? totalUsers : 15}</strong> petits magiciens !
+                        Rejoins déjà plus de <strong className="text-white text-xl mx-1">100</strong> apprentis magiciens !
                     </div>
                 </div>
 
