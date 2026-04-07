@@ -4,6 +4,7 @@ import SubscribeButton from "@/components/SubscribeButton";
 import Footer from "@/components/Footer";
 import Link from "next/link";
 import Image from "next/image";
+import AnimatedLink from "@/components/AnimatedLink";
 
 export const metadata = {
     title: "Rejoindre le Club Kids | Tarifs",
@@ -58,9 +59,9 @@ export default async function KidsPricingPage() {
                         Mon Espace
                     </Link>
                 ) : (
-                    <Link href="/login" className="text-sm font-bold text-gray-400 hover:text-white transition-colors">
+                    <AnimatedLink href="/login" className="text-sm font-bold text-gray-400 hover:text-white transition-colors">
                         J'ai déjà un compte, m'identifier
-                    </Link>
+                    </AnimatedLink>
                 )}
             </header>
 
