@@ -75,7 +75,7 @@ export default async function KidsPricingPage() {
                     </div>
                     <h1 className="text-4xl md:text-6xl font-black tracking-tight text-white leading-tight">
                         La première académie de magie <br className="hidden md:block" />
-                        en ligne pour les <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-purple to-brand-blue">8-18 ans</span>
+                        en ligne pour les <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-purple to-brand-blue">8-14 ans</span>
                     </h1>
                     <p className="text-xl text-gray-400 max-w-2xl mx-auto font-medium">
                         Chaque semaine, découvre de nouveaux tours et apprends de véritables secrets de magiciens dans une école de magie en ligne ludique, sécurisée et 100% adaptée.
