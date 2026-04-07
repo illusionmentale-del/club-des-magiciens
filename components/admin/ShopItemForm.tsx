@@ -15,6 +15,7 @@ type ShopItem = {
     thumbnail_url?: string | null;
     sales_page_url?: string | null;
     price_label?: string | null;
+    xp_price?: number | null;
     public_slug?: string | null;
     public_description?: string | null;
 };
@@ -32,6 +33,7 @@ export default function ShopItemForm({ initialData }: { initialData?: ShopItem }
         thumbnail_url: "",
         sales_page_url: "",
         price_label: "",
+        xp_price: null,
         public_slug: "",
         public_description: ""
     });
@@ -96,6 +98,7 @@ export default function ShopItemForm({ initialData }: { initialData?: ShopItem }
                 // cleanup fields
                 sales_page_url: (isPremium && formData.sales_page_url?.trim()) ? formData.sales_page_url.trim() : null,
                 price_label: (isPremium && formData.price_label?.trim()) ? formData.price_label.trim() : null,
+                xp_price: (isPremium && formData.xp_price) ? Number(formData.xp_price) : null,
                 public_slug: (isPublic && formData.public_slug?.trim()) ? formData.public_slug.trim() : null,
                 public_description: (isPublic && formData.public_description?.trim()) ? formData.public_description.trim() : null,
             };
@@ -265,6 +268,18 @@ export default function ShopItemForm({ initialData }: { initialData?: ShopItem }
                                         className="w-full bg-brand-bg border border-brand-border rounded-xl p-4 text-brand-text focus:border-brand-purple outline-none transition-all placeholder:text-brand-text-muted/20"
                                         placeholder="Ex: 49,00 €"
                                     />
+                                </div>
+                                <div>
+                                    <label className="block text-brand-text-muted text-xs font-bold uppercase tracking-wider mb-2">Prix en Points d'XP (Optionnel)</label>
+                                    <input
+                                        type="number"
+                                        name="xp_price"
+                                        value={formData.xp_price || ""}
+                                        onChange={handleChange}
+                                        className="w-full bg-brand-bg border border-brand-border rounded-xl p-4 text-yellow-400 font-bold focus:border-brand-purple outline-none transition-all placeholder:text-brand-text-muted/20"
+                                        placeholder="Ex: 500"
+                                    />
+                                    <p className="text-[10px] text-brand-text-muted mt-2">Si renseigné, l'enfant verra un bouton pour acheter ce secret avec ses points.</p>
                                 </div>
                             </div>
                         )}

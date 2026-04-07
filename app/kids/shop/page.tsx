@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ShoppingBag, Star, Lock, Play, CheckCircle2, Package } from "lucide-react";
 import CategoryBanner from "@/components/kids/CategoryBanner";
+import ShopBuyWithXP from "@/components/kids/ShopBuyWithXP";
 
 export const metadata = {
     title: 'La Boutique | Club des Magiciens',
@@ -33,6 +34,17 @@ export default async function KidsShopPage() {
         .eq("user_id", user.id);
 
     const unlockedItemIds = new Set(purchases?.map(p => p.library_item_id) || []);
+
+    // 3. Fetch true XP balance for the user
+    let trueXP = 0;
+    try {
+        const { data: xpLogs } = await supabase.from("user_xp_logs").select("xp_awarded").eq("user_id", user.id);
+        if (xpLogs) {
+            trueXP = xpLogs.reduce((acc, log) => acc + log.xp_awarded, 0);
+        }
+    } catch(e) {
+        console.error("Could not fetch xp logs securely (maybe table not ready?)");
+    }
 
     return (
         <div className="min-h-screen bg-brand-bg text-brand-text p-4 md:p-8 pb-32 font-sans relative selection:bg-brand-gold/30">
@@ -132,10 +144,15 @@ export default async function KidsShopPage() {
                                                     Regarder la vidéo
                                                 </Link>
                                             ) : (
-                                                <a href={`${item.sales_page_url}?prefilled_email=${encodeURIComponent(user.email || '')}&client_reference_id=${user.id}___${item.id}`} target="_blank" rel="noopener noreferrer" className="w-full bg-gradient-to-r from-brand-gold to-yellow-500 text-black font-black py-3 px-4 rounded-xl flex items-center justify-center gap-2 hover:scale-[1.02] transition-transform shadow-[0_10px_30px_rgba(250,204,21,0.3)]">
-                                                    <ShoppingBag className="w-5 h-5" />
-                                                    Obtenir ce secret
-                                                </a>
+                                                <>
+                                                    <a href={`${item.sales_page_url}?prefilled_email=${encodeURIComponent(user.email || '')}&client_reference_id=${user.id}___${item.id}`} target="_blank" rel="noopener noreferrer" className="w-full bg-gradient-to-r from-brand-gold to-yellow-500 text-black font-black py-3 px-4 rounded-xl flex items-center justify-center gap-2 hover:scale-[1.02] transition-transform shadow-[0_10px_30px_rgba(250,204,21,0.3)]">
+                                                        <ShoppingBag className="w-5 h-5" />
+                                                        Obtenir ce secret
+                                                    </a>
+                                                    {item.xp_price && item.xp_price > 0 && (
+                                                        <ShopBuyWithXP itemId={item.id} xpPrice={item.xp_price} trueXP={trueXP} />
+                                                    )}
+                                                </>
                                             )}
                                         </div>
                                     </div>
