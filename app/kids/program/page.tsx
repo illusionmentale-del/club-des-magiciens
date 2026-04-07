@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { Lock, Play, Star, CheckCircle, Trophy, BookOpen, GraduationCap } from "lucide-react";
-import CategoryBanner from "@/components/kids/CategoryBanner";
+
 
 export default async function KidsProgramPage() {
     const supabase = await createClient();
@@ -96,14 +96,7 @@ export default async function KidsProgramPage() {
                     )}
                 </header>
 
-                <CategoryBanner
-                    categoryId="ateliers"
-                    title="Bienvenue dans tes Ateliers ! 🎓"
-                    description="C'est ici que tu vas t'entraîner pas à pas. Regarde les vidéos de la semaine en cours pour découvrir tes nouvelles missions, puis essaye de les réaliser pour valider tes défis !"
-                    iconName="GraduationCap"
-                    colorClass="text-brand-cyan"
-                    bgClass="bg-brand-cyan/10 border-brand-cyan/20"
-                />
+
 
                 {/* Missions List */}
                 <div className="space-y-6">

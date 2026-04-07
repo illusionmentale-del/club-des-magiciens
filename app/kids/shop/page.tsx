@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { ShoppingBag, Star, Lock, Play, CheckCircle2, Package } from "lucide-react";
-import CategoryBanner from "@/components/kids/CategoryBanner";
+
 import ShopBuyWithXP from "@/components/kids/ShopBuyWithXP";
 import SkinLocker from "@/components/kids/SkinLocker";
 
@@ -82,14 +82,7 @@ export default async function KidsShopPage() {
                     </div>
                 </header>
 
-                <CategoryBanner
-                    categoryId="boutique"
-                    title="Ta Boutique VIP 🎁"
-                    description="Découvre ici du matériel professionnel et des coffrets physiques pour réaliser tes illusions dans la vraie vie. Tu trouveras tes tutoriels exclusifs dès que tu auras débloqué un secret !"
-                    iconName="Package"
-                    colorClass="text-brand-gold"
-                    bgClass="bg-brand-gold/10 border-brand-gold/20"
-                />
+
 
                 {skins && skins.length > 0 && (
                     <SkinLocker 
