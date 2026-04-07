@@ -32,5 +32,14 @@ export async function saveKidsVideoProgress(videoId: string, progressSeconds: nu
         return { success: false, error: error.message };
     }
 
+    // AWARD XP IF COMPLETED (Inviolable backend logic)
+    if (isCompleted) {
+        const { grantAwardXP } = await import("@/app/actions/xp");
+        
+        // On accorde 50 points d'XP pour avoir fini une vidéo d'entrainement.
+        // Le reference_id empêche d'avoir l'XP 2 fois pour la même vidéo ("video_completed_xyz")
+        await grantAwardXP(user.id, "video_completed", 50, `video_completed_${videoId}`);
+    }
+
     return { success: true };
 }
