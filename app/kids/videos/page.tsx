@@ -4,6 +4,7 @@ import { Video, Sparkles, FolderOpen, Play, Star } from 'lucide-react';
 import { createClient } from '@/lib/supabase/server';
 import Link from 'next/link';
 import Image from 'next/image';
+import CategoryBanner from '@/components/kids/CategoryBanner';
 
 export const metadata = {
     title: 'Les Ateliers | Club des Magiciens',
@@ -81,6 +82,15 @@ export default async function KidsVideosPage() {
                         </p>
                     </div>
                 </header>
+
+                <CategoryBanner
+                    categoryId="bibliotheque"
+                    title="Bienvenue dans la Bibliothèque ! 📚"
+                    description="C'est ton espace libre ! Revois d'anciens directs, découvre des tours rapides, ou explore librement tous les secrets que tu as manqués ou que tu veux revoir à volonté."
+                    icon={Sparkles}
+                    colorClass="text-brand-purple"
+                    bgClass="bg-brand-purple/10 border-brand-purple/20"
+                />
 
                 {/* Featured Masterclass Section */}
                 {featuredVideo && (

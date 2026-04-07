@@ -10,6 +10,7 @@ import KidsProgression from "@/components/kids/KidsProgression";
 import KidsAchievements from "@/components/kids/KidsAchievements";
 import { LiveStatusCard } from "@/components/LiveStatusCard";
 import GlobalAlertBanner from "@/components/kids/GlobalAlertBanner";
+import WelcomeModal from "@/components/kids/WelcomeModal";
 
 export const dynamic = 'force-dynamic';
 
@@ -252,6 +253,7 @@ export default async function KidsHomePage({ searchParams }: { searchParams: Pro
 
     return (
         <div className="min-h-screen bg-brand-bg text-brand-text p-4 md:p-8 pb-32 font-sans overflow-hidden relative selection:bg-brand-purple/30">
+            <WelcomeModal />
             {/* Background Ambience */}
             <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] bg-brand-purple/20 blur-[150px] rounded-full pointer-events-none mix-blend-screen"></div>
             <div className="absolute top-[20%] right-[-10%] w-[40%] h-[40%] bg-brand-blue/10 blur-[120px] rounded-full pointer-events-none mix-blend-screen"></div>

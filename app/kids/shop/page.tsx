@@ -2,7 +2,8 @@ import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { ShoppingBag, Star, Lock, Play, CheckCircle2 } from "lucide-react";
+import { ShoppingBag, Star, Lock, Play, CheckCircle2, Package } from "lucide-react";
+import CategoryBanner from "@/components/kids/CategoryBanner";
 
 export const metadata = {
     title: 'La Boutique | Club des Magiciens',
@@ -57,6 +58,15 @@ export default async function KidsShopPage() {
                         </p>
                     </div>
                 </header>
+
+                <CategoryBanner
+                    categoryId="boutique"
+                    title="Ta Boutique VIP 🎁"
+                    description="Découvre ici du matériel professionnel et des coffrets physiques pour réaliser tes illusions dans la vraie vie. Tu trouveras tes tutoriels exclusifs dès que tu auras débloqué un secret !"
+                    icon={Package}
+                    colorClass="text-brand-gold"
+                    bgClass="bg-brand-gold/10 border-brand-gold/20"
+                />
 
                 {/* Shop Grid */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
