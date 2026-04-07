@@ -114,9 +114,14 @@ export default function KidsLoginPage() {
                     </form>
                 </div>
 
-                <p className="text-center mt-8 text-sm text-brand-text-muted font-medium">
-                    Besoin d'aide ? Demande à tes parents ! 🧙‍♂️
-                </p>
+                <div className="text-center mt-8">
+                    <a 
+                        href="mailto:contact@clubdespetitsmagiciens.fr?subject=Besoin%20d'aide%20-%20Club%20des%20petits%20magiciens" 
+                        className="text-sm font-bold text-brand-text-muted hover:text-brand-purple transition-colors inline-block"
+                    >
+                        Besoin d'aide ? Clique ici (réponse sous 24h) 🧙‍♂️
+                    </a>
+                </div>
             </div>
         </div>
     );
