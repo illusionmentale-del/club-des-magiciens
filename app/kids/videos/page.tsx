@@ -87,7 +87,7 @@ export default async function KidsVideosPage() {
                     categoryId="bibliotheque"
                     title="Bienvenue dans la Bibliothèque ! 📚"
                     description="C'est ton espace libre ! Revois d'anciens directs, découvre des tours rapides, ou explore librement tous les secrets que tu as manqués ou que tu veux revoir à volonté."
-                    icon={Sparkles}
+                    iconName="Sparkles"
                     colorClass="text-brand-purple"
                     bgClass="bg-brand-purple/10 border-brand-purple/20"
                 />

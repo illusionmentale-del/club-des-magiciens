@@ -100,7 +100,7 @@ export default async function KidsProgramPage() {
                     categoryId="ateliers"
                     title="Bienvenue dans tes Ateliers ! 🎓"
                     description="C'est ici que tu vas t'entraîner pas à pas. Regarde les vidéos de la semaine en cours pour découvrir tes nouvelles missions, puis essaye de les réaliser pour valider tes défis !"
-                    icon={GraduationCap}
+                    iconName="GraduationCap"
                     colorClass="text-brand-cyan"
                     bgClass="bg-brand-cyan/10 border-brand-cyan/20"
                 />

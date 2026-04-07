@@ -2,26 +2,35 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Lightbulb } from "lucide-react";
+import { X, Lightbulb, Package, Sparkles, GraduationCap } from "lucide-react";
 
 interface CategoryBannerProps {
     categoryId: string;
     title: string;
     description: string;
-    icon?: any;
+    iconName?: 'Lightbulb' | 'Package' | 'Sparkles' | 'GraduationCap';
     colorClass?: string;
     bgClass?: string;
 }
+
+const ICONS = {
+    Lightbulb,
+    Package,
+    Sparkles,
+    GraduationCap
+};
 
 export default function CategoryBanner({
     categoryId,
     title,
     description,
-    icon: Icon = Lightbulb,
+    iconName = 'Lightbulb',
     colorClass = "text-brand-purple",
     bgClass = "bg-brand-purple/10 border-brand-purple/20"
 }: CategoryBannerProps) {
     const [isVisible, setIsVisible] = useState(false);
+    
+    const Icon = ICONS[iconName] || Lightbulb;
 
     useEffect(() => {
         // Check if user has closed this specific banner

@@ -63,7 +63,7 @@ export default async function KidsShopPage() {
                     categoryId="boutique"
                     title="Ta Boutique VIP 🎁"
                     description="Découvre ici du matériel professionnel et des coffrets physiques pour réaliser tes illusions dans la vraie vie. Tu trouveras tes tutoriels exclusifs dès que tu auras débloqué un secret !"
-                    icon={Package}
+                    iconName="Package"
                     colorClass="text-brand-gold"
                     bgClass="bg-brand-gold/10 border-brand-gold/20"
                 />
