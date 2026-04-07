@@ -5,10 +5,11 @@ const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 async function check() {
-  const { data, error } = await supabase
+  const { data } = await supabase
       .from('library_items')
-      .update({ sales_page_url: null, price_label: null })
-      .eq('sales_page_url', '');
-  console.log("Error?", error);
+      .select('title, sales_page_url')
+      .eq('audience', 'kids')
+      .not('sales_page_url', 'is', null);
+  console.log("Items in Shop:", data);
 }
 check();

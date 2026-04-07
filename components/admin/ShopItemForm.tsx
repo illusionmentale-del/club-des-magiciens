@@ -94,10 +94,10 @@ export default function ShopItemForm({ initialData }: { initialData?: ShopItem }
                 show_in_news: false,
                 week_number: null,
                 // cleanup fields
-                sales_page_url: isPremium ? formData.sales_page_url : null,
-                price_label: isPremium ? formData.price_label : null,
-                public_slug: isPublic ? formData.public_slug : null,
-                public_description: isPublic ? formData.public_description : null,
+                sales_page_url: (isPremium && formData.sales_page_url?.trim()) ? formData.sales_page_url.trim() : null,
+                price_label: (isPremium && formData.price_label?.trim()) ? formData.price_label.trim() : null,
+                public_slug: (isPublic && formData.public_slug?.trim()) ? formData.public_slug.trim() : null,
+                public_description: (isPublic && formData.public_description?.trim()) ? formData.public_description.trim() : null,
             };
 
             if (initialData?.id) {

@@ -120,6 +120,10 @@ export default function LibraryItemForm({ initialData }: { initialData?: Library
                 week_number: formData.audience === 'kids' ? Number(formData.week_number) : null,
                 is_main: formData.audience === 'kids' ? formData.is_main : false,
                 subtitle: formData.audience === 'adults' ? formData.subtitle : null,
+                sales_page_url: (isPremium && formData.sales_page_url?.trim()) ? formData.sales_page_url.trim() : null,
+                price_label: (isPremium && formData.price_label?.trim()) ? formData.price_label.trim() : null,
+                public_slug: (isPublic && formData.public_slug?.trim()) ? formData.public_slug.trim() : null,
+                public_description: (isPublic && formData.public_description?.trim()) ? formData.public_description.trim() : null,
             };
 
             if (initialData?.id) {
