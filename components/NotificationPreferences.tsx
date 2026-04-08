@@ -141,9 +141,9 @@ export function NotificationPreferences({ profile }: { profile: any }) {
                 }
                 setPushSubscribed(false);
             }
-        } catch (error) {
+        } catch (error: any) {
             console.error("Erreur de modification des pushs:", error);
-            alert("Une erreur est survenue lors de la modification des notifications.");
+            alert("Erreur: " + (error.message || JSON.stringify(error) || "Inconnue"));
         } finally {
             setPushLoading(false);
         }
