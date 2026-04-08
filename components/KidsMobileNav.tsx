@@ -217,17 +217,31 @@ export default function KidsMobileNav({ logoUrl, isAdmin, hasPurchases, hasUnrea
 
                             {/* 4. 👤 Mes Informations */}
                             {enableAccount && (
-                                <Link href="/kids/account" onClick={() => setIsOpen(false)} className="block group">
-                                    <div className="flex items-center gap-4">
-                                        <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-colors ${isActive('/kids/account') ? 'bg-magic-purple text-white shadow-lg shadow-magic-purple/20' : 'bg-white/5 text-gray-400 group-hover:bg-white/10 group-hover:text-white'}`}>
-                                            <Trophy className="w-5 h-5" />
+                                <>
+                                    <Link href="/kids/account" onClick={() => setIsOpen(false)} className="block group">
+                                        <div className="flex items-center gap-4">
+                                            <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-colors ${isActive('/kids/account') && searchParams.get('view') !== 'settings' ? 'bg-magic-purple text-white shadow-lg shadow-magic-purple/20' : 'bg-white/5 text-gray-400 group-hover:bg-white/10 group-hover:text-white'}`}>
+                                                <Trophy className="w-5 h-5" />
+                                            </div>
+                                            <div>
+                                                <div className={`font-bold ${isActive('/kids/account') && searchParams.get('view') !== 'settings' ? 'text-magic-purple' : 'text-gray-300 group-hover:text-white'}`}>Ma Carte d'Apprenti</div>
+                                                <div className="text-xs text-gray-500">Ton niveau et tes statistiques</div>
+                                            </div>
                                         </div>
-                                        <div>
-                                            <div className={`font-bold ${isActive('/kids/account') ? 'text-magic-purple' : 'text-gray-300 group-hover:text-white'}`}>Mes Informations</div>
-                                            <div className="text-xs text-gray-500">Ma progression et mes secrets</div>
+                                    </Link>
+
+                                    <Link href="/kids/account?view=settings" onClick={() => setIsOpen(false)} className="block group mt-2">
+                                        <div className="flex items-center gap-4">
+                                            <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-colors ${isActive('/kids/account') && searchParams.get('view') === 'settings' ? 'bg-magic-purple text-white shadow-lg shadow-magic-purple/20' : 'bg-white/5 text-gray-400 group-hover:bg-white/10 group-hover:text-white'}`}>
+                                                <Settings className="w-5 h-5" />
+                                            </div>
+                                            <div>
+                                                <div className={`font-bold ${isActive('/kids/account') && searchParams.get('view') === 'settings' ? 'text-magic-purple' : 'text-gray-300 group-hover:text-white'}`}>Mes Paramètres</div>
+                                                <div className="text-xs text-gray-500">Mot de passe et alertes</div>
+                                            </div>
                                         </div>
-                                    </div>
-                                </Link>
+                                    </Link>
+                                </>
                             )}
 
                             {/* 5. 🏪 La Boutique */}
