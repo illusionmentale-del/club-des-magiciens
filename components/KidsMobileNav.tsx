@@ -75,15 +75,17 @@ export default function KidsMobileNav({ logoUrl, isAdmin, hasPurchases, hasUnrea
     return (
         <div className={`${isForcedDesktop ? 'hidden' : (isForcedMobile ? 'block' : 'md:hidden')} bg-magic-card border-b border-white/10 sticky top-0 z-50`}>
             <div className="flex items-center justify-between p-4">
-                <Link href="/kids">
-                    <div className="relative w-32 h-10">
-                        <Image
-                            src="/logo.png"
-                            alt="Club des Magiciens"
-                            fill
-                            className="object-contain"
-                            priority
-                        />
+                <Link href="/kids/account" className="flex items-center gap-3 group">
+                    <MagicAvatar imageUrl={avatarUrl} levelName={magicLevel} size="sm" />
+                    <div className="min-w-0 pr-1">
+                        <h2 className="font-bold text-white text-xs leading-tight line-clamp-1 group-hover:text-brand-purple transition-colors">{userName}</h2>
+                        <div className="flex items-center gap-1.5 mt-0.5">
+                            <p className="text-[10px] text-brand-gold font-mono truncate max-w-[80px] sm:max-w-[120px]">{magicLevel}</p>
+                            <div className="flex items-center gap-1 bg-black/30 rounded-full px-1.5 py-0.5 border border-white/5 shrink-0">
+                                <Sparkles className="w-2.5 h-2.5 text-yellow-400" />
+                                <span className="text-[9px] font-bold text-white leading-none">{xpBalance} XP</span>
+                            </div>
+                        </div>
                     </div>
                 </Link>
                 <div className="flex items-center gap-2">
@@ -115,28 +117,8 @@ export default function KidsMobileNav({ logoUrl, isAdmin, hasPurchases, hasUnrea
 
                     {/* Menu Content */}
                     <div className="relative w-64 h-full bg-magic-card border-r border-white/10 flex flex-col p-4 animate-in slide-in-from-left duration-200">
-                        <div className="flex justify-between items-start mb-4">
-                            <Link href="/kids/account" onClick={close} className="flex items-center gap-3 group flex-1">
-                                <MagicAvatar imageUrl={avatarUrl} levelName={magicLevel} size="sm" />
-                                <div className="flex-1 min-w-0 pr-1">
-                                    <h2 className="font-bold text-white text-xs leading-tight line-clamp-1 group-hover:text-brand-purple transition-colors">{userName}</h2>
-                                    <div className="flex items-center justify-between gap-1 mt-0.5">
-                                        <p className="text-[10px] text-brand-gold font-mono truncate">{magicLevel}</p>
-                                        <div className="flex items-center gap-1 bg-black/30 rounded-full px-1.5 py-0.5 border border-white/5 shrink-0">
-                                            <Sparkles className="w-2.5 h-2.5 text-yellow-400" />
-                                            <span className="text-[9px] font-bold text-white leading-none">{xpBalance} XP</span>
-                                        </div>
-                                    </div>
-                                    <div className="h-1 w-full bg-black/60 rounded-full overflow-hidden border border-white/5 mt-1.5">
-                                        <div
-                                            className={`h-full relative ${isLegendary ? "bg-gradient-to-r from-amber-600 to-yellow-400" : isHolo ? "bg-gradient-to-r from-purple-600 to-blue-400" : "bg-gradient-to-r from-blue-600 to-cyan-400"}`}
-                                            style={{ width: `${progressPercent}%` }}
-                                        />
-                                    </div>
-                                </div>
-                                <ChevronRight className="w-4 h-4 text-white/20 group-hover:text-brand-purple transition-colors shrink-0" />
-                            </Link>
-                            <button onClick={close} className="p-2 -mr-2 -mt-2 text-gray-400 hover:text-white self-start">
+                        <div className="flex justify-end mb-2">
+                            <button onClick={close} className="p-2 -mr-2 text-gray-400 hover:text-white">
                                 <X className="w-6 h-6" />
                             </button>
                         </div>
