@@ -141,7 +141,7 @@ export default function KidsMobileNav({ logoUrl, isAdmin, hasPurchases, hasUnrea
                             </button>
                         </div>
 
-                        <nav className="space-y-2 flex-1">
+                        <nav className="space-y-2 flex-1 flex flex-col">
                             {/* 1. 🏰 Le Club (Home) */}
                             <Link
                                 href="/kids"
@@ -213,7 +213,7 @@ export default function KidsMobileNav({ logoUrl, isAdmin, hasPurchases, hasUnrea
                                 </Link>
                             )}
 
-                            <div className="my-2 border-t border-white/5 mx-4"></div>
+                            <div className="mt-auto pt-8 pb-2 border-t border-white/10 mx-4"></div>
 
                             {/* 📦 Mes Coffres (Purchases) */}
                             {hasPurchases && (

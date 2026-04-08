@@ -113,7 +113,7 @@ export default function KidsSidebar({ socialLinks, logoUrl, isAdmin, hasPurchase
 
             {/* Navigation */}
             {/* Navigation */}
-            <nav className="flex-1 p-4 space-y-4 overflow-y-auto">
+            <nav className="flex-1 p-4 space-y-4 overflow-y-auto flex flex-col">
 
 
                 {/* 1. 🏰 Le Club (Home) */}
@@ -186,7 +186,7 @@ export default function KidsSidebar({ socialLinks, logoUrl, isAdmin, hasPurchase
                     </Link>
                 )}
 
-                <div className="my-2 border-t border-white/5 mx-4"></div>
+                <div className="mt-auto pt-8 pb-2 border-t border-white/10 mx-4"></div>
 
                 {/* 📦 Mes Coffres (Purchases) */}
                 {hasPurchases && (
