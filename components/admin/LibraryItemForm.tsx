@@ -213,6 +213,7 @@ export default function LibraryItemForm({ initialData }: { initialData?: Library
                                     {formData.audience === 'kids' ? (
                                         <>
                                             <option value="trick">Tour de Magie</option>
+                                            <option value="atelier">Atelier Magique</option>
                                             <option value="activity">Activité Manuelle</option>
                                             <option value="tips">Conseils & Astuces</option>
                                             <option value="illusion">Illusion d'Optique</option>

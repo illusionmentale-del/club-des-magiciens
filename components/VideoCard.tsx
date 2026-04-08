@@ -51,9 +51,11 @@ export default function VideoCard({ id, title, thumbnailUrl, date, durationSecon
                     />
 
                     {/* Duration Badge */}
-                    <div className="absolute bottom-2 right-2 px-2 py-1 bg-black/70 text-white text-xs font-medium rounded-md backdrop-blur-sm">
-                        {formatDuration(durationSeconds)}
-                    </div>
+                    {durationSeconds > 0 && (
+                        <div className="absolute bottom-2 right-2 px-2 py-1 bg-black/70 text-white text-xs font-medium rounded-md backdrop-blur-sm">
+                            {formatDuration(durationSeconds)}
+                        </div>
+                    )}
 
                     {/* Play Button Overlay on Hover */}
                     <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">

@@ -50,13 +50,15 @@ export default async function KidsVideosPage() {
         }
     }
 
-    // Fetch videos from Bunny Stream
-    // We only fetch videos from the "Replays" collection if the ID is defined in .env.local
-    const replaysCollectionId = process.env.BUNNY_KIDS_REPLAYS_COLLECTION_ID;
-    const videos = await getKidsVideos(1, 50, replaysCollectionId);
+    // Fetch 'Ateliers' from our own database instead of raw Bunny Stream
+    const { data: videos } = await supabase
+        .from('library_items')
+        .select('*')
+        .eq('audience', 'kids')
+        .eq('type', 'atelier')
+        .order('published_at', { ascending: false });
 
-    // Sort by most recent uploaded first (assuming the API already does it, but double checking)
-    const sortedVideos = videos.sort((a, b) => new Date(b.dateUploaded).getTime() - new Date(a.dateUploaded).getTime());
+    const sortedVideos = videos || [];
 
     return (
         <div className="min-h-screen bg-brand-bg text-brand-text p-4 md:p-8 pb-32 font-sans relative selection:bg-brand-purple/30">
@@ -167,17 +169,20 @@ export default async function KidsVideosPage() {
                         </div>
                     ) : (
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                            {sortedVideos.map((video) => (
-                                <VideoCard
-                                    key={video.guid}
-                                    id={video.guid}
-                                    title={video.title}
-                                    thumbnailUrl={getBunnyThumbnailUrl(video.videoLibraryId, video.guid, video.thumbnailFileName)}
-                                    date={video.dateUploaded}
-                                    durationSeconds={video.length}
-                                    href={`/kids/videos/${video.guid}`}
-                                />
-                            ))}
+                            {sortedVideos.map((video) => {
+                                const videoIdForLink = video.video_url || video.id;
+                                return (
+                                    <VideoCard
+                                        key={video.id}
+                                        id={videoIdForLink}
+                                        title={video.title}
+                                        thumbnailUrl={video.thumbnail_url || ''}
+                                        date={video.published_at || video.created_at}
+                                        durationSeconds={0}
+                                        href={`/kids/videos/${videoIdForLink}`}
+                                    />
+                                );
+                            })}
                         </div>
                     )}
                 </div>
