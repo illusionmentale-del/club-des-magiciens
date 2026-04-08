@@ -430,6 +430,14 @@ export async function deleteVideo(courseId: string, videoId: string) {
 // --- USER ACTIONS ---
 
 export async function toggleAdmin(userId: string, newRole: 'user' | 'admin') {
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+    const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
+
+    const { createClient: createSupabaseAdmin } = await import("@supabase/supabase-js");
+    const supabaseAdmin = createSupabaseAdmin(supabaseUrl, supabaseServiceKey, {
+        auth: { autoRefreshToken: false, persistSession: false }
+    });
+
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) throw new Error("Unauthorized");
@@ -439,7 +447,7 @@ export async function toggleAdmin(userId: string, newRole: 'user' | 'admin') {
     if (currentUserProfile?.role !== 'admin') throw new Error("Forbidden");
 
     // PROTECT SUPER ADMINS
-    const { data: targetProfile } = await supabase.from('profiles').select('username').eq('id', userId).single();
+    const { data: targetProfile } = await supabaseAdmin.from('profiles').select('username').eq('id', userId).single();
     if (targetProfile) {
         // Obfuscated Hashes for Security
         const { createHash } = await import('crypto');
@@ -454,7 +462,11 @@ export async function toggleAdmin(userId: string, newRole: 'user' | 'admin') {
         }
     }
 
-    await supabase.from("profiles").update({ role: newRole }).eq("id", userId);
+    await supabaseAdmin.from("profiles").update({ 
+        role: newRole,
+        has_adults_access: newRole === 'admin' ? true : undefined,
+        has_kids_access: newRole === 'admin' ? true : undefined
+    }).eq("id", userId);
     revalidatePath("/admin/users");
 }
 
@@ -578,15 +590,23 @@ export async function createUserManually(formData: FormData) {
     if (data.user) {
         // Check if profile exists (from trigger)
         // Wait a bit? Or just upsert.
-        const { error: profileError } = await supabaseAdmin.from("profiles").upsert({
-            id: data.user.id,
+        // We update because the trigger handle_new_user likely already inserted the row
+        const profileData = {
             username: username,
             full_name: username,
             role: role,
             access_level: access_level,
-            is_kid: access_level === 'kid'
-        });
-        if (profileError) console.error("Profile update error:", profileError);
+            is_kid: access_level === 'kid',
+            has_kids_access: access_level === 'kid' || role === 'admin',
+            has_adults_access: access_level === 'adult' || role === 'admin'
+        };
+
+        const { error: profileError } = await supabaseAdmin.from("profiles").update(profileData).eq("id", data.user.id);
+        
+        if (profileError) {
+             console.error("Profile update error, trying upsert:", profileError);
+             await supabaseAdmin.from("profiles").upsert({ id: data.user.id, ...profileData });
+        }
 
         // Send Welcome Email if it's a Kid
         if (access_level === 'kid') {
@@ -622,17 +642,38 @@ export async function createUserManually(formData: FormData) {
 
 // Standard Client for User Updates (RLS Policy Protected)
 export async function updateUserAccess(userId: string, formData: FormData) {
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+    const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
+
+    const { createClient: createSupabaseAdmin } = await import("@supabase/supabase-js");
+    const supabaseAdmin = createSupabaseAdmin(supabaseUrl, supabaseServiceKey, {
+        auth: { autoRefreshToken: false, persistSession: false }
+    });
+
     const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) throw new Error("Unauthorized");
+
+    // Must be admin to do this
+    const { data: currentUserProfile } = await supabase.from('profiles').select('role').eq('id', user.id).single();
+    if (currentUserProfile?.role !== 'admin') throw new Error("Forbidden");
+
     const access_level = formData.get("access_level") as string;
     const is_kid = access_level === 'kid';
 
     const protectedEmails = ['contact@jeremymarouani.com', 'admin.vente@jeremymarouani.com', 'vente@jeremymarouani.com', 'illusionmental@gmail.com'];
-    const { data: targetProfile } = await supabase.from('profiles').select('email').eq('id', userId).single();
+    const { data: targetProfile } = await supabaseAdmin.from('profiles').select('email').eq('id', userId).single();
     if (targetProfile && targetProfile.email && protectedEmails.includes(targetProfile.email)) {
         return; // Silent fail or could return error
     }
 
-    const { error } = await supabase.from("profiles").update({ access_level, is_kid }).eq("id", userId);
+    const { error } = await supabaseAdmin.from("profiles").update({ 
+        access_level, 
+        is_kid,
+        has_kids_access: is_kid,
+        has_adults_access: !is_kid
+    }).eq("id", userId);
+    
     if (error) console.error("Update Access Error:", error);
 
     revalidatePath("/admin/users");
