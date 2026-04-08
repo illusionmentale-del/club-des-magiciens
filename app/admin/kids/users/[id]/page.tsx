@@ -186,9 +186,8 @@ export default function AdminUserDetailPage() {
     if (!profile) return <div className="min-h-screen bg-gray-900 text-white flex items-center justify-center">Profil introuvable</div>;
 
     return (
-        <div className="min-h-screen bg-gray-900 text-white p-8 font-sans">
-            <div className="max-w-6xl mx-auto">
-                <header className="mb-8 flex items-center justify-between">
+        <div className="flex flex-col gap-6 md:gap-8 font-sans w-full max-w-full overflow-x-hidden">
+            <header className="mb-4 md:mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
                     <Link href="/admin/kids/users" className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors">
                         <ArrowLeft className="w-5 h-5" /> Retour
                     </Link>
@@ -339,7 +338,7 @@ export default function AdminUserDetailPage() {
                                 <History className="text-purple-500" />
                                 Progression ({progress.length} ateliers)
                             </h2>
-                            <div className="bg-white/5 border border-white/10 rounded-2xl overflow-hidden">
+                            <div className="bg-white/5 border border-white/10 rounded-2xl overflow-x-auto w-full max-w-full">
                                 <table className="w-full text-sm text-left">
                                     <thead className="bg-white/5 text-gray-400 font-bold uppercase text-xs">
                                         <tr>
@@ -414,7 +413,7 @@ export default function AdminUserDetailPage() {
                                 <span className="text-green-500">🎁</span>
                                 Achats & Cadeaux ({purchases.length})
                             </h2>
-                            <div className="bg-white/5 border border-white/10 rounded-2xl overflow-hidden">
+                            <div className="bg-white/5 border border-white/10 rounded-2xl overflow-x-auto w-full max-w-full">
                                 <table className="w-full text-sm text-left">
                                     <thead className="bg-white/5 text-gray-400 font-bold uppercase text-xs">
                                         <tr>
@@ -458,7 +457,6 @@ export default function AdminUserDetailPage() {
 
                     </div>
                 </div>
-            </div>
         </div>
     );
 }
