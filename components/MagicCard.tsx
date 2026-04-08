@@ -40,8 +40,11 @@ export default function MagicCard({ user, profile, isKid = false, lifetimeXP, av
 
     // Fallbacks
     const defaultKidAvatar = "/avatars/avatar_base_student.png";
-    const currentAvatar = avatarUrl || (isKid ? (profile?.avatar_url_kids || defaultKidAvatar) : (profile?.avatar_url || "/default-avatar.png"));
-    const isEmojiAvatar = isKid && !currentAvatar.startsWith('http') && !currentAvatar.startsWith('/');
+    const currentAvatar = isKid 
+        ? (avatarUrl && avatarUrl.trim() !== "" ? avatarUrl : defaultKidAvatar)
+        : (profile?.avatar_url || "/default-avatar.png");
+        
+    const isEmojiAvatar = !isKid && !currentAvatar.startsWith('http') && !currentAvatar.startsWith('/');
 
     const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
         const rect = e.currentTarget.getBoundingClientRect();
