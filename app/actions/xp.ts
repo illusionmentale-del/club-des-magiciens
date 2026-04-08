@@ -1,6 +1,13 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
+import { createClient as createSupabaseClient } from "@supabase/supabase-js";
+
+// Uses service role key to bypass RLS for secure, server-side-only mutations on user_xp_logs
+const supabaseAdmin = createSupabaseClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
+);
 
 /**
  * Sécurité XP : Fonction serveur pour attribuer de l'XP de façon inviolable.
@@ -22,7 +29,7 @@ export async function grantAwardXP(userId: string, actionType: string, amount: n
     // the user cannot forge requests as another user easily without the session token.
     if (user.id !== userId) {
         // Enforce extra role check if modifying another user
-        const { data: myProfile } = await supabase.from('profiles').select('role').eq('id', user.id).single();
+        const { data: myProfile } = await supabaseAdmin.from('profiles').select('role').eq('id', user.id).single();
         if (myProfile?.role !== 'admin' && myProfile?.role !== 'super_admin') {
             return { success: false, error: "Non autorisé à modifier cet utilisateur" };
         }
@@ -36,7 +43,7 @@ export async function grantAwardXP(userId: string, actionType: string, amount: n
         reference_id: referenceId || null
     };
 
-    const { error } = await supabase
+    const { error } = await supabaseAdmin
         .from('user_xp_logs')
         .insert(payload);
 
@@ -86,7 +93,7 @@ export async function purchaseWithXP(itemId: string) {
 
     // 3. Process the transaction
     const safeReference = `purchase_${itemId}_${Date.now()}`;
-    const { error: xpError } = await supabase.from("user_xp_logs").insert({
+    const { error: xpError } = await supabaseAdmin.from("user_xp_logs").insert({
         user_id: user.id,
         action_type: 'shop_purchase',
         xp_awarded: -item.xp_price,
@@ -96,7 +103,7 @@ export async function purchaseWithXP(itemId: string) {
     if (xpError) return { success: false, error: "Erreur lors du paiement: " + xpError.message };
 
     // 4. Grant the item via user_purchases
-    const { error: grantError } = await supabase.from("user_purchases").upsert({
+    const { error: grantError } = await supabaseAdmin.from("user_purchases").upsert({
         user_id: user.id,
         library_item_id: itemId,
         status: 'active',
@@ -110,7 +117,7 @@ export async function purchaseWithXP(itemId: string) {
     }
 
     // 5. Grant +10 XP as Level-up Progression Boost / Cashback
-    await supabase.from("user_xp_logs").insert({
+    await supabaseAdmin.from("user_xp_logs").insert({
         user_id: user.id,
         action_type: 'trick_unlocked_boost',
         xp_awarded: 10,

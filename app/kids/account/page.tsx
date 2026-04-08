@@ -2,7 +2,7 @@ import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import MagicCard from "@/components/MagicCard";
 import AccountForm from "@/app/dashboard/account/AccountForm"; // Reusing form for settings
-import { Settings, Trophy, Shield, Star, Bell } from "lucide-react";
+import { Settings, Trophy, Shield, Star, Bell, ShoppingBag } from "lucide-react";
 import { NotificationPreferences } from "@/components/NotificationPreferences";
 import KidsIdentityForm from "@/components/kids/KidsIdentityForm";
 
@@ -109,6 +109,18 @@ export default async function KidsAccountPage({
                     ) : (
                         <div className="flex flex-col items-center">
                             <MagicCard user={user} profile={profile} isKid={true} lifetimeXP={lifetimeXP} avatarUrl={computedAvatarUrl} />
+                            
+                            {/* Bouton pour dépenser les points */}
+                            <div className="mt-8 mb-4 w-full max-w-[400px]">
+                                <a 
+                                    href="/kids/shop"
+                                    className="w-full py-4 bg-gradient-to-r from-brand-gold to-yellow-500 hover:scale-[1.02] text-black font-black uppercase tracking-widest rounded-2xl transition-all shadow-[0_10px_30px_rgba(250,204,21,0.4)] flex justify-center items-center gap-2"
+                                >
+                                    <ShoppingBag className="w-5 h-5" />
+                                    Dépenser mes points dans la boutique
+                                </a>
+                            </div>
+
                             <KidsIdentityForm profile={profile} />
                         </div>
                     )}
