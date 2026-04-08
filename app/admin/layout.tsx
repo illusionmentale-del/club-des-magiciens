@@ -29,20 +29,8 @@ export default async function AdminLayout({
     return (
         <AdminProvider>
             <div className="flex bg-brand-bg min-h-screen">
-                {/* Desktop Sidebar */}
-                <div className="hidden md:block w-64 fixed h-full z-10 transition-all duration-300">
-                    <Sidebar isAdmin={isAdmin} />
-                </div>
-
-                {/* Mobile Nav */}
-                <div className="md:hidden fixed top-0 w-full z-50">
-                    <MobileNav isAdmin={isAdmin} />
-                </div>
-
-                {/* Main Content Area */}
-                <main className="flex-1 md:ml-64 relative min-h-screen">
-                    {/* Add top padding for mobile to account for fixed header */}
-                    <div className="md:p-0 pt-20">
+                <main className="flex-1 relative min-h-screen">
+                    <div className="p-0">
                         {children}
                     </div>
                 </main>

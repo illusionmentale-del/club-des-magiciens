@@ -1,10 +1,11 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import { Film, LayoutDashboard, Settings, Trophy, Users, SwitchCamera, LogOut, ArrowLeft, PaintBucket, Lock, Star, Bell, Calendar, Video, Sparkles, BookOpen, MessageCircle } from "lucide-react";
+import { Film, LayoutDashboard, Settings, Trophy, Users, LogOut, Lock, Star, Calendar, Sparkles, BookOpen, MessageCircle } from "lucide-react";
 import { cookies } from "next/headers";
 import { Separator } from "@/components/ui/separator";
 import GlobalPreview from "@/components/admin/GlobalPreview";
+import AdminKidsMobileNav from "@/components/admin/AdminKidsMobileNav";
 import {
     Breadcrumb,
     BreadcrumbItem,
@@ -33,6 +34,9 @@ export default async function AdminLayout({
 
     const content = (
         <div className="flex min-h-screen w-full bg-brand-bg text-brand-text font-sans selection:bg-brand-purple/30">
+            {/* Mobile Nav */}
+            <AdminKidsMobileNav />
+            
             {/* Custom Sidebar for Kids */}
             <aside className="fixed inset-y-0 left-0 z-50 w-64 bg-brand-card border-r border-white/5 hidden md:flex flex-col shadow-2xl">
                 <div className="flex items-center h-20 px-6 border-b border-white/5 bg-gradient-to-r from-brand-card to-brand-bg">
