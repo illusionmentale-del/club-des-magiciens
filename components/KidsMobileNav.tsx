@@ -118,51 +118,30 @@ export default function KidsMobileNav({ logoUrl, isAdmin, hasPurchases, hasUnrea
                         <div className="flex justify-between items-start mb-4">
                             <Link href="/kids/account" onClick={close} className="flex items-center gap-3 group flex-1">
                                 <MagicAvatar imageUrl={avatarUrl} levelName={magicLevel} size="sm" />
-                                <div className="flex-1">
+                                <div className="flex-1 min-w-0 pr-1">
                                     <h2 className="font-bold text-white text-xs leading-tight line-clamp-1 group-hover:text-brand-purple transition-colors">{userName}</h2>
-                                    <p className="text-[10px] text-brand-gold font-mono">{magicLevel}</p>
+                                    <div className="flex items-center justify-between gap-1 mt-0.5">
+                                        <p className="text-[10px] text-brand-gold font-mono truncate">{magicLevel}</p>
+                                        <div className="flex items-center gap-1 bg-black/30 rounded-full px-1.5 py-0.5 border border-white/5 shrink-0">
+                                            <Sparkles className="w-2.5 h-2.5 text-yellow-400" />
+                                            <span className="text-[9px] font-bold text-white leading-none">{xpBalance} XP</span>
+                                        </div>
+                                    </div>
+                                    <div className="h-1 w-full bg-black/60 rounded-full overflow-hidden border border-white/5 mt-1.5">
+                                        <div
+                                            className={`h-full relative ${isLegendary ? "bg-gradient-to-r from-amber-600 to-yellow-400" : isHolo ? "bg-gradient-to-r from-purple-600 to-blue-400" : "bg-gradient-to-r from-blue-600 to-cyan-400"}`}
+                                            style={{ width: `${progressPercent}%` }}
+                                        />
+                                    </div>
                                 </div>
                                 <ChevronRight className="w-4 h-4 text-white/20 group-hover:text-brand-purple transition-colors shrink-0" />
                             </Link>
-                            <button onClick={close} className="p-2 text-gray-400 hover:text-white">
+                            <button onClick={close} className="p-2 -mr-2 -mt-2 text-gray-400 hover:text-white self-start">
                                 <X className="w-6 h-6" />
                             </button>
                         </div>
 
                         <nav className="space-y-2 flex-1">
-                            {/* 👑 Portefeuille & Grade */}
-                            <Link href="/kids/account" onClick={close} className="mx-4 mb-4 p-4 rounded-xl bg-gradient-to-b from-[#1a1025] to-[#0A0510] border border-purple-500/30 flex flex-col shadow-[inset_0_0_20px_rgba(168,85,247,0.1)] group hover:shadow-[inset_0_0_25px_rgba(168,85,247,0.2)] hover:border-purple-500/50 transition-all cursor-pointer relative">
-                                <div className="absolute top-2 right-2 opacity-50 group-hover:opacity-100 transition-opacity">
-                                    <ChevronRight className="w-4 h-4 text-brand-purple" />
-                                </div>
-                                <div className="flex items-center justify-between mb-3 w-full pr-4">
-                                    <div className="flex items-center gap-2">
-                                        <Sparkles className="w-5 h-5 text-yellow-400 group-hover:animate-spin-slow" />
-                                        <span className="font-bold text-white text-sm group-hover:text-brand-gold transition-colors">Mon Trésor</span>
-                                    </div>
-                                    <div className="font-black text-brand-gold text-lg items-baseline flex gap-1">
-                                        {xpBalance}
-                                        <span className="text-[10px] text-brand-gold/70 uppercase tracking-widest font-bold">XP</span>
-                                    </div>
-                                </div>
-
-                                {/* Progress Bar */}
-                                <div className="pt-3 border-t border-white/10 w-full">
-                                    <div className="flex justify-between text-[10px] font-bold text-white/50 uppercase tracking-widest mb-1.5">
-                                        <span className={isLegendary ? "text-amber-400" : isHolo ? "text-purple-300" : "text-blue-300"}>{magicLevel}</span>
-                                        <span className={isLegendary ? "text-amber-400" : "text-white"}>{lifetimeXP} / {isLegendary && lifetimeXP >= 500 ? "MAX" : maxForLevel} XP</span>
-                                    </div>
-                                    <div className="h-1.5 w-full bg-black/60 rounded-full overflow-hidden border border-white/5">
-                                        <div
-                                            className={`h-full relative ${isLegendary ? "bg-gradient-to-r from-amber-600 to-yellow-400" : isHolo ? "bg-gradient-to-r from-purple-600 to-blue-400" : "bg-gradient-to-r from-blue-600 to-cyan-400"}`}
-                                            style={{ width: `${progressPercent}%` }}
-                                        >
-                                            <div className="absolute inset-0 bg-white/30 w-full animate-[pulse_2s_infinite]"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </Link>
-
                             {/* 1. 🏰 Le Club (Home) */}
                             <Link
                                 href="/kids"
@@ -219,28 +198,9 @@ export default function KidsMobileNav({ logoUrl, isAdmin, hasPurchases, hasUnrea
                                 </Link>
                             )}
 
-                            {/* 4. 👤 Mes Informations */}
-                            {enableAccount && (
-                                <>
-                                    {/* Removed: Ma Carte d'Apprenti. It's now in the header/XP box at the top. */}
-
-                                    <Link href="/kids/account?view=settings" onClick={() => setIsOpen(false)} className="block group mt-2">
-                                        <div className="flex items-center gap-4">
-                                            <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-colors ${isActive('/kids/account') && searchParams.get('view') === 'settings' ? 'bg-magic-purple text-white shadow-lg shadow-magic-purple/20' : 'bg-white/5 text-gray-400 group-hover:bg-white/10 group-hover:text-white'}`}>
-                                                <Settings className="w-5 h-5" />
-                                            </div>
-                                            <div>
-                                                <div className={`font-bold ${isActive('/kids/account') && searchParams.get('view') === 'settings' ? 'text-magic-purple' : 'text-gray-300 group-hover:text-white'}`}>Mes Paramètres</div>
-                                                <div className="text-xs text-gray-500">Mot de passe et alertes</div>
-                                            </div>
-                                        </div>
-                                    </Link>
-                                </>
-                            )}
-
-                            {/* 5. 🏪 La Boutique */}
+                            {/* 4. 🏪 La Boutique */}
                             {enableShop && (
-                                <Link href="/kids/shop" onClick={() => setIsOpen(false)} className="block group">
+                                <Link href="/kids/shop" onClick={close} className="block group">
                                     <div className="flex items-center gap-4">
                                         <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-colors ${isActive('/kids/shop') ? 'bg-magic-purple text-white shadow-lg shadow-magic-purple/20' : 'bg-white/5 text-gray-400 group-hover:bg-white/10 group-hover:text-white'}`}>
                                             <Store className="w-5 h-5" />
@@ -253,9 +213,11 @@ export default function KidsMobileNav({ logoUrl, isAdmin, hasPurchases, hasUnrea
                                 </Link>
                             )}
 
+                            <div className="my-2 border-t border-white/5 mx-4"></div>
+
                             {/* 📦 Mes Coffres (Purchases) */}
                             {hasPurchases && (
-                                <Link href="/kids/purchases" onClick={close} className="block group">
+                                <Link href="/kids/purchases" onClick={close} className="block group mb-2">
                                     <div className="flex items-center gap-4">
                                         <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-colors bg-brand-gold/10 text-brand-gold`}>
                                             <Package className="w-5 h-5" />
@@ -267,6 +229,23 @@ export default function KidsMobileNav({ logoUrl, isAdmin, hasPurchases, hasUnrea
                                     </div>
                                 </Link>
                             )}
+
+                            {/* ⚙️ Mes Paramètres */}
+                            {enableAccount && (
+                                <Link href="/kids/account?view=settings" onClick={close} className="block group">
+                                    <div className="flex items-center gap-4">
+                                        <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-colors ${isActive('/kids/account') && searchParams.get('view') === 'settings' ? 'bg-magic-purple text-white shadow-lg shadow-magic-purple/20' : 'bg-white/5 text-gray-400 group-hover:bg-white/10 group-hover:text-white'}`}>
+                                            <Settings className="w-5 h-5" />
+                                        </div>
+                                        <div>
+                                            <div className={`font-bold ${isActive('/kids/account') && searchParams.get('view') === 'settings' ? 'text-magic-purple' : 'text-gray-300 group-hover:text-white'}`}>Mes Paramètres</div>
+                                            <div className="text-xs text-gray-500">Mot de passe et alertes</div>
+                                        </div>
+                                    </div>
+                                </Link>
+                            )}
+
+
                             {isAdmin && (
                                 <>
                                     <div className="my-2 border-t border-white/10"></div>
