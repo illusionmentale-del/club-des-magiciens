@@ -2,9 +2,17 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Sparkles, GraduationCap, Video, ShoppingBag, Trophy, Wand2, X, ChevronRight } from "lucide-react";
+import { Sparkles, GraduationCap, Video, ShoppingBag, Trophy, Wand2, X, ChevronRight, Smartphone } from "lucide-react";
 
 const slides = [
+    {
+        title: "L'Application Magique 📱",
+        description: "Pour un accès rapide, ajoute ce site sur ton écran d'accueil (via partager). N'oublie pas d'autoriser les notifications pour être alerté des nouveaux secrets !",
+        icon: Smartphone,
+        color: "text-brand-purple",
+        bg: "bg-brand-purple/10",
+        border: "border-brand-purple/20"
+    },
     {
         title: "Bienvenue au Club ! 🎩",
         description: "Laisse-moi te montrer comment fonctionne Le Club des Petits Magiciens !",
