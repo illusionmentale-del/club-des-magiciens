@@ -947,3 +947,102 @@ export async function updateLibraryItemsOrder(items: { id: string, position: num
         return { error: e.message };
     }
 }
+
+// --- GAMIFICATION ADMIN ACTIONS ---
+export async function getAdminUserGamificationDetails(userId: string) {
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+    const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
+    const { createClient } = await import("@supabase/supabase-js");
+    const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey, { auth: { persistSession: false }});
+
+    // Fetches bypass RLS
+    const [
+        { data: p },
+        { data: pr },
+        { data: ub },
+        { data: pu },
+        { data: items },
+        { data: badges },
+    ] = await Promise.all([
+        supabaseAdmin.from("profiles").select("*").eq("id", userId).single(),
+        supabaseAdmin.from("library_progress").select("*, library_items(title, week_number)").eq("user_id", userId).order("completed_at", { ascending: false }),
+        supabaseAdmin.from("user_badges").select("*, badges(name, image_url)").eq("user_id", userId).order("awarded_at", { ascending: false }),
+        supabaseAdmin.from("user_purchases").select("*, library_items(title)").eq("user_id", userId).order("created_at", { ascending: false }),
+        supabaseAdmin.from("library_items").select("id, title, week_number").eq("audience", "kids").order("week_number"),
+        supabaseAdmin.from("badges").select("id, name")
+    ]);
+
+    return {
+        profile: p,
+        progress: pr || [],
+        userBadges: ub || [],
+        purchases: pu || [],
+        allItems: items || [],
+        allBadges: badges || []
+    };
+}
+
+export async function adminValidateItem(userId: string, itemId: string) {
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+    const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
+    const { createClient } = await import("@supabase/supabase-js");
+    const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey, { auth: { persistSession: false }});
+    
+    const { error } = await supabaseAdmin.from("library_progress").insert({ user_id: userId, item_id: itemId });
+    return { success: !error, error: error?.message };
+}
+
+export async function adminRevokeItem(progressId: string) {
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+    const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
+    const { createClient } = await import("@supabase/supabase-js");
+    const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey, { auth: { persistSession: false }});
+    
+    const { error } = await supabaseAdmin.from("library_progress").delete().eq("id", progressId);
+    return { success: !error, error: error?.message };
+}
+
+export async function adminGiveBadge(userId: string, badgeId: string) {
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+    const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
+    const { createClient } = await import("@supabase/supabase-js");
+    const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey, { auth: { persistSession: false }});
+    
+    const { error } = await supabaseAdmin.from("user_badges").insert({ user_id: userId, badge_id: badgeId });
+    return { success: !error, error: error?.message };
+}
+
+export async function adminRevokeBadge(userBadgeId: string) {
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+    const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
+    const { createClient } = await import("@supabase/supabase-js");
+    const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey, { auth: { persistSession: false }});
+    
+    const { error } = await supabaseAdmin.from("user_badges").delete().eq("id", userBadgeId);
+    return { success: !error, error: error?.message };
+}
+
+export async function adminGiveGift(userId: string, itemId: string) {
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+    const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
+    const { createClient } = await import("@supabase/supabase-js");
+    const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey, { auth: { persistSession: false }});
+    
+    const { error } = await supabaseAdmin.from("user_purchases").upsert({
+        user_id: userId,
+        library_item_id: itemId,
+        status: 'active',
+        systeme_io_order_id: 'admin_gift'
+    }, { onConflict: 'user_id,library_item_id' });
+    return { success: !error, error: error?.message };
+}
+
+export async function adminRevokeGift(purchaseId: string) {
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+    const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
+    const { createClient } = await import("@supabase/supabase-js");
+    const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey, { auth: { persistSession: false }});
+    
+    const { error } = await supabaseAdmin.from("user_purchases").delete().eq("id", purchaseId);
+    return { success: !error, error: error?.message };
+}

@@ -1,12 +1,20 @@
 "use client";
 
-import { createClient } from "@/lib/supabase/client";
 import { useEffect, useState } from "react";
 import { ArrowLeft, Save, Trophy, Star, CheckCircle, X, Shield, History, Key } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
-import { adminChangeUserPassword } from "@/app/admin/actions";
+import { 
+    adminChangeUserPassword, 
+    getAdminUserGamificationDetails,
+    adminValidateItem,
+    adminRevokeItem,
+    adminGiveBadge,
+    adminRevokeBadge,
+    adminGiveGift,
+    adminRevokeGift
+} from "@/app/admin/actions";
 
 // Types
 type Profile = {
@@ -17,7 +25,7 @@ type Profile = {
     avatar_url_kids: string;
     magic_level: string;
     xp: number;
-    email?: string; // Often attached to auth user, but maybe we can fetch profile ext
+    email?: string; 
     created_at: string;
 };
 
@@ -63,9 +71,11 @@ type Badge = {
 };
 
 export default function AdminUserDetailPage() {
-    const { id } = useParams();
+    const params = useParams();
     const router = useRouter();
-    const supabase = createClient();
+    
+    // Safety check for next 16 usage
+    const id = typeof params?.id === 'string' ? params.id : Array.isArray(params?.id) ? params.id[0] : '';
 
     const [profile, setProfile] = useState<Profile | null>(null);
     const [progress, setProgress] = useState<Progress[]>([]);
@@ -75,7 +85,6 @@ export default function AdminUserDetailPage() {
     // For selection
     const [allItems, setAllItems] = useState<LibraryItem[]>([]);
     const [allBadges, setAllBadges] = useState<Badge[]>([]);
-    const [shopItems, setShopItems] = useState<LibraryItem[]>([]);
 
     const [loading, setLoading] = useState(true);
     const [newPassword, setNewPassword] = useState("");
@@ -85,97 +94,68 @@ export default function AdminUserDetailPage() {
         setLoading(true);
         if (!id) return;
 
-        // Profile
-        const { data: p } = await supabase.from("profiles").select("*").eq("id", id).single();
-        setProfile(p);
-
-        // Progress
-        const { data: pr } = await supabase
-            .from("library_progress")
-            .select("*, library_items(title, week_number)")
-            .eq("user_id", id)
-            .order("completed_at", { ascending: false });
-        setProgress(pr || []);
-
-        // User Badges
-        const { data: ub } = await supabase
-            .from("user_badges")
-            .select("*, badges(name, image_url)")
-            .eq("user_id", id)
-            .order("awarded_at", { ascending: false });
-        setUserBadges(ub || []);
-
-        // Purchases
-        const { data: pu } = await supabase
-            .from("user_purchases")
-            .select("*, library_items(title)")
-            .eq("user_id", id)
-            .order("created_at", { ascending: false });
-        setPurchases(pu || []);
-
-        // Form Data
-        const { data: items } = await supabase.from("library_items").select("id, title, week_number").eq("audience", "kids").order("week_number");
-        setAllItems(items || []);
-
-        const { data: sItems } = await supabase.from("library_items").select("id, title, week_number").eq("audience", "kids").not("sales_page_url", "is", null);
-        setShopItems(sItems || []);
-
-        const { data: badges } = await supabase.from("badges").select("id, name");
-        setAllBadges(badges || []);
+        try {
+            const data = await getAdminUserGamificationDetails(id);
+            setProfile(data.profile);
+            setProgress(data.progress);
+            setUserBadges(data.userBadges);
+            setPurchases(data.purchases);
+            setAllItems(data.allItems);
+            setAllBadges(data.allBadges);
+        } catch (err) {
+            console.error("Erreur de récupération:", err);
+            alert("Erreur de chargement du profil via API admin.");
+        }
 
         setLoading(false);
     };
 
     useEffect(() => {
-        fetchData();
+        if (id) {
+            fetchData();
+        }
     }, [id]);
 
     // Actions
     const handleValidateItem = async (itemId: string) => {
         if (!itemId) return;
-        const { error } = await supabase.from("library_progress").insert({ user_id: id, item_id: itemId });
-        if (error) alert("Erreur (déjà validé ?)");
+        const res = await adminValidateItem(id, itemId);
+        if (res.error) alert("Erreur: " + res.error);
         else fetchData();
     };
 
     const handleRevokeItem = async (progressId: string) => {
         if (!confirm("Annuler cette validation ?")) return;
-        const { error } = await supabase.from("library_progress").delete().eq("id", progressId);
-        if (error) alert("Erreur");
+        const res = await adminRevokeItem(progressId);
+        if (res.error) alert("Erreur: " + res.error);
         else fetchData();
     };
 
     const handleGiveBadge = async (badgeId: string) => {
         if (!badgeId) return;
-        const { error } = await supabase.from("user_badges").insert({ user_id: id, badge_id: badgeId });
-        if (error) alert("Erreur (déjà acquis ?)");
+        const res = await adminGiveBadge(id, badgeId);
+        if (res.error) alert("Erreur: " + res.error);
         else fetchData();
     };
 
     const handleRevokeBadge = async (userBadgeId: string) => {
         if (!confirm("Retirer ce badge ?")) return;
-        const { error } = await supabase.from("user_badges").delete().eq("id", userBadgeId);
-        if (error) alert("Erreur");
+        const res = await adminRevokeBadge(userBadgeId);
+        if (res.error) alert("Erreur: " + res.error);
         else fetchData();
     };
 
     const handleGiveGift = async (itemId: string) => {
         if (!itemId) return;
-        const { error } = await supabase.from("user_purchases").upsert({
-            user_id: id,
-            library_item_id: itemId,
-            status: 'active',
-            systeme_io_order_id: 'admin_gift'
-        }, { onConflict: 'user_id,library_item_id' });
-        
-        if (error) alert("Erreur lors de l'ajout: " + error.message);
+        const res = await adminGiveGift(id, itemId);
+        if (res.error) alert("Erreur lors de l'ajout: " + res.error);
         else fetchData();
     };
 
     const handleRevokeGift = async (purchaseId: string) => {
         if (!confirm("Attention : Retirer l'accès à ce produit de la boutique pour cet enfant ?")) return;
-        const { error } = await supabase.from("user_purchases").delete().eq("id", purchaseId);
-        if (error) alert("Erreur");
+        const res = await adminRevokeGift(purchaseId);
+        if (res.error) alert("Erreur: " + res.error);
         else fetchData();
     };
 
@@ -191,7 +171,7 @@ export default function AdminUserDetailPage() {
         const formData = new FormData();
         formData.append("new_password", newPassword);
 
-        const result = await adminChangeUserPassword(id as string, formData);
+        const result = await adminChangeUserPassword(id, formData);
         setIsChangingPassword(false);
 
         if (result.error) {
