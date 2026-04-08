@@ -88,7 +88,7 @@ export default function MagicCard({ user, profile, isKid = false, lifetimeXP }: 
                 >
                     {/* FRONT OF CARD */}
                     <div
-                        className={cn("absolute inset-0 w-full h-full backface-hidden border-2 rounded-2xl p-6 overflow-hidden transition-all duration-300", cardBorder, cardBg)}
+                        className={cn("absolute inset-0 w-full h-full backface-hidden border-2 rounded-2xl p-4 overflow-hidden transition-all duration-300", cardBorder, cardBg)}
                         style={{
                             backfaceVisibility: "hidden",
                             WebkitBackfaceVisibility: "hidden",
@@ -147,13 +147,13 @@ export default function MagicCard({ user, profile, isKid = false, lifetimeXP }: 
                             </div>
 
                             {/* Center Avatar Illustration */}
-                            <div className="flex-1 flex flex-col items-center justify-center my-4 relative">
+                            <div className="flex flex-col items-center justify-center my-1 md:my-2 relative">
                                 {/* Backdrop glow for avatar */}
                                 <div className={cn("absolute w-48 h-48 rounded-full blur-2xl opacity-40 mix-blend-screen", isKid ? "bg-purple-500" : "bg-brand-royal")}></div>
 
 
                                 <div className={cn(
-                                    "relative w-44 h-44 rounded-full p-2 shadow-2xl flex-shrink-0 z-10 transition-transform duration-500",
+                                    "relative w-32 h-32 md:w-40 md:h-40 rounded-full p-1.5 shadow-2xl flex-shrink-0 z-10 transition-transform duration-500",
                                     isLegendary ? "bg-gradient-to-tr from-amber-500 via-yellow-200 to-orange-500" :
                                         isKid ? "bg-gradient-to-tr from-blue-500 via-purple-400 to-brand-purple" : "bg-gradient-to-br from-cyan-400 via-brand-royal to-blue-600"
                                 )}>
@@ -181,21 +181,21 @@ export default function MagicCard({ user, profile, isKid = false, lifetimeXP }: 
                             </div>
 
                             {/* Footer Info */}
-                            <div className="bg-black/40 backdrop-blur-xl border border-white/10 shadow-[0_-10px_40px_rgba(0,0,0,0.5)] rounded-2xl p-4 w-full relative overflow-hidden mt-4">
+                            <div className="bg-black/40 backdrop-blur-xl border border-white/10 shadow-[0_-10px_40px_rgba(0,0,0,0.5)] rounded-2xl p-3 md:p-4 w-full relative overflow-hidden mt-1 flex flex-col justify-center">
                                 {/* Subtle internal reflection */}
                                 <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
 
-                                <h2 className={cn("font-serif text-2xl font-black text-center mb-4 drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)]", isLegendary ? "text-[#FFD700]" : "text-white")}>
+                                <h2 className={cn("font-serif text-xl md:text-2xl font-black text-center mb-2 drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)] truncate", isLegendary ? "text-[#FFD700]" : "text-white")}>
                                     {profile?.username || "Le Mystérieux"}
                                 </h2>
 
                                 {/* Inner Card XP Progress Bar */}
-                                <div className="mb-5 px-2">
-                                    <div className="flex justify-between text-[9px] font-bold text-white/50 uppercase tracking-widest mb-1.5">
+                                <div className="mb-3 px-2">
+                                    <div className="flex justify-between text-[8px] md:text-[9px] font-bold text-white/50 uppercase tracking-widest mb-1">
                                         <span>Progression</span>
                                         <span className={isLegendary ? "text-amber-400" : "text-white"}>{xp} XP</span>
                                     </div>
-                                    <div className="h-1.5 w-full bg-black/60 rounded-full overflow-hidden border border-white/5">
+                                    <div className="h-1 w-full bg-black/60 rounded-full overflow-hidden border border-white/5">
                                         <div
                                             className={cn("h-full relative", isLegendary ? "bg-gradient-to-r from-amber-600 to-yellow-400" : isKid ? "bg-gradient-to-r from-purple-600 to-blue-400" : "bg-gradient-to-r from-blue-600 to-cyan-400")}
                                             style={{ width: `${Math.min((xp / (isLegendary ? 500 : 150)) * 100, 100)}%` }}
@@ -205,14 +205,14 @@ export default function MagicCard({ user, profile, isKid = false, lifetimeXP }: 
                                     </div>
                                 </div>
 
-                                <div className="grid grid-cols-2 gap-4 text-center border-t border-white/5 pt-4">
-                                    <div className="flex flex-col items-center bg-white/5 rounded-lg py-2 border border-white/5">
-                                        <p className="text-white/40 text-[9px] uppercase tracking-widest font-bold mb-1">{isKid ? "Faction" : "QG"}</p>
-                                        <p className="text-white/90 text-sm font-bold truncate px-2 w-full">{displayCityOrFaction}</p>
+                                <div className="grid grid-cols-2 gap-2 text-center border-t border-white/5 pt-2">
+                                    <div className="flex flex-col items-center bg-white/5 rounded-lg py-1 border border-white/5">
+                                        <p className="text-white/40 text-[8px] uppercase tracking-widest font-bold mb-0.5">{isKid ? "Faction" : "QG"}</p>
+                                        <p className="text-white/90 text-[11px] md:text-sm font-bold truncate px-1 w-full">{displayCityOrFaction}</p>
                                     </div>
-                                    <div className="flex flex-col items-center bg-white/5 rounded-lg py-2 border border-white/5">
-                                        <p className="text-white/40 text-[9px] uppercase tracking-widest font-bold mb-1">Inscrit</p>
-                                        <p className="text-white/90 text-sm font-bold px-2">{new Date(user.created_at).toLocaleDateString()}</p>
+                                    <div className="flex flex-col items-center bg-white/5 rounded-lg py-1 border border-white/5">
+                                        <p className="text-white/40 text-[8px] uppercase tracking-widest font-bold mb-0.5">Inscrit</p>
+                                        <p className="text-white/90 text-[11px] md:text-sm font-bold px-1">{new Date(user.created_at).toLocaleDateString()}</p>
                                     </div>
                                 </div>
                             </div>
