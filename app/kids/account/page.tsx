@@ -39,7 +39,8 @@ export default async function KidsAccountPage({
         console.error("Could not fetch lifetime XP", e);
     }
 
-    let computedAvatarUrl = profile?.avatar_url_kids || profile?.avatar_url || "/avatars/avatar_base_student.png";
+    // Enforce gamification base avatar, completely ignore 'avatar_url_kids'
+    let computedAvatarUrl = "/avatars/avatar_base_student.png";
     if (profile?.equipped_skin_id && profile?.avatar_skins?.image_url) {
         computedAvatarUrl = profile.avatar_skins.image_url;
     }
