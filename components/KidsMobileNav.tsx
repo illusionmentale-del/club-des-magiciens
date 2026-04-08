@@ -117,8 +117,21 @@ export default function KidsMobileNav({ logoUrl, isAdmin, hasPurchases, hasUnrea
 
                     {/* Menu Content */}
                     <div className="relative w-64 h-full bg-magic-card border-r border-white/10 flex flex-col p-4 animate-in slide-in-from-left duration-200">
-                        <div className="flex justify-end mb-2">
-                            <button onClick={close} className="p-2 -mr-2 text-gray-400 hover:text-white">
+                        <div className="flex items-start justify-between mb-6">
+                            <Link href="/kids/account" onClick={close} className="flex items-center gap-3 group">
+                                <MagicAvatar imageUrl={avatarUrl} levelName={magicLevel} size="sm" />
+                                <div className="min-w-0 pr-1">
+                                    <h2 className="font-bold text-white text-xs leading-tight line-clamp-1 group-hover:text-brand-purple transition-colors">{userName}</h2>
+                                    <div className="flex items-center gap-1.5 mt-0.5">
+                                        <p className="text-[10px] text-brand-gold font-mono truncate max-w-[60px]">{magicLevel}</p>
+                                        <div className="flex items-center gap-1 bg-black/30 rounded-full px-1.5 py-0.5 border border-white/5 shrink-0">
+                                            <Sparkles className="w-2.5 h-2.5 text-yellow-400" />
+                                            <span className="text-[9px] font-bold text-white leading-none">{xpBalance} XP</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </Link>
+                            <button onClick={close} className="p-2 -mr-2 -mt-2 text-gray-400 hover:text-white">
                                 <X className="w-6 h-6" />
                             </button>
                         </div>
