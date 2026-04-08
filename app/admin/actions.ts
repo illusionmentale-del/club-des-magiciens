@@ -596,7 +596,6 @@ export async function createUserManually(formData: FormData) {
             full_name: username,
             role: role,
             access_level: access_level,
-            is_kid: access_level === 'kid',
             has_kids_access: access_level === 'kid' || role === 'admin',
             has_adults_access: access_level === 'adult' || role === 'admin'
         };
@@ -669,7 +668,6 @@ export async function updateUserAccess(userId: string, formData: FormData) {
 
     const { error } = await supabaseAdmin.from("profiles").update({ 
         access_level, 
-        is_kid,
         has_kids_access: is_kid,
         has_adults_access: !is_kid
     }).eq("id", userId);
