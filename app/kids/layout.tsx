@@ -52,7 +52,7 @@ export default async function KidsLayout({
 
     if (user) {
         // ... existing admin and settings fetch ...
-        const { data: profile } = await supabase.from('profiles').select('role, has_adults_access, magic_level, full_name, avatar_skins(image_url)').eq('id', user.id).single();
+        const { data: profile } = await supabase.from('profiles').select('role, has_adults_access, magic_level, full_name, username, avatar_skins(image_url)').eq('id', user.id).single();
         isAdmin = profile?.role === 'admin';
         hasAdultsAccess = profile?.has_adults_access || false;
         const isLegendary = (lifetimeXP || 0) >= 150;
@@ -61,7 +61,9 @@ export default async function KidsLayout({
         if (isLegendary) magicLevel = "Magicien Légendaire";
         else if (isHolo) magicLevel = "Holo-Magicien";
         else magicLevel = "Apprenti Magicien";
-        userName = profile?.full_name || "Jeune Magicien";
+        
+        // Priority to pseudo (username), then full name, then fallback
+        userName = profile?.username || profile?.full_name || "Jeune Magicien";
         
         // Handle avatar skin
         if (profile?.avatar_skins && !Array.isArray(profile.avatar_skins) && typeof profile.avatar_skins === 'object') {
