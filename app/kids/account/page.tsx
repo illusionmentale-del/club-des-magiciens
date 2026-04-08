@@ -4,6 +4,7 @@ import MagicCard from "@/components/MagicCard";
 import AccountForm from "@/app/dashboard/account/AccountForm"; // Reusing form for settings
 import { Settings, Trophy, Shield, Star, Bell } from "lucide-react";
 import { NotificationPreferences } from "@/components/NotificationPreferences";
+import KidsIdentityForm from "@/components/kids/KidsIdentityForm";
 
 export default async function KidsAccountPage({
     searchParams,
@@ -100,7 +101,10 @@ export default async function KidsAccountPage({
                             </div>
                         </div>
                     ) : (
-                        <MagicCard user={user} profile={profile} isKid={true} lifetimeXP={lifetimeXP} />
+                        <div className="flex flex-col items-center">
+                            <MagicCard user={user} profile={profile} isKid={true} lifetimeXP={lifetimeXP} />
+                            <KidsIdentityForm profile={profile} />
+                        </div>
                     )}
                 </div>
             </div>

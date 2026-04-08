@@ -23,7 +23,16 @@ export default function MagicCard({ user, profile, isKid = false, lifetimeXP }: 
     const isHolo = xp >= 50 && xp < 150;
     const isLegendary = xp >= 150;
 
-    const validFactions = ["Magicien", "Sorcier", "Elfe", "Fée", "Licorne", "Illusionniste"];
+    let computedLevel = "Membre";
+    if (isKid) {
+        if (isLegendary) computedLevel = "Légendaire";
+        else if (isHolo) computedLevel = "Holo-Magicien";
+        else computedLevel = "Apprenti";
+    } else {
+        computedLevel = profile?.magic_level || "Membre";
+    }
+
+    const validFactions = ["Magicien", "Sorcier", "Elfe", "Fée", "Licorne", "Illusionniste", "Mentaliste", "Druide"];
     const displayCityOrFaction = isKid
         ? (validFactions.includes(profile?.city) ? profile.city : "Non choisie")
         : (profile?.city || "Inconnu");
@@ -165,7 +174,7 @@ export default function MagicCard({ user, profile, isKid = false, lifetimeXP }: 
                                             "px-4 py-1.5 rounded-full text-[10px] font-black tracking-widest uppercase shadow-[0_5px_15px_rgba(0,0,0,0.5)] border-2",
                                             isLegendary ? "bg-amber-600 text-amber-100 border-yellow-300" : isKid ? "bg-brand-purple text-purple-100 border-purple-300" : "bg-brand-royal text-blue-100 border-blue-300"
                                         )}>
-                                            {profile?.magic_level || "Apprenti"}
+                                            {computedLevel}
                                         </div>
                                     </div>
                                 </div>

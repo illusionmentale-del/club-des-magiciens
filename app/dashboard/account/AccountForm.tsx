@@ -55,9 +55,13 @@ export default function AccountForm({ user, profile, theme = 'dark', isKidProfil
 
     return (
         <form action={formAction} className="space-y-8">
+            <input type="hidden" name="targetProfile" value={isKidProfile ? 'kid' : 'adult'} />
+            <input type="hidden" name="theme" value={theme} />
+
             {/* Identity Section */}
-            <section className={`${cardClass} rounded-2xl p-8`}>
-                <h2 className={`text-xl font-bold mb-6 flex items-center gap-2 ${titleClass}`}>
+            {!isKidProfile && (
+                <section className={`${cardClass} rounded-2xl p-8`}>
+                    <h2 className={`text-xl font-bold mb-6 flex items-center gap-2 ${titleClass}`}>
                     <User className={`w-5 h-5 ${iconClass}`} />
                     Identité
                 </h2>
@@ -65,21 +69,12 @@ export default function AccountForm({ user, profile, theme = 'dark', isKidProfil
                 <div className="flex flex-col md:flex-row gap-8 items-start">
                     {/* Avatar Upload / Selection */}
                     <div className="shrink-0 mx-auto md:mx-0">
-                        {isKidProfile ? (
-                            <KidsAvatarSelector
-                                currentAvatarUrl={profile?.avatar_url_kids || "🎩"}
-                                onSelect={(url) => setAvatarUrl(url)}
-                            />
-                        ) : (
-                            <AvatarUpload
-                                theme={theme}
-                                currentAvatarUrl={profile?.avatar_url}
-                                onUpload={(url) => setAvatarUrl(url)}
-                            />
-                        )}
-                        <input type="hidden" name="avatarUrl" value={avatarUrl !== null ? avatarUrl : (isKidProfile ? (profile?.avatar_url_kids || "🎩") : (profile?.avatar_url || ""))} />
-                        <input type="hidden" name="theme" value={theme} />
-                        <input type="hidden" name="targetProfile" value={isKidProfile ? 'kid' : 'adult'} />
+                        <AvatarUpload
+                            theme={theme}
+                            currentAvatarUrl={profile?.avatar_url}
+                            onUpload={(url) => setAvatarUrl(url)}
+                        />
+                        <input type="hidden" name="avatarUrl" value={avatarUrl !== null ? avatarUrl : (profile?.avatar_url || "")} />
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 flex-1 w-full">
@@ -87,30 +82,13 @@ export default function AccountForm({ user, profile, theme = 'dark', isKidProfil
                             <label className={`block text-sm mb-2 ${labelClass}`}>Pseudonyme</label>
                             <input name="username" defaultValue={profile?.username || ""} placeholder="Votre pseudo" className={inputClass} required={isKidProfile} />
                         </div>
-                        {isKidProfile ? (
-                            <div>
-                                <label className={`block text-sm mb-2 ${labelClass}`}>Ta Faction Magique</label>
-                                <div className="relative">
-                                    <select name="city" defaultValue={profile?.city || ""} className={`${inputClass} appearance-none bg-brand-bg/50`} required>
-                                        <option value="" disabled>Choisis ta faction...</option>
-                                        <option value="Magicien">🎩 Magicien / Magicienne</option>
-                                        <option value="Sorcier">🔮 Sorcier / Sorcière</option>
-                                        <option value="Elfe">🧝 Elfe</option>
-                                        <option value="Fée">🧚 Fée</option>
-                                        <option value="Licorne">🦄 Licorne</option>
-                                        <option value="Illusionniste">🌟 Illusionniste</option>
-                                    </select>
-                                </div>
+                        <div>
+                            <label className={`block text-sm mb-2 ${labelClass}`}>Ville / QG</label>
+                            <div className="relative">
+                                <MapPin className={`absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 ${theme === 'light' ? 'text-gray-400' : 'text-gray-600'}`} />
+                                <input name="city" defaultValue={profile?.city || ""} placeholder="Paris, France" className={`${inputClass} pl-10`} />
                             </div>
-                        ) : (
-                            <div>
-                                <label className={`block text-sm mb-2 ${labelClass}`}>Ville / QG</label>
-                                <div className="relative">
-                                    <MapPin className={`absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 ${theme === 'light' ? 'text-gray-400' : 'text-gray-600'}`} />
-                                    <input name="city" defaultValue={profile?.city || ""} placeholder="Paris, France" className={`${inputClass} pl-10`} />
-                                </div>
-                            </div>
-                        )}
+                        </div>
                         <div className="col-span-full">
                             <label className={`block text-sm mb-2 ${labelClass}`}>Bio / Présentation</label>
                             <textarea name="bio" defaultValue={profile?.bio || ""} placeholder="Quelques mots sur vous..." rows={4} className={inputClass} />
@@ -118,10 +96,12 @@ export default function AccountForm({ user, profile, theme = 'dark', isKidProfil
                     </div>
                 </div>
             </section>
+            )}
 
             {/* Magic Level */}
-            <section className={`${cardClass} rounded-2xl p-8`}>
-                <h2 className={`text-xl font-bold mb-6 flex items-center gap-2 ${titleClass}`}>
+            {!isKidProfile && (
+                <section className={`${cardClass} rounded-2xl p-8`}>
+                    <h2 className={`text-xl font-bold mb-6 flex items-center gap-2 ${titleClass}`}>
                     <Wand2 className={`w-5 h-5 ${iconClass}`} />
                     Niveau de Magie
                 </h2>
@@ -151,6 +131,7 @@ export default function AccountForm({ user, profile, theme = 'dark', isKidProfil
                     })}
                 </div>
             </section>
+            )}
 
             {/* Security Section */}
             <section className={`${cardClass} rounded-2xl p-8 ${theme === 'dark' ? 'opacity-80 hover:opacity-100' : ''} transition-opacity`}>

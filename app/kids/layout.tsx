@@ -55,7 +55,12 @@ export default async function KidsLayout({
         const { data: profile } = await supabase.from('profiles').select('role, has_adults_access, magic_level, full_name, avatar_skins(image_url)').eq('id', user.id).single();
         isAdmin = profile?.role === 'admin';
         hasAdultsAccess = profile?.has_adults_access || false;
-        magicLevel = profile?.magic_level || "Apprenti";
+        const isLegendary = (lifetimeXP || 0) >= 150;
+        const isHolo = (lifetimeXP || 0) >= 50 && (lifetimeXP || 0) < 150;
+        
+        if (isLegendary) magicLevel = "Magicien Légendaire";
+        else if (isHolo) magicLevel = "Holo-Magicien";
+        else magicLevel = "Apprenti Magicien";
         userName = profile?.full_name || "Jeune Magicien";
         
         // Handle avatar skin
