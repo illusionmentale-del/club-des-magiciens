@@ -21,7 +21,7 @@ export default async function KidsAccountPage({
 
     const { data: profile } = await supabase
         .from("profiles")
-        .select("*")
+        .select("*, avatar_skins(image_url)")
         .eq("id", user.id)
         .single();
 
@@ -37,6 +37,11 @@ export default async function KidsAccountPage({
         }
     } catch (e) {
         console.error("Could not fetch lifetime XP", e);
+    }
+
+    let computedAvatarUrl = profile?.avatar_url_kids || profile?.avatar_url || "/avatars/avatar_base_student.png";
+    if (profile?.equipped_skin_id && profile?.avatar_skins?.image_url) {
+        computedAvatarUrl = profile.avatar_skins.image_url;
     }
 
     return (
@@ -102,7 +107,7 @@ export default async function KidsAccountPage({
                         </div>
                     ) : (
                         <div className="flex flex-col items-center">
-                            <MagicCard user={user} profile={profile} isKid={true} lifetimeXP={lifetimeXP} />
+                            <MagicCard user={user} profile={profile} isKid={true} lifetimeXP={lifetimeXP} avatarUrl={computedAvatarUrl} />
                             <KidsIdentityForm profile={profile} />
                         </div>
                     )}

@@ -11,9 +11,10 @@ interface MagicCardProps {
     profile: any;
     isKid?: boolean;
     lifetimeXP?: number;
+    avatarUrl?: string; // Optional prop to pass explicit avatar (prevents async mismatch)
 }
 
-export default function MagicCard({ user, profile, isKid = false, lifetimeXP }: MagicCardProps) {
+export default function MagicCard({ user, profile, isKid = false, lifetimeXP, avatarUrl }: MagicCardProps) {
     const [isFlipped, setIsFlipped] = useState(false);
     const [mousePosition, setMousePosition] = useState({ x: 0, y: 0, percentageX: 50, percentageY: 50 });
 
@@ -38,8 +39,8 @@ export default function MagicCard({ user, profile, isKid = false, lifetimeXP }: 
         : (profile?.city || "Inconnu");
 
     // Fallbacks
-    const defaultKidAvatar = "🎩";
-    const currentAvatar = isKid ? (profile?.avatar_url_kids || defaultKidAvatar) : (profile?.avatar_url || "/default-avatar.png");
+    const defaultKidAvatar = "/avatars/avatar_base_student.png";
+    const currentAvatar = avatarUrl || (isKid ? (profile?.avatar_url_kids || defaultKidAvatar) : (profile?.avatar_url || "/default-avatar.png"));
     const isEmojiAvatar = isKid && !currentAvatar.startsWith('http') && !currentAvatar.startsWith('/');
 
     const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {

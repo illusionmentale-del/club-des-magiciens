@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
-import { LogOut, BookOpen, Settings, Video, Star, Youtube, Instagram, Facebook, LayoutDashboard, Shield, Wand2, ShoppingBag, Trophy, Map, Package, Sparkles, Store } from "lucide-react";
+import { LogOut, BookOpen, Settings, Video, Star, Youtube, Instagram, Facebook, LayoutDashboard, Shield, Wand2, ShoppingBag, Trophy, Map, Package, Sparkles, Store, ChevronRight } from "lucide-react";
 import MagicAvatar from "@/components/kids/MagicAvatar";
 
 export default function KidsSidebar({ socialLinks, logoUrl, isAdmin, hasPurchases, hasUnreadReplies, hasAdultsAccess, enableProgram = true, enableMasterclass = true, enableAccount = true, enableShop = true, xpBalance = 0, lifetimeXP = 0, magicLevel = "Apprenti", avatarUrl = "", userName = "" }: {
@@ -76,13 +76,16 @@ export default function KidsSidebar({ socialLinks, logoUrl, isAdmin, hasPurchase
                     </div>
                 </Link>
 
-                <div className="flex flex-col items-center gap-3">
-                    <MagicAvatar imageUrl={avatarUrl} levelName={magicLevel} size="lg" />
+                <Link href="/kids/account" className="flex flex-col items-center gap-3 group relative w-full rounded-2xl p-2 hover:bg-white/5 transition-colors">
+                    <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <ChevronRight className="w-5 h-5 text-brand-purple" />
+                    </div>
+                    <MagicAvatar imageUrl={avatarUrl} levelName={magicLevel} size="lg" className="group-hover:scale-105 transition-transform" />
                     <div>
-                        <h2 className="font-bold text-white text-sm leading-tight">{userName}</h2>
+                        <h2 className="font-bold text-white text-sm leading-tight group-hover:text-brand-purple transition-colors">{userName}</h2>
                         <p className="text-xs text-brand-gold font-mono">{magicLevel}</p>
                     </div>
-                </div>
+                </Link>
 
                 <div className="flex items-center gap-3 text-gray-400">
                     <a href={socialLinks?.youtube || "#"} target="_blank" className="hover:text-red-500 transition-colors"><Youtube className="w-4 h-4" /></a>
@@ -99,11 +102,14 @@ export default function KidsSidebar({ socialLinks, logoUrl, isAdmin, hasPurchase
             {/* Navigation */}
             <nav className="flex-1 p-4 space-y-4 overflow-y-auto">
                 {/* 👑 Portefeuille & Grade */}
-                <div className="mx-4 mb-4 p-4 rounded-xl bg-gradient-to-b from-[#1a1025] to-[#0A0510] border border-purple-500/30 shadow-[inset_0_0_20px_rgba(168,85,247,0.1)] group hover:shadow-[inset_0_0_25px_rgba(168,85,247,0.2)] transition-all cursor-default">
-                    <div className="flex items-center justify-between mb-3">
+                <Link href="/kids/account" className="block mx-4 mb-4 p-4 rounded-xl bg-gradient-to-b from-[#1a1025] to-[#0A0510] border border-purple-500/30 shadow-[inset_0_0_20px_rgba(168,85,247,0.1)] group hover:shadow-[inset_0_0_25px_rgba(168,85,247,0.2)] hover:border-purple-500/50 transition-all cursor-pointer relative overflow-hidden">
+                    <div className="absolute top-2 right-2 opacity-50 group-hover:opacity-100 transition-opacity">
+                        <ChevronRight className="w-4 h-4 text-brand-purple" />
+                    </div>
+                    <div className="flex items-center justify-between mb-3 w-full pr-4">
                         <div className="flex items-center gap-2">
                             <Sparkles className="w-5 h-5 text-yellow-400 group-hover:animate-spin-slow" />
-                            <span className="font-bold text-white text-sm">Mon Trésor</span>
+                            <span className="font-bold text-white text-sm group-hover:text-brand-gold transition-colors">Mon Trésor</span>
                         </div>
                         <div className="font-black text-brand-gold text-lg items-baseline flex gap-1">
                             {xpBalance}
@@ -112,7 +118,7 @@ export default function KidsSidebar({ socialLinks, logoUrl, isAdmin, hasPurchase
                     </div>
                 
                     {/* Progress Bar */}
-                    <div className="pt-3 border-t border-white/10">
+                    <div className="pt-3 border-t border-white/10 w-full">
                         <div className="flex justify-between text-[10px] font-bold text-white/50 uppercase tracking-widest mb-1.5">
                             <span className={isLegendary ? "text-amber-400" : isHolo ? "text-purple-300" : "text-blue-300"}>{magicLevel}</span>
                             <span className={isLegendary ? "text-amber-400" : "text-white"}>{lifetimeXP} / {isLegendary && lifetimeXP >= 500 ? "MAX" : maxForLevel} XP</span>
@@ -126,7 +132,7 @@ export default function KidsSidebar({ socialLinks, logoUrl, isAdmin, hasPurchase
                             </div>
                         </div>
                     </div>
-                </div>
+                </Link>
 
                 {/* 1. 🏰 Le Club (Home) */}
                 <Link
@@ -186,17 +192,7 @@ export default function KidsSidebar({ socialLinks, logoUrl, isAdmin, hasPurchase
                 {/* 4. 👤 Mes Informations */}
                 {enableAccount && (
                     <>
-                        <Link href="/kids/account" className="block group">
-                            <div className="flex items-center gap-4">
-                                <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-colors ${isActive('/kids/account') && searchParams.get('view') !== 'settings' ? 'bg-magic-purple text-white shadow-lg shadow-magic-purple/20' : 'bg-white/5 text-gray-400 group-hover:bg-white/10 group-hover:text-white'}`}>
-                                    <Trophy className="w-5 h-5" />
-                                </div>
-                                <div>
-                                    <div className={`font-bold ${isActive('/kids/account') && searchParams.get('view') !== 'settings' ? 'text-magic-purple' : 'text-gray-300 group-hover:text-white'}`}>Ma Carte d'Apprenti</div>
-                                    <div className="text-xs text-gray-500">Ton niveau et tes statistiques</div>
-                                </div>
-                            </div>
-                        </Link>
+                                    {/* Removed: Ma Carte d'Apprenti. It's now in the header/XP box at the top. */}
 
                         <Link href="/kids/account?view=settings" className="block group mt-4">
                             <div className="flex items-center gap-4">

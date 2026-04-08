@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname, useSearchParams } from "next/navigation";
-import { Menu, X, BookOpen, Settings, Video, LogOut, Star, Play, ShoppingBag, Trophy, Map, Package, Wand2, Shield, LayoutDashboard, Sparkles, Store } from "lucide-react";
+import { Menu, X, BookOpen, Settings, Video, LogOut, Star, Play, ShoppingBag, Trophy, Map, Package, Wand2, Shield, LayoutDashboard, Sparkles, Store, ChevronRight } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 import MagicAvatar from "@/components/kids/MagicAvatar";
@@ -116,13 +116,14 @@ export default function KidsMobileNav({ logoUrl, isAdmin, hasPurchases, hasUnrea
                     {/* Menu Content */}
                     <div className="relative w-64 h-full bg-magic-card border-r border-white/10 flex flex-col p-4 animate-in slide-in-from-left duration-200">
                         <div className="flex justify-between items-start mb-4">
-                            <div className="flex items-center gap-3">
+                            <Link href="/kids/account" onClick={close} className="flex items-center gap-3 group flex-1">
                                 <MagicAvatar imageUrl={avatarUrl} levelName={magicLevel} size="sm" />
-                                <div>
-                                    <h2 className="font-bold text-white text-xs leading-tight line-clamp-1">{userName}</h2>
+                                <div className="flex-1">
+                                    <h2 className="font-bold text-white text-xs leading-tight line-clamp-1 group-hover:text-brand-purple transition-colors">{userName}</h2>
                                     <p className="text-[10px] text-brand-gold font-mono">{magicLevel}</p>
                                 </div>
-                            </div>
+                                <ChevronRight className="w-4 h-4 text-white/20 group-hover:text-brand-purple transition-colors shrink-0" />
+                            </Link>
                             <button onClick={close} className="p-2 text-gray-400 hover:text-white">
                                 <X className="w-6 h-6" />
                             </button>
@@ -130,11 +131,14 @@ export default function KidsMobileNav({ logoUrl, isAdmin, hasPurchases, hasUnrea
 
                         <nav className="space-y-2 flex-1">
                             {/* 👑 Portefeuille & Grade */}
-                            <div className="mx-4 mb-4 p-4 rounded-xl bg-gradient-to-b from-[#1a1025] to-[#0A0510] border border-purple-500/30 flex flex-col shadow-[inset_0_0_20px_rgba(168,85,247,0.1)] group cursor-default">
-                                <div className="flex items-center justify-between mb-3 w-full">
+                            <Link href="/kids/account" onClick={close} className="mx-4 mb-4 p-4 rounded-xl bg-gradient-to-b from-[#1a1025] to-[#0A0510] border border-purple-500/30 flex flex-col shadow-[inset_0_0_20px_rgba(168,85,247,0.1)] group hover:shadow-[inset_0_0_25px_rgba(168,85,247,0.2)] hover:border-purple-500/50 transition-all cursor-pointer relative">
+                                <div className="absolute top-2 right-2 opacity-50 group-hover:opacity-100 transition-opacity">
+                                    <ChevronRight className="w-4 h-4 text-brand-purple" />
+                                </div>
+                                <div className="flex items-center justify-between mb-3 w-full pr-4">
                                     <div className="flex items-center gap-2">
                                         <Sparkles className="w-5 h-5 text-yellow-400 group-hover:animate-spin-slow" />
-                                        <span className="font-bold text-white text-sm">Mon Trésor</span>
+                                        <span className="font-bold text-white text-sm group-hover:text-brand-gold transition-colors">Mon Trésor</span>
                                     </div>
                                     <div className="font-black text-brand-gold text-lg items-baseline flex gap-1">
                                         {xpBalance}
@@ -157,7 +161,7 @@ export default function KidsMobileNav({ logoUrl, isAdmin, hasPurchases, hasUnrea
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </Link>
 
                             {/* 1. 🏰 Le Club (Home) */}
                             <Link
@@ -218,17 +222,7 @@ export default function KidsMobileNav({ logoUrl, isAdmin, hasPurchases, hasUnrea
                             {/* 4. 👤 Mes Informations */}
                             {enableAccount && (
                                 <>
-                                    <Link href="/kids/account" onClick={() => setIsOpen(false)} className="block group">
-                                        <div className="flex items-center gap-4">
-                                            <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-colors ${isActive('/kids/account') && searchParams.get('view') !== 'settings' ? 'bg-magic-purple text-white shadow-lg shadow-magic-purple/20' : 'bg-white/5 text-gray-400 group-hover:bg-white/10 group-hover:text-white'}`}>
-                                                <Trophy className="w-5 h-5" />
-                                            </div>
-                                            <div>
-                                                <div className={`font-bold ${isActive('/kids/account') && searchParams.get('view') !== 'settings' ? 'text-magic-purple' : 'text-gray-300 group-hover:text-white'}`}>Ma Carte d'Apprenti</div>
-                                                <div className="text-xs text-gray-500">Ton niveau et tes statistiques</div>
-                                            </div>
-                                        </div>
-                                    </Link>
+                                    {/* Removed: Ma Carte d'Apprenti. It's now in the header/XP box at the top. */}
 
                                     <Link href="/kids/account?view=settings" onClick={() => setIsOpen(false)} className="block group mt-2">
                                         <div className="flex items-center gap-4">
