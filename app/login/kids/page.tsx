@@ -14,9 +14,9 @@ function SubmitButton() {
         <button
             type="submit"
             disabled={pending}
-            className="w-full py-4 bg-gradient-to-r from-brand-purple to-brand-blue hover:scale-[1.02] text-white font-black uppercase tracking-widest rounded-2xl transition-all shadow-lg hover:shadow-brand-purple/50 disabled:opacity-50 disabled:cursor-not-allowed flex justify-center items-center gap-2"
+            className="w-full py-4 bg-gradient-to-r from-brand-purple to-brand-blue hover:scale-[1.02] text-white font-black uppercase tracking-widest rounded-2xl transition-all shadow-lg hover:shadow-brand-purple/50 disabled:opacity-50 disabled:cursor-not-allowed flex justify-center items-center"
         >
-            {pending ? <Loader2 className="w-6 h-6 animate-spin" /> : <span className="flex items-center gap-2 text-lg">Entrer dans le Club <ArrowRight className="w-5 h-5" /></span>}
+            {pending ? <Loader2 className="w-6 h-6 animate-spin" /> : <span className="text-lg">Entrer dans le Club</span>}
         </button>
     );
 }
