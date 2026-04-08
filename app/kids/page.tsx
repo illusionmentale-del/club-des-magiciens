@@ -253,8 +253,18 @@ export default async function KidsHomePage({ searchParams }: { searchParams: Pro
         .eq("status", "paid");
     const hasPurchases = (purchaseCount || 0) > 0;
 
+    // Calculate XP for Gamification Level
+    const { data: xpLogs } = await supabase.from("user_xp_logs").select("xp_awarded").eq("user_id", user.id);
+    let lifetimeXP = 0;
+    if (xpLogs) {
+        lifetimeXP = xpLogs.reduce((acc, log) => acc + (log.xp_awarded > 0 ? log.xp_awarded : 0), 0);
+    }
+
+    let userGrade = "Apprenti";
+    if (lifetimeXP >= 150) userGrade = "Légendaire";
+    else if (lifetimeXP >= 50) userGrade = "Holo-Magicien";
+
     const userName = profile.username || profile.full_name || profile.display_name || profile.first_name || user.user_metadata?.full_name || "Jeune Magicien";
-    const userGrade = profile.magic_level || "Apprenti";
 
     const isShopEnabled = settingsMap.enable_kids_shop !== 'false';
 
