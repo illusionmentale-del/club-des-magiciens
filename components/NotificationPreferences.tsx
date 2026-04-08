@@ -94,12 +94,11 @@ export function NotificationPreferences({ profile }: { profile: any }) {
     const handleTogglePush = async (checked: boolean) => {
         setPushLoading(true);
         try {
-            const registration = await navigator.serviceWorker.ready;
-
             if (checked) {
-                // S'ABONNER
-                const permission = await Notification.requestPermission();
+                // S'ABONNER: Doit être la première action asynchrone pour Safari iOS !
+                const permission = await window.Notification.requestPermission();
                 if (permission === 'granted') {
+                    const registration = await navigator.serviceWorker.ready;
                     const publicKey = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY;
                     if (!publicKey) throw new Error("VAPID public key manquante");
 
@@ -123,10 +122,11 @@ export function NotificationPreferences({ profile }: { profile: any }) {
                     }
                     setPushSubscribed(true);
                 } else {
-                    alert("Vous avez refusé les notifications. Vous devez les réactiver dans les paramètres de votre navigateur.");
+                    alert("Vous avez refusé les notifications. Vous devez les réactiver dans les paramètres de votre appareil ou navigateur.");
                 }
             } else {
                 // SE DÉSABONNER
+                const registration = await navigator.serviceWorker.ready;
                 const subscription = await registration.pushManager.getSubscription();
                 if (subscription) {
                     // Supprimer du navigateur
