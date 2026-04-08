@@ -60,7 +60,7 @@ export const WelcomeKidEmail = ({
                             🪄 Bienvenue au Club !
                         </Heading>
                         <Text className="text-black text-[14px] leading-[24px]">
-                            Félicitations ! L'abonnement est validé et tu as maintenant accès au Club des Petits Magiciens. De nombreux secrets t'attendent pour découvrir l'art de la prestidigitation.
+                            {password ? "Félicitations ! L'abonnement est validé et tu as maintenant accès au Club des Petits Magiciens. De nombreux secrets t'attendent pour découvrir l'art de la prestidigitation." : "Le Club des Petits Magiciens évolue !"}
                         </Text>
                         <Section className="bg-brand-purple/10 border border-brand-purple/20 rounded-lg p-6 my-6 text-center">
                             {password ? (
@@ -77,31 +77,43 @@ export const WelcomeKidEmail = ({
                                     <Text className="text-gray-600 text-xs mt-4 italic">
                                         (Nous te conseillons de le modifier une fois connecté dans ton espace "Mon Profil")
                                     </Text>
+                                    <Section className="text-center mt-[32px] mb-[16px]">
+                                        <Button
+                                            className="bg-[#7c3aed] rounded text-white text-[12px] font-bold no-underline text-center px-5 py-3"
+                                            href={loginUrl}
+                                        >
+                                            ENTRER DANS LE CLUB 🎩
+                                        </Button>
+                                    </Section>
                                 </>
                             ) : (
                                 <>
                                     <Text className="text-black font-bold text-lg my-1">
-                                        Ton compte est déjà actif !
+                                        Nouvelle Plateforme 100% Autonome 🚀
                                     </Text>
-                                    <Text className="text-gray-600 text-sm mt-2">
-                                        Connecte-toi avec tes identifiants habituels associés à l'email <strong>{username}</strong>.
+                                    <Text className="text-gray-600 text-sm mt-4 text-left">
+                                        Bonjour ! Je t'envoie ce mail car le Club des Petits Magiciens a migré vers une nouvelle application 100% autonome.
                                     </Text>
-                                    <Text className="text-gray-600 text-xs mt-2 italic">
-                                        (Si tu as oublié ton mot de passe, clique sur "Mot de passe oublié" sur la page de connexion)
+                                    <Text className="text-gray-600 text-sm mt-3 text-left">
+                                        Pour te connecter à ton espace, il te suffit de cliquer sur le bouton ci-dessous pour générer un nouveau mot de passe personnalisé. 
+                                        Tu peux aussi te rendre sur la page de connexion, entrer ton adresse email (<strong>{username}</strong>) et cliquer sur "Mot de passe oublié".
                                     </Text>
+                                    <Text className="text-gray-600 text-sm mt-3 text-left font-bold text-black border-l-4 border-[#fbbf24] pl-3 py-1">
+                                        Bien évidemment, ton accès est gratuit et le restera à vie.
+                                    </Text>
+                                    <Section className="text-center mt-[32px] mb-[16px]">
+                                        <Button
+                                            className="bg-[#7c3aed] rounded text-white text-[12px] font-bold no-underline text-center px-5 py-3"
+                                            href={recoveryUrl || loginUrl}
+                                        >
+                                            CRÉER MON MOT DE PASSE 🔒
+                                        </Button>
+                                    </Section>
                                 </>
                             )}
                         </Section>
-                        <Section className="text-center mt-[32px] mb-[32px]">
-                            <Button
-                                className="bg-[#7c3aed] rounded text-white text-[12px] font-bold no-underline text-center px-5 py-3"
-                                href={loginUrl}
-                            >
-                                ENTRER DANS LE CLUB 🎩
-                            </Button>
-                        </Section>
                         <Text className="text-black text-[14px] leading-[24px]">
-                            Prépare ton jeu de cartes, l'aventure commence maintenant !
+                            {password ? "Prépare ton jeu de cartes, l'aventure commence maintenant !" : "Amuse-toi bien au Club des Petits Magiciens !"}
                             <br />
                             <em>L'équipe du Club</em>
                         </Text>
