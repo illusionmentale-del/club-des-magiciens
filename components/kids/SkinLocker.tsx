@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import { Check, Lock, Loader2, UserRound, Sparkles } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { equipSkin, buySkinWithXP } from "@/app/actions/avatars";
 
 type Skin = {
@@ -21,13 +22,18 @@ type Props = {
 };
 
 export default function SkinLocker({ skins, unlockedSkinIds, equippedSkinId, trueXP }: Props) {
+    const router = useRouter();
     const [loadingMap, setLoadingMap] = useState<Record<string, boolean>>({});
 
     const handleEquip = async (skinId: string) => {
         setLoadingMap(prev => ({ ...prev, [skinId]: true }));
         try {
             const res = await equipSkin(skinId);
-            if (!res.success) alert(res.error);
+            if (!res.success) {
+                alert(res.error);
+            } else {
+                router.refresh();
+            }
         } finally {
             setLoadingMap(prev => ({ ...prev, [skinId]: false }));
         }
@@ -39,7 +45,11 @@ export default function SkinLocker({ skins, unlockedSkinIds, equippedSkinId, tru
         setLoadingMap(prev => ({ ...prev, [skinId]: true }));
         try {
             const res = await buySkinWithXP(skinId, price);
-            if (!res.success) alert(res.error || "Erreur lors de l'achat.");
+            if (!res.success) {
+                alert(res.error || "Erreur lors de l'achat.");
+            } else {
+                router.refresh();
+            }
         } finally {
             setLoadingMap(prev => ({ ...prev, [skinId]: false }));
         }

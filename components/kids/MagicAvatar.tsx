@@ -39,7 +39,7 @@ export default function MagicAvatar({ imageUrl, levelName, size = "md", classNam
 
     const finalImage = imageUrl && imageUrl.trim() !== "" 
         ? imageUrl 
-        : "https://api.dicebear.com/7.x/bottts/svg?seed=Magicien";
+        : "/avatars/avatar_base_student.png";
 
     return (
         <div className={cn("relative flex items-center justify-center shrink-0", sizeClasses[size], className, themeClass)}>
