@@ -51,7 +51,7 @@ const createImage = (url: string): Promise<HTMLImageElement> =>
         const image = new globalThis.Image();
         image.addEventListener("load", () => resolve(image));
         image.addEventListener("error", (error) => reject(error));
-        image.setAttribute("crossOrigin", "anonymous");
+        // We do not need crossOrigin since we use local object URLs (blob:)
         image.src = url;
     });
 
@@ -82,6 +82,18 @@ export default function CoverImageUpload({
 
     useEffect(() => {
         setMounted(true);
+
+        const preventDefault = (e: Event) => {
+            e.preventDefault();
+        };
+        // Prevent default drag behaviors globally so dropping a file outside the box doesn't redirect Safari
+        window.addEventListener('dragover', preventDefault, false);
+        window.addEventListener('drop', preventDefault, false);
+
+        return () => {
+            window.removeEventListener('dragover', preventDefault);
+            window.removeEventListener('drop', preventDefault);
+        };
     }, []);
 
     // Sync preview when currentImageUrl changes
@@ -93,15 +105,40 @@ export default function CoverImageUpload({
         setCroppedAreaPixels(croppedAreaPixels);
     }, []);
 
+    const processFile = (file: File) => {
+        if (!file.type.startsWith('image/') && !file.name.match(/\.(jpg|jpeg|png|webp|heic)$/i)) {
+            alert('Type de fichier non reconnu: ' + file.type + ' / Nom: ' + file.name);
+            return;
+        }
+        try {
+            const objectUrl = URL.createObjectURL(file);
+            setImageSrc(objectUrl);
+            setIsCropping(true);
+        } catch (err) {
+            alert("Erreur locale createObjectURL: " + err);
+        }
+    };
+
     const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files.length > 0) {
-            const file = e.target.files[0];
-            const reader = new FileReader();
-            reader.addEventListener("load", () => {
-                setImageSrc(reader.result as string);
-                setIsCropping(true);
-            });
-            reader.readAsDataURL(file);
+            processFile(e.target.files[0]);
+        }
+        // Reset the value so the exact same file can be selected again
+        if (fileInputRef.current) {
+            fileInputRef.current.value = "";
+        }
+    };
+
+    const handleDragOver = (e: React.DragEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+    };
+
+    const handleDrop = (e: React.DragEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+        if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+            processFile(e.dataTransfer.files[0]);
         }
     };
 
@@ -198,6 +235,16 @@ export default function CoverImageUpload({
         </div>
     ) : null;
 
+    const handleDragEnter = (e: React.DragEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+    };
+
+    const handleDragLeave = (e: React.DragEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+    };
+
     return (
         <div className="space-y-4">
             {mounted && cropModal && createPortal(cropModal, document.body)}
@@ -206,6 +253,10 @@ export default function CoverImageUpload({
 
             <div
                 onClick={() => !uploading && fileInputRef.current?.click()}
+                onDragOver={handleDragOver}
+                onDragEnter={handleDragEnter}
+                onDragLeave={handleDragLeave}
+                onDrop={handleDrop}
                 className={`group relative aspect-video bg-brand-bg border-2 border-dashed rounded-2xl overflow-hidden cursor-pointer transition-all flex items-center justify-center ${preview ? 'border-brand-purple/30' : 'border-brand-border hover:border-brand-purple/50'
                     }`}
             >
