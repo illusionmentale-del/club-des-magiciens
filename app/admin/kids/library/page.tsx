@@ -24,6 +24,7 @@ type LibraryItem = {
     is_main: boolean;
     show_in_news: boolean;
     is_highlighted: boolean;
+    published_at?: string | null;
     position?: number;
 };
 
@@ -217,6 +218,11 @@ export default function AdminLibraryPage() {
                                                     <span className="text-[9px] px-1.5 py-0.5 rounded border border-white/10 text-gray-400 uppercase tracking-widest bg-black/20">
                                                         {item.type}
                                                     </span>
+                                                    {item.published_at && new Date(item.published_at) > new Date() && (
+                                                        <span className="text-[9px] px-1.5 py-0.5 rounded border border-yellow-500/30 text-yellow-500 uppercase tracking-widest bg-yellow-500/10 flex items-center gap-1">
+                                                            <Calendar className="w-2.5 h-2.5" /> Programmée
+                                                        </span>
+                                                    )}
                                                 </div>
                                                 <p className="text-xs text-gray-500 truncate">{item.description || "Aucune description"}</p>
                                             </div>

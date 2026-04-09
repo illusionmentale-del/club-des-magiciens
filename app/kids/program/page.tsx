@@ -26,7 +26,7 @@ export default async function KidsProgramPage() {
     const now = new Date();
     const diffTime = Math.abs(now.getTime() - createdAt.getTime());
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    const currentWeek = Math.floor(diffDays / 7) + 1;
+    const currentWeek = Math.floor(diffDays / 7) + 5;
 
     // 2. Fetch All Items
     const { data: unlockedItems } = await supabase
@@ -36,6 +36,7 @@ export default async function KidsProgramPage() {
         .is('sales_page_url', null)
         .neq("type", "atelier")
         .lte("week_number", currentWeek)
+        .or(`published_at.is.null,published_at.lte.${new Date().toISOString()}`)
         .order("week_number", { ascending: false })
         .order("position", { ascending: true })
         .order("created_at", { ascending: false });

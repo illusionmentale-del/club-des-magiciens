@@ -102,7 +102,7 @@ export default async function KidsHomePage({ searchParams }: { searchParams: Pro
     const now = new Date();
     const diffTime = Math.abs(now.getTime() - createdAt.getTime());
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    const currentWeek = Math.floor(diffDays / 7) + 1;
+    const currentWeek = Math.floor(diffDays / 7) + 5;
 
     // 2. Fetch Content (Library Items & Active Live & Alerts)
     const [{ data: allItems }, { data: activeLive }, { data: alerts }, { data: readAlerts }] = await Promise.all([
@@ -111,6 +111,7 @@ export default async function KidsHomePage({ searchParams }: { searchParams: Pro
             .select("*")
             .eq("audience", "kids")
             .lte("week_number", currentWeek)
+            .or(`published_at.is.null,published_at.lte.${new Date().toISOString()}`)
             .order("week_number", { ascending: false }),
 
         supabase

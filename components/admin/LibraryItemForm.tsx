@@ -386,6 +386,17 @@ export default function LibraryItemForm({ initialData }: { initialData?: Library
                                     />
                                     <p className="text-[10px] text-brand-text-muted mt-2">Ce contenu se débloquera à la semaine X de l'abonnement.</p>
                                 </div>
+                                <div>
+                                    <label className="block text-brand-text-muted text-xs font-bold uppercase tracking-wider mb-2">Date de Publication (Automatique)</label>
+                                    <input
+                                        type="datetime-local"
+                                        name="published_at"
+                                        value={formData.published_at ? new Date(formData.published_at).toISOString().slice(0, 16) : ""}
+                                        onChange={handleChange}
+                                        className="w-full bg-brand-bg border border-brand-border rounded-xl p-4 text-brand-text focus:border-brand-cyan outline-none"
+                                    />
+                                    <p className="text-[10px] text-brand-text-muted mt-2">Le contenu apparaîtra à cette date exacte et un email sera envoyé.</p>
+                                </div>
                                 <div className="flex items-center gap-4 pt-8">
                                     <input
                                         type="checkbox"
@@ -428,11 +439,11 @@ export default function LibraryItemForm({ initialData }: { initialData?: Library
                             </div>
 
                             <div>
-                                <label className="block text-brand-text-muted text-xs font-bold uppercase tracking-wider mb-2">Date de Publication</label>
+                                <label className="block text-brand-text-muted text-xs font-bold uppercase tracking-wider mb-2">Date de Publication (Optionnel)</label>
                                 <input
-                                    type="date"
+                                    type="datetime-local"
                                     name="published_at"
-                                    value={formData.published_at ? new Date(formData.published_at).toISOString().split('T')[0] : ""}
+                                    value={formData.published_at ? new Date(formData.published_at).toISOString().slice(0, 16) : ""}
                                     onChange={handleChange}
                                     className="w-full bg-brand-bg border border-brand-border rounded-xl p-4 text-brand-text focus:border-brand-gold outline-none"
                                 />
