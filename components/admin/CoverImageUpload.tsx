@@ -7,6 +7,8 @@ import Image from "next/image";
 import { createClient } from "@/lib/supabase/client";
 import Cropper from "react-easy-crop";
 import "react-easy-crop/react-easy-crop.css";
+import { useDropzone } from "react-dropzone";
+import heic2any from "heic2any";
 
 // --- Utility: Get Cropped & Compressed Image ---
 async function getCroppedImg(imageSrc: string, pixelCrop: any): Promise<Blob> {
@@ -16,15 +18,12 @@ async function getCroppedImg(imageSrc: string, pixelCrop: any): Promise<Blob> {
 
     if (!ctx) throw new Error("No 2d context");
 
-    // Target size for cover images (16:9)
-    // 1280x720 is a good balance between quality and performance
     const targetWidth = 1280;
     const targetHeight = 720;
 
     canvas.width = targetWidth;
     canvas.height = targetHeight;
 
-    // Draw the cropped area from the source image into our target canvas
     ctx.drawImage(
         image,
         pixelCrop.x,
@@ -38,7 +37,6 @@ async function getCroppedImg(imageSrc: string, pixelCrop: any): Promise<Blob> {
     );
 
     return new Promise((resolve, reject) => {
-        // Using image/jpeg for better compression, 0.8 quality
         canvas.toBlob((blob) => {
             if (blob) resolve(blob);
             else reject(new Error("Canvas is empty"));
@@ -51,7 +49,6 @@ const createImage = (url: string): Promise<HTMLImageElement> =>
         const image = new globalThis.Image();
         image.addEventListener("load", () => resolve(image));
         image.addEventListener("error", (error) => reject(error));
-        // We do not need crossOrigin since we use local object URLs (blob:)
         image.src = url;
     });
 
@@ -69,6 +66,7 @@ export default function CoverImageUpload({
     const [preview, setPreview] = useState<string | null>(currentImageUrl || null);
     const [uploading, setUploading] = useState(false);
     const [mounted, setMounted] = useState(false);
+    const [isConverting, setIsConverting] = useState(false);
 
     // Cropper State
     const [crop, setCrop] = useState({ x: 0, y: 0 });
@@ -77,26 +75,12 @@ export default function CoverImageUpload({
     const [imageSrc, setImageSrc] = useState<string | null>(null);
     const [isCropping, setIsCropping] = useState(false);
 
-    const fileInputRef = useRef<HTMLInputElement>(null);
     const supabase = createClient();
 
     useEffect(() => {
         setMounted(true);
-
-        const preventDefault = (e: Event) => {
-            e.preventDefault();
-        };
-        // Prevent default drag behaviors globally so dropping a file outside the box doesn't redirect Safari
-        window.addEventListener('dragover', preventDefault, false);
-        window.addEventListener('drop', preventDefault, false);
-
-        return () => {
-            window.removeEventListener('dragover', preventDefault);
-            window.removeEventListener('drop', preventDefault);
-        };
     }, []);
 
-    // Sync preview when currentImageUrl changes
     useEffect(() => {
         if (currentImageUrl) setPreview(currentImageUrl);
     }, [currentImageUrl]);
@@ -105,42 +89,41 @@ export default function CoverImageUpload({
         setCroppedAreaPixels(croppedAreaPixels);
     }, []);
 
-    const processFile = (file: File) => {
-        if (!file.type.startsWith('image/') && !file.name.match(/\.(jpg|jpeg|png|webp|heic)$/i)) {
-            alert('Type de fichier non reconnu: ' + file.type + ' / Nom: ' + file.name);
-            return;
-        }
+    const onDrop = useCallback(async (acceptedFiles: File[]) => {
+        if (acceptedFiles.length === 0) return;
+        setIsConverting(true);
         try {
+            let file = acceptedFiles[0];
+
+            if (file.type === "image/heic" || file.name.toLowerCase().endsWith(".heic")) {
+                const convertedBlob = await heic2any({
+                    blob: file,
+                    toType: "image/jpeg",
+                    quality: 0.8
+                });
+                
+                const blob = Array.isArray(convertedBlob) ? convertedBlob[0] : convertedBlob;
+                file = new File([blob], file.name.replace(/\.heic$/i, ".jpg"), { type: "image/jpeg" });
+            }
+
             const objectUrl = URL.createObjectURL(file);
             setImageSrc(objectUrl);
             setIsCropping(true);
         } catch (err) {
-            alert("Erreur locale createObjectURL: " + err);
+            console.error("Error processing file", err);
+            alert("Erreur lors de la lecture ou de la conversion de l'image (HEIC).");
+        } finally {
+            setIsConverting(false);
         }
-    };
+    }, []);
 
-    const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (e.target.files && e.target.files.length > 0) {
-            processFile(e.target.files[0]);
-        }
-        // Reset the value so the exact same file can be selected again
-        if (fileInputRef.current) {
-            fileInputRef.current.value = "";
-        }
-    };
-
-    const handleDragOver = (e: React.DragEvent) => {
-        e.preventDefault();
-        e.stopPropagation();
-    };
-
-    const handleDrop = (e: React.DragEvent) => {
-        e.preventDefault();
-        e.stopPropagation();
-        if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-            processFile(e.dataTransfer.files[0]);
-        }
-    };
+    const { getRootProps, getInputProps, isDragActive } = useDropzone({
+        onDrop,
+        accept: {
+            'image/*': ['.jpeg', '.jpg', '.png', '.webp', '.heic']
+        },
+        multiple: false
+    });
 
     const handleUpload = async () => {
         if (!imageSrc || !croppedAreaPixels) return;
@@ -154,7 +137,7 @@ export default function CoverImageUpload({
             const fileName = `covers/${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
 
             const { error: uploadError } = await supabase.storage
-                .from("avatars") // Reusing bucket as requested for now
+                .from("avatars")
                 .upload(fileName, croppedFile);
 
             if (uploadError) throw uploadError;
@@ -185,7 +168,7 @@ export default function CoverImageUpload({
                             Cadrage de l'image
                         </h3>
                         <p className="text-brand-text-muted text-xs uppercase tracking-widest font-bold opacity-60 mt-1">
-                            Ajuste l'image pour un rendu optimal (Format 16:9)
+                            Ajuste l'image pour un rendu optimal
                         </p>
                     </div>
                     <button
@@ -235,16 +218,6 @@ export default function CoverImageUpload({
         </div>
     ) : null;
 
-    const handleDragEnter = (e: React.DragEvent) => {
-        e.preventDefault();
-        e.stopPropagation();
-    };
-
-    const handleDragLeave = (e: React.DragEvent) => {
-        e.preventDefault();
-        e.stopPropagation();
-    };
-
     return (
         <div className="space-y-4">
             {mounted && cropModal && createPortal(cropModal, document.body)}
@@ -252,54 +225,49 @@ export default function CoverImageUpload({
             <label className="block text-brand-text-muted text-xs font-bold uppercase tracking-wider">{label}</label>
 
             <div
-                onClick={() => !uploading && fileInputRef.current?.click()}
-                onDragOver={handleDragOver}
-                onDragEnter={handleDragEnter}
-                onDragLeave={handleDragLeave}
-                onDrop={handleDrop}
-                className={`group relative aspect-video bg-brand-bg border-2 border-dashed rounded-2xl overflow-hidden cursor-pointer transition-all flex items-center justify-center ${preview ? 'border-brand-purple/30' : 'border-brand-border hover:border-brand-purple/50'
-                    }`}
+                {...getRootProps()}
+                className={`group relative aspect-video bg-brand-bg border-2 border-dashed rounded-2xl overflow-hidden cursor-pointer transition-all flex items-center justify-center ${
+                    isDragActive ? 'border-brand-purple/80 bg-brand-purple/5' : preview ? 'border-brand-purple/30' : 'border-brand-border hover:border-brand-purple/50'
+                }`}
             >
+                <input {...getInputProps()} />
+
                 {preview ? (
                     <>
                         <Image
                             src={preview}
                             alt="Preview"
                             fill
-                            className="object-cover transition-transform duration-500 group-hover:scale-105"
+                            className={`object-cover transition-transform duration-500 ${isDragActive ? 'scale-110 opacity-50' : 'group-hover:scale-105'}`}
                         />
-                        <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-2 backdrop-blur-sm">
-                            <Upload className="w-10 h-10 text-white" />
-                            <span className="text-white text-xs font-black uppercase tracking-widest">Modifier l'image</span>
+                        <div className={`absolute inset-0 bg-black/60 transition-opacity flex flex-col items-center justify-center gap-2 backdrop-blur-sm ${isDragActive ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}>
+                            <Upload className="w-10 h-10 text-white animate-bounce" />
+                            <span className="text-white text-xs font-black uppercase tracking-widest">
+                                {isDragActive ? "Lâcher pour remplacer" : "Modifier l'image"}
+                            </span>
                         </div>
                     </>
                 ) : (
                     <div className="flex flex-col items-center gap-3 text-brand-text-muted transition-colors group-hover:text-brand-purple">
-                        <div className="w-16 h-16 rounded-2xl bg-white/5 flex items-center justify-center border border-white/5 group-hover:border-brand-purple/20 group-hover:bg-brand-purple/5 transition-all">
-                            <Upload className="w-8 h-8" />
+                        <div className={`w-16 h-16 rounded-2xl bg-white/5 flex items-center justify-center border transition-all ${isDragActive ? 'border-brand-purple scale-110 shadow-lg shadow-brand-purple/20' : 'border-white/5 group-hover:border-brand-purple/20 group-hover:bg-brand-purple/5'}`}>
+                            <Upload className={`w-8 h-8 ${isDragActive ? 'text-brand-purple animate-bounce' : ''}`} />
                         </div>
                         <div className="text-center">
-                            <span className="text-xs font-black uppercase tracking-widest block">Uploader une image</span>
+                            <span className="text-xs font-black uppercase tracking-widest block">
+                                {isDragActive ? "Déposer l'image ici..." : "Uploader une image"}
+                            </span>
                             <span className="text-[10px] opacity-40 uppercase tracking-tighter mt-1 block">Format 16:9 recommandé</span>
                         </div>
                     </div>
                 )}
 
-                {uploading && (
+                {(uploading || isConverting) && (
                     <div className="absolute inset-0 bg-brand-bg/80 backdrop-blur-sm flex flex-col items-center justify-center gap-3 z-10 font-bold text-brand-purple text-xs uppercase tracking-widest">
                         <Loader2 className="w-8 h-8 animate-spin" />
-                        Traitement en cours...
+                        {isConverting ? "Conversion HEIC..." : "Traitement en cours..."}
                     </div>
                 )}
             </div>
-
-            <input
-                type="file"
-                ref={fileInputRef}
-                onChange={handleFileChange}
-                accept="image/*"
-                className="hidden"
-            />
         </div>
     );
 }

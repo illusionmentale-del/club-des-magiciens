@@ -6,6 +6,9 @@ import { Camera, Upload, X, Check, ZoomIn, Loader2 } from "lucide-react";
 import Image from "next/image";
 import { createClient } from "@/lib/supabase/client";
 import Cropper from "react-easy-crop";
+import "react-easy-crop/react-easy-crop.css";
+import { useDropzone } from "react-dropzone";
+import heic2any from "heic2any";
 
 // --- Utility: Get Cropped Image ---
 async function getCroppedImg(imageSrc: string, pixelCrop: any): Promise<Blob> {
@@ -62,6 +65,7 @@ export default function AvatarUpload({
     const [preview, setPreview] = useState<string | null>(currentAvatarUrl || null);
     const [uploading, setUploading] = useState(false);
     const [mounted, setMounted] = useState(false);
+    const [isConverting, setIsConverting] = useState(false);
 
     // Cropper State
     const [crop, setCrop] = useState({ x: 0, y: 0 });
@@ -70,7 +74,6 @@ export default function AvatarUpload({
     const [imageSrc, setImageSrc] = useState<string | null>(null);
     const [isCropping, setIsCropping] = useState(false);
 
-    const fileInputRef = useRef<HTMLInputElement>(null);
     const supabase = createClient();
 
     useEffect(() => {
@@ -81,17 +84,41 @@ export default function AvatarUpload({
         setCroppedAreaPixels(croppedAreaPixels);
     }, []);
 
-    const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (e.target.files && e.target.files.length > 0) {
-            const file = e.target.files[0];
-            const reader = new FileReader();
-            reader.addEventListener("load", () => {
-                setImageSrc(reader.result as string);
-                setIsCropping(true);
-            });
-            reader.readAsDataURL(file);
+    const onDrop = useCallback(async (acceptedFiles: File[]) => {
+        if (acceptedFiles.length === 0) return;
+        setIsConverting(true);
+        try {
+            let file = acceptedFiles[0];
+
+            if (file.type === "image/heic" || file.name.toLowerCase().endsWith(".heic")) {
+                const convertedBlob = await heic2any({
+                    blob: file,
+                    toType: "image/jpeg",
+                    quality: 0.8
+                });
+                
+                const blob = Array.isArray(convertedBlob) ? convertedBlob[0] : convertedBlob;
+                file = new File([blob], file.name.replace(/\.heic$/i, ".jpg"), { type: "image/jpeg" });
+            }
+
+            const objectUrl = URL.createObjectURL(file);
+            setImageSrc(objectUrl);
+            setIsCropping(true);
+        } catch (err) {
+            console.error("Error processing avatar file", err);
+            alert("Erreur lors de la lecture ou conversion de l'image.");
+        } finally {
+            setIsConverting(false);
         }
-    };
+    }, []);
+
+    const { getRootProps, getInputProps, isDragActive } = useDropzone({
+        onDrop,
+        accept: {
+            'image/*': ['.jpeg', '.jpg', '.png', '.webp', '.heic']
+        },
+        multiple: false
+    });
 
     const handleUpload = async () => {
         if (!imageSrc || !croppedAreaPixels) return;
@@ -127,7 +154,7 @@ export default function AvatarUpload({
         }
     };
 
-    // Default Avatars (unchanged)
+    // Default Avatars
     const defaultAvatars = [
         `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" fill="%23FFD1DC"/><path d="M30 60h40v30H30z" fill="%23333"/><path d="M20 85h60v5H20z" fill="%23333"/><circle cx="50" cy="60" r="15" fill="%23FFF"/><path d="M40 30c-5-15-15-15-15 0s10 20 15 0zM60 30c5-15 15-15 15 0s-10 20-15 0z" fill="%23FFF"/></svg>`,
         `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" fill="%23E0F7FA"/><path d="M30 70L70 30" stroke="%23333" stroke-width="5"/><path d="M70 30l5 5m-5-5l-5-5m0 5l5-5m-5 5l5 5" stroke="%23FFD700" stroke-width="3"/></svg>`,
@@ -201,46 +228,50 @@ export default function AvatarUpload({
             {mounted && cropModal && createPortal(cropModal, document.body)}
 
             <div
-                onClick={() => fileInputRef.current?.click()}
-                className={`relative w-32 h-32 rounded-full overflow-hidden cursor-pointer group border-4 transition-all ${theme === 'light'
-                    ? 'border-purple-100 hover:border-purple-200 shadow-md'
-                    : 'border-white/10 hover:border-white/20'
-                    }`}
+                {...getRootProps()}
+                className={`relative w-32 h-32 rounded-full overflow-hidden cursor-pointer group border-4 transition-all ${
+                    isDragActive 
+                        ? 'border-purple-400 scale-105 shadow-xl shadow-purple-500/20' 
+                        : theme === 'light'
+                            ? 'border-purple-100 hover:border-purple-200 shadow-md'
+                            : 'border-white/10 hover:border-white/20'
+                }`}
             >
+                <input {...getInputProps()} />
+                
                 {preview ? (
                     <Image
                         src={preview}
                         alt="Avatar"
                         fill
-                        className="object-cover"
+                        className={`object-cover transition-transform duration-500 ${isDragActive ? 'opacity-50' : ''}`}
                     />
                 ) : (
-                    <div className={`w-full h-full flex items-center justify-center ${theme === 'light' ? 'bg-gray-100 text-gray-400' : 'bg-white/5 text-gray-500'
-                        }`}>
-                        <Camera className="w-10 h-10" />
+                    <div className={`w-full h-full flex items-center justify-center ${theme === 'light' ? 'bg-gray-100 text-gray-400' : 'bg-white/5 text-gray-500'}`}>
+                        <Camera className={`w-10 h-10 ${isDragActive ? 'text-purple-500 animate-pulse' : ''}`} />
                     </div>
                 )}
 
                 {/* Overlay */}
-                <div className="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                    <Upload className="w-8 h-8 text-white" />
+                <div className={`absolute inset-0 bg-black/60 flex flex-col items-center justify-center transition-opacity ${isDragActive ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}>
+                    {isConverting ? (
+                        <>
+                            <Loader2 className="w-6 h-6 text-white animate-spin mb-1" />
+                            <span className="text-[10px] text-white font-bold">Conversion...</span>
+                        </>
+                    ) : (
+                        <Upload className="w-8 h-8 text-white" />
+                    )}
                 </div>
             </div>
 
-            <input
-                type="file"
-                ref={fileInputRef}
-                onChange={handleFileChange}
-                accept="image/*"
-                className="hidden"
-            />
-
             <button
                 type="button"
-                onClick={() => fileInputRef.current?.click()}
+                {...getRootProps()}
                 className={`text-sm font-medium hover:underline ${theme === 'light' ? 'text-purple-600' : 'text-gray-400'}`}
             >
-                {uploading ? "Chargement..." : "Modifier la photo"}
+                <input {...getInputProps()} />
+                {uploading ? "Chargement..." : isConverting ? "Conversion HEIC..." : "Modifier la photo"}
             </button>
 
             {/* Default Avatars Selection */}
