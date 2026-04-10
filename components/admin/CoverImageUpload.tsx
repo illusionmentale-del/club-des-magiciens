@@ -7,8 +7,6 @@ import Image from "next/image";
 import { createClient } from "@/lib/supabase/client";
 import Cropper from "react-easy-crop";
 import "react-easy-crop/react-easy-crop.css";
-import { useDropzone } from "react-dropzone";
-import heic2any from "heic2any";
 
 // --- Utility: Get Cropped & Compressed Image ---
 async function getCroppedImg(imageSrc: string, pixelCrop: any): Promise<Blob> {
@@ -67,6 +65,7 @@ export default function CoverImageUpload({
     const [uploading, setUploading] = useState(false);
     const [mounted, setMounted] = useState(false);
     const [isConverting, setIsConverting] = useState(false);
+    const [isDragActive, setIsDragActive] = useState(false);
 
     // Cropper State
     const [crop, setCrop] = useState({ x: 0, y: 0 });
@@ -75,6 +74,7 @@ export default function CoverImageUpload({
     const [imageSrc, setImageSrc] = useState<string | null>(null);
     const [isCropping, setIsCropping] = useState(false);
 
+    const fileInputRef = useRef<HTMLInputElement>(null);
     const supabase = createClient();
 
     useEffect(() => {
@@ -89,13 +89,15 @@ export default function CoverImageUpload({
         setCroppedAreaPixels(croppedAreaPixels);
     }, []);
 
-    const onDrop = useCallback(async (acceptedFiles: File[]) => {
-        if (acceptedFiles.length === 0) return;
+    const processFile = async (file: File) => {
+        alert("Etape 1: Fichier reçu - " + file.name + " (" + file.type + ")");
+        if (!file) return;
         setIsConverting(true);
         try {
-            let file = acceptedFiles[0];
-
-            if (file.type === "image/heic" || file.name.toLowerCase().endsWith(".heic")) {
+            let processedFile = file;
+            if (file.type === "image/heic" || file.name.toLowerCase().endsWith(".heic") || file.name.toLowerCase().endsWith(".heif")) {
+                alert("Etape 2: HEIC détecté... conversion");
+                const heic2any = (await import("heic2any")).default;
                 const convertedBlob = await heic2any({
                     blob: file,
                     toType: "image/jpeg",
@@ -103,27 +105,54 @@ export default function CoverImageUpload({
                 });
                 
                 const blob = Array.isArray(convertedBlob) ? convertedBlob[0] : convertedBlob;
-                file = new File([blob], file.name.replace(/\.heic$/i, ".jpg"), { type: "image/jpeg" });
+                processedFile = new File([blob], file.name.replace(/\.heic$/i, ".jpg"), { type: "image/jpeg" });
+                alert("Etape 3: HEIC converti avec succès");
             }
 
-            const objectUrl = URL.createObjectURL(file);
+            alert("Etape 4: Création de l'aperçu");
+            const objectUrl = URL.createObjectURL(processedFile);
             setImageSrc(objectUrl);
             setIsCropping(true);
-        } catch (err) {
+            alert("Etape 5: Apparition du modal de recadrage");
+        } catch (err: any) {
             console.error("Error processing file", err);
-            alert("Erreur lors de la lecture ou de la conversion de l'image (HEIC).");
+            alert("Erreur critique: " + err.message);
         } finally {
             setIsConverting(false);
+            if (fileInputRef.current) fileInputRef.current.value = '';
         }
-    }, []);
+    };
 
-    const { getRootProps, getInputProps, isDragActive } = useDropzone({
-        onDrop,
-        accept: {
-            'image/*': ['.jpeg', '.jpg', '.png', '.webp', '.heic']
-        },
-        multiple: false
-    });
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files && e.target.files.length > 0) {
+            processFile(e.target.files[0]);
+        }
+    };
+
+    const handleDragOver = (e: React.DragEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setIsDragActive(true);
+    };
+
+    const handleDragLeave = (e: React.DragEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setIsDragActive(false);
+    };
+
+    const handleDrop = (e: React.DragEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setIsDragActive(false);
+        if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+            processFile(e.dataTransfer.files[0]);
+        }
+    };
+
+    const triggerFileSelect = () => {
+        fileInputRef.current?.click();
+    };
 
     const handleUpload = async () => {
         if (!imageSrc || !croppedAreaPixels) return;
@@ -225,12 +254,20 @@ export default function CoverImageUpload({
             <label className="block text-brand-text-muted text-xs font-bold uppercase tracking-wider">{label}</label>
 
             <div
-                {...getRootProps()}
+                onClick={triggerFileSelect}
+                onDragOver={handleDragOver}
+                onDragLeave={handleDragLeave}
+                onDrop={handleDrop}
                 className={`group relative aspect-video bg-brand-bg border-2 border-dashed rounded-2xl overflow-hidden cursor-pointer transition-all flex items-center justify-center ${
                     isDragActive ? 'border-brand-purple/80 bg-brand-purple/5' : preview ? 'border-brand-purple/30' : 'border-brand-border hover:border-brand-purple/50'
                 }`}
             >
-                <input {...getInputProps()} />
+                <input 
+                    type="file" 
+                    ref={fileInputRef} 
+                    onChange={handleFileChange} 
+                    className="hidden" 
+                />
 
                 {preview ? (
                     <>
@@ -264,7 +301,7 @@ export default function CoverImageUpload({
                 {(uploading || isConverting) && (
                     <div className="absolute inset-0 bg-brand-bg/80 backdrop-blur-sm flex flex-col items-center justify-center gap-3 z-10 font-bold text-brand-purple text-xs uppercase tracking-widest">
                         <Loader2 className="w-8 h-8 animate-spin" />
-                        {isConverting ? "Conversion HEIC..." : "Traitement en cours..."}
+                        {isConverting ? "Préparation de l'image..." : "Traitement en cours..."}
                     </div>
                 )}
             </div>

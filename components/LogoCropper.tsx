@@ -1,14 +1,12 @@
 "use client";
 
-import { useState, useCallback, useEffect } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 import { createPortal } from "react-dom";
-import Cropper from "react-easy-crop";
-import { Loader2, Upload, ZoomIn, Check, X, Image as ImageIcon } from "lucide-react";
-import { createClient } from "@/lib/supabase/client";
-import "react-easy-crop/react-easy-crop.css";
-import { useDropzone } from "react-dropzone";
-import heic2any from "heic2any";
+import { Camera, Upload, X, Check, ZoomIn, Loader2, Image as ImageIcon } from "lucide-react";
 import Image from "next/image";
+import { createClient } from "@/lib/supabase/client";
+import Cropper from "react-easy-crop";
+import "react-easy-crop/react-easy-crop.css";
 
 // --- Utility: Get Cropped & Compressed Image ---
 async function getCroppedImg(imageSrc: string, pixelCrop: any): Promise<Blob> {
@@ -18,8 +16,8 @@ async function getCroppedImg(imageSrc: string, pixelCrop: any): Promise<Blob> {
 
     if (!ctx) throw new Error("No 2d context");
 
-    const targetWidth = 400;
-    const targetHeight = 400;
+    const targetWidth = 500;
+    const targetHeight = 500;
 
     canvas.width = targetWidth;
     canvas.height = targetHeight;
@@ -40,7 +38,7 @@ async function getCroppedImg(imageSrc: string, pixelCrop: any): Promise<Blob> {
         canvas.toBlob((blob) => {
             if (blob) resolve(blob);
             else reject(new Error("Canvas is empty"));
-        }, "image/png", 0.9);
+        }, "image/png", 1); // For logos we preserve PNG quality and transparency if possible
     });
 }
 
@@ -52,17 +50,20 @@ const createImage = (url: string): Promise<HTMLImageElement> =>
         image.src = url;
     });
 
-export function LogoCropper({
+export default function LogoCropper({
     currentLogoUrl,
-    onUpload
+    onUpload,
+    label = "Logo de l'école (Carré 1:1)"
 }: {
     currentLogoUrl?: string | null,
-    onUpload: (url: string) => void
+    onUpload: (url: string) => void,
+    label?: string
 }) {
     const [preview, setPreview] = useState<string | null>(currentLogoUrl || null);
     const [uploading, setUploading] = useState(false);
     const [mounted, setMounted] = useState(false);
     const [isConverting, setIsConverting] = useState(false);
+    const [isDragActive, setIsDragActive] = useState(false);
 
     // Cropper State
     const [crop, setCrop] = useState({ x: 0, y: 0 });
@@ -71,23 +72,31 @@ export function LogoCropper({
     const [imageSrc, setImageSrc] = useState<string | null>(null);
     const [isCropping, setIsCropping] = useState(false);
 
+    const fileInputRef = useRef<HTMLInputElement>(null);
     const supabase = createClient();
 
     useEffect(() => {
         setMounted(true);
     }, []);
 
+    useEffect(() => {
+        if (currentLogoUrl) setPreview(currentLogoUrl);
+    }, [currentLogoUrl]);
+
     const onCropComplete = useCallback((croppedArea: any, croppedAreaPixels: any) => {
         setCroppedAreaPixels(croppedAreaPixels);
     }, []);
 
-    const onDrop = useCallback(async (acceptedFiles: File[]) => {
-        if (acceptedFiles.length === 0) return;
+    const processFile = async (file: File) => {
+        alert("Etape 1: Fichier reçu - " + file.name + " (" + file.type + ")");
+        if (!file) return;
         setIsConverting(true);
         try {
-            let file = acceptedFiles[0];
+            let processedFile = file;
 
-            if (file.type === "image/heic" || file.name.toLowerCase().endsWith(".heic")) {
+            if (file.type === "image/heic" || file.name.toLowerCase().endsWith(".heic") || file.name.toLowerCase().endsWith(".heif")) {
+                alert("Etape 2: HEIC détecté... conversion");
+                const heic2any = (await import("heic2any")).default;
                 const convertedBlob = await heic2any({
                     blob: file,
                     toType: "image/jpeg",
@@ -95,27 +104,54 @@ export function LogoCropper({
                 });
                 
                 const blob = Array.isArray(convertedBlob) ? convertedBlob[0] : convertedBlob;
-                file = new File([blob], file.name.replace(/\.heic$/i, ".jpg"), { type: "image/jpeg" });
+                processedFile = new File([blob], file.name.replace(/\.heic$/i, ".jpg"), { type: "image/jpeg" });
+                alert("Etape 3: HEIC converti avec succès");
             }
 
-            const objectUrl = URL.createObjectURL(file);
+            alert("Etape 4: Création de l'aperçu");
+            const objectUrl = URL.createObjectURL(processedFile);
             setImageSrc(objectUrl);
             setIsCropping(true);
-        } catch (err) {
+            alert("Etape 5: Apparition du modal de recadrage");
+        } catch (err: any) {
             console.error("Error processing file", err);
-            alert("Erreur lors de la lecture ou conversion de l'image.");
+            alert("Erreur critique: " + err.message);
         } finally {
             setIsConverting(false);
+            if (fileInputRef.current) fileInputRef.current.value = '';
         }
-    }, []);
+    };
 
-    const { getRootProps, getInputProps, isDragActive } = useDropzone({
-        onDrop,
-        accept: {
-            'image/*': ['.jpeg', '.jpg', '.png', '.webp', '.heic']
-        },
-        multiple: false
-    });
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files && e.target.files.length > 0) {
+            processFile(e.target.files[0]);
+        }
+    };
+
+    const handleDragOver = (e: React.DragEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setIsDragActive(true);
+    };
+
+    const handleDragLeave = (e: React.DragEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setIsDragActive(false);
+    };
+
+    const handleDrop = (e: React.DragEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setIsDragActive(false);
+        if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+            processFile(e.dataTransfer.files[0]);
+        }
+    };
+
+    const triggerFileSelect = () => {
+        fileInputRef.current?.click();
+    };
 
     const handleUpload = async () => {
         if (!imageSrc || !croppedAreaPixels) return;
@@ -125,7 +161,8 @@ export function LogoCropper({
             const croppedBlob = await getCroppedImg(imageSrc, croppedAreaPixels);
             const croppedFile = new File([croppedBlob], "logo.png", { type: "image/png" });
 
-            const fileName = `logos/${Date.now()}-${Math.random().toString(36).substring(7)}.png`;
+            const fileExt = "png";
+            const fileName = `logos/${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
 
             const { error: uploadError } = await supabase.storage
                 .from("avatars")
@@ -143,29 +180,31 @@ export function LogoCropper({
             setImageSrc(null);
         } catch (error) {
             console.error("Error uploading logo:", error);
-            alert("Erreur lors de l'upload.");
+            alert("Erreur lors de l'upload du logo.");
         } finally {
             setUploading(false);
         }
     };
 
     const cropModal = isCropping && imageSrc ? (
-        <div className="fixed inset-0 z-[9999] bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-            <div className="bg-neutral-900 border border-white/10 rounded-2xl w-full max-w-md overflow-hidden shadow-2xl relative animate-in fade-in zoom-in-95 duration-200">
-                <div className="p-4 border-b border-white/10 flex justify-between items-center">
-                    <h3 className="text-white font-bold flex items-center gap-2">
-                        <ImageIcon className="w-5 h-5 text-brand-gold" />
-                        Cadrage du Logo
-                    </h3>
+        <div className="fixed inset-0 z-[9999] bg-black/90 backdrop-blur-md flex items-center justify-center p-4">
+            <div className="bg-brand-card border border-white/10 rounded-2xl w-full max-w-lg overflow-hidden shadow-2xl relative animate-in fade-in zoom-in-95 duration-200">
+                <div className="p-6 border-b border-white/5 flex justify-between items-center bg-white/[0.02]">
+                    <div>
+                        <h3 className="text-white font-black uppercase tracking-tighter text-lg flex items-center gap-3">
+                            <ImageIcon className="w-5 h-5 text-brand-purple" />
+                            Ajuster le logo
+                        </h3>
+                    </div>
                     <button
                         onClick={() => { setIsCropping(false); setImageSrc(null); }}
-                        className="text-gray-400 hover:text-white"
+                        className="text-brand-text-muted hover:text-white p-2 transition-colors"
                     >
-                        <X className="w-5 h-5" />
+                        <X className="w-6 h-6" />
                     </button>
                 </div>
 
-                <div className="relative h-[300px] w-full bg-neutral-950">
+                <div className="relative h-[400px] w-full bg-black overflow-hidden bg-[url('https://transparenttextures.com/patterns/cubes.png')]">
                     <Cropper
                         image={imageSrc}
                         crop={crop}
@@ -177,9 +216,9 @@ export function LogoCropper({
                     />
                 </div>
 
-                <div className="p-6 space-y-6">
-                    <div className="flex items-center gap-4">
-                        <ZoomIn className="w-4 h-4 text-gray-400" />
+                <div className="p-8 bg-brand-card flex flex-col items-center gap-8">
+                    <div className="w-full flex items-center gap-4">
+                        <ZoomIn className="w-5 h-5 text-brand-text-muted" />
                         <input
                             type="range"
                             value={zoom}
@@ -187,17 +226,17 @@ export function LogoCropper({
                             max={3}
                             step={0.1}
                             onChange={(e) => setZoom(Number(e.target.value))}
-                            className="w-full h-1 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-brand-gold"
+                            className="w-full h-1.5 bg-white/10 rounded-lg appearance-none cursor-pointer accent-brand-purple hover:accent-brand-purple/80 transition-all"
                         />
                     </div>
 
                     <button
                         onClick={handleUpload}
                         disabled={uploading}
-                        className="w-full py-3 bg-brand-gold text-neutral-900 font-bold rounded-xl hover:bg-yellow-400 transition-colors flex items-center justify-center gap-2"
+                        className="w-full py-4 bg-brand-purple text-white font-black uppercase tracking-widest text-xs rounded-xl hover:bg-brand-purple/90 transition-all flex items-center justify-center gap-3 shadow-lg shadow-brand-purple/20 disabled:opacity-50"
                     >
                         {uploading ? <Loader2 className="w-5 h-5 animate-spin" /> : <Check className="w-5 h-5" />}
-                        Valider
+                        Valider et Compresser
                     </button>
                 </div>
             </div>
@@ -205,18 +244,26 @@ export function LogoCropper({
     ) : null;
 
     return (
-        <div className="space-y-3">
+        <div className="space-y-4">
             {mounted && cropModal && createPortal(cropModal, document.body)}
 
-            <label className="block text-brand-text-muted text-xs font-bold uppercase tracking-wider">Logo Boutique</label>
+            <label className="block text-brand-text-muted text-xs font-bold uppercase tracking-wider">{label}</label>
 
             <div
-                {...getRootProps()}
-                className={`relative aspect-square w-32 border-2 border-dashed rounded-xl overflow-hidden cursor-pointer transition-all flex items-center justify-center ${
-                    isDragActive ? 'border-brand-gold/80 bg-brand-gold/10 scale-105' : preview ? 'border-brand-gold/40' : 'border-white/10 hover:border-brand-gold/50'
+                onClick={triggerFileSelect}
+                onDragOver={handleDragOver}
+                onDragLeave={handleDragLeave}
+                onDrop={handleDrop}
+                className={`group relative w-32 h-32 bg-brand-bg border-2 border-dashed rounded-2xl overflow-hidden cursor-pointer transition-all flex items-center justify-center ${
+                    isDragActive ? 'border-brand-purple/80 bg-brand-purple/5' : preview ? 'border-brand-purple/30' : 'border-brand-border hover:border-brand-purple/50'
                 }`}
             >
-                <input {...getInputProps()} />
+                <input 
+                    type="file" 
+                    ref={fileInputRef} 
+                    onChange={handleFileChange} 
+                    className="hidden" 
+                />
 
                 {preview ? (
                     <>
@@ -224,18 +271,13 @@ export function LogoCropper({
                             src={preview}
                             alt="Logo preview"
                             fill
-                            className={`object-contain p-2 ${isDragActive ? 'opacity-50' : 'group-hover:scale-105 transition-transform'}`}
+                            className={`object-contain transition-transform duration-500 ${isDragActive ? 'scale-110 opacity-50' : 'group-hover:scale-105'}`}
                         />
-                        <div className={`absolute inset-0 bg-black/60 flex flex-col items-center justify-center gap-2 backdrop-blur-sm transition-opacity ${isDragActive ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}>
-                            {isConverting ? (
-                                <Loader2 className="w-6 h-6 animate-spin text-white" />
-                            ) : (
-                                <Upload className={`w-6 h-6 text-white ${isDragActive ? 'animate-bounce' : ''}`} />
-                            )}
+                        <div className={`absolute inset-0 bg-black/60 transition-opacity flex flex-col items-center justify-center gap-2 backdrop-blur-sm ${isDragActive ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}>
+                            <Upload className="w-8 h-8 text-white animate-bounce" />
                         </div>
                     </>
                 ) : (
-                    <div className="flex flex-col items-center gap-2 text-gray-500">
                         <Upload className={`w-6 h-6 transition-colors ${isDragActive ? 'text-brand-gold animate-bounce' : 'group-hover:text-brand-gold'}`} />
                         <span className="text-[10px] font-bold uppercase tracking-wider text-center px-2">
                             {isDragActive ? "Déposer..." : "Uploader"}
