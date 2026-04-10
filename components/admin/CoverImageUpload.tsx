@@ -2,7 +2,7 @@
 
 import { useState, useRef, useCallback, useEffect } from "react";
 import { createPortal } from "react-dom";
-import { Camera, Upload, X, Check, ZoomIn, Loader2, Image as ImageIcon } from "lucide-react";
+import { Upload, X, Check, ZoomIn, Loader2, Image as ImageIcon } from "lucide-react";
 import Image from "next/image";
 import { createClient } from "@/lib/supabase/client";
 import Cropper from "react-easy-crop";
@@ -85,7 +85,7 @@ export default function CoverImageUpload({
         if (currentImageUrl) setPreview(currentImageUrl);
     }, [currentImageUrl]);
 
-    const onCropComplete = useCallback((croppedArea: any, croppedAreaPixels: any) => {
+    const onCropComplete = useCallback((_croppedArea: any, croppedAreaPixels: any) => {
         setCroppedAreaPixels(croppedAreaPixels);
     }, []);
 
