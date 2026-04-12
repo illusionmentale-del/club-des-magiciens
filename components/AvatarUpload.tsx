@@ -85,19 +85,22 @@ export default function AvatarUpload({
 
     const cleanupModal = () => {
         setIsCropping(false);
-        if (imageSrc) {
-            URL.revokeObjectURL(imageSrc);
-            setImageSrc(null);
-        }
+        setImageSrc(null);
     };
 
     const processFile = (file: File) => {
         if (!file) return;
 
         try {
-            const objectUrl = URL.createObjectURL(file);
-            setImageSrc(objectUrl);
-            setIsCropping(true);
+            const reader = new FileReader();
+            reader.onload = () => {
+                setImageSrc(reader.result as string);
+                setIsCropping(true);
+            };
+            reader.onerror = () => {
+                alert("Erreur de prévisualisation (Safari).");
+            };
+            reader.readAsDataURL(file);
         } catch (err: any) {
             console.error("Error processing avatar file", err);
             alert("Erreur critique: " + err.message);
