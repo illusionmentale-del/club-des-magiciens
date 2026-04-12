@@ -270,7 +270,7 @@ export default function MagicCard({ user, profile, isKid = false, lifetimeXP, av
                                 {/* New Impactful Tagline */}
                                 <p className="text-xs text-white/80 leading-relaxed font-serif font-medium px-2 tracking-wide italic shadow-black drop-shadow-md mb-2">
                                     {isKid
-                                        ? "« Garde le secret, pratique avec passion, et émerveille le monde. »"
+                                        ? "« La vraie magie se trouve à l'intérieur de toi, il ne te reste plus qu'à l'exprimer pour la révéler au monde. »"
                                         : "« L'art de l'illusion s'apprend dans l'ombre. Bienvenue dans la Confrérie. »"}
                                 </p>
 
