@@ -189,9 +189,23 @@ export default function MagicCard({ user, profile, isKid = false, lifetimeXP, av
                                 {/* Subtle internal reflection */}
                                 <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
 
-                                <h2 className={cn("font-serif text-xl md:text-2xl font-black text-center mb-2 drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)] truncate", isLegendary ? "text-[#FFD700]" : "text-white")}>
+                                <h2 className={cn("font-serif text-xl md:text-2xl font-black text-center mb-1 drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)] truncate", isLegendary ? "text-[#FFD700]" : "text-white")}>
                                     {profile?.username || "Le Mystérieux"}
                                 </h2>
+
+                                {/* Biography (Front) */}
+                                {profile?.bio && (
+                                    <div className="px-2 mb-2">
+                                        <p className={cn(
+                                            "text-center italic text-white/70 leading-snug break-words",
+                                            profile.bio.length < 30 ? "text-[11px] md:text-xs" : 
+                                            profile.bio.length < 70 ? "text-[10px] md:text-[11px]" : 
+                                            "text-[8px] md:text-[9px] line-clamp-3"
+                                        )}>
+                                            "{profile.bio}"
+                                        </p>
+                                    </div>
+                                )}
 
                                 {/* Inner Card XP Progress Bar */}
                                 <div className="mb-3 px-2">
@@ -274,14 +288,7 @@ export default function MagicCard({ user, profile, isKid = false, lifetimeXP, av
                                         : "« L'art de l'illusion s'apprend dans l'ombre. Bienvenue dans la Confrérie. »"}
                                 </p>
 
-                                {/* Biography */}
-                                {profile?.bio && (
-                                    <div className="w-full px-4 mt-2 mb-2">
-                                        <div className="bg-black/40 border border-white/10 rounded-lg p-2.5 text-[9px] md:text-[10px] text-white/70 italic line-clamp-4 text-center shadow-inner">
-                                            "{profile.bio}"
-                                        </div>
-                                    </div>
-                                )}
+                                {/* Tagline is the only thing here now */}
                             </div>
 
                             {/* Verification Block */}
