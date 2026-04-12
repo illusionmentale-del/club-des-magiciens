@@ -14,7 +14,7 @@ export default function ShopBuyWithXP({ itemId, xpPrice, trueXP }: { itemId: str
     const handlePurchase = async () => {
         if (!canAfford) return;
         
-        const confirm = window.confirm(`Veux-tu dépenser ${xpPrice} Éclats Magiques pour débloquer ce secret ?`);
+        const confirm = window.confirm(`Veux-tu dépenser ${xpPrice} Poussières d'étoiles 🌟 pour débloquer ce secret ?`);
         if (!confirm) return;
 
         setLoading(true);
@@ -32,7 +32,7 @@ export default function ShopBuyWithXP({ itemId, xpPrice, trueXP }: { itemId: str
         return (
             <button disabled className="w-full mt-2 bg-black/40 border border-white/10 text-brand-text-muted font-bold py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 cursor-not-allowed text-xs">
                 <Lock className="w-4 h-4" />
-                Il te manque {xpPrice - trueXP} Éclats
+                Il te manque {xpPrice - trueXP} Poussières d'étoiles
             </button>
         );
     }
@@ -44,7 +44,7 @@ export default function ShopBuyWithXP({ itemId, xpPrice, trueXP }: { itemId: str
             className="w-full mt-2 bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-400 hover:to-indigo-500 text-white font-bold py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 transition-all shadow-[0_0_15px_rgba(168,85,247,0.4)] hover:shadow-[0_0_25px_rgba(168,85,247,0.6)] hover:scale-[1.02] disabled:opacity-50 text-sm border border-purple-400/30"
         >
             {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Sparkles className="w-4 h-4 text-yellow-300" />}
-            Débloquer ({xpPrice} Éclats)
+            Débloquer ({xpPrice} Poussières)
         </button>
     );
 }

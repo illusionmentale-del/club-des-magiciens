@@ -216,7 +216,7 @@ export default function MagicCard({ user, profile, isKid = false, lifetimeXP, av
                                     </div>
                                     <div className="flex flex-col items-center bg-white/5 rounded-lg py-1 border border-white/5">
                                         <p className="text-white/40 text-[8px] uppercase tracking-widest font-bold mb-0.5">Inscrit</p>
-                                        <p className="text-white/90 text-[11px] md:text-sm font-bold px-1">{new Date(user.created_at).toLocaleDateString()}</p>
+                                        <p className="text-white/90 text-[11px] md:text-sm font-bold px-1">{new Date(user.created_at).toLocaleDateString('fr-FR')}</p>
                                     </div>
                                 </div>
                             </div>
@@ -268,11 +268,20 @@ export default function MagicCard({ user, profile, isKid = false, lifetimeXP, av
                                 <div className="w-16 h-px bg-gradient-to-r from-transparent via-white/40 to-transparent my-6"></div>
 
                                 {/* New Impactful Tagline */}
-                                <p className="text-xs text-white/80 leading-relaxed font-serif font-medium px-2 tracking-wide italic shadow-black drop-shadow-md">
+                                <p className="text-xs text-white/80 leading-relaxed font-serif font-medium px-2 tracking-wide italic shadow-black drop-shadow-md mb-2">
                                     {isKid
                                         ? "« Garde le secret, pratique avec passion, et émerveille le monde. »"
                                         : "« L'art de l'illusion s'apprend dans l'ombre. Bienvenue dans la Confrérie. »"}
                                 </p>
+
+                                {/* Biography */}
+                                {profile?.bio && (
+                                    <div className="w-full px-4 mt-2 mb-2">
+                                        <div className="bg-black/40 border border-white/10 rounded-lg p-2.5 text-[9px] md:text-[10px] text-white/70 italic line-clamp-4 text-center shadow-inner">
+                                            "{profile.bio}"
+                                        </div>
+                                    </div>
+                                )}
                             </div>
 
                             {/* Verification Block */}

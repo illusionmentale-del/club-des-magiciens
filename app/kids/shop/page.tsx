@@ -6,6 +6,7 @@ import { ShoppingBag, Star, Lock, Play, CheckCircle2, Package } from "lucide-rea
 
 import ShopBuyWithXP from "@/components/kids/ShopBuyWithXP";
 import SkinLocker from "@/components/kids/SkinLocker";
+import BackButton from "@/components/BackButton";
 
 export const metadata = {
     title: 'La Boutique | Club des Magiciens',
@@ -69,6 +70,9 @@ export default async function KidsShopPage() {
                 {/* Header (Homogenized with Home) */}
                 <header className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 pt-4">
                     <div className="flex-1">
+                        <div className="mb-4">
+                            <BackButton className="md:hidden" />
+                        </div>
                         <div className="flex items-center gap-2 text-brand-gold mb-2">
                             <Star className="w-5 h-5 fill-current animate-pulse text-brand-gold" />
                             <span className="text-xs font-bold uppercase tracking-widest">Le Club des Petits Magiciens</span>

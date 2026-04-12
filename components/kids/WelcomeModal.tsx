@@ -7,7 +7,7 @@ import { Sparkles, GraduationCap, Video, ShoppingBag, Trophy, Wand2, X, ChevronR
 const slides = [
     {
         title: "L'Application Magique 📱",
-        description: "Pour un accès rapide, ajoute ce site sur ton écran d'accueil (via partager). N'oublie pas d'autoriser les notifications pour être alerté des nouveaux secrets !",
+        description: "IMPORTANT : Clique impérativement sur « Installer l'application » (et non un simple raccourci) via le menu pour avoir l'expérience native fluide ! N'oublie pas d'autoriser les notifications.",
         icon: Smartphone,
         color: "text-brand-purple",
         bg: "bg-brand-purple/10",

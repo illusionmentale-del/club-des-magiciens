@@ -59,6 +59,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 import CookieBanner from "@/components/CookieBanner";
 import { PWARegistration } from "@/components/PWARegistration";
+import NextTopLoader from "nextjs-toploader";
 
 export default function RootLayout({
   children,
@@ -68,6 +69,7 @@ export default function RootLayout({
   return (
     <html lang="fr" suppressHydrationWarning>
       <body className={`${poppins.variable} font-sans bg-brand-bg text-brand-text antialiased flex flex-col min-h-screen`}>
+        <NextTopLoader color="#EAB308" showSpinner={false} />
         {children}
         <CookieBanner />
         <PWARegistration />

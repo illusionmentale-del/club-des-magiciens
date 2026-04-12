@@ -270,7 +270,7 @@ export default function ShopItemForm({ initialData }: { initialData?: ShopItem }
                                     />
                                 </div>
                                 <div>
-                                    <label className="block text-brand-text-muted text-xs font-bold uppercase tracking-wider mb-2">Prix en Points d'XP (Optionnel)</label>
+                                    <label className="block text-brand-text-muted text-xs font-bold uppercase tracking-wider mb-2">Prix en Poussières d'étoiles (Optionnel)</label>
                                     <input
                                         type="number"
                                         name="xp_price"
@@ -279,7 +279,7 @@ export default function ShopItemForm({ initialData }: { initialData?: ShopItem }
                                         className="w-full bg-brand-bg border border-brand-border rounded-xl p-4 text-yellow-400 font-bold focus:border-brand-purple outline-none transition-all placeholder:text-brand-text-muted/20"
                                         placeholder="Ex: 500"
                                     />
-                                    <p className="text-[10px] text-brand-text-muted mt-2">Si renseigné, l'enfant verra un bouton pour acheter ce secret avec ses points.</p>
+                                    <p className="text-[10px] text-brand-text-muted mt-2">Si renseigné, l'enfant verra un bouton pour acheter ce secret avec ses Poussières d'étoiles.</p>
                                 </div>
                             </div>
                         )}

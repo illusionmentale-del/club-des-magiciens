@@ -28,6 +28,7 @@ type LibraryItem = {
     price_label?: string | null;
     public_slug?: string | null;
     public_description?: string | null;
+    tags?: string[];
 };
 
 export default function LibraryItemForm({ initialData }: { initialData?: LibraryItem }) {
@@ -58,8 +59,29 @@ export default function LibraryItemForm({ initialData }: { initialData?: Library
         sales_page_url: "",
         price_label: "",
         public_slug: "",
-        public_description: ""
+        public_description: "",
+        tags: []
     });
+
+    const [tagInput, setTagInput] = useState("");
+
+    const suggestedKidsTags = ["Cartes", "Pièces", "Mentalisme", "Foulard", "Élastiques", "Objets du quotidien", "Conseil", "Astuce", "Fabrication", "Défi", "Manipulation", "Comédie", "Facile"];
+    const suggestedAdultsTags = ["Close-up", "Scène", "Impromptu", "Cartomagie", "Numismagie", "Gimmick", "Mentalisme", "Psychologie", "Technique", "Théorie", "Business", "Marketing", "Astuce"];
+    
+    const suggestedTags = formData.audience === 'kids' ? suggestedKidsTags : suggestedAdultsTags;
+
+    const addTag = (tag: string) => {
+        const t = tag.trim();
+        if (!t) return;
+        if (!formData.tags?.includes(t)) {
+            setFormData(prev => ({ ...prev, tags: [...(prev.tags || []), t] }));
+        }
+        setTagInput("");
+    };
+
+    const removeTag = (tagToRemove: string) => {
+        setFormData(prev => ({ ...prev, tags: (prev.tags || []).filter(t => t !== tagToRemove) }));
+    };
 
     useEffect(() => {
         if (!initialData) {
@@ -116,6 +138,7 @@ export default function LibraryItemForm({ initialData }: { initialData?: Library
         try {
             const payload = {
                 ...formData,
+                tags: formData.tags || [],
                 // Clean up fields based on audience
                 week_number: formData.audience === 'kids' ? Number(formData.week_number) : null,
                 is_main: formData.audience === 'kids' ? formData.is_main : false,
@@ -243,6 +266,57 @@ export default function LibraryItemForm({ initialData }: { initialData?: Library
                                 className="w-full bg-brand-bg border border-brand-border rounded-xl p-4 text-brand-text focus:border-brand-blue outline-none transition-all placeholder:text-brand-text-muted/20 resize-none"
                                 placeholder="Description détaillée du contenu..."
                             />
+                        </div>
+
+                        {/* TAGS SECTION */}
+                        <div className="border-t border-brand-border pt-6">
+                            <h3 className="text-sm font-bold text-brand-text uppercase tracking-wider mb-4">Tags & Mots-Clés</h3>
+                            
+                            <div className="flex flex-wrap gap-2 mb-4">
+                                {(formData.tags || []).map(tag => (
+                                    <span key={tag} className="bg-brand-blue/20 text-brand-blue px-3 py-1.5 rounded-lg text-sm font-bold flex items-center gap-2">
+                                        {tag}
+                                        <button type="button" onClick={() => removeTag(tag)} className="hover:text-white transition-colors">&times;</button>
+                                    </span>
+                                ))}
+                            </div>
+
+                            <div className="flex items-center gap-2 mb-3">
+                                <input
+                                    type="text"
+                                    value={tagInput}
+                                    onChange={(e) => setTagInput(e.target.value)}
+                                    onKeyDown={(e) => {
+                                        if (e.key === 'Enter') {
+                                            e.preventDefault();
+                                            addTag(tagInput);
+                                        }
+                                    }}
+                                    className="flex-1 bg-brand-bg border border-brand-border rounded-xl p-3 text-brand-text text-sm focus:border-brand-blue outline-none placeholder:text-brand-text-muted/30"
+                                    placeholder="Écris un tag et tape Entrée..."
+                                />
+                                <button
+                                    type="button"
+                                    onClick={() => addTag(tagInput)}
+                                    className="bg-brand-surface hover:bg-white/10 px-4 py-3 rounded-xl border border-brand-border text-sm font-bold transition-colors"
+                                >
+                                    Ajouter
+                                </button>
+                            </div>
+
+                            <p className="text-[10px] text-brand-text-muted uppercase font-bold tracking-widest mb-2">Suggestions rapides :</p>
+                            <div className="flex flex-wrap gap-1.5">
+                                {suggestedTags.map(tag => (
+                                    <button 
+                                        key={tag}
+                                        type="button"
+                                        onClick={() => addTag(tag)}
+                                        className="text-[10px] bg-brand-bg/50 hover:bg-brand-surface border border-brand-border px-2 py-1 rounded transition-colors"
+                                    >
+                                        + {tag}
+                                    </button>
+                                ))}
+                            </div>
                         </div>
                     </div>
 

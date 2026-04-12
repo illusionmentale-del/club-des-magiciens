@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { Check, Lock, Loader2, UserRound, Sparkles } from "lucide-react";
+import { Check, Lock, Loader2, UserRound, Sparkles, X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { equipSkin, buySkinWithXP } from "@/app/actions/avatars";
 
@@ -24,6 +24,7 @@ type Props = {
 export default function SkinLocker({ skins, unlockedSkinIds, equippedSkinId, trueXP }: Props) {
     const router = useRouter();
     const [loadingMap, setLoadingMap] = useState<Record<string, boolean>>({});
+    const [previewSkin, setPreviewSkin] = useState<Skin | null>(null);
 
     const handleEquip = async (skinId: string) => {
         setLoadingMap(prev => ({ ...prev, [skinId]: true }));
@@ -39,8 +40,10 @@ export default function SkinLocker({ skins, unlockedSkinIds, equippedSkinId, tru
         }
     };
 
-    const handleBuy = async (skinId: string, price: number) => {
-        if (!confirm(`Acheter cet avatar pour ${price} Éclats ?`)) return;
+    const confirmPurchase = async () => {
+        if (!previewSkin) return;
+        const skinId = previewSkin.id;
+        const price = previewSkin.price_xp;
         
         setLoadingMap(prev => ({ ...prev, [skinId]: true }));
         try {
@@ -48,11 +51,16 @@ export default function SkinLocker({ skins, unlockedSkinIds, equippedSkinId, tru
             if (!res.success) {
                 alert(res.error || "Erreur lors de l'achat.");
             } else {
+                setPreviewSkin(null);
                 router.refresh();
             }
         } finally {
             setLoadingMap(prev => ({ ...prev, [skinId]: false }));
         }
+    };
+
+    const handleBuyClick = (skin: Skin) => {
+        setPreviewSkin(skin);
     };
 
     if (!skins || skins.length === 0) return null;
@@ -63,6 +71,50 @@ export default function SkinLocker({ skins, unlockedSkinIds, equippedSkinId, tru
                 <UserRound className="text-pink-400" />
                 Mon Casier d'Avatars
             </h2>
+
+            {/* Preview Modal */}
+            {previewSkin && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+                    <div className="bg-brand-card border border-brand-border rounded-3xl p-6 md:p-8 w-full max-w-sm flex flex-col items-center relative animate-in zoom-in-95 duration-200">
+                        <button onClick={() => setPreviewSkin(null)} className="absolute top-4 right-4 text-brand-text-muted hover:text-white bg-white/5 rounded-full p-2">
+                            <X className="w-5 h-5" />
+                        </button>
+                        
+                        <h3 className="text-xl font-bold text-white mb-6 text-center">{previewSkin.name}</h3>
+                        
+                        <div className="w-48 h-48 rounded-full border-4 border-brand-purple/50 bg-black/50 shadow-[0_0_40px_rgba(168,85,247,0.4)] relative flex items-center justify-center overflow-hidden mb-8">
+                                {previewSkin.image_url ? (
+                                    <Image src={previewSkin.image_url} alt={previewSkin.name} fill className="object-cover" />
+                                ) : (
+                                    <UserRound className="w-20 h-20 text-gray-500" />
+                                )}
+                        </div>
+
+                        <div className="w-full space-y-3">
+                            <button 
+                                onClick={confirmPurchase}
+                                disabled={loadingMap[previewSkin.id]}
+                                className="w-full bg-gradient-to-r from-yellow-500 to-amber-500 text-black font-black uppercase tracking-widest py-3 px-4 rounded-xl flex items-center justify-center gap-2 hover:scale-[1.02] transition-transform shadow-[0_10px_30px_rgba(250,204,21,0.3)] disabled:opacity-50"
+                            >
+                                {loadingMap[previewSkin.id] ? (
+                                    <Loader2 className="w-5 h-5 animate-spin" />
+                                ) : (
+                                    <>
+                                        <Sparkles className="w-5 h-5" />
+                                        Confirmer ({previewSkin.price_xp} Poussières)
+                                    </>
+                                )}
+                            </button>
+                            <button
+                                onClick={() => setPreviewSkin(null)}
+                                className="w-full py-3 text-sm font-bold text-brand-text-muted hover:text-white transition-colors"
+                            >
+                                Annuler
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
             
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
                 {skins.map(skin => {
@@ -105,7 +157,7 @@ export default function SkinLocker({ skins, unlockedSkinIds, equippedSkinId, tru
                                     </button>
                                 ) : (
                                     <button 
-                                        onClick={() => handleBuy(skin.id, skin.price_xp)}
+                                        onClick={() => handleBuyClick(skin)}
                                         disabled={isLoading || !canAfford}
                                         className={`w-full font-bold py-2 rounded-xl text-xs flex items-center justify-center gap-1 flex-wrap ${canAfford ? 'bg-gradient-to-r from-yellow-500 to-amber-500 text-black hover:scale-105 transition-transform' : 'bg-gray-800 text-gray-500 border border-gray-700'}`}
                                     >
@@ -114,7 +166,7 @@ export default function SkinLocker({ skins, unlockedSkinIds, equippedSkinId, tru
                                         ) : (
                                             <>
                                                 <Sparkles className="w-3 h-3" />
-                                                {skin.price_xp} Éclats
+                                                {skin.price_xp} Poussières d'étoiles
                                             </>
                                         )}
                                     </button>

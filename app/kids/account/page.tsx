@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import MagicCard from "@/components/MagicCard";
 import AccountForm from "@/app/dashboard/account/AccountForm"; // Reusing form for settings
 import { Settings, Trophy, Shield, Star, Bell, ShoppingBag } from "lucide-react";
+import BackButton from "@/components/BackButton";
 import { NotificationPreferences } from "@/components/NotificationPreferences";
 import KidsIdentityForm from "@/components/kids/KidsIdentityForm";
 
@@ -58,6 +59,9 @@ export default async function KidsAccountPage({
                 {/* Header (Homogenized with Home) */}
                 <header className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 pt-4">
                     <div className="flex-1">
+                        <div className="mb-4">
+                            <BackButton className="md:hidden" />
+                        </div>
                         <div className="flex items-center gap-2 text-brand-gold mb-2">
                             <Star className="w-5 h-5 fill-current animate-pulse text-brand-gold" />
                             <span className="text-xs font-bold uppercase tracking-widest">Le Club des Petits Magiciens</span>
@@ -100,7 +104,7 @@ export default async function KidsAccountPage({
                                     {/* Additional settings could go here (e.g. Subscription status) */}
                                     <div className="mt-8 pt-8 border-t border-white/10 text-center">
                                         <p className="text-xs text-brand-text-muted">
-                                            Membre du Club depuis le {new Date(user.created_at).toLocaleDateString()}
+                                            Membre du Club depuis le {new Date(user.created_at).toLocaleDateString('fr-FR')}
                                         </p>
                                     </div>
                                 </div>
@@ -110,14 +114,17 @@ export default async function KidsAccountPage({
                         <div className="flex flex-col items-center">
                             <MagicCard user={user} profile={profile} isKid={true} lifetimeXP={lifetimeXP} avatarUrl={computedAvatarUrl} />
                             
-                            {/* Bouton pour dépenser les points */}
-                            <div className="mt-8 mb-4 w-full max-w-[400px]">
+                            {/* Solde et Bouton pour dépenser */}
+                            <div className="mt-8 mb-4 w-full max-w-[400px] flex flex-col items-center">
+                                <p className="mb-3 text-sm font-bold text-brand-gold animate-in fade-in zoom-in duration-500">
+                                    Solde actuel : <span className="text-lg text-white">{profile?.xp || 0}</span> Poussières d'étoiles 🌟
+                                </p>
                                 <a 
                                     href="/kids/shop"
                                     className="w-full py-4 bg-gradient-to-r from-brand-gold to-yellow-500 hover:scale-[1.02] text-black font-black uppercase tracking-widest rounded-2xl transition-all shadow-[0_10px_30px_rgba(250,204,21,0.4)] flex justify-center items-center gap-2"
                                 >
                                     <ShoppingBag className="w-5 h-5" />
-                                    Dépenser mes points dans la boutique
+                                    Dépenser mes Poussières d'étoiles
                                 </a>
                             </div>
 

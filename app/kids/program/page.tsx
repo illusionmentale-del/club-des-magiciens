@@ -3,9 +3,11 @@ import { redirect } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { Lock, Play, Star, CheckCircle, Trophy, BookOpen, GraduationCap } from "lucide-react";
+import SearchInput from "@/components/kids/SearchInput";
 
-
-export default async function KidsProgramPage() {
+export default async function KidsProgramPage({ searchParams }: { searchParams: Promise<{ q?: string }> }) {
+    const sParams = await searchParams;
+    const query = sParams.q?.toLowerCase() || "";
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
 
@@ -41,11 +43,20 @@ export default async function KidsProgramPage() {
         .order("position", { ascending: true })
         .order("created_at", { ascending: false });
 
-    // Group items by week
+    // Group items by week (or filter by query)
     const weeksData: Record<number, any[]> = {};
     if (unlockedItems) {
         unlockedItems.forEach(item => {
             if (!item.week_number) return;
+            
+            // Filter logic
+            if (query) {
+                const matchesTitle = item.title?.toLowerCase().includes(query);
+                const matchesDesc = item.description?.toLowerCase().includes(query);
+                const matchesTags = item.tags?.some((tag: string) => tag.toLowerCase().includes(query));
+                if (!matchesTitle && !matchesDesc && !matchesTags) return;
+            }
+
             if (!weeksData[item.week_number]) weeksData[item.week_number] = [];
             weeksData[item.week_number].push(item);
         });
@@ -100,6 +111,11 @@ export default async function KidsProgramPage() {
 
 
 
+                {/* Search Bar */}
+                <div className="w-full relative z-20">
+                    <SearchInput />
+                </div>
+
                 {/* Missions List */}
                 <div className="space-y-6">
                     {displayWeeks.map(week => {
@@ -108,6 +124,9 @@ export default async function KidsProgramPage() {
                         const isCompleted = week < currentWeek;
 
                         const items = weeksData[week] || [];
+                        
+                        // Hide empty weeks if we are searching (to avoid a huge list of empty blocked weeks)
+                        if (query && items.length === 0) return null;
 
                         return (
                             <div key={week} className="relative group">
