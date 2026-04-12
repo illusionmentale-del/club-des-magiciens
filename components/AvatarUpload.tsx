@@ -72,6 +72,7 @@ export default function AvatarUpload({
     const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
     const [imageSrc, setImageSrc] = useState<string | null>(null);
     const [isCropping, setIsCropping] = useState(false);
+    const [activeFile, setActiveFile] = useState<File | null>(null);
 
     const supabase = createClient();
 
@@ -85,24 +86,21 @@ export default function AvatarUpload({
 
     const cleanupModal = () => {
         setIsCropping(false);
-        setImageSrc(null);
+        if (imageSrc) {
+            URL.revokeObjectURL(imageSrc);
+            setImageSrc(null);
+        }
+        setActiveFile(null);
     };
 
     const processFile = (file: File) => {
         if (!file) return;
 
         try {
-            const safeBlob = file.slice(0, file.size, file.type);
-            const reader = new FileReader();
-            
-            reader.onload = () => {
-                setImageSrc(reader.result as string);
-                setIsCropping(true);
-            };
-            reader.onerror = () => {
-                alert(`Safari a bloqué la lecture de l'image (${reader.error?.message || 'Erreur Inconnue'}).\n\n👉 ACTION REQUISE : Cliquez sur la zone pour sélectionner manuellement le fichier au lieu de faire un glisser-déposer.`);
-            };
-            reader.readAsDataURL(safeBlob);
+            setActiveFile(file);
+            const objectUrl = URL.createObjectURL(file);
+            setImageSrc(objectUrl);
+            setIsCropping(true);
         } catch (err: any) {
             console.error("Error processing avatar file", err);
             alert("Erreur critique: " + err.message);

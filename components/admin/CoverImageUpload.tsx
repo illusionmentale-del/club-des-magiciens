@@ -73,6 +73,7 @@ export default function CoverImageUpload({
     const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
     const [imageSrc, setImageSrc] = useState<string | null>(null);
     const [isCropping, setIsCropping] = useState(false);
+    const [activeFile, setActiveFile] = useState<File | null>(null); // Empêche Safari de supprimer le fichier en mémoire
 
     const supabase = createClient();
 
@@ -90,26 +91,21 @@ export default function CoverImageUpload({
 
     const cleanupModal = () => {
         setIsCropping(false);
-        setImageSrc(null);
+        if (imageSrc) {
+            URL.revokeObjectURL(imageSrc);
+            setImageSrc(null);
+        }
+        setActiveFile(null);
     };
 
     const processFile = (file: File) => {
         if (!file) return;
 
         try {
-            // Le slice() force Safari à créer un nouveau Blob interne, ce qui débloque souvent le NotReadableError lié au Drag&Drop
-            const safeBlob = file.slice(0, file.size, file.type);
-            const reader = new FileReader();
-            
-            reader.onload = () => {
-                setImageSrc(reader.result as string);
-                setIsCropping(true);
-            };
-            reader.onerror = () => {
-                // Si Safari bloque l'accès mémoire au fichier après un glisser-déposer
-                alert(`Safari a bloqué la lecture de l'image (${reader.error?.message || 'Erreur Inconnue'}).\n\n👉 ACTION REQUISE : Cliquez sur la zone pour sélectionner manuellement le fichier au lieu de faire un glisser-déposer.`);
-            };
-            reader.readAsDataURL(safeBlob);
+            setActiveFile(file); // Maintien du fichier en RAM (Empêche WebKit GC)
+            const objectUrl = URL.createObjectURL(file);
+            setImageSrc(objectUrl);
+            setIsCropping(true);
         } catch (err: any) {
             console.error("Error processing file", err);
             alert("Erreur critique: " + err.message);
