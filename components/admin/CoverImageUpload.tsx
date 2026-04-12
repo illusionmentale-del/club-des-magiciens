@@ -1,12 +1,13 @@
 "use client";
 
-import { useState, useRef, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { Upload, X, Check, ZoomIn, Loader2, Image as ImageIcon } from "lucide-react";
 import Image from "next/image";
 import { createClient } from "@/lib/supabase/client";
 import Cropper from "react-easy-crop";
 import "react-easy-crop/react-easy-crop.css";
+import { useDropzone } from "react-dropzone";
 
 // --- Utility: Get Cropped & Compressed Image ---
 async function getCroppedImg(imageSrc: string, pixelCrop: any): Promise<Blob> {
@@ -45,6 +46,7 @@ async function getCroppedImg(imageSrc: string, pixelCrop: any): Promise<Blob> {
 const createImage = (url: string): Promise<HTMLImageElement> =>
     new Promise((resolve, reject) => {
         const image = new globalThis.Image();
+        image.crossOrigin = "anonymous";
         image.addEventListener("load", () => resolve(image));
         image.addEventListener("error", (error) => reject(error));
         image.src = url;
@@ -64,8 +66,6 @@ export default function CoverImageUpload({
     const [preview, setPreview] = useState<string | null>(currentImageUrl || null);
     const [uploading, setUploading] = useState(false);
     const [mounted, setMounted] = useState(false);
-    const [isConverting, setIsConverting] = useState(false);
-    const [isDragActive, setIsDragActive] = useState(false);
 
     // Cropper State
     const [crop, setCrop] = useState({ x: 0, y: 0 });
@@ -74,7 +74,6 @@ export default function CoverImageUpload({
     const [imageSrc, setImageSrc] = useState<string | null>(null);
     const [isCropping, setIsCropping] = useState(false);
 
-    const fileInputRef = useRef<HTMLInputElement>(null);
     const supabase = createClient();
 
     useEffect(() => {
@@ -89,65 +88,48 @@ export default function CoverImageUpload({
         setCroppedAreaPixels(croppedAreaPixels);
     }, []);
 
-    const processFile = async (file: File) => {
+    const cleanupModal = () => {
+        setIsCropping(false);
+        if (imageSrc) {
+            URL.revokeObjectURL(imageSrc);
+            setImageSrc(null);
+        }
+    };
+
+    const processFile = (file: File) => {
         if (!file) return;
 
-        if (file.type === "image/heic" || file.name.toLowerCase().endsWith(".heic") || file.name.toLowerCase().endsWith(".heif")) {
-            alert("⚠️ Format HEIC non supporté nativement pour le recadrage. Merci de convertir l'image d'abord en JPG ou PNG (ou d'utiliser une capture d'écran).");
-            if (fileInputRef.current) fileInputRef.current.value = '';
-            return;
-        }
-
-        setIsConverting(true);
         try {
-            const reader = new FileReader();
-            reader.onload = () => {
-                setImageSrc(reader.result as string);
-                setIsCropping(true);
-                setIsConverting(false);
-            };
-            reader.onerror = () => {
-                alert("Erreur de lecture du fichier.");
-                setIsConverting(false);
-            };
-            reader.readAsDataURL(file);
+            const objectUrl = URL.createObjectURL(file);
+            setImageSrc(objectUrl);
+            setIsCropping(true);
         } catch (err: any) {
             console.error("Error processing file", err);
             alert("Erreur critique: " + err.message);
-            setIsConverting(false);
         }
     };
 
-    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (e.target.files && e.target.files.length > 0) {
-            processFile(e.target.files[0]);
+    const onDrop = useCallback((acceptedFiles: File[]) => {
+        if (acceptedFiles && acceptedFiles.length > 0) {
+            processFile(acceptedFiles[0]);
         }
-    };
+    }, []);
 
-    const handleDragOver = (e: React.DragEvent) => {
-        e.preventDefault();
-        e.stopPropagation();
-        setIsDragActive(true);
-    };
+    const { getRootProps, getInputProps, isDragActive, fileRejections } = useDropzone({
+        onDrop,
+        accept: {
+            'image/jpeg': ['.jpeg', '.jpg'],
+            'image/png': ['.png'],
+            'image/webp': ['.webp']
+        },
+        multiple: false
+    });
 
-    const handleDragLeave = (e: React.DragEvent) => {
-        e.preventDefault();
-        e.stopPropagation();
-        setIsDragActive(false);
-    };
-
-    const handleDrop = (e: React.DragEvent) => {
-        e.preventDefault();
-        e.stopPropagation();
-        setIsDragActive(false);
-        if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-            processFile(e.dataTransfer.files[0]);
+    useEffect(() => {
+        if (fileRejections.length > 0) {
+            alert("Format non supporté ! L'image doit être un fichier JPEG ou PNG valide. (Sur iPhone, prenez la photo depuis l'appellation directe ou désactivez le format Haute Efficacité pour ce site).");
         }
-    };
-
-    const triggerFileSelect = () => {
-        fileInputRef.current?.click();
-    };
+    }, [fileRejections]);
 
     const handleUpload = async () => {
         if (!imageSrc || !croppedAreaPixels) return;
@@ -172,8 +154,7 @@ export default function CoverImageUpload({
 
             setPreview(publicUrl);
             onUpload(publicUrl);
-            setIsCropping(false);
-            setImageSrc(null);
+            cleanupModal();
         } catch (error) {
             console.error("Error uploading cover:", error);
             alert("Erreur lors de l'upload de l'image.");
@@ -196,7 +177,7 @@ export default function CoverImageUpload({
                         </p>
                     </div>
                     <button
-                        onClick={() => { setIsCropping(false); setImageSrc(null); }}
+                        onClick={cleanupModal}
                         className="text-brand-text-muted hover:text-white p-2 transition-colors"
                     >
                         <X className="w-6 h-6" />
@@ -249,21 +230,12 @@ export default function CoverImageUpload({
             <label className="block text-brand-text-muted text-xs font-bold uppercase tracking-wider">{label}</label>
 
             <div
-                onClick={triggerFileSelect}
-                onDragOver={handleDragOver}
-                onDragLeave={handleDragLeave}
-                onDrop={handleDrop}
+                {...getRootProps()}
                 className={`group relative aspect-video bg-brand-bg border-2 border-dashed rounded-2xl overflow-hidden cursor-pointer transition-all flex items-center justify-center ${
                     isDragActive ? 'border-brand-purple/80 bg-brand-purple/5' : preview ? 'border-brand-purple/30' : 'border-brand-border hover:border-brand-purple/50'
                 }`}
             >
-                <input 
-                    type="file" 
-                    ref={fileInputRef} 
-                    onClick={(e) => { e.currentTarget.value = ''; }}
-                    onChange={handleFileChange} 
-                    className="hidden" 
-                />
+                <input {...getInputProps()} />
 
                 {preview ? (
                     <>
@@ -289,15 +261,15 @@ export default function CoverImageUpload({
                             <span className="text-xs font-black uppercase tracking-widest block">
                                 {isDragActive ? "Déposer l'image ici..." : "Uploader une image"}
                             </span>
-                            <span className="text-[10px] opacity-40 uppercase tracking-tighter mt-1 block">Format 16:9 recommandé</span>
+                            <span className="text-[10px] opacity-40 uppercase tracking-tighter mt-1 block">Format 16:9 (JPG, PNG)</span>
                         </div>
                     </div>
                 )}
 
-                {(uploading || isConverting) && (
+                {uploading && (
                     <div className="absolute inset-0 bg-brand-bg/80 backdrop-blur-sm flex flex-col items-center justify-center gap-3 z-10 font-bold text-brand-purple text-xs uppercase tracking-widest">
                         <Loader2 className="w-8 h-8 animate-spin" />
-                        {isConverting ? "Préparation de l'image..." : "Traitement en cours..."}
+                        Traitement en cours...
                     </div>
                 )}
             </div>
