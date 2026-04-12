@@ -93,15 +93,22 @@ export default function SkinLocker({ skins, unlockedSkinIds, equippedSkinId, tru
                         <div className="w-full space-y-3">
                             <button 
                                 onClick={confirmPurchase}
-                                disabled={loadingMap[previewSkin.id]}
-                                className="w-full bg-gradient-to-r from-yellow-500 to-amber-500 text-black font-black uppercase tracking-widest py-3 px-4 rounded-xl flex items-center justify-center gap-2 hover:scale-[1.02] transition-transform shadow-[0_10px_30px_rgba(250,204,21,0.3)] disabled:opacity-50"
+                                disabled={loadingMap[previewSkin.id] || trueXP < previewSkin.price_xp}
+                                className={`w-full font-black uppercase tracking-widest py-3 px-4 rounded-xl flex items-center justify-center gap-2 transition-transform shadow-[0_10px_30px_rgba(250,204,21,0.3)] disabled:opacity-50 ${
+                                    trueXP >= previewSkin.price_xp 
+                                        ? 'bg-gradient-to-r from-yellow-500 to-amber-500 text-black hover:scale-[1.02]' 
+                                        : 'bg-gray-800 text-gray-500 border border-gray-700 shadow-none'
+                                }`}
                             >
                                 {loadingMap[previewSkin.id] ? (
                                     <Loader2 className="w-5 h-5 animate-spin" />
                                 ) : (
                                     <>
                                         <Sparkles className="w-5 h-5" />
-                                        Confirmer ({previewSkin.price_xp} Poussières)
+                                        {trueXP >= previewSkin.price_xp 
+                                            ? `Confirmer (${previewSkin.price_xp} Poussières)` 
+                                            : `Poussières insuffisantes (${previewSkin.price_xp})`
+                                        }
                                     </>
                                 )}
                             </button>
@@ -126,15 +133,18 @@ export default function SkinLocker({ skins, unlockedSkinIds, equippedSkinId, tru
                     return (
                         <div key={skin.id} className={`bg-brand-card/80 border p-4 rounded-3xl flex flex-col items-center text-center transition-all ${isEquipped ? 'border-pink-500 shadow-[0_0_20px_rgba(236,72,153,0.3)]' : 'border-white/5 hover:border-white/20'}`}>
                             
-                            <div className="w-20 h-20 bg-black/50 rounded-full border-2 border-white/10 relative overflow-hidden mb-3">
+                            <div 
+                                className="w-20 h-20 bg-black/50 rounded-full border-2 border-white/10 relative overflow-hidden mb-3 cursor-pointer group hover:border-brand-purple/50 transition-colors"
+                                onClick={() => !isUnlocked && handleBuyClick(skin)}
+                            >
                                 {skin.image_url ? (
-                                    <Image src={skin.image_url} alt={skin.name} fill className={`object-cover ${!isUnlocked && 'opacity-40 grayscale'}`} />
+                                    <Image src={skin.image_url} alt={skin.name} fill className={`object-cover transition-all duration-300 ${!isUnlocked && 'opacity-60 grayscale group-hover:grayscale-0 group-hover:opacity-100'}`} />
                                 ) : (
                                     <div className="w-full h-full flex items-center justify-center"><UserRound className="text-gray-600 w-8 h-8"/></div>
                                 )}
                                 
                                 {!isUnlocked && (
-                                    <div className="absolute inset-0 flex items-center justify-center bg-black/40">
+                                    <div className="absolute inset-0 flex items-center justify-center bg-black/40 group-hover:bg-black/20 transition-colors">
                                         <Lock className="w-6 h-6 text-white" />
                                     </div>
                                 )}
@@ -158,8 +168,12 @@ export default function SkinLocker({ skins, unlockedSkinIds, equippedSkinId, tru
                                 ) : (
                                     <button 
                                         onClick={() => handleBuyClick(skin)}
-                                        disabled={isLoading || !canAfford}
-                                        className={`w-full font-bold py-2 rounded-xl text-xs flex items-center justify-center gap-1 flex-wrap ${canAfford ? 'bg-gradient-to-r from-yellow-500 to-amber-500 text-black hover:scale-105 transition-transform' : 'bg-gray-800 text-gray-500 border border-gray-700'}`}
+                                        disabled={isLoading}
+                                        className={`w-full font-bold py-2 rounded-xl text-xs flex items-center justify-center gap-1 flex-wrap transition-transform ${
+                                            canAfford 
+                                                ? 'bg-gradient-to-r from-yellow-500 to-amber-500 text-black hover:scale-105' 
+                                                : 'bg-brand-surface text-brand-text border border-white/10 hover:bg-white/10'
+                                        }`}
                                     >
                                         {isLoading ? (
                                             <Loader2 className="w-4 h-4 animate-spin" />
