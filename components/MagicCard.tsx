@@ -20,18 +20,60 @@ export default function MagicCard({ user, profile, isKid = false, lifetimeXP, av
 
     const xp = lifetimeXP ?? profile?.xp ?? 0;
 
-    // Rarity Tiers Logic
-    const isHolo = xp >= 50 && xp < 150;
-    const isLegendary = xp >= 150;
+    // KIDS 20-LEVEL RPG RANKS
+    const KIDS_RANKS = [
+        { name: "Curieux des Mystères", minXp: 0, rarity: "bronze" },
+        { name: "Novice de l'Illusion", minXp: 10, rarity: "bronze" },
+        { name: "Découvreur de Secrets", minXp: 20, rarity: "bronze" },
+        { name: "Apprenti Magicien", minXp: 30, rarity: "bronze" },
+        
+        { name: "Initié du Club", minXp: 50, rarity: "silver" },
+        { name: "Faiseur de Mystères", minXp: 75, rarity: "silver" },
+        { name: "As des Cartes", minXp: 100, rarity: "silver" },
+        { name: "Manipulateur Habile", minXp: 150, rarity: "silver" },
+        
+        { name: "Apprenti Prestidigitateur", minXp: 200, rarity: "gold" },
+        { name: "Magicien Confirmé", minXp: 250, rarity: "gold" },
+        { name: "Créateur d'Émerveillement", minXp: 300, rarity: "gold" },
+        { name: "Gardien du Secret", minXp: 400, rarity: "gold" },
+        
+        { name: "Illusionniste Expert", minXp: 500, rarity: "diamond" },
+        { name: "Maître de la Misdirection", minXp: 600, rarity: "diamond" },
+        { name: "Virtuose de la Magie", minXp: 700, rarity: "diamond" },
+        { name: "Enchanteur", minXp: 800, rarity: "diamond" },
+        
+        { name: "Holo-Magicien", minXp: 1000, rarity: "legendary" },
+        { name: "Magicien Stellaire", minXp: 1200, rarity: "legendary" },
+        { name: "Gardien Millénaire", minXp: 1500, rarity: "legendary" },
+        { name: "Grand Magicien", minXp: 2000, rarity: "legendary" },
+    ];
 
     let computedLevel = "Membre";
+    let rarityStyle = "bronze";
+    let nextRankXpCap = 150;
+    
     if (isKid) {
-        if (isLegendary) computedLevel = "Légendaire";
-        else if (isHolo) computedLevel = "Holo-Magicien";
-        else computedLevel = "Apprenti";
+        // Find current rank (highest rank where xp >= minXp)
+        const currentRankIndex = [...KIDS_RANKS].reverse().findIndex(r => xp >= r.minXp);
+        const actualIndex = KIDS_RANKS.length - 1 - currentRankIndex;
+        const currentRank = KIDS_RANKS[actualIndex];
+        
+        computedLevel = currentRank.name;
+        rarityStyle = currentRank.rarity;
+        
+        // Find next rank for progress bar
+        const nextRank = KIDS_RANKS[actualIndex + 1];
+        nextRankXpCap = nextRank ? nextRank.minXp : currentRank.minXp; // If maxed out, bar is full
     } else {
         computedLevel = profile?.magic_level || "Membre";
+        if (xp >= 150) { rarityStyle = "legendary"; nextRankXpCap = 500; }
+        else if (xp >= 50) { rarityStyle = "diamond"; nextRankXpCap = 150; }
+        else { nextRankXpCap = 50; }
     }
+
+    // Map rarities to visual booleans
+    const isLegendary = rarityStyle === "legendary" || rarityStyle === "gold";
+    const isHolo = rarityStyle === "diamond" || rarityStyle === "legendary";
 
     const validFactions = ["Magicien", "Sorcier", "Elfe", "Fée", "Licorne", "Illusionniste", "Mentaliste", "Druide"];
     const displayCityOrFaction = isKid
@@ -62,12 +104,12 @@ export default function MagicCard({ user, profile, isKid = false, lifetimeXP, av
 
     // Styling logic based on Rarity
     let cardBorder = isKid ? "border-purple-500/50 shadow-[inset_0_0_20px_rgba(168,85,247,0.2)]" : "border-brand-royal/50 shadow-[inset_0_0_20px_rgba(29,78,216,0.2)]";
-    // Using a rich gradient instead of flat #050507 or #171717
     let cardBg = isKid ? "bg-gradient-to-b from-[#1a1025] to-[#0A0510]" : "bg-gradient-to-b from-[#101525] to-[#050A10]";
-
 
     if (isLegendary) {
         cardBorder = "border-[#FFD700]/60 ring-1 ring-[#FFD700]/30 shadow-[0_0_30px_rgba(255,215,0,0.3)]";
+    } else if (rarityStyle === "silver" || rarityStyle === "diamond") {
+        cardBorder = "border-cyan-400/50 shadow-[inset_0_0_20px_rgba(34,211,238,0.2)] ring-1 ring-cyan-400/20";
     }
 
     return (
@@ -82,6 +124,7 @@ export default function MagicCard({ user, profile, isKid = false, lifetimeXP, av
                 <div className={cn(
                     "absolute -inset-4 rounded-[2rem] opacity-0 blur-2xl transition duration-1000 pointer-events-none group-hover/card:opacity-50",
                     isLegendary ? "bg-gradient-to-r from-amber-400 via-yellow-500 to-amber-600" :
+                    rarityStyle === "silver" || rarityStyle === "diamond" ? "bg-gradient-to-r from-cyan-400 to-blue-500" :
                         isKid ? "bg-gradient-to-r from-brand-purple to-blue-500" : "bg-gradient-to-r from-brand-royal to-blue-600"
                 )}></div>
 
@@ -141,8 +184,8 @@ export default function MagicCard({ user, profile, isKid = false, lifetimeXP, av
 
                             {/* Card Header */}
                             <div className="flex justify-between items-start">
-                                <div className={cn("px-3 py-1 rounded-t-lg rounded-br-lg text-xs font-bold tracking-widest uppercase border", isLegendary ? "bg-amber-500/20 text-[#FFD700] border-[#FFD700]/30" : isKid ? "bg-brand-purple/20 text-purple-300 border-purple-500/30" : "bg-brand-royal/20 text-blue-300 border-brand-royal/30")}>
-                                    {isKid ? "Apprenti" : "Membre"}
+                                <div className={cn("px-3 py-1 rounded-t-lg rounded-br-lg text-[10px] sm:text-xs font-bold tracking-widest uppercase border", isLegendary ? "bg-amber-500/20 text-[#FFD700] border-[#FFD700]/30" : isKid ? "bg-brand-purple/20 text-purple-300 border-purple-500/30" : "bg-brand-royal/20 text-blue-300 border-brand-royal/30")}>
+                                    {computedLevel}
                                 </div>
                                 <div className="flex items-center gap-1 bg-black/40 px-3 py-1 rounded-full border border-white/10 backdrop-blur-md">
                                     <Sparkles className={cn("w-3 h-3", isLegendary ? "text-[#FFD700]" : "text-white/70")} />
@@ -151,35 +194,26 @@ export default function MagicCard({ user, profile, isKid = false, lifetimeXP, av
                             </div>
 
                             {/* Center Avatar Illustration */}
-                            <div className="flex flex-col items-center justify-center my-1 md:my-2 relative">
+                            <div className="flex flex-col items-center justify-center my-1 relative">
                                 {/* Backdrop glow for avatar */}
-                                <div className={cn("absolute w-48 h-48 rounded-full blur-2xl opacity-40 mix-blend-screen", isKid ? "bg-purple-500" : "bg-brand-royal")}></div>
+                                <div className={cn("absolute w-44 h-44 rounded-full blur-2xl opacity-40 mix-blend-screen", isKid ? "bg-purple-500" : "bg-brand-royal")}></div>
 
 
                                 <div className={cn(
-                                    "relative w-32 h-32 md:w-40 md:h-40 rounded-full p-1.5 shadow-2xl flex-shrink-0 z-10 transition-transform duration-500",
+                                    "relative w-28 h-28 md:w-36 md:h-36 rounded-full p-1.5 shadow-2xl flex-shrink-0 z-10 transition-transform duration-500",
                                     isLegendary ? "bg-gradient-to-tr from-amber-500 via-yellow-200 to-orange-500" :
+                                    rarityStyle === "silver" || rarityStyle === "diamond" ? "bg-gradient-to-tr from-cyan-400 to-blue-500" :
                                         isKid ? "bg-gradient-to-tr from-blue-500 via-purple-400 to-brand-purple" : "bg-gradient-to-br from-cyan-400 via-brand-royal to-blue-600"
                                 )}>
                                     <div className="w-full h-full rounded-full bg-gradient-to-b from-[#1a1c29] to-[#0A0A0E] overflow-hidden relative flex flex-col items-center justify-center shadow-inner ring-4 ring-black/50">
                                         {isEmojiAvatar ? (
-                                            <span className="text-[5rem] drop-shadow-2xl z-20 relative transform hover:scale-110 transition-transform duration-500">{currentAvatar}</span>
+                                            <span className="text-[4rem] drop-shadow-2xl z-20 relative transform hover:scale-110 transition-transform duration-500">{currentAvatar}</span>
                                         ) : (
                                             <Image src={currentAvatar} alt="Avatar" fill className="object-cover z-20" />
                                         )}
                                         {/* Avatar Background effect */}
                                         <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-overlay z-10"></div>
                                         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.2)_0%,transparent_60%)] z-10"></div>
-                                    </div>
-
-                                    {/* Level Badge Overlapping Avatar */}
-                                    <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 z-30">
-                                        <div className={cn(
-                                            "px-4 py-1.5 rounded-full text-[10px] font-black tracking-widest uppercase shadow-[0_5px_15px_rgba(0,0,0,0.5)] border-2",
-                                            isLegendary ? "bg-amber-600 text-amber-100 border-yellow-300" : isKid ? "bg-brand-purple text-purple-100 border-purple-300" : "bg-brand-royal text-blue-100 border-blue-300"
-                                        )}>
-                                            {computedLevel}
-                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -189,7 +223,7 @@ export default function MagicCard({ user, profile, isKid = false, lifetimeXP, av
                                 {/* Subtle internal reflection */}
                                 <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
 
-                                <h2 className={cn("font-serif text-xl md:text-2xl font-black text-center mb-1 drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)] truncate", isLegendary ? "text-[#FFD700]" : "text-white")}>
+                                <h2 className={cn("font-serif text-lg md:text-xl font-black text-center mb-1 drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)] truncate", isLegendary ? "text-[#FFD700]" : "text-white")}>
                                     {profile?.username || "Le Mystérieux"}
                                 </h2>
 
@@ -210,13 +244,13 @@ export default function MagicCard({ user, profile, isKid = false, lifetimeXP, av
                                 {/* Inner Card XP Progress Bar */}
                                 <div className="mb-3 px-2">
                                     <div className="flex justify-between text-[8px] md:text-[9px] font-bold text-white/50 uppercase tracking-widest mb-1">
-                                        <span>Progression</span>
-                                        <span className={isLegendary ? "text-amber-400" : "text-white"}>{xp} XP</span>
+                                        <span>Vers {xp >= 2000 ? "le Max" : "le Prochain Rang"}</span>
+                                        <span className={isLegendary ? "text-amber-400" : "text-white"}>{xp} / {nextRankXpCap} XP</span>
                                     </div>
                                     <div className="h-1 w-full bg-black/60 rounded-full overflow-hidden border border-white/5">
                                         <div
-                                            className={cn("h-full relative", isLegendary ? "bg-gradient-to-r from-amber-600 to-yellow-400" : isKid ? "bg-gradient-to-r from-purple-600 to-blue-400" : "bg-gradient-to-r from-blue-600 to-cyan-400")}
-                                            style={{ width: `${Math.min((xp / (isLegendary ? 500 : 150)) * 100, 100)}%` }}
+                                            className={cn("h-full relative transition-all duration-1000", isLegendary ? "bg-gradient-to-r from-amber-600 to-yellow-400" : isKid ? "bg-gradient-to-r from-purple-600 to-cyan-400" : "bg-gradient-to-r from-blue-600 to-cyan-400")}
+                                            style={{ width: `${Math.min((xp / nextRankXpCap) * 100, 100)}%` }}
                                         >
                                             <div className="absolute inset-0 bg-white/30 w-full animate-[pulse_2s_infinite]"></div>
                                         </div>
