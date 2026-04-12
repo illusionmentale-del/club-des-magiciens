@@ -97,15 +97,19 @@ export default function CoverImageUpload({
         if (!file) return;
 
         try {
+            // Le slice() force Safari à créer un nouveau Blob interne, ce qui débloque souvent le NotReadableError lié au Drag&Drop
+            const safeBlob = file.slice(0, file.size, file.type);
             const reader = new FileReader();
+            
             reader.onload = () => {
                 setImageSrc(reader.result as string);
                 setIsCropping(true);
             };
             reader.onerror = () => {
-                alert("Erreur de prévisualisation (Safari).");
+                // Si Safari bloque l'accès mémoire au fichier après un glisser-déposer
+                alert(`Safari a bloqué la lecture de l'image (${reader.error?.message || 'Erreur Inconnue'}).\n\n👉 ACTION REQUISE : Cliquez sur la zone pour sélectionner manuellement le fichier au lieu de faire un glisser-déposer.`);
             };
-            reader.readAsDataURL(file);
+            reader.readAsDataURL(safeBlob);
         } catch (err: any) {
             console.error("Error processing file", err);
             alert("Erreur critique: " + err.message);

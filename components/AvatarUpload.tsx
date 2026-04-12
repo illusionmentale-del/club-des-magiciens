@@ -92,15 +92,17 @@ export default function AvatarUpload({
         if (!file) return;
 
         try {
+            const safeBlob = file.slice(0, file.size, file.type);
             const reader = new FileReader();
+            
             reader.onload = () => {
                 setImageSrc(reader.result as string);
                 setIsCropping(true);
             };
             reader.onerror = () => {
-                alert("Erreur de prévisualisation (Safari).");
+                alert(`Safari a bloqué la lecture de l'image (${reader.error?.message || 'Erreur Inconnue'}).\n\n👉 ACTION REQUISE : Cliquez sur la zone pour sélectionner manuellement le fichier au lieu de faire un glisser-déposer.`);
             };
-            reader.readAsDataURL(file);
+            reader.readAsDataURL(safeBlob);
         } catch (err: any) {
             console.error("Error processing avatar file", err);
             alert("Erreur critique: " + err.message);
