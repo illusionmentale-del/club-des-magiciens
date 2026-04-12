@@ -134,7 +134,7 @@ export default function SkinLocker({ skins, unlockedSkinIds, equippedSkinId, tru
                         <div key={skin.id} className={`bg-brand-card/80 border p-4 rounded-3xl flex flex-col items-center text-center transition-all ${isEquipped ? 'border-pink-500 shadow-[0_0_20px_rgba(236,72,153,0.3)]' : 'border-white/5 hover:border-white/20'}`}>
                             
                             <div 
-                                className="w-20 h-20 bg-black/50 rounded-full border-2 border-white/10 relative overflow-hidden mb-3 cursor-pointer group hover:border-brand-purple/50 transition-colors"
+                                className="w-20 h-20 bg-black/50 rounded-full border-2 border-white/10 relative overflow-hidden mb-3 cursor-pointer group hover:border-brand-purple/50 transition-all duration-300 hover:scale-[1.4] hover:z-20 hover:shadow-[0_0_20px_rgba(168,85,247,0.5)]"
                                 onClick={() => !isUnlocked && handleBuyClick(skin)}
                             >
                                 {skin.image_url ? (
@@ -144,7 +144,7 @@ export default function SkinLocker({ skins, unlockedSkinIds, equippedSkinId, tru
                                 )}
                                 
                                 {!isUnlocked && (
-                                    <div className="absolute inset-0 flex items-center justify-center bg-black/40 group-hover:bg-black/20 transition-colors">
+                                    <div className="absolute inset-0 flex items-center justify-center bg-black/40 group-hover:opacity-0 transition-opacity duration-300">
                                         <Lock className="w-6 h-6 text-white" />
                                     </div>
                                 )}
