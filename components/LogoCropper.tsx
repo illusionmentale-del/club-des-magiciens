@@ -278,6 +278,7 @@ export default function LogoCropper({
                         </div>
                     </>
                 ) : (
+                    <div className="flex flex-col items-center gap-2 text-gray-500">
                         <Upload className={`w-6 h-6 transition-colors ${isDragActive ? 'text-brand-gold animate-bounce' : 'group-hover:text-brand-gold'}`} />
                         <span className="text-[10px] font-bold uppercase tracking-wider text-center px-2">
                             {isDragActive ? "Déposer..." : "Uploader"}
