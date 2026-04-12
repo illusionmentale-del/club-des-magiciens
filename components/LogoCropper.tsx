@@ -89,6 +89,13 @@ export default function LogoCropper({
 
     const processFile = async (file: File) => {
         if (!file) return;
+
+        if (file.type === "image/heic" || file.name.toLowerCase().endsWith(".heic") || file.name.toLowerCase().endsWith(".heif")) {
+            alert("⚠️ Format HEIC non supporté nativement pour le recadrage. Merci de convertir l'image d'abord en JPG ou PNG (ou d'utiliser une capture d'écran).");
+            if (fileInputRef.current) fileInputRef.current.value = '';
+            return;
+        }
+
         setIsConverting(true);
         try {
             const objectUrl = URL.createObjectURL(file);
