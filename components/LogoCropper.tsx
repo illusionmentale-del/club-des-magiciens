@@ -106,7 +106,6 @@ export default function LogoCropper({
             alert("Erreur critique: " + err.message);
         } finally {
             setIsConverting(false);
-            if (fileInputRef.current) fileInputRef.current.value = '';
         }
     };
 
@@ -249,6 +248,7 @@ export default function LogoCropper({
                 <input 
                     type="file" 
                     ref={fileInputRef} 
+                    onClick={(e) => { e.currentTarget.value = ''; }}
                     onChange={handleFileChange} 
                     className="hidden" 
                 />

@@ -108,7 +108,6 @@ export default function CoverImageUpload({
             alert("Erreur critique: " + err.message);
         } finally {
             setIsConverting(false);
-            if (fileInputRef.current) fileInputRef.current.value = '';
         }
     };
 
@@ -254,6 +253,7 @@ export default function CoverImageUpload({
                 <input 
                     type="file" 
                     ref={fileInputRef} 
+                    onClick={(e) => { e.currentTarget.value = ''; }}
                     onChange={handleFileChange} 
                     className="hidden" 
                 />
