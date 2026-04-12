@@ -2,7 +2,7 @@
 
 import { updateSettings } from "@/app/admin/actions";
 import { SubmitButton } from "@/components/SubmitButton";
-import { LogoCropper } from "@/components/LogoCropper";
+import LogoCropper from "@/components/LogoCropper";
 import { Shield, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 
