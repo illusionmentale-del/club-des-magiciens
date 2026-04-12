@@ -100,13 +100,20 @@ export default function CoverImageUpload({
 
         setIsConverting(true);
         try {
-            const objectUrl = URL.createObjectURL(file);
-            setImageSrc(objectUrl);
-            setIsCropping(true);
+            const reader = new FileReader();
+            reader.onload = () => {
+                setImageSrc(reader.result as string);
+                setIsCropping(true);
+                setIsConverting(false);
+            };
+            reader.onerror = () => {
+                alert("Erreur de lecture du fichier.");
+                setIsConverting(false);
+            };
+            reader.readAsDataURL(file);
         } catch (err: any) {
             console.error("Error processing file", err);
             alert("Erreur critique: " + err.message);
-        } finally {
             setIsConverting(false);
         }
     };
