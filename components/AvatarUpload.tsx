@@ -85,31 +85,12 @@ export default function AvatarUpload({
     }, []);
 
     const processFile = async (file: File) => {
-        alert("Etape 1: Fichier reçu - " + file.name + " (" + file.type + ")");
         if (!file) return;
         setIsConverting(true);
         try {
-            let processedFile = file;
-
-            if (file.type === "image/heic" || file.name.toLowerCase().endsWith(".heic") || file.name.toLowerCase().endsWith(".heif")) {
-                alert("Etape 2: HEIC détecté... conversion");
-                const heic2any = (await import("heic2any")).default;
-                const convertedBlob = await heic2any({
-                    blob: file,
-                    toType: "image/jpeg",
-                    quality: 0.8
-                });
-                
-                const blob = Array.isArray(convertedBlob) ? convertedBlob[0] : convertedBlob;
-                processedFile = new File([blob], file.name.replace(/\.heic$/i, ".jpg"), { type: "image/jpeg" });
-                alert("Etape 3: HEIC converti avec succès");
-            }
-
-            alert("Etape 4: Création de l'aperçu");
-            const objectUrl = URL.createObjectURL(processedFile);
+            const objectUrl = URL.createObjectURL(file);
             setImageSrc(objectUrl);
             setIsCropping(true);
-            alert("Etape 5: Apparition du modal de recadrage");
         } catch (err: any) {
             console.error("Error processing avatar file", err);
             alert("Erreur critique: " + err.message);
