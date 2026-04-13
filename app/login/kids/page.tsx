@@ -1,9 +1,10 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, Suspense } from "react";
 import { useFormStatus } from "react-dom";
 import Link from "next/link";
 import Image from "next/image";
+import { useSearchParams } from "next/navigation";
 import { Loader2, Lock, User, ArrowRight, AlertCircle, Sparkles } from "lucide-react";
 import { loginWithPassword } from "../actions";
 
@@ -21,11 +22,109 @@ function SubmitButton() {
     );
 }
 
-export default function KidsLoginPage() {
+function LoginFormContent() {
+    const searchParams = useSearchParams();
+    const redirectUrl = searchParams.get("redirect") || "";
+
     // Server Action State for Password Login
     // @ts-ignore
     const [state, formAction] = useActionState(loginWithPassword, null);
 
+    return (
+        <div className="w-full max-w-md z-10">
+            <div className="text-center mb-8 relative">
+
+                <div className="relative w-48 h-24 mx-auto mb-4 drop-shadow-[0_0_15px_rgba(168,85,247,0.5)]">
+                    <Image
+                        src="/logo.png"
+                        alt="Club des Petits Magiciens"
+                        fill
+                        className="object-contain"
+                        priority
+                    />
+                </div>
+                <h1 className="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-brand-purple to-brand-blue uppercase tracking-tighter drop-shadow-sm">
+                    Club des Petits Magiciens
+                </h1>
+                <p className="text-brand-text-muted font-bold mt-2">Connecte-toi pour apprendre la magie !</p>
+            </div>
+
+            <div className="bg-brand-card border-2 border-brand-purple/30 rounded-3xl p-8 shadow-2xl backdrop-blur-xl relative overflow-hidden group">
+                <div className="absolute inset-0 bg-gradient-to-br from-brand-purple/5 to-brand-blue/5 pointer-events-none"></div>
+
+                <form action={formAction} className="space-y-6 relative">
+                    <input type="hidden" name="audience" value="kids" />
+                    <input type="hidden" name="redirect" value={redirectUrl} />
+
+                    <div className="space-y-2">
+                        <label className="block text-xs font-black uppercase tracking-widest text-brand-purple ml-1">Ton Nom de Magicien</label>
+                        <div className="relative group/input">
+                            <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-brand-purple transition-transform group-focus-within/input:scale-110" />
+                            <input
+                                name="identifier"
+                                type="text"
+                                className="w-full pl-12 pr-4 py-4 bg-brand-bg/50 border-2 border-brand-border rounded-2xl focus:border-brand-purple focus:ring-4 focus:ring-brand-purple/20 focus:outline-none transition-all placeholder:text-gray-500 font-bold text-lg"
+                                placeholder="Ex: Merlin"
+                                required
+                            />
+                        </div>
+                    </div>
+
+                    <div className="space-y-2">
+                        <div className="flex justify-between items-center ml-1">
+                            <label className="block text-xs font-black uppercase tracking-widest text-brand-purple">Mot de passe secret</label>
+                            <Link href="/login/forgot-password" title="Récupérer mon accès" className="text-[10px] font-black uppercase tracking-wider text-brand-blue hover:text-brand-purple transition-colors">
+                                Oublié ?
+                            </Link>
+                        </div>
+                        <div className="relative group/input">
+                            <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-brand-purple transition-transform group-focus-within/input:scale-110" />
+                            <input
+                                name="password"
+                                type="password"
+                                className="w-full pl-12 pr-4 py-4 bg-brand-bg/50 border-2 border-brand-border rounded-2xl focus:border-brand-purple focus:ring-4 focus:ring-brand-purple/20 focus:outline-none transition-all placeholder:text-gray-500 font-bold text-lg"
+                                placeholder="••••••••"
+                                required
+                            />
+                        </div>
+                    </div>
+
+                    <div className="flex items-center gap-3 ml-1">
+                        <input
+                            type="checkbox"
+                            id="remember"
+                            name="remember"
+                            className="w-5 h-5 rounded border-2 border-brand-purple/50 bg-brand-bg/50 text-brand-purple focus:ring-brand-purple/20 focus:ring-4 focus:outline-none transition-all cursor-pointer accent-brand-purple"
+                        />
+                        <label htmlFor="remember" className="text-xs font-black uppercase tracking-widest text-brand-purple cursor-pointer select-none">
+                            Rester connecté
+                        </label>
+                    </div>
+
+                    {state?.error && (
+                        <div className="p-4 bg-red-500/20 text-red-300 rounded-2xl text-sm border-2 border-red-500/30 flex items-center gap-3 font-bold animate-shake">
+                            <AlertCircle className="w-5 h-5 shrink-0" />
+                            {state.error}
+                        </div>
+                    )}
+
+                    <SubmitButton />
+                </form>
+            </div>
+
+            <div className="text-center mt-8">
+                <a 
+                    href="mailto:contact@clubdespetitsmagiciens.fr?subject=Besoin%20d'aide%20-%20Club%20des%20petits%20magiciens" 
+                    className="text-sm font-bold text-brand-text-muted hover:text-brand-purple transition-colors inline-block"
+                >
+                    Besoin d'aide ? Clique ici (réponse sous 24h) 🧙‍♂️
+                </a>
+            </div>
+        </div>
+    );
+}
+
+export default function KidsLoginPage() {
     return (
         <div className="min-h-screen bg-brand-bg text-white flex flex-col items-center justify-center p-4 relative overflow-hidden">
             {/* Colorful Background Elements for Kids */}
@@ -34,95 +133,9 @@ export default function KidsLoginPage() {
                 <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-brand-blue/30 rounded-full blur-[100px] animate-pulse" style={{ animationDelay: "1s" }}></div>
             </div>
 
-            <div className="w-full max-w-md z-10">
-                <div className="text-center mb-8 relative">
-
-                    <div className="relative w-48 h-24 mx-auto mb-4 drop-shadow-[0_0_15px_rgba(168,85,247,0.5)]">
-                        <Image
-                            src="/logo.png"
-                            alt="Club des Petits Magiciens"
-                            fill
-                            className="object-contain"
-                            priority
-                        />
-                    </div>
-                    <h1 className="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-brand-purple to-brand-blue uppercase tracking-tighter drop-shadow-sm">
-                        Club des Petits Magiciens
-                    </h1>
-                    <p className="text-brand-text-muted font-bold mt-2">Connecte-toi pour apprendre la magie !</p>
-                </div>
-
-                <div className="bg-brand-card border-2 border-brand-purple/30 rounded-3xl p-8 shadow-2xl backdrop-blur-xl relative overflow-hidden group">
-                    <div className="absolute inset-0 bg-gradient-to-br from-brand-purple/5 to-brand-blue/5 pointer-events-none"></div>
-
-                    <form action={formAction} className="space-y-6 relative">
-                        <input type="hidden" name="audience" value="kids" />
-
-                        <div className="space-y-2">
-                            <label className="block text-xs font-black uppercase tracking-widest text-brand-purple ml-1">Ton Nom de Magicien</label>
-                            <div className="relative group/input">
-                                <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-brand-purple transition-transform group-focus-within/input:scale-110" />
-                                <input
-                                    name="identifier"
-                                    type="text"
-                                    className="w-full pl-12 pr-4 py-4 bg-brand-bg/50 border-2 border-brand-border rounded-2xl focus:border-brand-purple focus:ring-4 focus:ring-brand-purple/20 focus:outline-none transition-all placeholder:text-gray-500 font-bold text-lg"
-                                    placeholder="Ex: Merlin"
-                                    required
-                                />
-                            </div>
-                        </div>
-
-                        <div className="space-y-2">
-                            <div className="flex justify-between items-center ml-1">
-                                <label className="block text-xs font-black uppercase tracking-widest text-brand-purple">Mot de passe secret</label>
-                                <Link href="/login/forgot-password" title="Récupérer mon accès" className="text-[10px] font-black uppercase tracking-wider text-brand-blue hover:text-brand-purple transition-colors">
-                                    Oublié ?
-                                </Link>
-                            </div>
-                            <div className="relative group/input">
-                                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-brand-purple transition-transform group-focus-within/input:scale-110" />
-                                <input
-                                    name="password"
-                                    type="password"
-                                    className="w-full pl-12 pr-4 py-4 bg-brand-bg/50 border-2 border-brand-border rounded-2xl focus:border-brand-purple focus:ring-4 focus:ring-brand-purple/20 focus:outline-none transition-all placeholder:text-gray-500 font-bold text-lg"
-                                    placeholder="••••••••"
-                                    required
-                                />
-                            </div>
-                        </div>
-
-                        <div className="flex items-center gap-3 ml-1">
-                            <input
-                                type="checkbox"
-                                id="remember"
-                                name="remember"
-                                className="w-5 h-5 rounded border-2 border-brand-purple/50 bg-brand-bg/50 text-brand-purple focus:ring-brand-purple/20 focus:ring-4 focus:outline-none transition-all cursor-pointer accent-brand-purple"
-                            />
-                            <label htmlFor="remember" className="text-xs font-black uppercase tracking-widest text-brand-purple cursor-pointer select-none">
-                                Rester connecté
-                            </label>
-                        </div>
-
-                        {state?.error && (
-                            <div className="p-4 bg-red-500/20 text-red-300 rounded-2xl text-sm border-2 border-red-500/30 flex items-center gap-3 font-bold animate-shake">
-                                <AlertCircle className="w-5 h-5 shrink-0" />
-                                {state.error}
-                            </div>
-                        )}
-
-                        <SubmitButton />
-                    </form>
-                </div>
-
-                <div className="text-center mt-8">
-                    <a 
-                        href="mailto:contact@clubdespetitsmagiciens.fr?subject=Besoin%20d'aide%20-%20Club%20des%20petits%20magiciens" 
-                        className="text-sm font-bold text-brand-text-muted hover:text-brand-purple transition-colors inline-block"
-                    >
-                        Besoin d'aide ? Clique ici (réponse sous 24h) 🧙‍♂️
-                    </a>
-                </div>
-            </div>
+            <Suspense fallback={<Loader2 className="w-12 h-12 animate-spin text-brand-purple z-10" />}>
+                <LoginFormContent />
+            </Suspense>
         </div>
     );
 }

@@ -73,6 +73,7 @@ export async function GET(request: Request) {
             : `Nouveau contenu magique disponible ! 🎩✨`;
 
         const emailsBatch = [];
+        const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.clubdespetitsmagiciens.fr';
 
         if (kidsProfiles && kidsProfiles.length > 0) {
             for (const profile of kidsProfiles) {
@@ -87,7 +88,7 @@ export async function GET(request: Request) {
                     react: NewContentKidEmail({
                         username: username,
                         contentTitles: itemTitles,
-                        loginUrl: `${process.env.NEXT_PUBLIC_SITE_URL}/login`
+                        loginUrl: `${siteUrl}/kids/program`
                     }),
                 });
             }
