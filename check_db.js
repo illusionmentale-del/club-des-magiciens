@@ -1,9 +1,17 @@
-require('dotenv').config({ path: '.env.local' });
-const { createClient } = require('@supabase/supabase-js');
-const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY);
+import { createClient } from '@supabase/supabase-js';
+import * as dotenv from 'dotenv';
 
-async function run() {
-  const { data, error } = await supabase.from("avatar_skins").select("*");
-  console.log(JSON.stringify(data, null, 2));
+dotenv.config({ path: '.env.local' });
+
+const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
+
+async function check() {
+    const { data: item } = await supabase
+        .from('library_items')
+        .select('*')
+        .ilike('title', '%pastille%');
+        
+    console.log(JSON.stringify(item, null, 2));
 }
-run();
+
+check();

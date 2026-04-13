@@ -118,9 +118,61 @@ export async function GET(request: Request) {
             
         console.log(`[CRON/PUBLISH] ${pendingItems.length} items marked as sent.`);
 
+        // ============================================
+        // EXPIRING TRIALS CRON LOGIC
+        // ============================================
+        console.log("[CRON/TRIAL] Checking for expired trials...");
+        const { data: expiredTrials, error: trialsError } = await supabase
+            .from("profiles")
+            .select("id, email, username, full_name")
+            .eq("has_kids_access", false)
+            .eq("trial_expiry_email_sent", false)
+            .lt("kids_trial_expires_at", new Date().toISOString());
+
+        if (trialsError) throw trialsError;
+
+        if (expiredTrials && expiredTrials.length > 0) {
+            console.log(`[CRON/TRIAL] Found ${expiredTrials.length} expired trials to follow up.`);
+            
+            for (const profile of expiredTrials) {
+                if (!profile.email) continue;
+                // Send Upsell Email
+                try {
+                    await resend.emails.send({
+                        from: "Jérémy <hello@jeremymarouani.com>",
+                        to: profile.email,
+                        subject: "Ta période d'essai est terminée ! 🎩",
+                        html: `
+                            <div style="font-family: sans-serif; max-w: 600px; margin: 0 auto; color: #222;">
+                                <h2>Oh non ! L'accès gratuit prend fin...</h2>
+                                <p>Tes 24 heures d'accès magique au Club des Petits Magiciens sont terminées.</p>
+                                <p>J'espère que tu as pu apprendre plein de secrets incroyables ! La magie ne s'arrête pas là : pour continuer à épater tous tes copains et débloquer plus de 52 tours étonnants, tu peux redevenir membre officiel.</p>
+                                <div style="text-align: center; margin: 30px 0;">
+                                    <a href="${siteUrl}/tarifs/kids" style="background-color: #6d28d9; color: white; padding: 15px 30px; text-decoration: none; border-radius: 10px; font-weight: bold; font-size: 16px;">
+                                        👉 Rejoindre le Club Définitivement
+                                    </a>
+                                </div>
+                                <p>À très vite de l'autre côté du miroir,</p>
+                                <p>Jérémy Marouani</p>
+                            </div>
+                        `
+                    });
+                    
+                    // Mark as sent
+                    await supabase
+                        .from("profiles")
+                        .update({ trial_expiry_email_sent: true })
+                        .eq("id", profile.id);
+                        
+                } catch (e) {
+                    console.error("[CRON/TRIAL] Failed to send to", profile.email, e);
+                }
+            }
+        }
+
         return NextResponse.json({ 
             success: true, 
-            message: `Publication processée. ${totalEmailsSent} emails envoyés pour ${pendingItems.length} contenus.` 
+            message: `Publication processée. ${totalEmailsSent} emails envoyés pour ${pendingItems?.length || 0} contenus. ${expiredTrials?.length || 0} emails d'essai envoyés.` 
         });
 
     } catch (error: any) {

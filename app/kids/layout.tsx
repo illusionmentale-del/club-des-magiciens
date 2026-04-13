@@ -17,10 +17,21 @@ export default async function KidsLayout({
         redirect("/login");
     }
 
-    // STRICT SEPARATION: Check if user has kids access
-    const { data: profileCheck } = await supabase.from('profiles').select('has_kids_access').eq('id', user.id).single();
-    if (!profileCheck?.has_kids_access) {
-        redirect("/dashboard");
+    // STRICT SEPARATION: Check if user has kids access or an active 24h trial
+    const { data: profileCheck } = await supabase.from('profiles').select('has_kids_access, kids_trial_expires_at').eq('id', user.id).single();
+    
+    let hasAccess = false;
+    if (profileCheck?.has_kids_access) {
+        hasAccess = true;
+    } else if (profileCheck?.kids_trial_expires_at) {
+        const expiry = new Date(profileCheck.kids_trial_expires_at);
+        if (expiry > new Date()) {
+            hasAccess = true;
+        }
+    }
+
+    if (!hasAccess) {
+        redirect("/tarifs/kids");
     }
 
     // SILENT TRACKING: Record the last kid login

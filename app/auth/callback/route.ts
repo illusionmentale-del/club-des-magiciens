@@ -20,16 +20,24 @@ export async function GET(request: Request) {
             if (user && next === '/') {
                 const { data: profile } = await supabase
                     .from('profiles')
-                    .select('has_adults_access, has_kids_access, role')
+                    .select('has_adults_access, has_kids_access, kids_trial_expires_at, role')
                     .eq('id', user.id)
                     .single();
 
                 if (profile) {
+                    let hasTrial = false;
+                    if (profile.kids_trial_expires_at) {
+                        const expiry = new Date(profile.kids_trial_expires_at);
+                        if (expiry > new Date()) {
+                            hasTrial = true;
+                        }
+                    }
+
                     if (profile.role === 'admin') {
                         redirectPath = '/admin/adults/dashboard';
                     } else if (profile.has_adults_access) {
                         redirectPath = '/dashboard/courses';
-                    } else if (profile.has_kids_access) {
+                    } else if (profile.has_kids_access || hasTrial) {
                         redirectPath = '/kids';
                     } else {
                         // Fallback

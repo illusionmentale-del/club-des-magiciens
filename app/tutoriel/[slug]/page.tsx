@@ -2,7 +2,8 @@ import { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Sparkles, ArrowRight, PlayCircle } from 'lucide-react';
+import { Sparkles, ArrowRight, PlayCircle, Mail } from 'lucide-react';
+import TrialLeadCapture from '@/components/kids/TrialLeadCapture';
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
     const slug = (await params).slug;
@@ -107,30 +108,16 @@ export default async function TutorialPage({ params }: { params: Promise<{ slug:
                     </div>
                 )}
 
-                {/* Massive Premium Upsell (The Funnel Trap) */}
-                <div className="mt-12 bg-gradient-to-br from-brand-card to-black p-8 md:p-10 rounded-3xl border border-brand-purple/40 shadow-[0_0_50px_rgba(124,58,237,0.15)] relative overflow-hidden group">
-                    <div className="absolute top-0 right-0 w-64 h-64 bg-brand-gold/10 rounded-full blur-[80px] pointer-events-none group-hover:bg-brand-gold/20 transition-all duration-500"></div>
-                    <div className="absolute bottom-0 left-0 w-64 h-64 bg-brand-purple/10 rounded-full blur-[80px] pointer-events-none group-hover:bg-brand-purple/20 transition-all duration-500"></div>
-                    
-                    <div className="flex flex-col md:flex-row items-center gap-8 relative z-10">
-                        <div className="flex-1 text-center md:text-left space-y-4">
-                            <h3 className="text-2xl md:text-3xl font-black text-white leading-tight">
-                                Tu veux apprendre d'autres <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-purple to-brand-cyan">secrets magiques ?</span>
-                            </h3>
-                            <p className="text-brand-text-muted text-sm md:text-base leading-relaxed">
-                                Le Club des Petits Magiciens est une école en ligne où j'apprends aux enfants à faire disparaître des objets du quotidien. 
-                                Découvre des dizaines d'illusions incroyables à réaliser avec ce que tu as déjà à la maison !
-                            </p>
-                        </div>
-                        <div className="w-full md:w-auto">
-                            <Link href="/tarifs/kids" className="group/btn relative overflow-hidden w-full md:w-auto bg-brand-purple hover:bg-brand-purple/90 text-white font-bold py-4 px-8 rounded-2xl flex items-center justify-center gap-3 transition-all shadow-[0_0_30px_rgba(124,58,237,0.3)] hover:scale-105 active:scale-95">
-                                <div className="absolute inset-0 -translate-x-[150%] animate-[shimmer_2s_infinite] bg-gradient-to-r from-transparent via-white/20 to-transparent pointer-events-none"></div>
-                                <span className="text-lg">Rejoindre le Club</span>
-                                <ArrowRight className="w-5 h-5 group-hover/btn:translate-x-1 transition-transform" />
-                            </Link>
-                        </div>
-                    </div>
+                {/* Contact Button */}
+                <div className="flex justify-center mt-6">
+                    <a href="mailto:hello@jeremymarouani.com" className="inline-flex items-center gap-2 text-sm text-brand-text-muted hover:text-white bg-white/5 hover:bg-white/10 border border-white/10 px-4 py-2 rounded-full transition-colors">
+                        <Mail className="w-4 h-4" />
+                        Une question sur ce tour ? Contacte-moi !
+                    </a>
                 </div>
+
+                {/* Massive Premium Upsell / Lead Capture */}
+                <TrialLeadCapture />
 
             </div>
         </div>
