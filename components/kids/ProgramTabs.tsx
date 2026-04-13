@@ -12,7 +12,6 @@ export default function ProgramTabs() {
     const tabs = [
         { id: "parcours", label: "Mon Parcours", icon: ListVideo },
         { id: "index", label: "Toutes les vidéos", icon: Grid2x2 },
-        { id: "ateliers", label: "Ateliers", icon: Paintbrush },
     ];
 
     return (

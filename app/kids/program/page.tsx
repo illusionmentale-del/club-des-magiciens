@@ -2,7 +2,7 @@ import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { Lock, Play, Star, CheckCircle, Trophy, BookOpen, GraduationCap } from "lucide-react";
+import { Lock, Play, Star, CheckCircle, Trophy, BookOpen, GraduationCap, Search, ArrowRight } from "lucide-react";
 import SearchInput from "@/components/kids/SearchInput";
 import ProgramTabs from "@/components/kids/ProgramTabs";
 
@@ -37,6 +37,7 @@ export default async function KidsProgramPage({ searchParams }: { searchParams: 
         .from("library_items")
         .select("*")
         .eq("audience", "kids")
+        .neq("type", "atelier")
         .is('sales_page_url', null)
         .order("week_number", { ascending: false })
         .order("position", { ascending: true })
@@ -49,7 +50,6 @@ export default async function KidsProgramPage({ searchParams }: { searchParams: 
     });
 
     const indexItems: any[] = [];
-    const atelierItems: any[] = [];
     const weeksData: Record<number, any[]> = {};
 
     if (unlockedItems) {
@@ -61,14 +61,10 @@ export default async function KidsProgramPage({ searchParams }: { searchParams: 
                 if (!matchesTitle && !matchesDesc && !matchesTags) return;
             }
 
-            if (item.type === "atelier") {
-                atelierItems.push(item);
-            } else {
-                indexItems.push(item);
-                if (item.week_number) {
-                    if (!weeksData[item.week_number]) weeksData[item.week_number] = [];
-                    weeksData[item.week_number].push(item);
-                }
+            indexItems.push(item);
+            if (item.week_number) {
+                if (!weeksData[item.week_number]) weeksData[item.week_number] = [];
+                weeksData[item.week_number].push(item);
             }
         });
     }
@@ -131,7 +127,53 @@ export default async function KidsProgramPage({ searchParams }: { searchParams: 
                 {/* Main Views Container */}
                 <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
                     
-                    {currentTab === "parcours" && (
+                    {query ? (
+                        <div className="space-y-4 pb-12">
+                            <h2 className="text-sm font-bold text-brand-purple uppercase tracking-widest mb-4 flex items-center gap-2">
+                                <Search className="w-4 h-4" /> RÉSULTATS DE RECHERCHE
+                            </h2>
+                            {indexItems.length > 0 ? indexItems.map(item => (
+                                <Link key={item.id} href={`/watch/${item.id}`} className="flex flex-col sm:flex-row gap-4 bg-brand-card hover:bg-brand-card/80 p-4 rounded-2xl border border-brand-border hover:border-brand-purple/50 transition-all group shadow-sm hover:shadow-[0_10px_30px_rgba(168,85,247,0.1)]">
+                                    <div className="w-full sm:w-64 md:w-56 aspect-video relative rounded-xl overflow-hidden bg-black shrink-0 border border-white/5">
+                                        {item.thumbnail_url ? (
+                                            <Image src={item.thumbnail_url} alt="" fill className="object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700" />
+                                        ) : (
+                                            <div className="w-full h-full flex items-center justify-center"><Play className="w-8 h-8 text-white/20" /></div>
+                                        )}
+                                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60"></div>
+                                        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                            <div className="w-12 h-12 bg-brand-purple/90 rounded-full flex items-center justify-center shadow-lg border border-white/20 scale-90 group-hover:scale-100 transition-all duration-300">
+                                                <Play className="w-5 h-5 text-white ml-1" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="flex-1 flex flex-col justify-center py-2 h-full">
+                                        <h3 className="text-xl md:text-2xl font-black text-white mb-2 leading-tight group-hover:text-brand-purple transition-colors">{item.title}</h3>
+                                        <p className="text-sm text-brand-text-muted line-clamp-2 md:line-clamp-3 mb-4">{item.description}</p>
+                                        <div className="mt-auto flex items-center justify-between">
+                                            <div className="flex items-center gap-3">
+                                                {item.is_main && <span className="bg-brand-gold/10 text-brand-gold border border-brand-gold/20 text-[10px] font-bold px-2 py-1 rounded inline-flex items-center gap-1 uppercase tracking-wider"><Star className="w-3 h-3 fill-current" /> Principal</span>}
+                                                {item.week_number && <span className="text-[10px] text-gray-500 font-mono font-bold uppercase">Semaine {item.week_number}</span>}
+                                            </div>
+                                            <div className="flex items-center gap-2 text-[10px] sm:text-xs font-bold text-brand-purple uppercase tracking-widest opacity-0 -translate-x-4 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300">
+                                                Visionner <ArrowRight className="w-3 h-3" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </Link>
+                            )) : (
+                                <div className="text-center py-16 text-brand-text-muted bg-brand-card/30 rounded-3xl border border-dashed border-white/10 flex flex-col items-center justify-center">
+                                    <div className="w-16 h-16 bg-white/5 rounded-full flex items-center justify-center mb-4">
+                                        <Search className="w-8 h-8 opacity-50" />
+                                    </div>
+                                    <p className="text-lg font-bold text-white mb-2">Aucun résultat trouvé</p>
+                                    <p className="text-sm opacity-60">Nous n'avons rien trouvé pour "{query}" dans la formation.</p>
+                                </div>
+                            )}
+                        </div>
+                    ) : (
+                        <>
+                            {currentTab === "parcours" && (
                         <div className="space-y-6">
                             {displayWeeks.map(week => {
                                 const isLocked = week > currentWeek;
@@ -246,9 +288,8 @@ export default async function KidsProgramPage({ searchParams }: { searchParams: 
                             })}
                         </div>
                     )}
-
-                    {/* Shared Grid Template for Index and Ateliers */}
-                    {(currentTab === "index" || currentTab === "ateliers") && (
+                    
+                    {currentTab === "index" && (
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                             {(currentTab === "index" ? indexItems : atelierItems).map((item) => (
                                 <Link href={`/watch/${item.id}`} key={item.id} className="group bg-brand-card hover:bg-brand-card/80 border border-brand-border hover:border-brand-purple/50 rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_10px_40px_rgba(168,85,247,0.2)]">
@@ -275,6 +316,8 @@ export default async function KidsProgramPage({ searchParams }: { searchParams: 
                                 </div>
                             )}
                         </div>
+                    )}
+                    </>
                     )}
                 </div>
             </div>

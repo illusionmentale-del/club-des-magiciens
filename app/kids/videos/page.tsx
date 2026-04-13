@@ -1,9 +1,10 @@
 import { getKidsVideos, getBunnyThumbnailUrl } from '@/lib/bunny';
 import VideoCard from '@/components/VideoCard';
-import { Video, Sparkles, FolderOpen, Play, Star } from 'lucide-react';
+import { Video, Sparkles, FolderOpen, Play, Star, Search } from 'lucide-react';
 import { createClient } from '@/lib/supabase/server';
 import Link from 'next/link';
 import Image from 'next/image';
+import SearchInput from '@/components/kids/SearchInput';
 
 
 export const metadata = {
@@ -14,7 +15,9 @@ export const metadata = {
 // Next.js Revalidation settings (can be removed if using `next: { revalidate: 60 }` in the fetch directly, but good practice for ISR)
 export const revalidate = 60;
 
-export default async function KidsVideosPage() {
+export default async function KidsVideosPage({ searchParams }: { searchParams: Promise<{ q?: string }> }) {
+    const sParams = await searchParams;
+    const query = sParams.q?.toLowerCase() || "";
     const supabase = await createClient();
 
     // Fetch settings
@@ -58,7 +61,14 @@ export default async function KidsVideosPage() {
         .eq('type', 'atelier')
         .order('published_at', { ascending: false });
 
-    const sortedVideos = videos || [];
+    // Filter videos based on search query
+    const sortedVideos = (videos || []).filter(item => {
+        if (!query) return true;
+        const matchesTitle = item.title?.toLowerCase().includes(query);
+        const matchesDesc = item.description?.toLowerCase().includes(query);
+        const matchesTags = item.tags?.some((tag: string) => tag.toLowerCase().includes(query));
+        return matchesTitle || matchesDesc || matchesTags;
+    });
 
     return (
         <div className="min-h-screen bg-brand-bg text-brand-text p-4 md:p-8 pb-32 font-sans relative selection:bg-brand-purple/30">
@@ -87,8 +97,13 @@ export default async function KidsVideosPage() {
 
 
 
-                {/* Featured Masterclass Section */}
-                {featuredVideo && (
+                {/* Search Bar */}
+                <div className="w-full relative z-20">
+                    <SearchInput />
+                </div>
+
+                {/* Featured Masterclass Section (Hidden when searching) */}
+                {featuredVideo && !query && (
                     <div className="mb-12">
                         <h2 className="text-sm font-bold text-brand-purple uppercase tracking-widest mb-6 flex items-center gap-2">
                             <Sparkles className="w-4 h-4" /> À LA UNE
@@ -145,45 +160,95 @@ export default async function KidsVideosPage() {
                     </div>
                 )}
 
-                {/* Video Grid */}
+                {/* Video Grid or Search List */}
                 <div className="space-y-6">
-                    <div className="flex items-center justify-between mb-8">
-                        <h2 className="text-2xl font-bold text-white flex items-center gap-3">
-                            <Sparkles className="w-6 h-6 text-brand-gold" />
-                            Les Vidéos
-                        </h2>
-                    </div>
-
-                    {sortedVideos.length === 0 ? (
-                        <div className="relative group/box">
-                            <div className="absolute -inset-1 bg-gradient-to-r from-brand-purple to-brand-blue rounded-3xl opacity-0 blur-lg group-hover/box:opacity-30 transition duration-1000 pointer-events-none"></div>
-                            <div className="relative bg-brand-card border border-brand-border p-12 rounded-3xl text-center flex flex-col items-center justify-center shadow-[0_10px_40px_rgba(0,0,0,0.2)]">
-                                <div className="w-20 h-20 bg-brand-bg border border-brand-border rounded-full flex items-center justify-center mb-6 text-brand-text-muted opacity-50">
-                                    <FolderOpen className="w-10 h-10" />
-                                </div>
-                                <h3 className="text-xl font-bold text-white mb-2 uppercase tracking-wide">Aucune vidéo pour le moment</h3>
-                                <p className="text-brand-text-muted max-w-md mx-auto text-sm">
-                                    L'espace Ateliers est en cours de préparation... Les premières vidéos arriveront très bientôt !
-                                </p>
-                            </div>
-                        </div>
-                    ) : (
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                            {sortedVideos.map((video) => {
+                    {query ? (
+                        <div className="space-y-4 pb-12">
+                            <h2 className="text-sm font-bold text-brand-purple uppercase tracking-widest mb-4 flex items-center gap-2">
+                                <Search className="w-4 h-4" /> RÉSULTATS DE RECHERCHE
+                            </h2>
+                            {sortedVideos.length > 0 ? sortedVideos.map(video => {
                                 const videoIdForLink = video.video_url || video.id;
                                 return (
-                                    <VideoCard
-                                        key={video.id}
-                                        id={videoIdForLink}
-                                        title={video.title}
-                                        thumbnailUrl={video.thumbnail_url || ''}
-                                        date={video.published_at || video.created_at}
-                                        durationSeconds={0}
-                                        href={`/kids/videos/${videoIdForLink}`}
-                                    />
+                                    <Link key={video.id} href={`/kids/videos/${videoIdForLink}`} className="flex flex-col sm:flex-row gap-4 bg-brand-card hover:bg-brand-card/80 p-4 rounded-2xl border border-brand-border hover:border-brand-purple/50 transition-all group shadow-sm hover:shadow-[0_10px_30px_rgba(168,85,247,0.1)]">
+                                        <div className="w-full sm:w-64 md:w-56 aspect-video relative rounded-xl overflow-hidden bg-black shrink-0 border border-white/5">
+                                            {video.thumbnail_url ? (
+                                                <Image src={video.thumbnail_url} alt="" fill className="object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700" />
+                                            ) : (
+                                                <div className="w-full h-full flex items-center justify-center"><Play className="w-8 h-8 text-white/20" /></div>
+                                            )}
+                                            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60"></div>
+                                            <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                                <div className="w-12 h-12 bg-brand-purple/90 rounded-full flex items-center justify-center shadow-lg border border-white/20 scale-90 group-hover:scale-100 transition-all duration-300">
+                                                    <Play className="w-5 h-5 text-white ml-1" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="flex-1 flex flex-col justify-center py-2 h-full">
+                                            <h3 className="text-xl md:text-2xl font-black text-white mb-2 leading-tight group-hover:text-brand-purple transition-colors">{video.title}</h3>
+                                            <p className="text-sm text-brand-text-muted line-clamp-2 md:line-clamp-3 mb-4">{video.description}</p>
+                                            <div className="mt-auto flex items-center justify-between">
+                                                <div className="flex items-center gap-3">
+                                                    <span className="bg-brand-blue/10 text-brand-blue border border-brand-blue/20 text-[10px] font-bold px-2 py-1 rounded inline-flex items-center gap-1 uppercase tracking-wider">Atelier</span>
+                                                </div>
+                                                <div className="flex items-center gap-2 text-[10px] sm:text-xs font-bold text-brand-purple uppercase tracking-widest opacity-0 -translate-x-4 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300">
+                                                    Visionner <Play className="w-3 h-3" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </Link>
                                 );
-                            })}
+                            }) : (
+                                <div className="text-center py-16 text-brand-text-muted bg-brand-card/30 rounded-3xl border border-dashed border-white/10 flex flex-col items-center justify-center">
+                                    <div className="w-16 h-16 bg-white/5 rounded-full flex items-center justify-center mb-4">
+                                        <Search className="w-8 h-8 opacity-50" />
+                                    </div>
+                                    <p className="text-lg font-bold text-white mb-2">Aucun résultat trouvé</p>
+                                    <p className="text-sm opacity-60">Nous n'avons rien trouvé pour "{query}" dans les ateliers.</p>
+                                </div>
+                            )}
                         </div>
+                    ) : (
+                        <>
+                            <div className="flex items-center justify-between mb-8">
+                                <h2 className="text-2xl font-bold text-white flex items-center gap-3">
+                                    <Sparkles className="w-6 h-6 text-brand-gold" />
+                                    Les Vidéos
+                                </h2>
+                            </div>
+
+                            {sortedVideos.length === 0 ? (
+                                <div className="relative group/box">
+                                    <div className="absolute -inset-1 bg-gradient-to-r from-brand-purple to-brand-blue rounded-3xl opacity-0 blur-lg group-hover/box:opacity-30 transition duration-1000 pointer-events-none"></div>
+                                    <div className="relative bg-brand-card border border-brand-border p-12 rounded-3xl text-center flex flex-col items-center justify-center shadow-[0_10px_40px_rgba(0,0,0,0.2)]">
+                                        <div className="w-20 h-20 bg-brand-bg border border-brand-border rounded-full flex items-center justify-center mb-6 text-brand-text-muted opacity-50">
+                                            <FolderOpen className="w-10 h-10" />
+                                        </div>
+                                        <h3 className="text-xl font-bold text-white mb-2 uppercase tracking-wide">Aucune vidéo pour le moment</h3>
+                                        <p className="text-brand-text-muted max-w-md mx-auto text-sm">
+                                            L'espace Ateliers est en cours de préparation... Les premières vidéos arriveront très bientôt !
+                                        </p>
+                                    </div>
+                                </div>
+                            ) : (
+                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                                    {sortedVideos.map((video) => {
+                                        const videoIdForLink = video.video_url || video.id;
+                                        return (
+                                            <VideoCard
+                                                key={video.id}
+                                                id={videoIdForLink}
+                                                title={video.title}
+                                                thumbnailUrl={video.thumbnail_url || ''}
+                                                date={video.published_at || video.created_at}
+                                                durationSeconds={0}
+                                                href={`/kids/videos/${videoIdForLink}`}
+                                            />
+                                        );
+                                    })}
+                                </div>
+                            )}
+                        </>
                     )}
                 </div>
             </div>
