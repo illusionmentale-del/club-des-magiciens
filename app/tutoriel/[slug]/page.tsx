@@ -110,7 +110,7 @@ export default async function TutorialPage({ params }: { params: Promise<{ slug:
 
                 {/* Contact Button */}
                 <div className="flex justify-center mt-6">
-                    <a href="mailto:hello@jeremymarouani.com" className="inline-flex items-center gap-2 text-sm text-brand-text-muted hover:text-white bg-white/5 hover:bg-white/10 border border-white/10 px-4 py-2 rounded-full transition-colors">
+                    <a href="mailto:boutique@atelierdesmagiciens.fr" className="inline-flex items-center gap-2 text-sm text-brand-text-muted hover:text-white bg-white/5 hover:bg-white/10 border border-white/10 px-4 py-2 rounded-full transition-colors">
                         <Mail className="w-4 h-4" />
                         Une question sur ce tour ? Contacte-moi !
                     </a>

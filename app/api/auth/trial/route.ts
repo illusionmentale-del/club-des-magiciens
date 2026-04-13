@@ -90,7 +90,7 @@ export async function POST(req: Request) {
 
         // 5. Envoyer le Mail avec Resend
         await resend.emails.send({
-            from: "Le Club des Petits Magiciens <hello@illusions-mentales.fr>",
+            from: "Le Club des Petits Magiciens <boutique@atelierdesmagiciens.fr>",
             to: email,
             subject: "Ton accès Magique de 24h est prêt ! 🪄",
             html: `

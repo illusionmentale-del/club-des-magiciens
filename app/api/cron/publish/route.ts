@@ -139,7 +139,7 @@ export async function GET(request: Request) {
                 // Send Upsell Email
                 try {
                     await resend.emails.send({
-                        from: "Jérémy <hello@jeremymarouani.com>",
+                        from: "Jérémy <boutique@atelierdesmagiciens.fr>",
                         to: profile.email,
                         subject: "Ta période d'essai est terminée ! 🎩",
                         html: `
