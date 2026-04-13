@@ -5,6 +5,7 @@ import Footer from "@/components/Footer";
 import Link from "next/link";
 import Image from "next/image";
 import AnimatedLink from "@/components/AnimatedLink";
+import { redirect } from "next/navigation";
 
 export const metadata = {
     title: "Rejoindre le Club Kids | Tarifs",
@@ -32,6 +33,13 @@ export default async function KidsPricingPage() {
     const yearlyProduct = products && products.length > 1 ? products[1] : null;
 
 
+    const signOutAction = async () => {
+        "use server";
+        const supabase = await createClient();
+        await supabase.auth.signOut();
+        redirect("/login");
+    };
+
     return (
         <div className="min-h-screen bg-[#050507] text-white font-sans selection:bg-brand-purple/30 relative overflow-hidden">
             {/* Ambient Background Effects */}
@@ -45,12 +53,19 @@ export default async function KidsPricingPage() {
                     <div className="relative w-10 h-10 transform group-hover:scale-110 transition-all">
                         <Image src="/logo.png" alt="Logo" fill className="object-contain" />
                     </div>
-                    <span className="font-black text-xl tracking-tight uppercase">Le Club des <span className="text-brand-purple">Petits Magiciens</span></span>
+                    <span className="font-black text-xl tracking-tight uppercase hidden sm:block">Le Club des <span className="text-brand-purple">Petits Magiciens</span></span>
                 </Link>
                 {user ? (
-                    <Link href="/kids" className="text-sm font-bold bg-white/10 hover:bg-white/20 px-4 py-2 rounded-full transition-colors backdrop-blur-md">
-                        Mon Espace
-                    </Link>
+                    <div className="flex items-center gap-3">
+                        <form action={signOutAction}>
+                            <button type="submit" className="text-xs sm:text-sm font-bold text-gray-400 hover:text-white transition-colors">
+                                Se déconnecter
+                            </button>
+                        </form>
+                        <Link href="/kids" className="text-sm font-bold bg-white/10 hover:bg-white/20 px-4 py-2 rounded-full transition-colors backdrop-blur-md">
+                            Mon Espace
+                        </Link>
+                    </div>
                 ) : (
                     <AnimatedLink href="/login" className="text-sm font-bold text-gray-400 hover:text-white transition-colors">
                         J'ai déjà un compte, m'identifier
