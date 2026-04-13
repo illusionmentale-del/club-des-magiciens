@@ -4,7 +4,13 @@ import { Search, X } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState, useEffect, useTransition } from "react";
 
-export default function SearchInput({ showTypeFilter = false }: { showTypeFilter?: boolean }) {
+export default function SearchInput({ 
+    showTypeFilter = false,
+    placeholder = "Rechercher un tour, un secret, un PDF..."
+}: { 
+    showTypeFilter?: boolean;
+    placeholder?: string;
+}) {
     const router = useRouter();
     const searchParams = useSearchParams();
     const [query, setQuery] = useState(searchParams.get("q") || "");
@@ -60,7 +66,7 @@ export default function SearchInput({ showTypeFilter = false }: { showTypeFilter
                 </div>
                 <input 
                     type="text" 
-                    placeholder="Rechercher un tour, un secret, un PDF..."
+                    placeholder={placeholder}
                     value={query}
                     onChange={(e) => handleSearch(e.target.value)}
                     className="w-full h-[58px] bg-black/40 border border-brand-purple/30 text-white text-base rounded-2xl md:rounded-full py-4 pl-12 pr-12 focus:outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple/50 shadow-inner transition-colors"

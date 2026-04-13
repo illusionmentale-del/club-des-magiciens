@@ -99,7 +99,7 @@ export default async function KidsVideosPage({ searchParams }: { searchParams: P
 
                 {/* Search Bar */}
                 <div className="w-full relative z-20">
-                    <SearchInput />
+                    <SearchInput placeholder="Rechercher un atelier..." />
                 </div>
 
                 {/* Featured Masterclass Section (Hidden when searching) */}
