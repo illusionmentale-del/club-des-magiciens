@@ -31,16 +31,16 @@ export async function approveVipRequest(requestId: string) {
     // Check if user already exists
     const { data: existingProfile } = await supabaseAdmin
         .from('profiles')
-        .select('id, access_level, role')
+        .select('id, access_level, role, has_kids_access')
         .eq('email', request.parent_email)
         .single();
 
     if (existingProfile) {
         // User already exists, upgrade access if they don't have it
-        if (existingProfile.access_level !== 'kid') {
+        if (existingProfile.access_level !== 'kid' && !existingProfile.has_kids_access) {
             await supabaseAdmin.from("profiles").update({ 
                 access_level: 'kid', 
-                is_kid: true 
+                has_kids_access: true
             }).eq("id", existingProfile.id);
         }
 
@@ -125,7 +125,7 @@ export async function approveVipRequest(requestId: string) {
         full_name: request.child_name,
         role: "kid",
         access_level: "kid",
-        is_kid: true
+        has_kids_access: true
     });
 
     // Send Welcome Email
