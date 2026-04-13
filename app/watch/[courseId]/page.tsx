@@ -156,8 +156,8 @@ export default async function WatchPage(props: WatchPageProps) {
                     <div className="aspect-video bg-black rounded-2xl overflow-hidden shadow-2xl border border-white/10 relative group z-10">
                         {libraryItem.video_url ? (
                             <>
-                                {/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(libraryItem.video_url) ? (
-                                    // Bunny Stream Player (IDs are GUIDs)
+                                {/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(libraryItem.video_url) || libraryItem.video_url?.includes('mediadelivery.net') || libraryItem.video_url?.includes('bunny') ? (
+                                    // Bunny Stream Player (IDs are GUIDs or urls)
                                     <iframe
                                         src={secureLibraryIframeUrl}
                                         className="absolute inset-0 w-full h-full pointer-events-auto"
@@ -387,8 +387,8 @@ export default async function WatchPage(props: WatchPageProps) {
                     <div className="aspect-video bg-black rounded-xl overflow-hidden shadow-2xl border border-white/10 relative group">
                         {currentVideo ? (
                             <>
-                                {/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(currentVideo.video_url) ? (
-                                    // Bunny Stream Player (IDs are GUIDs)
+                                {/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(currentVideo.video_url) || currentVideo.video_url?.includes('mediadelivery.net') || currentVideo.video_url?.includes('bunny') ? (
+                                    // Bunny Stream Player (IDs are GUIDs or full URLs handled securely)
                                     <iframe
                                         src={secureCourseIframeUrl}
                                         className="absolute inset-0 w-full h-full pointer-events-auto"

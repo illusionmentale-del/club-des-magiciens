@@ -4,12 +4,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { Lock, Play, Star, CheckCircle, Trophy, BookOpen, GraduationCap, Search, ArrowRight } from "lucide-react";
 import SearchInput from "@/components/kids/SearchInput";
-import ProgramTabs from "@/components/kids/ProgramTabs";
 
-export default async function KidsProgramPage({ searchParams }: { searchParams: Promise<{ q?: string, tab?: string }> }) {
+export default async function KidsProgramPage({ searchParams }: { searchParams: Promise<{ q?: string, type?: string }> }) {
     const sParams = await searchParams;
     const query = sParams.q?.toLowerCase() || "";
-    const currentTab = sParams.tab || "parcours";
+    const typeFilter = sParams.type || "";
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
 
@@ -39,6 +38,7 @@ export default async function KidsProgramPage({ searchParams }: { searchParams: 
         .eq("audience", "kids")
         .neq("type", "atelier")
         .is('sales_page_url', null)
+        .is('public_slug', null)
         .order("week_number", { ascending: false })
         .order("position", { ascending: true })
         .order("created_at", { ascending: false });
@@ -54,11 +54,21 @@ export default async function KidsProgramPage({ searchParams }: { searchParams: 
 
     if (unlockedItems) {
         unlockedItems.forEach(item => {
-            if (query) {
-                const matchesTitle = item.title?.toLowerCase().includes(query);
-                const matchesDesc = item.description?.toLowerCase().includes(query);
-                const matchesTags = item.tags?.some((tag: string) => tag.toLowerCase().includes(query));
-                if (!matchesTitle && !matchesDesc && !matchesTags) return;
+            if (query || typeFilter) {
+                let matchesQuery = true;
+                if (query) {
+                    const matchesTitle = item.title?.toLowerCase().includes(query);
+                    const matchesDesc = item.description?.toLowerCase().includes(query);
+                    const matchesTags = item.tags?.some((tag: string) => tag.toLowerCase().includes(query));
+                    matchesQuery = Boolean(matchesTitle || matchesDesc || matchesTags);
+                }
+                
+                let matchesType = true;
+                if (typeFilter) {
+                    matchesType = item.type === typeFilter;
+                }
+                
+                if (!matchesQuery || !matchesType) return;
             }
 
             indexItems.push(item);
@@ -118,16 +128,15 @@ export default async function KidsProgramPage({ searchParams }: { searchParams: 
 
 
 
-                {/* Search Bar & Tabs */}
+                {/* Search Bar */}
                 <div className="w-full relative z-20 space-y-6">
-                    <ProgramTabs />
-                    <SearchInput />
+                    <SearchInput showTypeFilter={true} />
                 </div>
 
                 {/* Main Views Container */}
                 <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
                     
-                    {query ? (
+                    {(query || typeFilter) ? (
                         <div className="space-y-4 pb-12">
                             <h2 className="text-sm font-bold text-brand-purple uppercase tracking-widest mb-4 flex items-center gap-2">
                                 <Search className="w-4 h-4" /> RÉSULTATS DE RECHERCHE
@@ -152,11 +161,14 @@ export default async function KidsProgramPage({ searchParams }: { searchParams: 
                                         <p className="text-sm text-brand-text-muted line-clamp-2 md:line-clamp-3 mb-4">{item.description}</p>
                                         <div className="mt-auto flex items-center justify-between">
                                             <div className="flex items-center gap-3">
+                                                <span className={`bg-white/10 text-brand-text-muted border border-white/20 text-[10px] font-bold px-2 py-1 rounded inline-flex items-center gap-1 uppercase tracking-wider`}>
+                                                    {item.type === 'pdf' ? 'Document' : item.type === 'activity' ? 'Activité' : item.type === 'game' ? 'Jeu' : item.type === 'illusion' ? 'Illusion' : 'Vidéo'}
+                                                </span>
                                                 {item.is_main && <span className="bg-brand-gold/10 text-brand-gold border border-brand-gold/20 text-[10px] font-bold px-2 py-1 rounded inline-flex items-center gap-1 uppercase tracking-wider"><Star className="w-3 h-3 fill-current" /> Principal</span>}
                                                 {item.week_number && <span className="text-[10px] text-gray-500 font-mono font-bold uppercase">Semaine {item.week_number}</span>}
                                             </div>
                                             <div className="flex items-center gap-2 text-[10px] sm:text-xs font-bold text-brand-purple uppercase tracking-widest opacity-0 -translate-x-4 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300">
-                                                Visionner <ArrowRight className="w-3 h-3" />
+                                                {item.type === 'pdf' ? 'Consulter' : (item.type === 'activity' || item.type === 'game') ? 'Découvrir' : 'Visionner'} <ArrowRight className="w-3 h-3" />
                                             </div>
                                         </div>
                                     </div>
@@ -167,13 +179,11 @@ export default async function KidsProgramPage({ searchParams }: { searchParams: 
                                         <Search className="w-8 h-8 opacity-50" />
                                     </div>
                                     <p className="text-lg font-bold text-white mb-2">Aucun résultat trouvé</p>
-                                    <p className="text-sm opacity-60">Nous n'avons rien trouvé pour "{query}" dans la formation.</p>
+                                    <p className="text-sm opacity-60">Nous n'avons rien trouvé correspondant à vos critères dans la formation.</p>
                                 </div>
                             )}
                         </div>
                     ) : (
-                        <>
-                            {currentTab === "parcours" && (
                         <div className="space-y-6">
                             {displayWeeks.map(week => {
                                 const isLocked = week > currentWeek;
@@ -182,9 +192,6 @@ export default async function KidsProgramPage({ searchParams }: { searchParams: 
         
                                 const items = weeksData[week] || [];
                                 
-                                // Hide empty weeks if we are searching
-                                if (query && items.length === 0) return null;
-        
                                 return (
                                     <div key={week} className="relative group">
                                         {!isLocked && (
@@ -281,43 +288,11 @@ export default async function KidsProgramPage({ searchParams }: { searchParams: 
                                                     <span className="text-sm font-mono uppercase">Contenu Classifié</span>
                                                 </div>
                                             )}
-        
                                         </div>
                                     </div>
                                 );
                             })}
                         </div>
-                    )}
-                    
-                    {currentTab === "index" && (
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                            {(currentTab === "index" ? indexItems : atelierItems).map((item) => (
-                                <Link href={`/watch/${item.id}`} key={item.id} className="group bg-brand-card hover:bg-brand-card/80 border border-brand-border hover:border-brand-purple/50 rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_10px_40px_rgba(168,85,247,0.2)]">
-                                    <div className="aspect-video relative bg-black/50 overflow-hidden">
-                                        {item.thumbnail_url ? (
-                                            <Image src={item.thumbnail_url} alt="" fill className="object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500" />
-                                        ) : (
-                                            <div className="w-full h-full flex items-center justify-center"><Play className="w-8 h-8 text-white/20" /></div>
-                                        )}
-                                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
-                                        <div className="absolute bottom-3 right-3 bg-black/60 backdrop-blur-md rounded-full p-2 border border-white/10 group-hover:bg-brand-purple group-hover:border-brand-purple transition-colors">
-                                            <Play className="w-4 h-4 text-white" />
-                                        </div>
-                                    </div>
-                                    <div className="p-4">
-                                        <h3 className="font-bold text-white mb-2 line-clamp-1">{item.title}</h3>
-                                        <p className="text-xs text-brand-text-muted line-clamp-2">{item.description}</p>
-                                    </div>
-                                </Link>
-                            ))}
-                            {(currentTab === "index" ? indexItems : atelierItems).length === 0 && (
-                                <div className="col-span-full text-center py-12 text-brand-text-muted bg-white/5 rounded-2xl border border-dashed border-white/10">
-                                    Aucun contenu trouvé. 
-                                </div>
-                            )}
-                        </div>
-                    )}
-                    </>
                     )}
                 </div>
             </div>
