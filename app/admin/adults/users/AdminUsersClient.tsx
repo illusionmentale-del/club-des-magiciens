@@ -15,6 +15,8 @@ type Profile = {
     is_kid?: boolean;
     deleted_at?: string;
     created_at?: string;
+    has_kids_access?: boolean;
+    has_adults_access?: boolean;
 };
 
 type AdminUsersClientProps = {
@@ -25,8 +27,8 @@ export default function AdminUsersClient({ profiles }: AdminUsersClientProps) {
     // Force Adult Mode context for this specific route
     const isKidMode = false;
 
-    // Filter by access_level
-    const filteredProfiles = profiles.filter(p => p.access_level !== 'kid');
+    // Filter by access_level or explicit boolean flag
+    const filteredProfiles = profiles.filter(p => p.access_level !== 'kid' || p.has_adults_access === true);
 
     const activeProfiles = filteredProfiles.filter(p => !p.deleted_at);
     const deletedProfiles = filteredProfiles.filter(p => p.deleted_at);
