@@ -65,52 +65,57 @@ export async function GET(request: Request) {
         
         let totalEmailsSent = 0;
 
-        for (const item of pendingItems) {
-            console.log(`[CRON/PUBLISH] Processing item: ${item.title}`);
-            const emailsBatch = [];
+        // Grouping titles and determining subject
+        const itemTitles = pendingItems.map(item => item.title);
+        const isPlural = pendingItems.length > 1;
+        const emailSubject = isPlural 
+            ? `🎩 ${pendingItems.length} nouveaux secrets t'attendent !`
+            : `Nouveau contenu magique disponible ! 🎩✨`;
 
-            if (kidsProfiles && kidsProfiles.length > 0) {
-                // Batch sending
-                for (const profile of kidsProfiles) {
-                    if (!profile.email) continue;
-                    
-                    const username = profile.username || profile.full_name || "Jeune Magicien";
-                    
-                    emailsBatch.push({
-                        from: fromEmail,
-                        to: [profile.email],
-                        subject: 'Nouveau contenu magique disponible ! 🎩✨',
-                        react: NewContentKidEmail({
-                            username: username,
-                            contentTitle: item.title,
-                            loginUrl: `${process.env.NEXT_PUBLIC_SITE_URL}/login`
-                        }),
-                    });
-                }
+        const emailsBatch = [];
+
+        if (kidsProfiles && kidsProfiles.length > 0) {
+            for (const profile of kidsProfiles) {
+                if (!profile.email) continue;
+                
+                const username = profile.username || profile.full_name || "Jeune Magicien";
+                
+                emailsBatch.push({
+                    from: fromEmail,
+                    to: [profile.email],
+                    subject: emailSubject,
+                    react: NewContentKidEmail({
+                        username: username,
+                        contentTitles: itemTitles,
+                        loginUrl: `${process.env.NEXT_PUBLIC_SITE_URL}/login`
+                    }),
+                });
             }
-
-            // Send in chunks of 50 via Resend Batch API
-            const chunkSize = 50;
-            for (let i = 0; i < emailsBatch.length; i += chunkSize) {
-                const chunk = emailsBatch.slice(i, i + chunkSize);
-                try {
-                    await resend.batch.send(chunk);
-                    totalEmailsSent += chunk.length;
-                    console.log(`[CRON/PUBLISH] Sent batch of ${chunk.length} emails. Total: ${totalEmailsSent}`);
-                } catch (emailErr) {
-                    console.error("[CRON/PUBLISH] Failed to send batch:", emailErr);
-                    // Don't throw, we want to update the DB so we don't spam loop if it partially failed
-                }
-            }
-
-            // 4. Mark item as sent
-            await supabase
-                .from("library_items")
-                .update({ publication_email_sent: true })
-                .eq("id", item.id);
-            
-            console.log(`[CRON/PUBLISH] Item ${item.id} marked as sent.`);
         }
+
+        // Send in chunks of 50 via Resend Batch API
+        const chunkSize = 50;
+        for (let i = 0; i < emailsBatch.length; i += chunkSize) {
+            const chunk = emailsBatch.slice(i, i + chunkSize);
+            try {
+                await resend.batch.send(chunk);
+                totalEmailsSent += chunk.length;
+                console.log(`[CRON/PUBLISH] Sent batch of ${chunk.length} emails. Total: ${totalEmailsSent}`);
+            } catch (emailErr) {
+                console.error("[CRON/PUBLISH] Failed to send batch:", emailErr);
+                // Don't throw, we want to update the DB so we don't spam loop if it partially failed
+            }
+        }
+
+        // 4. Mark all items as sent
+        const pendingItemIds = pendingItems.map(item => item.id);
+        
+        await supabase
+            .from("library_items")
+            .update({ publication_email_sent: true })
+            .in("id", pendingItemIds);
+            
+        console.log(`[CRON/PUBLISH] ${pendingItems.length} items marked as sent.`);
 
         return NextResponse.json({ 
             success: true, 
