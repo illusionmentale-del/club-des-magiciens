@@ -59,7 +59,9 @@ export async function GET(request: Request) {
         const { data: kidsProfiles, error: profilesError } = await supabase
              .from("profiles")
              .select("email, full_name, username, id")
-             .eq("has_kids_access", true);
+             .eq("has_kids_access", true)
+             .is("deleted_at", null)
+             .eq("email_alerts_opt_in", true);
 
         if (profilesError) throw profilesError;
         
@@ -126,6 +128,7 @@ export async function GET(request: Request) {
             .from("profiles")
             .select("id, email, username, full_name")
             .eq("has_kids_access", false)
+            .is("deleted_at", null)
             .eq("trial_expiry_email_sent", false)
             .lt("kids_trial_expires_at", new Date().toISOString());
 
