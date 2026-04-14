@@ -44,11 +44,11 @@ export default function UserRow({ profile, isProtected, basePath }: UserRowProps
                 {basePath ? (
                     <Link href={`${basePath}/${profile.id}`} className="flex items-center gap-4 hover:opacity-80 transition-opacity w-full">
                         <div className={`w-12 h-12 rounded-full flex items-center justify-center font-bold text-xl relative ${profile.role === 'admin' ? 'bg-red-500 text-white shadow-lg shadow-red-500/30' : 'bg-magic-purple text-white'}`}>
-                            {profile.username?.[0]?.toUpperCase() || <User />}
+                            {profile.username?.[0]?.toUpperCase() || profile.full_name?.[0]?.toUpperCase() || <User />}
                         </div>
                         <div>
                             <div className="font-bold text-lg flex items-center gap-2 group-hover:text-magic-gold transition-colors">
-                                {profile.username || "Sans Pseudo"}
+                                {profile.username || profile.full_name || "Sans Pseudo"}
                                 {profile.role === 'admin' && <Crown className="w-4 h-4 text-yellow-400" />}
                             </div>
                             <div className="text-sm text-gray-500">ID: {profile.id.slice(0, 8)}...</div>
@@ -58,11 +58,11 @@ export default function UserRow({ profile, isProtected, basePath }: UserRowProps
                 ) : (
                     <>
                         <div className={`w-12 h-12 rounded-full flex items-center justify-center font-bold text-xl relative ${profile.role === 'admin' ? 'bg-red-500 text-white shadow-lg shadow-red-500/30' : 'bg-magic-purple text-white'}`}>
-                            {profile.username?.[0]?.toUpperCase() || <User />}
+                            {profile.username?.[0]?.toUpperCase() || profile.full_name?.[0]?.toUpperCase() || <User />}
                         </div>
                         <div>
                             <div className="font-bold text-lg flex items-center gap-2">
-                                {profile.username || "Sans Pseudo"}
+                                {profile.username || profile.full_name || "Sans Pseudo"}
                                 {profile.role === 'admin' && <Crown className="w-4 h-4 text-yellow-400" />}
                             </div>
                             <div className="text-sm text-gray-500">ID: {profile.id.slice(0, 8)}...</div>
