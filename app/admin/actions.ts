@@ -694,6 +694,35 @@ export async function deleteUserEntity(userId: string) {
     if (targetProfile && targetProfile.email && protectedEmails.includes(targetProfile.email)) {
         throw new Error("Action interdite : Ce compte est protégé par le système.");
     }
+    
+    const userEmail = targetProfile?.email;
+
+    // Cleanup known tables referencing user_id to prevent FK errors
+    await supabaseAdmin.from('push_subscriptions').delete().eq('user_id', userId);
+    await supabaseAdmin.from('user_xp_logs').delete().eq('user_id', userId);
+    await supabaseAdmin.from('user_achievements').delete().eq('user_id', userId);
+    await supabaseAdmin.from('unlocked_skins').delete().eq('user_id', userId);
+    await supabaseAdmin.from('user_video_progress').delete().eq('user_id', userId);
+    await supabaseAdmin.from('purchases').delete().eq('user_id', userId);
+
+    // Unsubscribe from Resend
+    if (userEmail && process.env.RESEND_API_KEY) {
+        try {
+            const { Resend } = await import("resend");
+            const resend = new Resend(process.env.RESEND_API_KEY);
+            const audiencesResponse = await resend.audiences.list();
+            const audiences = audiencesResponse.data?.data || [];
+            
+            for (const audience of audiences) {
+                await resend.contacts.remove({
+                    email: userEmail,
+                    audienceId: audience.id,
+                });
+            }
+        } catch (e) {
+            console.error("Error removing user from Resend newsletter audiences:", e);
+        }
+    }
 
     // Delete the profile explicitly first to avoid FK constraint errors 
     // if 'auth.users' doesn't have ON DELETE CASCADE set up for 'profiles' or other tables
