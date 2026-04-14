@@ -700,10 +700,20 @@ export async function deleteUserEntity(userId: string) {
     // Cleanup known tables referencing user_id to prevent FK errors
     await supabaseAdmin.from('push_subscriptions').delete().eq('user_id', userId);
     await supabaseAdmin.from('user_xp_logs').delete().eq('user_id', userId);
-    await supabaseAdmin.from('user_achievements').delete().eq('user_id', userId);
     await supabaseAdmin.from('unlocked_skins').delete().eq('user_id', userId);
-    await supabaseAdmin.from('user_video_progress').delete().eq('user_id', userId);
     await supabaseAdmin.from('purchases').delete().eq('user_id', userId);
+    
+    // Gamification & Progress
+    await supabaseAdmin.from('user_badges').delete().eq('user_id', userId);
+    await supabaseAdmin.from('user_progress').delete().eq('user_id', userId);
+    await supabaseAdmin.from('kids_video_progress').delete().eq('user_id', userId);
+    await supabaseAdmin.from('user_library_progress').delete().eq('user_id', userId);
+    
+    // Social & Notifications
+    await supabaseAdmin.from('course_likes').delete().eq('user_id', userId);
+    await supabaseAdmin.from('course_comments').delete().eq('user_id', userId);
+    await supabaseAdmin.from('event_reminders').delete().eq('user_id', userId);
+    await supabaseAdmin.from('kids_analytics').delete().eq('user_id', userId);
 
     // Unsubscribe from Resend
     if (userEmail && process.env.RESEND_API_KEY) {
