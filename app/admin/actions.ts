@@ -702,6 +702,8 @@ export async function deleteUserEntity(userId: string) {
     await supabaseAdmin.from('user_xp_logs').delete().eq('user_id', userId);
     await supabaseAdmin.from('unlocked_skins').delete().eq('user_id', userId);
     await supabaseAdmin.from('purchases').delete().eq('user_id', userId);
+    await supabaseAdmin.from('user_purchases').delete().eq('user_id', userId);
+    await supabaseAdmin.from('subscriptions').delete().eq('user_id', userId);
     
     // Gamification & Progress
     await supabaseAdmin.from('user_badges').delete().eq('user_id', userId);
@@ -714,6 +716,7 @@ export async function deleteUserEntity(userId: string) {
     await supabaseAdmin.from('course_comments').delete().eq('user_id', userId);
     await supabaseAdmin.from('event_reminders').delete().eq('user_id', userId);
     await supabaseAdmin.from('kids_analytics').delete().eq('user_id', userId);
+    await supabaseAdmin.from('live_messages').delete().eq('user_id', userId);
 
     // Unsubscribe from Resend
     if (userEmail && process.env.RESEND_API_KEY) {
