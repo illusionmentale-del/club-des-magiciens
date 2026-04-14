@@ -2,6 +2,18 @@ import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 import { Resend } from "resend";
 import { NewContentKidEmail } from "@/components/emails/NewContentKidEmail";
+import webPush from 'web-push';
+
+// Configuration VAPID pour les Push
+const publicKey = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY;
+const privateKey = process.env.VAPID_PRIVATE_KEY;
+if (publicKey && privateKey) {
+    webPush.setVapidDetails(
+        'mailto:contact@clubdespetitsmagiciens.fr',
+        publicKey,
+        privateKey
+    );
+}
 
 // This route can be called by Vercel Cron or manually for testing
 export async function GET(request: Request) {
@@ -38,7 +50,8 @@ export async function GET(request: Request) {
             .select("id, title, audience")
             .lte("published_at", new Date().toISOString())
             .eq("publication_email_sent", false)
-            .eq("audience", "kids"); // We currently only automate kids emails for this
+            .eq("audience", "kids") // We currently only automate kids emails for this
+            .eq("notify_users", true); // On n'informe pas pour les secrets/QR codes
 
         if (itemsError) throw itemsError;
 
@@ -110,6 +123,49 @@ export async function GET(request: Request) {
             }
         }
 
+        // --- ENVOI DES NOTIFICATIONS PUSH ---
+        let totalPushesSent = 0;
+        const validUserIds = kidsProfiles?.map(p => p.id) || [];
+        
+        if (validUserIds.length > 0 && publicKey && privateKey) {
+            const { data: subscriptions } = await supabase
+                .from('push_subscriptions')
+                .select('*')
+                .in('user_id', validUserIds);
+
+            if (subscriptions && subscriptions.length > 0) {
+                const pushPayload = JSON.stringify({
+                    title: "Nouvelle Magie ! 🎩✨",
+                    body: emailSubject, // Reprend "X nouveaux secrets t'attendent !"
+                    url: `${siteUrl}/kids/program`,
+                    icon: '/icon-192x192.png'
+                });
+
+                const staleEndpoints: string[] = [];
+                const sendPromises = subscriptions.map(async (sub) => {
+                    try {
+                        await webPush.sendNotification({
+                            endpoint: sub.endpoint,
+                            keys: { p256dh: sub.p256dh, auth: sub.auth }
+                        }, pushPayload);
+                        totalPushesSent++;
+                    } catch (pushErr: any) {
+                        if (pushErr.statusCode === 404 || pushErr.statusCode === 410) {
+                            staleEndpoints.push(sub.endpoint);
+                        }
+                    }
+                });
+
+                await Promise.all(sendPromises);
+                console.log(`[CRON/PUBLISH] Sent ${totalPushesSent} push notifications.`);
+
+                if (staleEndpoints.length > 0) {
+                    await supabase.from('push_subscriptions').delete().in('endpoint', staleEndpoints);
+                }
+            }
+        }
+        // -------------------------------------
+
         // 4. Mark all items as sent
         const pendingItemIds = pendingItems.map(item => item.id);
         
@@ -175,7 +231,7 @@ export async function GET(request: Request) {
 
         return NextResponse.json({ 
             success: true, 
-            message: `Publication processée. ${totalEmailsSent} emails envoyés pour ${pendingItems?.length || 0} contenus. ${expiredTrials?.length || 0} emails d'essai envoyés.` 
+            message: `Publication processée. ${totalEmailsSent} emails et ${totalPushesSent} pushs envoyés pour ${pendingItems?.length || 0} contenus. ${expiredTrials?.length || 0} emails d'essai envoyés.` 
         });
 
     } catch (error: any) {

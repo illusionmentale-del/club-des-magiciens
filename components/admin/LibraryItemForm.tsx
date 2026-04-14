@@ -23,6 +23,7 @@ type LibraryItem = {
     week_number?: number | null;
     is_main?: boolean;
     show_in_news?: boolean;
+    notify_users?: boolean;
     published_at?: string;
     sales_page_url?: string | null;
     price_label?: string | null;
@@ -55,6 +56,7 @@ export default function LibraryItemForm({ initialData }: { initialData?: Library
         week_number: initialWeek ? Number(initialWeek) : 1,
         is_main: false,
         show_in_news: false,
+        notify_users: true,
         published_at: new Date().toISOString().split('T')[0],
         sales_page_url: "",
         price_label: "",
@@ -492,6 +494,20 @@ export default function LibraryItemForm({ initialData }: { initialData?: Library
                                         id="show_in_news"
                                     />
                                     <label htmlFor="show_in_news" className="text-brand-text text-sm font-bold uppercase tracking-wide cursor-pointer select-none">Afficher dans Nouveautés</label>
+                                </div>
+                                <div className="flex items-start gap-4 pt-4 col-span-2 border-t border-brand-border mt-4">
+                                    <input
+                                        type="checkbox"
+                                        name="notify_users"
+                                        checked={formData.notify_users ?? true}
+                                        onChange={handleCheckboxChange}
+                                        className="w-6 h-6 mt-1 rounded border-brand-border bg-brand-bg text-brand-blue focus:ring-brand-blue"
+                                        id="notify_users"
+                                    />
+                                    <label htmlFor="notify_users" className="cursor-pointer">
+                                        <div className="text-brand-text text-sm font-bold uppercase tracking-wide">Annoncer ce contenu (Email & Push)</div>
+                                        <p className="text-xs text-brand-text-muted mt-1 max-w-sm">Si activé, les abonnés recevront une notification lors de la publication. <strong className="text-brand-gold">Décochez pour les contenus secrets / QR codes.</strong></p>
+                                    </label>
                                 </div>
                             </div>
                         </div>
