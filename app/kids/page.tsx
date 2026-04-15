@@ -13,6 +13,7 @@ import GlobalAlertBanner from "@/components/kids/GlobalAlertBanner";
 import WelcomeModal from "@/components/kids/WelcomeModal";
 
 export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 export default async function KidsHomePage({ searchParams }: { searchParams: Promise<any> }) {
     const sParams = await searchParams;

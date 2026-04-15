@@ -242,17 +242,18 @@ export default function MagicCard({ user, profile, isKid = false, lifetimeXP, av
                                 )}
 
                                 {/* Inner Card XP Progress Bar */}
-                                <div className="mb-3 px-2">
+                                <div className="mb-3 px-2 flex flex-col gap-1.5">
                                     <div className="flex justify-between text-[8px] md:text-[9px] font-bold text-white/50 uppercase tracking-widest mb-1">
                                         <span>Vers {xp >= 2000 ? "le Max" : "le Prochain Rang"}</span>
                                         <span className={isLegendary ? "text-amber-400" : "text-white"}>{xp} / {nextRankXpCap} XP</span>
                                     </div>
-                                    <div className="h-1 w-full bg-black/60 rounded-full overflow-hidden border border-white/5">
+                                    {/* Progress track, clearer background and height */}
+                                    <div className="h-2 w-full bg-white/10 rounded-full border border-white/5 relative z-0">
                                         <div
-                                            className={cn("h-full relative transition-all duration-1000", isLegendary ? "bg-gradient-to-r from-amber-600 to-yellow-400" : isKid ? "bg-gradient-to-r from-purple-600 to-cyan-400" : "bg-gradient-to-r from-blue-600 to-cyan-400")}
-                                            style={{ width: `${Math.min((xp / nextRankXpCap) * 100, 100)}%` }}
+                                            className={cn("h-full absolute left-0 top-0 rounded-full transition-all duration-1000 z-10", isLegendary ? "bg-gradient-to-r from-amber-600 to-yellow-400" : isKid ? "bg-gradient-to-r from-purple-600 to-cyan-400" : "bg-gradient-to-r from-blue-600 to-cyan-400")}
+                                            style={{ width: `${Math.max(Math.min((xp / nextRankXpCap) * 100, 100), 2)}%` }}
                                         >
-                                            <div className="absolute inset-0 bg-white/30 w-full animate-[pulse_2s_infinite]"></div>
+                                            <div className="absolute inset-0 bg-white/30 rounded-full w-full animate-[pulse_2s_infinite]"></div>
                                         </div>
                                     </div>
                                 </div>

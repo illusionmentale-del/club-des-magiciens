@@ -78,10 +78,10 @@ export default function KidsSidebar({ socialLinks, logoUrl, isAdmin, hasPurchase
                             </div>
                         </div>
                         {/* Mini Progress Bar */}
-                        <div className="h-1 w-full bg-black/60 rounded-full overflow-hidden border border-white/5 mt-2 mx-auto max-w-[80%]">
+                        <div className="h-1.5 w-full bg-white/10 rounded-full overflow-hidden border border-white/5 mt-2 mx-auto max-w-[80%] relative">
                             <div
-                                className={`h-full relative ${isLegendary ? "bg-gradient-to-r from-amber-600 to-yellow-400" : isHolo ? "bg-gradient-to-r from-purple-600 to-blue-400" : "bg-gradient-to-r from-blue-600 to-cyan-400"}`}
-                                style={{ width: `${progressPercent}%` }}
+                                className={`h-full absolute left-0 top-0 rounded-full ${isLegendary ? "bg-gradient-to-r from-amber-600 to-yellow-400" : isHolo ? "bg-gradient-to-r from-purple-600 to-blue-400" : "bg-gradient-to-r from-blue-600 to-cyan-400"}`}
+                                style={{ width: `${Math.max(progressPercent, 2)}%` }}
                             />
                         </div>
                     </div>
