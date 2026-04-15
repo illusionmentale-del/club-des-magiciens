@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { ArrowLeft, Save, Trophy, Star, CheckCircle, X, Shield, History, Key } from "lucide-react";
+import { ArrowLeft, Save, Trophy, Star, CheckCircle, X, Shield, History, Key, Eye, Copy, ExternalLink } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
@@ -13,7 +13,8 @@ import {
     adminGiveBadge,
     adminRevokeBadge,
     adminGiveGift,
-    adminRevokeGift
+    adminRevokeGift,
+    generateImpersonationLink
 } from "@/app/admin/actions";
 
 // Types
@@ -97,6 +98,8 @@ export default function AdminUserDetailPage() {
     const [shopItems, setShopItems] = useState<LibraryItem[]>([]);
 
     const [loading, setLoading] = useState(true);
+    const [impersonateLink, setImpersonateLink] = useState<string | null>(null);
+    const [isGeneratingLink, setIsGeneratingLink] = useState(false);
     const [newPassword, setNewPassword] = useState("");
     const [isChangingPassword, setIsChangingPassword] = useState(false);
 
@@ -197,6 +200,23 @@ export default function AdminUserDetailPage() {
     if (loading) return <div className="min-h-screen bg-gray-900 text-white flex items-center justify-center">Chargement...</div>;
     if (!profile) return <div className="min-h-screen bg-gray-900 text-white flex items-center justify-center">Profil introuvable</div>;
 
+    const handleImpersonate = async () => {
+        setIsGeneratingLink(true);
+        try {
+            const res = await generateImpersonationLink(userId as string);
+            if (res.success && res.link) {
+                setImpersonateLink(res.link);
+            } else {
+                alert(res.error || "Erreur lors de la génération du lien.");
+            }
+        } catch (e) {
+            console.error(e);
+            alert("Erreur système.");
+        } finally {
+            setIsGeneratingLink(false);
+        }
+    };
+
     return (
         <div className="flex flex-col gap-6 md:gap-8 font-sans w-full max-w-full overflow-x-hidden">
             <header className="mb-4 md:mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
@@ -275,6 +295,16 @@ export default function AdminUserDetailPage() {
                             <h3 className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-4">Actions Admin</h3>
                             <div className="space-y-4">
                                 <div>
+                                    <button 
+                                        onClick={handleImpersonate}
+                                        disabled={isGeneratingLink}
+                                        className="w-full flex items-center justify-center gap-2 bg-brand-purple/20 hover:bg-brand-purple/40 text-brand-purple hover:text-white border border-brand-purple/50 font-bold text-xs uppercase tracking-wider py-3 px-4 rounded-xl transition-all duration-300"
+                                    >
+                                        <Eye className="w-4 h-4" />
+                                        {isGeneratingLink ? "Génération..." : "Visualiser son espace"}
+                                    </button>
+                                </div>
+                                <div className="border-t border-white/10 pt-4 mt-4">
                                     <label className="text-xs text-purple-300 block mb-1">Valider un Atelier (Manuel)</label>
                                     <select
                                         className="w-full bg-black/40 border border-white/10 rounded-lg p-2 text-sm outline-none"
@@ -508,6 +538,49 @@ export default function AdminUserDetailPage() {
                     </div>
                 </div>
         </div>
+
+        {/* Impersonate Modal */}
+        {impersonateLink && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+                <div className="bg-[#111] border border-white/10 rounded-2xl p-8 max-w-md w-full relative">
+                    <button onClick={() => setImpersonateLink(null)} className="absolute top-4 right-4 text-gray-400 hover:text-white">
+                        <X className="w-6 h-6" />
+                    </button>
+                    
+                    <div className="w-12 h-12 bg-brand-purple/20 rounded-full flex items-center justify-center mb-6">
+                        <Eye className="w-6 h-6 text-brand-purple" />
+                    </div>
+                    
+                    <h2 className="text-xl font-bold text-white uppercase tracking-wider mb-2">Visualiser cet Espace</h2>
+                    <p className="text-sm text-gray-400 mb-6">
+                        ⚠️ <strong>Attention :</strong> Cliquer directement sur ce lien écraserait votre session d'administration en cours. Ouvrez ce "lien magique" dans une <strong>Nouvelle Fenêtre Privée</strong> pour vous y glisser en toute sécurité.
+                    </p>
+                    
+                    <div className="bg-black/50 border border-white/10 rounded-xl p-4 mb-6 relative">
+                        <p className="text-[10px] text-brand-text-muted mb-2 font-mono break-all line-clamp-3">
+                            {impersonateLink}
+                        </p>
+                        <button 
+                            onClick={() => {
+                                navigator.clipboard.writeText(impersonateLink);
+                                alert("Lien copié dans le presse-papier ! Clic-droit sur l'icône de votre navigateur puis 'Nouvelle fenêtre privée'.");
+                            }}
+                            className="mt-4 w-full bg-white/5 hover:bg-white/10 border border-white/10 flex items-center justify-center gap-2 text-white font-bold text-xs uppercase tracking-wider py-3 rounded-lg transition-colors"
+                        >
+                            <Copy className="w-4 h-4 text-brand-purple" /> Copier le lien
+                        </button>
+                    </div>
+
+                    <div className="bg-yellow-500/10 border border-yellow-500/20 rounded-xl p-4 text-xs text-yellow-200/80 leading-relaxed shadow-inner">
+                        <strong>L'astuce de pro :</strong><br/>
+                        1. Cliquez sur le bouton "Copier"<br/>
+                        2. Dans Chrome ou Safari, ouvrez une <em>Fenêtre de Navigation Privée</em><br/>
+                        3. Collez-y ce lien et appuyez sur Entrée !
+                    </div>
+                </div>
+            </div>
+        )}
+        </>
     );
 }
 

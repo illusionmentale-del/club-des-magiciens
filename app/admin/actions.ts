@@ -1120,3 +1120,32 @@ export async function adminRevokeGift(purchaseId: string) {
     const { error } = await supabaseAdmin.from("user_purchases").delete().eq("id", purchaseId);
     return { success: !error, error: error?.message };
 }
+
+export async function generateImpersonationLink(userId: string) {
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+    const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
+    const { createClient } = await import("@supabase/supabase-js");
+    const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey, { auth: { persistSession: false }});
+
+    // 1. Fetch user email
+    const { data: user, error: userError } = await supabaseAdmin.auth.admin.getUserById(userId);
+    
+    if (userError || !user || !user.user.email) {
+        return { success: false, error: "Impossible de trouver l'email de cet utilisateur." };
+    }
+
+    // 2. Generate Magic Link
+    const { data, error } = await supabaseAdmin.auth.admin.generateLink({
+        type: 'magiclink',
+        email: user.user.email,
+        options: {
+            redirectTo: `${process.env.NEXT_PUBLIC_BASE_URL || 'https://clubdespetitsmagiciens.fr'}/kids/dashboard`
+        }
+    });
+
+    if (error || !data?.properties?.action_link) {
+        return { success: false, error: error?.message || "Erreur de génération du lien magique." };
+    }
+
+    return { success: true, link: data.properties.action_link };
+}
