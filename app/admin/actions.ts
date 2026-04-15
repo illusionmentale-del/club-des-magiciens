@@ -1140,7 +1140,7 @@ export async function generateImpersonationLink(userId: string) {
             type: 'magiclink',
             email: user.user.email,
             options: {
-                redirectTo: `https://club-des-magiciens.vercel.app/kids/dashboard`
+                redirectTo: `https://club-des-magiciens.vercel.app/kids`
             }
         });
 
