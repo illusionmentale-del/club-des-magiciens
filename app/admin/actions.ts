@@ -1009,13 +1009,15 @@ export async function getAdminUserGamificationDetails(userId: string) {
         { data: pu },
         { data: items },
         { data: badges },
+        { data: shopItems },
     ] = await Promise.all([
         supabaseAdmin.from("profiles").select("*").eq("id", userId).single(),
         supabaseAdmin.from("library_progress").select("*, library_items(title, week_number)").eq("user_id", userId).order("completed_at", { ascending: false }),
         supabaseAdmin.from("user_badges").select("*, badges(name, image_url)").eq("user_id", userId).order("awarded_at", { ascending: false }),
         supabaseAdmin.from("user_purchases").select("*, library_items(title)").eq("user_id", userId).order("created_at", { ascending: false }),
-        supabaseAdmin.from("library_items").select("id, title, week_number").eq("audience", "kids").order("week_number"),
-        supabaseAdmin.from("badges").select("id, name")
+        supabaseAdmin.from("library_items").select("id, title, week_number").eq("audience", "kids").not("week_number", "is", null).order("week_number"),
+        supabaseAdmin.from("badges").select("id, name"),
+        supabaseAdmin.from("library_items").select("id, title").eq("audience", "kids").is("week_number", null)
     ]);
 
     return {
@@ -1024,7 +1026,8 @@ export async function getAdminUserGamificationDetails(userId: string) {
         userBadges: ub || [],
         purchases: pu || [],
         allItems: items || [],
-        allBadges: badges || []
+        allBadges: badges || [],
+        shopItems: shopItems || []
     };
 }
 

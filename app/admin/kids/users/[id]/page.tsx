@@ -85,6 +85,7 @@ export default function AdminUserDetailPage() {
     // For selection
     const [allItems, setAllItems] = useState<LibraryItem[]>([]);
     const [allBadges, setAllBadges] = useState<Badge[]>([]);
+    const [shopItems, setShopItems] = useState<LibraryItem[]>([]);
 
     const [loading, setLoading] = useState(true);
     const [newPassword, setNewPassword] = useState("");
@@ -102,6 +103,7 @@ export default function AdminUserDetailPage() {
             setPurchases(data.purchases);
             setAllItems(data.allItems);
             setAllBadges(data.allBadges);
+            setShopItems(data.shopItems || []);
         } catch (err) {
             console.error("Erreur de récupération:", err);
             alert("Erreur de chargement du profil via API admin.");
@@ -261,6 +263,9 @@ export default function AdminUserDetailPage() {
                                         value=""
                                     >
                                         <option value="" disabled>Choisir un produit...</option>
+                                        {shopItems.map(item => (
+                                            <option key={item.id} value={item.id}>{item.title}</option>
+                                        ))}
                                     </select>
                                 </div>
                                 <div className="border-t border-white/10 pt-4 mt-4">
