@@ -42,7 +42,7 @@ export async function updateSession(request: NextRequest) {
     const isKidsDomain = !isAdultsDomain;
 
     // 1. PUBLIC ROUTES (No Auth Needed)
-    const publicPaths = ['/tarifs', '/login', '/signup', '/auth', '/api', '/_next', '/static', '/favicon.ico', '/pricing', '/', '/success', '/vip-spectacle', '/tutoriel'];
+    const publicPaths = ['/tarifs', '/login', '/signup', '/auth', '/api', '/_next', '/static', '/favicon.ico', '/pricing', '/', '/success', '/vip-spectacle', '/tutoriel', '/impersonate'];
     // Ignore dynamic routes checking on '/' since it's exact match
     const isPublic = publicPaths.some(path => request.nextUrl.pathname.startsWith(path) && request.nextUrl.pathname !== '/') || request.nextUrl.pathname === '/';
 
