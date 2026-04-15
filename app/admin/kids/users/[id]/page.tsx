@@ -218,6 +218,7 @@ export default function AdminUserDetailPage() {
     };
 
     return (
+        <>
         <div className="flex flex-col gap-6 md:gap-8 font-sans w-full max-w-full overflow-x-hidden">
             <header className="mb-4 md:mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
                     <Link href="/admin/kids/users" className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors">
