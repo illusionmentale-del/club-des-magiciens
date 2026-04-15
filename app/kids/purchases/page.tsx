@@ -73,7 +73,7 @@ export default async function KidsPurchasesPage() {
                         Mes <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-purple to-brand-gold">Vidéos Secrètes</span>
                     </h1>
                     <p className="text-lg text-brand-text-muted leading-relaxed font-medium">
-                        Retrouve ici tous les Ateliers et vidéos premium que tu as débloqués. Ton savoir magique t'appartient pour l'éternité !
+                        Retrouve ici toutes les vidéos que tu as achetées dans la boutique et celles que Jérémy t'a débloquées.
                     </p>
                 </div>
             </div>
