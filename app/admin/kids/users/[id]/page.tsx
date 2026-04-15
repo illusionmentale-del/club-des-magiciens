@@ -211,9 +211,9 @@ export default function AdminUserDetailPage() {
             } else {
                 alert(res.error || "Erreur lors de la génération du lien.");
             }
-        } catch (e) {
+        } catch (e: any) {
             console.error(e);
-            alert("Erreur système.");
+            alert(`Erreur réseau/système détaillée: ${e?.message || e}`);
         } finally {
             setIsGeneratingLink(false);
         }
