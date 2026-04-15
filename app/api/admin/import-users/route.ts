@@ -47,10 +47,10 @@ export async function POST(req: Request) {
                         const existingUser = searchData.users.find((u: any) => u.email === email);
 
                         if (existingUser) {
-                            // Mettre à jour has_kids_access dans profile
+                            // Mettre à jour has_kids_access et access_level dans profile
                             await supabaseAdmin
                                 .from('profiles')
-                                .update({ has_kids_access: true })
+                                .update({ has_kids_access: true, access_level: 'kid' })
                                 .eq('id', existingUser.id);
 
                             errors.push({ email, message: "L'utilisateur existait déjà. Son compte a été mis à jour avec l'accès Enfant." });
@@ -81,6 +81,7 @@ export async function POST(req: Request) {
                         has_kids_access: true,
                         access_level: 'kid',
                         // Not giving adult access by default
+                        has_adults_access: false
                     });
 
                 if (profileError) {
