@@ -1122,30 +1122,34 @@ export async function adminRevokeGift(purchaseId: string) {
 }
 
 export async function generateImpersonationLink(userId: string) {
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-    const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
-    const { createClient } = await import("@supabase/supabase-js");
-    const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey, { auth: { persistSession: false }});
+    try {
+        const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+        const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
+        const { createClient } = await import("@supabase/supabase-js");
+        const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey, { auth: { persistSession: false }});
 
-    // 1. Fetch user email
-    const { data: user, error: userError } = await supabaseAdmin.auth.admin.getUserById(userId);
-    
-    if (userError || !user?.user?.email) {
-        return { success: false, error: "Impossible de trouver l'email de cet utilisateur ou profil invalide." };
-    }
-
-    // 2. Generate Magic Link targeting the alternative domain to preserve admin cookies
-    const { data, error } = await supabaseAdmin.auth.admin.generateLink({
-        type: 'magiclink',
-        email: user.user.email,
-        options: {
-            redirectTo: `https://club-des-magiciens.vercel.app/kids/dashboard`
+        // 1. Fetch user email
+        const { data: user, error: userError } = await supabaseAdmin.auth.admin.getUserById(userId);
+        
+        if (userError || !user?.user?.email) {
+            return { success: false, error: "Impossible de trouver l'email de cet utilisateur ou profil invalide." };
         }
-    });
 
-    if (error || !data?.properties?.action_link) {
-        return { success: false, error: error?.message || "Erreur de génération du lien magique." };
+        // 2. Generate Magic Link targeting the alternative domain to preserve admin cookies
+        const { data, error } = await supabaseAdmin.auth.admin.generateLink({
+            type: 'magiclink',
+            email: user.user.email,
+            options: {
+                redirectTo: `https://club-des-magiciens.vercel.app/kids/dashboard`
+            }
+        });
+
+        if (error || !data?.properties?.action_link) {
+            return { success: false, error: error?.message || "Erreur de génération du lien magique." };
+        }
+
+        return { success: true, link: data.properties.action_link };
+    } catch (error: any) {
+        return { success: false, error: `CRASH SERVEUR: ${error.message}` };
     }
-
-    return { success: true, link: data.properties.action_link };
 }
