@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 
 export const metadata = {
-    title: 'Mes Achats | Club des Magiciens',
+    title: 'Mes Vidéos | Club des Magiciens',
 };
 
 // Remove cache for real-time purchase updates
@@ -70,7 +70,7 @@ export default async function KidsPurchasesPage() {
                         Trésors Magiques
                     </div>
                     <h1 className="text-4xl md:text-5xl font-black text-white uppercase tracking-tight leading-[1.1] mb-6">
-                        Mes <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-purple to-brand-gold">Achats Secrets</span>
+                        Mes <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-purple to-brand-gold">Vidéos Secrètes</span>
                     </h1>
                     <p className="text-lg text-brand-text-muted leading-relaxed font-medium">
                         Retrouve ici tous les Ateliers et vidéos premium que tu as débloqués. Ton savoir magique t'appartient pour l'éternité !
@@ -130,7 +130,7 @@ export default async function KidsPurchasesPage() {
                         <div className="w-24 h-24 bg-white/5 rounded-full flex items-center justify-center mb-6 border border-white/10">
                             <Package className="w-10 h-10 text-brand-text-muted" />
                         </div>
-                        <h3 className="text-2xl font-black text-white uppercase mb-3">Tu n'as pas encore d'achats</h3>
+                        <h3 className="text-2xl font-black text-white uppercase mb-3">Tu n'as pas encore de vidéos</h3>
                         <p className="text-brand-text-muted max-w-md mx-auto mb-8">
                             Mais attends... Si tu n'as pas encore de trésors ici, c'est parce que de grands secrets t'attendent dans la Boutique !
                         </p>

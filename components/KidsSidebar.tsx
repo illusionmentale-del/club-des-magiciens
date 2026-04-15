@@ -183,8 +183,8 @@ export default function KidsSidebar({ socialLinks, logoUrl, isAdmin, hasPurchase
                                 <Package className="w-5 h-5" />
                             </div>
                             <div>
-                                <div className="font-bold text-brand-gold">Mes Coffres</div>
-                                <div className="text-xs text-gray-500">Tes trésors magiques</div>
+                                <div className="font-bold text-brand-gold">Mes Vidéos</div>
+                                <div className="text-xs text-gray-500">Tes tours débloqués</div>
                             </div>
                         </div>
                     </Link>

@@ -341,7 +341,7 @@ export default async function KidsHomePage({ searchParams }: { searchParams: Pro
                                     </div>
                                     <div className="flex-1 text-center sm:text-left">
                                         <h4 className="text-xl font-bold text-brand-gold mb-1">
-                                            {hasPurchases ? `Tu as déjà ${purchaseCount} coffres !` : "Découvre les secrets du Club !"}
+                                            {hasPurchases ? `Tu as déjà ${purchaseCount} vidéos !` : "Découvre les secrets du Club !"}
                                         </h4>
                                         <p className="text-brand-text-muted text-sm">Équipe-toi avec le meilleur matériel de magicien pro.</p>
                                     </div>

@@ -210,7 +210,7 @@ export default function KidsMobileNav({ logoUrl, isAdmin, hasPurchases, hasUnrea
 
                             <div className="mt-auto pt-8 pb-2 border-t border-white/10 mx-4"></div>
 
-                            {/* 📦 Mes Coffres (Purchases) */}
+                            {/* 📦 Mes Vidéos (Purchases) */}
                             {hasPurchases && (
                                 <Link href="/kids/purchases" onClick={close} className="block group mb-2">
                                     <div className="flex items-center gap-4">
@@ -218,8 +218,8 @@ export default function KidsMobileNav({ logoUrl, isAdmin, hasPurchases, hasUnrea
                                             <Package className="w-5 h-5" />
                                         </div>
                                         <div>
-                                            <div className="font-bold text-brand-gold">Mes Coffres</div>
-                                            <div className="text-xs text-gray-500">Tes trésors magiques</div>
+                                            <div className="font-bold text-brand-gold">Mes Vidéos</div>
+                                            <div className="text-xs text-gray-500">Tes tours débloqués</div>
                                         </div>
                                     </div>
                                 </Link>
