@@ -737,18 +737,22 @@ export async function deleteUserEntity(userId: string) {
         }
     }
 
-    // Delete the profile explicitly first to avoid FK constraint errors 
-    // if 'auth.users' doesn't have ON DELETE CASCADE set up for 'profiles' or other tables
-    const { error: profileDelError } = await supabaseAdmin.from('profiles').delete().eq('id', userId);
+    // Forcefully soft-delete the profile to ensure it disappears from the admin dashboard
+    // We do this manually because BEFORE DELETE triggers might intercept the delete() call
+    const { error: profileDelError } = await supabaseAdmin
+        .from('profiles')
+        .update({ deleted_at: new Date().toISOString() })
+        .eq('id', userId);
+        
     if (profileDelError) {
-        console.error("Error deleting user profile:", profileDelError);
-        // We continue anyway to try and delete the auth user
+        console.error("Error soft-deleting user profile:", profileDelError);
     }
 
     // Supprimer définitivement l'utilisateur de l'authentification
     const { error } = await supabaseAdmin.auth.admin.deleteUser(userId);
 
-    if (error) {
+    // If the error is 404/user_not_found, it means the user is already gone from auth, which is fine!
+    if (error && error.status !== 404) {
         console.error("Error deleting user from auth:", error);
         throw new Error("Impossible de supprimer définitivement l'utilisateur.");
     }
