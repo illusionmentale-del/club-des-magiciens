@@ -1010,6 +1010,7 @@ export async function getAdminUserGamificationDetails(userId: string) {
         { data: items },
         { data: badges },
         { data: shopItems },
+        { data: lastVideo },
     ] = await Promise.all([
         supabaseAdmin.from("profiles").select("*").eq("id", userId).single(),
         supabaseAdmin.from("library_progress").select("*, library_items(title, week_number)").eq("user_id", userId).order("completed_at", { ascending: false }),
@@ -1017,8 +1018,31 @@ export async function getAdminUserGamificationDetails(userId: string) {
         supabaseAdmin.from("user_purchases").select("*, library_items(title)").eq("user_id", userId).order("created_at", { ascending: false }),
         supabaseAdmin.from("library_items").select("id, title, week_number").eq("audience", "kids").not("week_number", "is", null).order("week_number"),
         supabaseAdmin.from("badges").select("id, name"),
-        supabaseAdmin.from("library_items").select("id, title").eq("audience", "kids").is("week_number", null)
+        supabaseAdmin.from("library_items").select("id, title").eq("audience", "kids").is("week_number", null),
+        supabaseAdmin.from("kids_video_progress").select("video_id, updated_at, progress_percent").eq("user_id", userId).order("updated_at", { ascending: false }).limit(1).maybeSingle()
     ]);
+
+    let lastVideoTitle: string | null = null;
+    if (lastVideo && lastVideo.video_id) {
+        try {
+            const guidMatch = lastVideo.video_id.match(/_([a-zA-Z0-9-]+)$/);
+            const guid = guidMatch ? guidMatch[1] : lastVideo.video_id;
+            const { getKidsVideoById } = await import("@/lib/bunny");
+            const btv = await getKidsVideoById(guid);
+            if (btv && btv.title) {
+                lastVideoTitle = btv.title;
+            } else {
+                const { data: li } = await supabaseAdmin.from('library_items').select('title').eq('video_url', lastVideo.video_id).maybeSingle();
+                if (li) lastVideoTitle = li.title;
+                else {
+                    const { data: li2 } = await supabaseAdmin.from('library_items').select('title').eq('video_url', guid).maybeSingle();
+                    if (li2) lastVideoTitle = li2.title;
+                }
+            }
+        } catch (e) {
+            console.error("Could not fetch latest video title", e);
+        }
+    }
 
     return {
         profile: p,
@@ -1027,7 +1051,8 @@ export async function getAdminUserGamificationDetails(userId: string) {
         purchases: pu || [],
         allItems: items || [],
         allBadges: badges || [],
-        shopItems: shopItems || []
+        shopItems: shopItems || [],
+        lastVideoInfo: lastVideo ? { ...lastVideo, title: lastVideoTitle } : null
     };
 }
 

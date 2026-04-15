@@ -27,6 +27,14 @@ type Profile = {
     xp: number;
     email?: string; 
     created_at: string;
+    last_kids_login?: string;
+};
+
+type LastVideoInfo = {
+    video_id: string;
+    updated_at: string;
+    progress_percent: number;
+    title: string | null;
 };
 
 type Progress = {
@@ -81,6 +89,7 @@ export default function AdminUserDetailPage() {
     const [progress, setProgress] = useState<Progress[]>([]);
     const [userBadges, setUserBadges] = useState<UserBadge[]>([]);
     const [purchases, setPurchases] = useState<UserPurchase[]>([]);
+    const [lastVideo, setLastVideo] = useState<LastVideoInfo | null>(null);
 
     // For selection
     const [allItems, setAllItems] = useState<LibraryItem[]>([]);
@@ -104,6 +113,7 @@ export default function AdminUserDetailPage() {
             setAllItems(data.allItems);
             setAllBadges(data.allBadges);
             setShopItems(data.shopItems || []);
+            setLastVideo(data.lastVideoInfo || null);
         } catch (err) {
             console.error("Erreur de récupération:", err);
             alert("Erreur de chargement du profil via API admin.");
@@ -221,6 +231,41 @@ export default function AdminUserDetailPage() {
                                 <div>
                                     <div className="text-[10px] text-gray-500 uppercase">XP</div>
                                     <div className="font-bold text-white">{profile.xp || 0}</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* STATISTIQUES */}
+                        <div className="bg-white/5 border border-white/10 rounded-2xl p-6 text-sm">
+                            <h3 className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-4">Statistiques</h3>
+                            <div className="space-y-4">
+                                <div className="border-b border-white/5 pb-3">
+                                    <div className="text-[10px] text-gray-400 uppercase mb-1">Dernière Connexion Espace Enfant</div>
+                                    <div className="font-mono text-white">
+                                        {profile.last_kids_login 
+                                            ? new Date(profile.last_kids_login).toLocaleString('fr-FR', { dateStyle: 'medium', timeStyle: 'short' }) 
+                                            : "Jamais"}
+                                    </div>
+                                </div>
+                                <div>
+                                    <div className="text-[10px] text-gray-400 uppercase mb-1">Dernière Vidéo Visionnée</div>
+                                    {lastVideo ? (
+                                        <>
+                                            <div className="font-bold text-brand-purple line-clamp-2 leading-tight">
+                                                {lastVideo.title || "Vidéo Inconnue"}
+                                            </div>
+                                            <div className="flex items-center justify-between mt-2">
+                                                <span className="text-xs text-gray-500">
+                                                    Le {new Date(lastVideo.updated_at).toLocaleDateString('fr-FR')}
+                                                </span>
+                                                <span className={`text-[10px] uppercase font-bold px-2 py-0.5 rounded ${lastVideo.progress_percent >= 90 ? 'bg-green-500/20 text-green-400' : 'bg-white/10 text-gray-300'}`}>
+                                                    {lastVideo.progress_percent}%
+                                                </span>
+                                            </div>
+                                        </>
+                                    ) : (
+                                        <div className="text-gray-500 italic text-xs">Aucune vidéo visionnée</div>
+                                    )}
                                 </div>
                             </div>
                         </div>
