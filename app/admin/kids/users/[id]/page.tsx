@@ -202,7 +202,7 @@ export default function AdminUserDetailPage() {
     const handleImpersonate = async () => {
         setIsGeneratingLink(true);
         try {
-            const res = await generateImpersonationLink(userId as string);
+            const res = await generateImpersonationLink(id as string);
             if (res.success && res.link) {
                 // Open the link directly in a new tab. 
                 // The backend generated this for club-des-magiciens.vercel.app
