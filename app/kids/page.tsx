@@ -248,10 +248,10 @@ export default async function KidsHomePage({ searchParams }: { searchParams: Pro
 
     // Fetch Purchase Count for Block 6
     const { count: purchaseCount } = await supabase
-        .from("purchases")
+        .from("user_purchases")
         .select("*", { count: 'exact', head: true })
         .eq("user_id", user.id)
-        .eq("status", "paid");
+        .eq("status", "active");
     const hasPurchases = (purchaseCount || 0) > 0;
 
     // Calculate XP for Gamification Level

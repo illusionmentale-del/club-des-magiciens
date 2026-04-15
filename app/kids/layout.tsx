@@ -129,16 +129,27 @@ export default async function KidsLayout({
         }
     }
 
+    // Check if user has active purchases to show the "Mes Achats" link
+    let hasPurchases = false;
+    if (user) {
+        const { count } = await supabase
+            .from("user_purchases")
+            .select('*', { count: 'exact', head: true })
+            .eq("user_id", user.id)
+            .eq("status", "active");
+        hasPurchases = (count || 0) > 0;
+    }
+
     return (
         <KidsLayoutClient
             sidebar={
                 <Suspense fallback={<div className="w-64 bg-magic-card hidden md:block" />}>
-                    <KidsSidebar socialLinks={socialLinks} logoUrl={siteLogo} isAdmin={isAdmin} hasUnreadReplies={hasUnreadReplies} hasAdultsAccess={hasAdultsAccess} enableProgram={enableProgram} enableMasterclass={enableMasterclass} enableAccount={enableAccount} enableShop={enableShop} xpBalance={currentXP} lifetimeXP={lifetimeXP} magicLevel={magicLevel} avatarUrl={avatarUrl} userName={userName} />
+                    <KidsSidebar socialLinks={socialLinks} logoUrl={siteLogo} isAdmin={isAdmin} hasPurchases={hasPurchases} hasUnreadReplies={hasUnreadReplies} hasAdultsAccess={hasAdultsAccess} enableProgram={enableProgram} enableMasterclass={enableMasterclass} enableAccount={enableAccount} enableShop={enableShop} xpBalance={currentXP} lifetimeXP={lifetimeXP} magicLevel={magicLevel} avatarUrl={avatarUrl} userName={userName} />
                 </Suspense>
             }
             mobileNav={
                 <Suspense fallback={<div className="h-16 bg-magic-card md:hidden" />}>
-                    <KidsMobileNav logoUrl={siteLogo} isAdmin={isAdmin} hasUnreadReplies={hasUnreadReplies} enableProgram={enableProgram} enableMasterclass={enableMasterclass} enableAccount={enableAccount} enableShop={enableShop} xpBalance={currentXP} lifetimeXP={lifetimeXP} magicLevel={magicLevel} avatarUrl={avatarUrl} userName={userName} />
+                    <KidsMobileNav logoUrl={siteLogo} isAdmin={isAdmin} hasPurchases={hasPurchases} hasUnreadReplies={hasUnreadReplies} enableProgram={enableProgram} enableMasterclass={enableMasterclass} enableAccount={enableAccount} enableShop={enableShop} xpBalance={currentXP} lifetimeXP={lifetimeXP} magicLevel={magicLevel} avatarUrl={avatarUrl} userName={userName} />
                 </Suspense>
             }
         >
