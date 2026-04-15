@@ -1130,16 +1130,16 @@ export async function generateImpersonationLink(userId: string) {
     // 1. Fetch user email
     const { data: user, error: userError } = await supabaseAdmin.auth.admin.getUserById(userId);
     
-    if (userError || !user || !user.user.email) {
-        return { success: false, error: "Impossible de trouver l'email de cet utilisateur." };
+    if (userError || !user?.user?.email) {
+        return { success: false, error: "Impossible de trouver l'email de cet utilisateur ou profil invalide." };
     }
 
-    // 2. Generate Magic Link
+    // 2. Generate Magic Link targeting the alternative domain to preserve admin cookies
     const { data, error } = await supabaseAdmin.auth.admin.generateLink({
         type: 'magiclink',
         email: user.user.email,
         options: {
-            redirectTo: `${process.env.NEXT_PUBLIC_BASE_URL || 'https://clubdespetitsmagiciens.fr'}/kids/dashboard`
+            redirectTo: `https://club-des-magiciens.vercel.app/kids/dashboard`
         }
     });
 

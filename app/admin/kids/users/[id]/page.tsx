@@ -98,7 +98,6 @@ export default function AdminUserDetailPage() {
     const [shopItems, setShopItems] = useState<LibraryItem[]>([]);
 
     const [loading, setLoading] = useState(true);
-    const [impersonateLink, setImpersonateLink] = useState<string | null>(null);
     const [isGeneratingLink, setIsGeneratingLink] = useState(false);
     const [newPassword, setNewPassword] = useState("");
     const [isChangingPassword, setIsChangingPassword] = useState(false);
@@ -205,7 +204,10 @@ export default function AdminUserDetailPage() {
         try {
             const res = await generateImpersonationLink(userId as string);
             if (res.success && res.link) {
-                setImpersonateLink(res.link);
+                // Open the link directly in a new tab. 
+                // The backend generated this for club-des-magiciens.vercel.app
+                // This guarantees cookies don't overlap with clubdespetitsmagiciens.fr
+                window.open(res.link, '_blank');
             } else {
                 alert(res.error || "Erreur lors de la génération du lien.");
             }
@@ -539,49 +541,6 @@ export default function AdminUserDetailPage() {
                     </div>
                 </div>
         </div>
-
-        {/* Impersonate Modal */}
-        {impersonateLink && (
-            <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
-                <div className="bg-[#111] border border-white/10 rounded-2xl p-8 max-w-md w-full relative">
-                    <button onClick={() => setImpersonateLink(null)} className="absolute top-4 right-4 text-gray-400 hover:text-white">
-                        <X className="w-6 h-6" />
-                    </button>
-                    
-                    <div className="w-12 h-12 bg-brand-purple/20 rounded-full flex items-center justify-center mb-6">
-                        <Eye className="w-6 h-6 text-brand-purple" />
-                    </div>
-                    
-                    <h2 className="text-xl font-bold text-white uppercase tracking-wider mb-2">Visualiser cet Espace</h2>
-                    <p className="text-sm text-gray-400 mb-6">
-                        ⚠️ <strong>Attention :</strong> Cliquer directement sur ce lien écraserait votre session d'administration en cours. Ouvrez ce "lien magique" dans une <strong>Nouvelle Fenêtre Privée</strong> pour vous y glisser en toute sécurité.
-                    </p>
-                    
-                    <div className="bg-black/50 border border-white/10 rounded-xl p-4 mb-6 relative">
-                        <p className="text-[10px] text-brand-text-muted mb-2 font-mono break-all line-clamp-3">
-                            {impersonateLink}
-                        </p>
-                        <button 
-                            onClick={() => {
-                                navigator.clipboard.writeText(impersonateLink);
-                                alert("Lien copié dans le presse-papier ! Clic-droit sur l'icône de votre navigateur puis 'Nouvelle fenêtre privée'.");
-                            }}
-                            className="mt-4 w-full bg-white/5 hover:bg-white/10 border border-white/10 flex items-center justify-center gap-2 text-white font-bold text-xs uppercase tracking-wider py-3 rounded-lg transition-colors"
-                        >
-                            <Copy className="w-4 h-4 text-brand-purple" /> Copier le lien
-                        </button>
-                    </div>
-
-                    <div className="bg-yellow-500/10 border border-yellow-500/20 rounded-xl p-4 text-xs text-yellow-200/80 leading-relaxed shadow-inner">
-                        <strong>L'astuce de pro :</strong><br/>
-                        1. Cliquez sur le bouton "Copier"<br/>
-                        2. Dans Chrome ou Safari, ouvrez une <em>Fenêtre de Navigation Privée</em><br/>
-                        3. Collez-y ce lien et appuyez sur Entrée !
-                    </div>
-                </div>
-            </div>
-        )}
-        </>
     );
 }
 
