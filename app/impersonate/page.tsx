@@ -11,46 +11,45 @@ export default function ImpersonateLandingPage() {
 
     useEffect(() => {
         const handleImpersonation = async () => {
-            // Wait for the Supabase client to automatically pick up the #access_token from the URL hash
-            // and exchange it for a cookie session.
             const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
             const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-            
-            // This client automatically checks URL hashes for Implicit Grants and establishes the session.
             const supabase = createBrowserClient(supabaseUrl, supabaseAnonKey);
 
-            setStatus("Établissement de la session...");
+            setStatus("Lecture du lien magique...");
 
-            // Check if the session was successfully established
-            const { data: { session }, error } = await supabase.auth.getSession();
+            const hash = window.location.hash;
+            if (hash && hash.includes("access_token")) {
+                const params = new URLSearchParams(hash.substring(1));
+                const access_token = params.get("access_token");
+                const refresh_token = params.get("refresh_token");
 
-            if (error) {
-                setStatus("Erreur: " + error.message);
+                if (access_token && refresh_token) {
+                    setStatus("Établissement de la session...");
+                    const { error } = await supabase.auth.setSession({
+                        access_token,
+                        refresh_token
+                    });
+
+                    if (error) {
+                        setStatus("Erreur SSL: " + error.message);
+                        return;
+                    }
+
+                    setStatus("Connexion réussie ! Redirection vers l'Espace Kids...");
+                    window.location.href = "/kids";
+                    return;
+                }
+            }
+
+            // Fallback to automatic checking
+            const { data: { session } } = await supabase.auth.getSession();
+            if (session) {
+                setStatus("Session pré-établie. Redirection...");
+                window.location.href = "/kids";
                 return;
             }
 
-            if (session) {
-                setStatus("Connexion réussie ! Redirection...");
-                // Force a hard navigation so the Next.js middleware sees the newly set cookies
-                window.location.href = "/kids";
-            } else {
-                // If it takes a split second to exchange, we can also listen to auth state
-                const { data: authListener } = supabase.auth.onAuthStateChange((event, newSession) => {
-                    if (event === 'SIGNED_IN' || newSession) {
-                        setStatus("Connexion réussie ! Redirection...");
-                        window.location.href = "/kids";
-                    }
-                });
-
-                // Set a timeout in case the hash was invalid or expired
-                setTimeout(() => {
-                    setStatus("Lien invalide ou expiré, ou session non détectée.");
-                }, 5000);
-
-                return () => {
-                    authListener.subscription.unsubscribe();
-                };
-            }
+            setStatus("Lien expiré ou introuvable.");
         };
 
         handleImpersonation();
