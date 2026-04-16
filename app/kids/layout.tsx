@@ -146,7 +146,7 @@ export default async function KidsLayout({
         <KidsLayoutClient
             sidebar={
                 <Suspense fallback={<div className="w-64 bg-magic-card hidden md:block" />}>
-                    <KidsSidebar socialLinks={socialLinks} logoUrl={siteLogo} isAdmin={isAdmin} hasPurchases={hasPurchases} hasUnreadReplies={hasUnreadReplies} hasAdultsAccess={hasAdultsAccess} enableProgram={enableProgram} enableMasterclass={enableMasterclass} enableAccount={enableAccount} enableShop={enableShop} xpBalance={currentXP} lifetimeXP={lifetimeXP} magicLevel={magicLevel} avatarUrl={avatarUrl} userName={userName} />
+                    <KidsSidebar logoUrl={siteLogo} isAdmin={isAdmin} hasPurchases={hasPurchases} hasUnreadReplies={hasUnreadReplies} hasAdultsAccess={hasAdultsAccess} enableProgram={enableProgram} enableMasterclass={enableMasterclass} enableAccount={enableAccount} enableShop={enableShop} xpBalance={currentXP} lifetimeXP={lifetimeXP} magicLevel={magicLevel} avatarUrl={avatarUrl} userName={userName} />
                 </Suspense>
             }
             mobileNav={
