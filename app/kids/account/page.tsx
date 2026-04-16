@@ -78,6 +78,18 @@ export default async function KidsAccountPage({
                                 : "Voici ta carte de magicien officiel. Montre tes progrès !"}
                         </p>
                     </div>
+
+                    {!isSettingsView && (
+                        <div className="mt-4 md:mt-0 w-full md:w-auto">
+                            <a 
+                                href="/kids/achievements" 
+                                className="flex items-center justify-center md:justify-start gap-2 px-6 py-3 bg-brand-purple/20 border border-brand-purple/50 text-brand-purple font-bold shadow-[0_0_15px_rgba(168,85,247,0.3)] hover:shadow-[0_0_25px_rgba(168,85,247,0.5)] rounded-xl hover:bg-brand-purple hover:text-white transition-all duration-300 text-sm uppercase tracking-widest hover:scale-105 active:scale-95"
+                            >
+                                <Trophy className="w-5 h-5" />
+                                Salle des Trophées
+                            </a>
+                        </div>
+                    )}
                 </header>
 
                 <div className="relative z-10 w-full">
