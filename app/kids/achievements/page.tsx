@@ -108,104 +108,174 @@ export default async function KidsAchievementsPage() {
                     </div>
                 </div>
 
-                {/* Grid of Achievements */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pt-4">
-                    {quests.map(quest => {
-                        const isUnlocked = completedQuestIds.has(quest.id);
+                {/* SECTION 1 : Le Grimoire des Quêtes (Active Quests) */}
+                <div className="pt-8">
+                    <h2 className="text-2xl md:text-3xl font-black text-white mb-6 flex items-center gap-3">
+                        <span className="text-blue-400">📖</span> Le Grimoire des Quêtes
+                    </h2>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {quests.filter(q => q.reward_type && q.reward_type !== 'badge').map(quest => {
+                            const isUnlocked = completedQuestIds.has(quest.id);
+                            let currentValue = 0;
+                            switch (quest.trigger_type) {
+                                case 'lifetime_xp': currentValue = globalStats.lifetimeXP; break;
+                                case 'videos_watched': currentValue = globalStats.videosWatchedCount; break;
+                                case 'shop_purchases': currentValue = globalStats.shopPurchasesCount; break;
+                                case 'subscription_months': currentValue = globalStats.subscriptionMonths; break;
+                            }
+                            const progressPercent = Math.min((currentValue / quest.trigger_value) * 100, 100);
 
-                        let currentValue = 0;
-                        switch (quest.trigger_type) {
-                            case 'lifetime_xp': currentValue = globalStats.lifetimeXP; break;
-                            case 'videos_watched': currentValue = globalStats.videosWatchedCount; break;
-                            case 'shop_purchases': currentValue = globalStats.shopPurchasesCount; break;
-                            case 'subscription_months': currentValue = globalStats.subscriptionMonths; break;
-                        }
-                        const progressPercent = Math.min((currentValue / quest.trigger_value) * 100, 100);
+                            return (
+                                <div 
+                                    key={quest.id} 
+                                    className={`relative group h-full flex flex-col rounded-3xl overflow-hidden shadow-xl cursor-default border-2
+                                        ${isUnlocked ? 'bg-gradient-to-br from-brand-card to-brand-bg border-blue-500/50 hover:-translate-y-1 transition-all duration-300' 
+                                                     : 'bg-black/60 border-blue-500/10 hover:border-blue-500/30 hover:-translate-y-1 transition-all duration-500'}`}
+                                >
+                                    <div className="p-6 flex flex-col h-full">
+                                        <div className="flex justify-between items-start mb-4">
+                                            <div className={`p-4 rounded-2xl ${isUnlocked ? 'bg-blue-500/20 text-blue-400' : 'bg-white/5 text-gray-500'}`}>
+                                                {quest.reward_type === 'video' ? <span className="text-3xl">🎬</span> : <span className="text-3xl">🎭</span>}
+                                            </div>
+                                            {!isUnlocked && <Lock className="w-6 h-6 text-gray-500" />}
+                                        </div>
+                                        <h3 className={`text-xl font-black mb-2 leading-tight ${isUnlocked ? 'text-white' : 'text-gray-300'}`}>
+                                            {quest.title}
+                                        </h3>
+                                        <p className={`text-sm flex-1 mb-6 ${isUnlocked ? 'text-brand-text-muted' : 'text-gray-500'}`}>
+                                            {quest.description}
+                                        </p>
 
-                        return (
-                            <div 
-                                key={quest.id} 
-                                className={`relative group h-full flex flex-col rounded-3xl overflow-hidden shadow-xl cursor-default
-                                    ${isUnlocked ? 'bg-gradient-to-br from-brand-card to-brand-bg border border-brand-purple/20 hover:-translate-y-1 transition-all duration-300' 
-                                                 : 'bg-black/50 border border-white/5 opacity-80 grayscale hover:grayscale-0 active:grayscale-0 hover:opacity-100 active:opacity-100 hover:scale-[1.02] active:scale-[1.02] transition-all duration-500'}`}
-                            >
-                                <div className="p-6 flex flex-col items-center text-center h-full">
-                                    {/* Icon Container */}
-                                    <div className={`w-28 h-28 rounded-full flex items-center justify-center mb-4 relative overflow-hidden shadow-inner transition-all duration-500
-                                        ${isUnlocked ? 'bg-gradient-to-br from-brand-purple/20 to-brand-blue/20 border-2 border-brand-purple/30' 
-                                                     : 'bg-white/5 border border-white/10 group-hover:bg-gradient-to-br group-hover:from-brand-purple/10 group-hover:to-brand-blue/10 group-hover:border-brand-purple/20'}`}
-                                    >
                                         {!isUnlocked && (
-                                            <div className="absolute inset-0 bg-black/60 group-hover:bg-black/0 group-active:bg-black/0 z-10 flex items-center justify-center backdrop-blur-[2px] group-hover:backdrop-blur-none group-active:backdrop-blur-none transition-all duration-500">
-                                                <Lock className="w-8 h-8 text-gray-400 group-hover:opacity-0 group-active:opacity-0 transition-opacity duration-300" />
+                                            <div className="w-full mt-auto mb-4 border-t border-white/5 pt-4">
+                                                <div className="flex justify-between items-end mb-1">
+                                                    <span className="text-[10px] font-bold text-blue-400 uppercase tracking-wider">Objectif</span>
+                                                    <span className="text-xs font-bold text-gray-400">{currentValue} / {quest.trigger_value}</span>
+                                                </div>
+                                                <div className="h-2 w-full bg-black/50 rounded-full overflow-hidden shadow-inner">
+                                                    <div 
+                                                        className="h-full bg-blue-500 transition-all duration-1000 ease-out" 
+                                                        style={{ width: `${progressPercent}%` }}
+                                                    ></div>
+                                                </div>
                                             </div>
                                         )}
-                                        
-                                        {(() => {
-                                            let iconSrc = null;
-                                            if (quest.trigger_type === 'videos_watched' && quest.reward_xp === 100) iconSrc = '/achievements/quest_scroll.png';
-                                            else if (quest.trigger_type === 'videos_watched' && quest.reward_xp === 500) iconSrc = '/achievements/quest_hat.png';
-                                            else if (quest.trigger_type === 'videos_watched' && quest.reward_xp >= 2000) iconSrc = '/achievements/quest_book.png';
-                                            else if (quest.trigger_type === 'shop_purchases' && quest.reward_xp === 200) iconSrc = '/achievements/quest_chest_sm.png';
-                                            else if (quest.trigger_type === 'shop_purchases' && quest.reward_xp >= 1000) iconSrc = '/achievements/quest_chest_bg.png';
-                                            else if (quest.trigger_type === 'lifetime_xp' && quest.reward_xp === 250) iconSrc = '/achievements/quest_star_sm.png';
-                                            else if (quest.trigger_type === 'lifetime_xp' && quest.reward_xp >= 5000) iconSrc = '/achievements/quest_star_bg.png';
-                                            else if (quest.trigger_type === 'subscription_months' && quest.reward_xp === 500) iconSrc = '/achievements/quest_hourglass.png';
-                                            else if (quest.trigger_type === 'subscription_months' && quest.reward_xp >= 3000) iconSrc = '/achievements/quest_sun.png';
 
-                                            return iconSrc ? (
-                                                <Image src={iconSrc} alt="" fill className="object-cover p-3 drop-shadow-[0_0_15px_rgba(168,85,247,0.5)]" />
-                                            ) : (
-                                                <Medal className={`w-14 h-14 ${isUnlocked ? 'text-brand-gold drop-shadow-[0_0_15px_rgba(250,204,21,0.5)]' : 'text-gray-600'}`} />
-                                            );
-                                        })()}
-                                    </div>
-
-                                    <h3 className={`text-lg font-black mb-2 leading-tight transition-colors duration-500 ${isUnlocked ? 'text-white' : 'text-gray-500 group-hover:text-white group-active:text-white'}`}>
-                                        {quest.title}
-                                    </h3>
-                                    
-                                    <p className={`text-sm flex-1 transition-colors duration-500 ${isUnlocked ? 'text-brand-text-muted mt-2' : 'text-gray-600 group-hover:text-brand-text-muted group-active:text-brand-text-muted mt-2'}`}>
-                                        {quest.description || (isUnlocked ? "Tu as accompli ce succès !" : "Un secret t'attend...")}
-                                    </p>
-
-                                    {/* Individual Progress Bar (if locked) */}
-                                    {!isUnlocked && (
-                                        <div className="w-full mt-auto mb-4 border-t border-white/5 pt-4">
-                                            <div className="flex justify-between items-end mb-1">
-                                                <span className="text-[10px] font-bold text-brand-purple uppercase tracking-wider">Progression</span>
-                                                <span className="text-xs font-bold text-gray-500">{currentValue} / {quest.trigger_value}</span>
-                                            </div>
-                                            <div className="h-1.5 w-full bg-white/5 rounded-full overflow-hidden">
-                                                <div 
-                                                    className="h-full bg-brand-purple transition-all duration-1000 ease-out" 
-                                                    style={{ width: `${progressPercent}%` }}
-                                                ></div>
-                                            </div>
-                                        </div>
-                                    )}
-
-                                    {/* Reward Tag */}
-                                    {quest.reward_xp > 0 && (
-                                        <div className={`mt-auto px-4 py-1.5 rounded-full text-xs font-bold flex items-center gap-1.5 shadow-lg border transition-colors duration-500
-                                            ${isUnlocked ? 'bg-brand-gold/10 text-brand-gold border-brand-gold/20' 
-                                                         : 'bg-black border-white/10 text-gray-700 group-hover:text-brand-gold group-active:text-brand-gold group-hover:border-brand-gold/50 group-active:border-brand-gold/50'}`}
+                                        <div className={`mt-auto px-4 py-2 rounded-xl text-sm font-bold flex items-center justify-center gap-2 border transition-colors duration-500
+                                            ${isUnlocked ? 'bg-blue-500/20 text-blue-400 border-blue-500/30' 
+                                                         : 'bg-black border-white/10 text-gray-400'}`}
                                         >
-                                            <Star className={`w-3.5 h-3.5 ${isUnlocked ? 'fill-current' : ''}`} />
-                                            {isUnlocked ? `+ ${quest.reward_xp} Poussières GAGNÉES` : `${quest.reward_xp} Poussières à gagner`}
+                                            {isUnlocked ? "Récompense Obtenue !" : (quest.reward_type === 'video' ? "Vidéo Secrète à débloquer" : "Avatar Légendaire à la clef")}
                                         </div>
-                                    )}
+                                    </div>
                                 </div>
+                            );
+                        })}
+                        {quests.filter(q => q.reward_type && q.reward_type !== 'badge').length === 0 && (
+                            <div className="col-span-full py-12 text-center flex flex-col items-center border border-dashed border-white/10 rounded-2xl bg-white/5">
+                                <span className="text-4xl mb-3 opacity-50">📖</span>
+                                <h3 className="text-lg font-bold text-gray-400">Le Grimoire est vide</h3>
+                                <p className="text-gray-500 text-sm">Aucune quête active pour le moment.</p>
                             </div>
-                        );
-                    })}
-                    {quests.length === 0 && (
-                        <div className="col-span-full py-20 text-center flex flex-col items-center border border-dashed border-white/10 rounded-3xl">
-                            <Trophy className="w-16 h-16 text-gray-600 mb-4" />
-                            <h3 className="text-xl font-bold text-gray-400">Aucun succès défini</h3>
-                            <p className="text-gray-500">L'administrateur n'a pas encore ajouté de succès dans le Club.</p>
-                        </div>
-                    )}
+                        )}
+                    </div>
+                </div>
+
+                {/* SECTION 2 : Le Panthéon des Succès (Passive Badges) */}
+                <div className="pt-8">
+                    <h2 className="text-2xl md:text-3xl font-black text-white mb-6 flex items-center gap-3">
+                        <span className="text-brand-gold">🏆</span> Le Panthéon des Trophées
+                    </h2>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {quests.filter(q => !q.reward_type || q.reward_type === 'badge').map(quest => {
+                            const isUnlocked = completedQuestIds.has(quest.id);
+                            let currentValue = 0;
+                            switch (quest.trigger_type) {
+                                case 'lifetime_xp': currentValue = globalStats.lifetimeXP; break;
+                                case 'videos_watched': currentValue = globalStats.videosWatchedCount; break;
+                                case 'shop_purchases': currentValue = globalStats.shopPurchasesCount; break;
+                                case 'subscription_months': currentValue = globalStats.subscriptionMonths; break;
+                            }
+                            const progressPercent = Math.min((currentValue / quest.trigger_value) * 100, 100);
+
+                            return (
+                                <div 
+                                    key={quest.id} 
+                                    className={`relative group h-full flex flex-col rounded-3xl overflow-hidden shadow-xl cursor-default
+                                        ${isUnlocked ? 'bg-gradient-to-br from-brand-card to-brand-bg border border-brand-purple/20 hover:-translate-y-1 transition-all duration-300' 
+                                                     : 'bg-black/50 border border-white/5 opacity-80 grayscale hover:grayscale-0 hover:opacity-100 hover:scale-[1.02] transition-all duration-500'}`}
+                                >
+                                    <div className="p-6 flex flex-col items-center text-center h-full">
+                                        <div className={`w-28 h-28 rounded-full flex items-center justify-center mb-4 relative overflow-hidden shadow-inner transition-all duration-500
+                                            ${isUnlocked ? 'bg-gradient-to-br from-brand-purple/20 to-brand-blue/20 border-2 border-brand-purple/30' 
+                                                         : 'bg-white/5 border border-white/10 group-hover:bg-gradient-to-br group-hover:from-brand-purple/10 group-hover:to-brand-blue/10 group-hover:border-brand-purple/20'}`}
+                                        >
+                                            {!isUnlocked && (
+                                                <div className="absolute inset-0 bg-black/60 group-hover:bg-black/0 z-10 flex items-center justify-center backdrop-blur-[2px] group-hover:backdrop-blur-none transition-all duration-500">
+                                                    <Lock className="w-8 h-8 text-gray-400 group-hover:opacity-0 transition-opacity duration-300" />
+                                                </div>
+                                            )}
+                                            
+                                            {(() => {
+                                                let iconSrc = null;
+                                                if (quest.trigger_type === 'videos_watched' && quest.reward_xp <= 100) iconSrc = '/achievements/quest_scroll.png';
+                                                else if (quest.trigger_type === 'videos_watched' && quest.reward_xp === 500) iconSrc = '/achievements/quest_hat.png';
+                                                else if (quest.trigger_type === 'videos_watched' && quest.reward_xp >= 2000) iconSrc = '/achievements/quest_book.png';
+                                                else if (quest.trigger_type === 'shop_purchases' && quest.reward_xp === 200) iconSrc = '/achievements/quest_chest_sm.png';
+                                                else if (quest.trigger_type === 'shop_purchases' && quest.reward_xp >= 1000) iconSrc = '/achievements/quest_chest_bg.png';
+                                                else if (quest.trigger_type === 'lifetime_xp' && quest.reward_xp <= 250) iconSrc = '/achievements/quest_star_sm.png';
+                                                else if (quest.trigger_type === 'lifetime_xp' && quest.reward_xp >= 5000) iconSrc = '/achievements/quest_star_bg.png';
+                                                else if (quest.trigger_type === 'subscription_months' && quest.reward_xp <= 500) iconSrc = '/achievements/quest_hourglass.png';
+                                                else if (quest.trigger_type === 'subscription_months' && quest.reward_xp >= 3000) iconSrc = '/achievements/quest_sun.png';
+
+                                                return iconSrc ? (
+                                                    <Image src={iconSrc} alt="" fill className="object-cover p-3 drop-shadow-[0_0_15px_rgba(168,85,247,0.5)]" />
+                                                ) : (
+                                                    <Medal className={`w-14 h-14 ${isUnlocked ? 'text-brand-gold drop-shadow-[0_0_15px_rgba(250,204,21,0.5)]' : 'text-gray-600'}`} />
+                                                );
+                                            })()}
+                                        </div>
+
+                                        <h3 className={`text-lg font-black mb-2 leading-tight transition-colors duration-500 ${isUnlocked ? 'text-white' : 'text-gray-500 group-hover:text-white'}`}>
+                                            {quest.title}
+                                        </h3>
+                                        
+                                        <p className={`text-sm flex-1 transition-colors duration-500 ${isUnlocked ? 'text-brand-text-muted mt-2' : 'text-gray-600 group-hover:text-brand-text-muted mt-2'}`}>
+                                            {quest.description || (isUnlocked ? "Tu as accompli ce succès !" : "Un secret t'attend...")}
+                                        </p>
+
+                                        {!isUnlocked && (
+                                            <div className="w-full mt-auto mb-4 border-t border-white/5 pt-4">
+                                                <div className="flex justify-between items-end mb-1">
+                                                    <span className="text-[10px] font-bold text-brand-purple uppercase tracking-wider">Progression</span>
+                                                    <span className="text-xs font-bold text-gray-500">{currentValue} / {quest.trigger_value}</span>
+                                                </div>
+                                                <div className="h-1.5 w-full bg-white/5 rounded-full overflow-hidden">
+                                                    <div className="h-full bg-brand-purple transition-all duration-1000 ease-out" style={{ width: `${progressPercent}%` }}></div>
+                                                </div>
+                                            </div>
+                                        )}
+
+                                        {quest.reward_xp > 0 && (
+                                            <div className={`mt-auto px-4 py-1.5 rounded-full text-xs font-bold flex items-center gap-1.5 shadow-lg border transition-colors duration-500
+                                                ${isUnlocked ? 'bg-brand-gold/10 text-brand-gold border-brand-gold/20' 
+                                                            : 'bg-black border-white/10 text-gray-700 group-hover:text-brand-gold group-hover:border-brand-gold/50'}`}
+                                            >
+                                                <Star className={`w-3.5 h-3.5 ${isUnlocked ? 'fill-current' : ''}`} />
+                                                {isUnlocked ? `+ ${quest.reward_xp} Poussières GAGNÉES` : `${quest.reward_xp} Poussières à gagner`}
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+                            );
+                        })}
+                        {quests.filter(q => !q.reward_type || q.reward_type === 'badge').length === 0 && (
+                            <div className="col-span-full py-12 text-center flex flex-col items-center border border-dashed border-white/10 rounded-2xl bg-white/5">
+                                <Trophy className="w-12 h-12 text-gray-600 mb-3" />
+                                <h3 className="text-lg font-bold text-gray-400">Aucun succès</h3>
+                            </div>
+                        )}
+                    </div>
                 </div>
             </div>
         </div>

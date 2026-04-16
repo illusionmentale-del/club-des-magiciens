@@ -134,6 +134,7 @@ export default function AdminGamificationPage() {
         description: "",
         trigger_type: "videos_watched",
         trigger_value: 0,
+        reward_type: "badge", // 'badge', 'avatar', 'video'
         reward_xp: 0,
         reward_item_id: "",
         icon_url: ""
@@ -143,19 +144,23 @@ export default function AdminGamificationPage() {
         if (!newQuest.title) return alert("Nom requis");
 
         const payload = {
-            ...newQuest,
+            title: newQuest.title,
+            description: newQuest.description,
+            trigger_type: newQuest.trigger_type,
             trigger_value: parseInt(newQuest.trigger_value),
-            reward_xp: parseInt(newQuest.reward_xp),
-            reward_item_id: newQuest.reward_item_id || null
+            reward_type: newQuest.reward_type,
+            reward_xp: parseInt(newQuest.reward_xp) || 0,
+            reward_item_id: newQuest.reward_item_id || null,
+            icon_url: newQuest.icon_url || null,
         };
 
         const { error } = await supabase.from("gamification_quests").insert(payload);
         if (error) {
             console.error(error);
-            alert("Erreur lors de la création de la quête");
+            alert("Erreur lors de la création de la quête (Assurez-vous d'avoir ajouté la colonne reward_type en SQL)");
         } else {
             setShowQuestForm(false);
-            setNewQuest({ title: "", description: "", trigger_type: "videos_watched", trigger_value: 0, reward_xp: 0, reward_item_id: "", icon_url: "" });
+            setNewQuest({ title: "", description: "", trigger_type: "videos_watched", trigger_value: 0, reward_type: "badge", reward_xp: 0, reward_item_id: "", icon_url: "" });
             fetchQuests();
         }
     };
@@ -271,34 +276,65 @@ export default function AdminGamificationPage() {
                                             onChange={e => setNewQuest({ ...newQuest, description: e.target.value })}
                                         />
                                     </div>
-                                    <div className="md:col-span-2 flex items-center justify-between bg-white/5 p-4 rounded-xl border border-white/5">
-                                        <div className="text-sm font-bold text-gray-300">Récompense à la clef</div>
-                                        <div className="flex items-center gap-4">
-                                            <div className="flex items-center gap-2">
-                                                <span className="text-yellow-400 font-bold">⭐</span>
-                                                <input
-                                                    type="number"
-                                                    placeholder="0"
-                                                    className="w-20 bg-black/40 border border-yellow-500/50 rounded-lg p-2 text-white outline-none text-center font-black"
-                                                    value={newQuest.reward_xp || ""}
-                                                    onChange={e => setNewQuest({ ...newQuest, reward_xp: e.target.value })}
-                                                />
-                                                <span className="text-yellow-400 font-bold">XP</span>
-                                            </div>
-                                            <span className="text-gray-500 font-bold">ET / OU</span>
-                                            <div className="flex items-center gap-2">
-                                                <span className="text-purple-400 font-bold">🎁</span>
-                                                <select
-                                                    className="bg-black/40 border border-purple-500/50 rounded-lg p-2 text-white outline-none"
-                                                    value={newQuest.reward_item_id || ""}
-                                                    onChange={e => setNewQuest({ ...newQuest, reward_item_id: e.target.value })}
-                                                >
-                                                    <option value="">Aucun cadeau spécifique</option>
-                                                    {libraryItems.map(item => (
-                                                        <option key={item.id} value={item.id}>{item.title}</option>
-                                                    ))}
-                                                </select>
-                                            </div>
+                                    <div className="md:col-span-2 bg-white/5 p-4 rounded-xl border border-white/5">
+                                        <div className="text-sm font-bold text-gray-300 mb-3">Récompense à la clef</div>
+                                        
+                                        <div className="flex flex-col md:flex-row items-start md:items-center gap-4">
+                                            <select
+                                                className="bg-black/40 border border-brand-purple/50 rounded-lg p-2 text-white outline-none"
+                                                value={newQuest.reward_type}
+                                                onChange={e => setNewQuest({ ...newQuest, reward_type: e.target.value, reward_item_id: "", reward_xp: 0 })}
+                                            >
+                                                <option value="badge">Badge + Poussières d'Étoile</option>
+                                                <option value="avatar">Avatar Légendaire</option>
+                                                <option value="video">Vidéo Secrète</option>
+                                            </select>
+
+                                            {newQuest.reward_type === 'badge' && (
+                                                <div className="flex items-center gap-2 border-l border-white/10 pl-4">
+                                                    <span className="text-yellow-400 font-bold">⭐</span>
+                                                    <input
+                                                        type="number"
+                                                        placeholder="0"
+                                                        className="w-24 bg-black/40 border border-yellow-500/50 rounded-lg p-2 text-white outline-none text-center font-black"
+                                                        value={newQuest.reward_xp || ""}
+                                                        onChange={e => setNewQuest({ ...newQuest, reward_xp: e.target.value })}
+                                                    />
+                                                    <span className="text-yellow-400 font-bold">XP Bonus</span>
+                                                </div>
+                                            )}
+
+                                            {newQuest.reward_type === 'video' && (
+                                                <div className="flex items-center gap-2 border-l border-white/10 pl-4">
+                                                    <span className="text-blue-400 font-bold">🎬</span>
+                                                    <select
+                                                        className="bg-black/40 border border-blue-500/50 rounded-lg p-2 text-white outline-none"
+                                                        value={newQuest.reward_item_id || ""}
+                                                        onChange={e => setNewQuest({ ...newQuest, reward_item_id: e.target.value })}
+                                                    >
+                                                        <option value="" disabled>Sélectionner la vidéo</option>
+                                                        {libraryItems.map((item: any) => (
+                                                            <option key={item.id} value={item.id}>{item.title}</option>
+                                                        ))}
+                                                    </select>
+                                                </div>
+                                            )}
+
+                                            {newQuest.reward_type === 'avatar' && (
+                                                <div className="flex items-center gap-2 border-l border-white/10 pl-4">
+                                                    <span className="text-pink-400 font-bold">🎭</span>
+                                                    <select
+                                                        className="bg-black/40 border border-pink-500/50 rounded-lg p-2 text-white outline-none"
+                                                        value={newQuest.reward_item_id || ""}
+                                                        onChange={e => setNewQuest({ ...newQuest, reward_item_id: e.target.value })}
+                                                    >
+                                                        <option value="" disabled>Sélectionner l'avatar</option>
+                                                        {skins.map((skin: any) => (
+                                                            <option key={skin.id} value={skin.id}>{skin.name}</option>
+                                                        ))}
+                                                    </select>
+                                                </div>
+                                            )}
                                         </div>
                                     </div>
                                 </div>

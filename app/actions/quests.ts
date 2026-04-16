@@ -104,20 +104,27 @@ export async function evaluateQuests(userId: string) {
                 newQuestsData.push(quest);
                 console.log(`[Quest System] User ${userId} completed quest "${quest.title}"`);
                 
-                // 2. Grant Reward
-                if (quest.reward_xp && quest.reward_xp > 0) {
-                    await grantAwardXP(userId, 'quest_reward', quest.reward_xp, `quest_reward_${quest.id}`);
-                }
-                
-                // 3. Grant Specific Item Reward (if any)
-                if (quest.reward_item_id) {
+                // 2. Grant Reward depending on type
+                if (quest.reward_type === 'badge' || !quest.reward_type) {
+                    if (quest.reward_xp && quest.reward_xp > 0) {
+                        await grantAwardXP(userId, 'quest_reward', quest.reward_xp, `quest_reward_${quest.id}`);
+                    }
+                } 
+                else if (quest.reward_type === 'video' && quest.reward_item_id) {
                     await supabase.from('user_purchases').upsert({
                         user_id: userId,
                         library_item_id: quest.reward_item_id,
                         status: 'active',
                         systeme_io_order_id: `quest_reward_${quest.id}`
                     }, { onConflict: 'user_id,library_item_id' });
-                    console.log(`[Quest System] User ${userId} unlocked item ${quest.reward_item_id} from quest`);
+                    console.log(`[Quest System] User ${userId} unlocked secret video ${quest.reward_item_id} from quest`);
+                }
+                else if (quest.reward_type === 'avatar' && quest.reward_item_id) {
+                    await supabase.from('user_unlocked_skins').insert({
+                        user_id: userId,
+                        skin_id: quest.reward_item_id
+                    });
+                    console.log(`[Quest System] User ${userId} unlocked legend skin ${quest.reward_item_id} from quest`);
                 }
             } else {
                 console.error("[Quest System] Error completing quest:", insertError);
