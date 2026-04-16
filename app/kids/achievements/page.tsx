@@ -71,7 +71,7 @@ export default async function KidsAchievementsPage() {
                 <header className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 pt-4">
                     <div className="flex-1">
                         <div className="mb-4">
-                            <BackButton className="md:hidden" />
+                            <BackButton />
                         </div>
                         <div className="flex items-center gap-2 text-brand-gold mb-2">
                             <Trophy className="w-5 h-5 fill-current animate-pulse text-brand-gold" />
@@ -125,19 +125,19 @@ export default async function KidsAchievementsPage() {
                         return (
                             <div 
                                 key={quest.id} 
-                                className={`relative group h-full flex flex-col rounded-3xl overflow-hidden shadow-xl
-                                    ${isUnlocked ? 'bg-gradient-to-br from-brand-card to-brand-bg border border-brand-purple/20 pointer-events-auto hover:-translate-y-1 transition-all duration-300' 
-                                                 : 'bg-black/50 border border-white/5 opacity-80 pointer-events-none grayscale'}`}
+                                className={`relative group h-full flex flex-col rounded-3xl overflow-hidden shadow-xl cursor-default
+                                    ${isUnlocked ? 'bg-gradient-to-br from-brand-card to-brand-bg border border-brand-purple/20 hover:-translate-y-1 transition-all duration-300' 
+                                                 : 'bg-black/50 border border-white/5 opacity-80 grayscale hover:grayscale-0 hover:opacity-100 hover:scale-[1.02] transition-all duration-500'}`}
                             >
                                 <div className="p-6 flex flex-col items-center text-center h-full">
                                     {/* Icon Container */}
-                                    <div className={`w-28 h-28 rounded-full flex items-center justify-center mb-4 relative overflow-hidden shadow-inner
+                                    <div className={`w-28 h-28 rounded-full flex items-center justify-center mb-4 relative overflow-hidden shadow-inner transition-all duration-500
                                         ${isUnlocked ? 'bg-gradient-to-br from-brand-purple/20 to-brand-blue/20 border-2 border-brand-purple/30' 
-                                                     : 'bg-white/5 border border-white/10'}`}
+                                                     : 'bg-white/5 border border-white/10 group-hover:bg-gradient-to-br group-hover:from-brand-purple/10 group-hover:to-brand-blue/10 group-hover:border-brand-purple/20'}`}
                                     >
                                         {!isUnlocked && (
-                                            <div className="absolute inset-0 bg-black/60 z-10 flex items-center justify-center backdrop-blur-[2px]">
-                                                <Lock className="w-8 h-8 text-gray-400" />
+                                            <div className="absolute inset-0 bg-black/60 group-hover:bg-black/20 z-10 flex items-center justify-center backdrop-blur-[2px] transition-all duration-500">
+                                                <Lock className="w-8 h-8 text-gray-400 group-hover:text-white/50 transition-colors" />
                                             </div>
                                         )}
                                         
