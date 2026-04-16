@@ -141,11 +141,24 @@ export default async function KidsAchievementsPage() {
                                             </div>
                                         )}
                                         
-                                        {quest.icon_url ? (
-                                            <Image src={quest.icon_url} alt="" fill className="object-contain p-4" />
-                                        ) : (
-                                            <Medal className={`w-14 h-14 ${isUnlocked ? 'text-brand-gold drop-shadow-[0_0_15px_rgba(250,204,21,0.5)]' : 'text-gray-600'}`} />
-                                        )}
+                                        {(() => {
+                                            let iconSrc = null;
+                                            if (quest.trigger_type === 'videos_watched' && quest.reward_xp === 100) iconSrc = '/achievements/quest_scroll.png';
+                                            else if (quest.trigger_type === 'videos_watched' && quest.reward_xp === 500) iconSrc = '/achievements/quest_hat.png';
+                                            else if (quest.trigger_type === 'videos_watched' && quest.reward_xp >= 2000) iconSrc = '/achievements/quest_book.png';
+                                            else if (quest.trigger_type === 'shop_purchases' && quest.reward_xp === 200) iconSrc = '/achievements/quest_chest_sm.png';
+                                            else if (quest.trigger_type === 'shop_purchases' && quest.reward_xp >= 1000) iconSrc = '/achievements/quest_chest_bg.png';
+                                            else if (quest.trigger_type === 'lifetime_xp' && quest.reward_xp === 250) iconSrc = '/achievements/quest_star_sm.png';
+                                            else if (quest.trigger_type === 'lifetime_xp' && quest.reward_xp >= 5000) iconSrc = '/achievements/quest_star_bg.png';
+                                            else if (quest.trigger_type === 'subscription_months' && quest.reward_xp === 500) iconSrc = '/achievements/quest_hourglass.png';
+                                            else if (quest.trigger_type === 'subscription_months' && quest.reward_xp >= 3000) iconSrc = '/achievements/quest_sun.png';
+
+                                            return iconSrc ? (
+                                                <Image src={iconSrc} alt="" fill className="object-cover p-3 drop-shadow-[0_0_15px_rgba(168,85,247,0.5)]" />
+                                            ) : (
+                                                <Medal className={`w-14 h-14 ${isUnlocked ? 'text-brand-gold drop-shadow-[0_0_15px_rgba(250,204,21,0.5)]' : 'text-gray-600'}`} />
+                                            );
+                                        })()}
                                     </div>
 
                                     <h3 className={`text-lg font-black mb-2 leading-tight transition-colors duration-500 ${isUnlocked ? 'text-white' : 'text-gray-500 group-hover:text-white group-active:text-white'}`}>
