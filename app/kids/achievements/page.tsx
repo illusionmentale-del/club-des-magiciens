@@ -136,8 +136,8 @@ export default async function KidsAchievementsPage() {
                                                      : 'bg-white/5 border border-white/10 group-hover:bg-gradient-to-br group-hover:from-brand-purple/10 group-hover:to-brand-blue/10 group-hover:border-brand-purple/20'}`}
                                     >
                                         {!isUnlocked && (
-                                            <div className="absolute inset-0 bg-black/60 group-hover:bg-black/20 z-10 flex items-center justify-center backdrop-blur-[2px] transition-all duration-500">
-                                                <Lock className="w-8 h-8 text-gray-400 group-hover:text-white/50 transition-colors" />
+                                            <div className="absolute inset-0 bg-black/60 group-hover:bg-black/0 group-active:bg-black/0 z-10 flex items-center justify-center backdrop-blur-[2px] group-hover:backdrop-blur-none group-active:backdrop-blur-none transition-all duration-500">
+                                                <Lock className="w-8 h-8 text-gray-400 group-hover:opacity-0 group-active:opacity-0 transition-opacity duration-300" />
                                             </div>
                                         )}
                                         
