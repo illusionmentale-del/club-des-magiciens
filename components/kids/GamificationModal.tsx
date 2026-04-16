@@ -8,6 +8,7 @@ export interface GamificationEvent {
     unlockedWelcome?: boolean;
     leveledUpTo?: string | null;
     gainedXP?: number;
+    newQuestsData?: any[];
 }
 
 interface GamificationModalProps {
@@ -19,7 +20,7 @@ export default function GamificationModal({ event, onClose }: GamificationModalP
     const [isVisible, setIsVisible] = useState(false);
 
     useEffect(() => {
-        if (event && (event.unlockedWelcome || event.leveledUpTo || (event.gainedXP && event.gainedXP > 0))) {
+        if (event && (event.unlockedWelcome || event.leveledUpTo || (event.gainedXP && event.gainedXP > 0) || (event.newQuestsData && event.newQuestsData.length > 0))) {
             setIsVisible(true);
             // Auto close after 5 seconds
             const timer = setTimeout(() => {
@@ -75,6 +76,8 @@ export default function GamificationModal({ event, onClose }: GamificationModalP
                                 />
                                 {event.leveledUpTo ? (
                                     <Trophy className="w-12 h-12 text-white drop-shadow-lg" />
+                                ) : event.newQuestsData && event.newQuestsData.length > 0 ? (
+                                    <Trophy className="w-12 h-12 text-white drop-shadow-lg" />
                                 ) : (
                                     <Star className="w-12 h-12 text-white drop-shadow-lg fill-white" />
                                 )}
@@ -101,6 +104,13 @@ export default function GamificationModal({ event, onClose }: GamificationModalP
                                         <p className="text-white font-medium">Mes Premiers Pas</p>
                                     </div>
                                 )}
+
+                                {event.newQuestsData?.map((q, idx) => (
+                                    <div key={idx} className="bg-brand-purple/20 border border-brand-purple/50 rounded-xl p-3">
+                                        <p className="text-brand-purple font-bold text-sm mb-1 uppercase flex items-center justify-center gap-1"><Trophy className="w-3 h-3" /> Nouveau Succès</p>
+                                        <p className="text-white font-medium">{q.title}</p>
+                                    </div>
+                                ))}
 
                                 {event.leveledUpTo && (
                                     <div className="bg-amber-500/20 border border-amber-500/50 rounded-xl p-3">

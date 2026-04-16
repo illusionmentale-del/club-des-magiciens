@@ -23,11 +23,12 @@ export default function BunnyVideoTracker({ videoId, iframeUrl, totalSeconds }: 
         if (Math.abs(time - lastSavedTimeRef.current) >= 10 || time >= totalSeconds * 0.9) {
             lastSavedTimeRef.current = time;
             const res = await saveKidsVideoProgress(videoId, time, totalSeconds);
-            if (res?.success && 'gainedXP' in res && (res.gainedXP || res.leveledUpTo || res.unlockedWelcome)) {
+            if (res?.success && 'gainedXP' in res && (res.gainedXP || res.leveledUpTo || res.unlockedWelcome || (res.newQuestsData && res.newQuestsData.length > 0))) {
                 setEvent({
                     gainedXP: res.gainedXP as number,
                     leveledUpTo: res.leveledUpTo as string | null,
-                    unlockedWelcome: res.unlockedWelcome as boolean
+                    unlockedWelcome: res.unlockedWelcome as boolean,
+                    newQuestsData: res.newQuestsData as any[]
                 });
             }
         }

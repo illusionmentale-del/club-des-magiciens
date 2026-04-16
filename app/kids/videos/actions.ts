@@ -60,6 +60,11 @@ export async function calculateAndGrantXP(userId: string, videoId: string) {
 
     const unlockedWelcome = welcomeRes?.success && !welcomeRes.warning;
     const gainedXP = (unlockedWelcome ? 100 : 0) + (normalRes?.success && !normalRes.warning ? 1 : 0);
+    
+    const newQuestsData = [
+        ...(welcomeRes?.newQuestsData || []),
+        ...(normalRes?.newQuestsData || [])
+    ];
 
     let leveledUpTo = null;
 
@@ -88,7 +93,7 @@ export async function calculateAndGrantXP(userId: string, videoId: string) {
         }
     }
 
-    return { unlockedWelcome, gainedXP, leveledUpTo };
+    return { unlockedWelcome, gainedXP, leveledUpTo, newQuestsData };
 }
 
 /**

@@ -25,27 +25,49 @@ export async function evaluateQuests(userId: string) {
     // Filter quests the user has NOT completed yet
     const pendingQuests = quests.filter((q: any) => !completedQuestIds.has(q.id));
     
-    if (pendingQuests.length === 0) return { success: true, newCompletions: 0 };
+    if (pendingQuests.length === 0) return { success: true, newCompletions: 0, newQuestsData: [] };
 
     let newCompletions = 0;
+    const newQuestsData: any[] = [];
     const { data: xpLogs } = await supabase.from("user_xp_logs").select("xp_awarded, action_type").eq("user_id", userId);
     
     // Calculate global stats for the user once
     const globalStats = {
         lifetimeXP: xpLogs?.filter(log => log.xp_awarded > 0).reduce((acc, log) => acc + log.xp_awarded, 0) || 0,
-        // Calculate videos watched based on 'trick_completed' or 'level_completed' xp logs!
-        // Alternatively, we can query library_progress directly for accuracy.
-        videosWatchedCount: xpLogs?.filter(log => log.action_type === 'library_item_completed' || log.action_type === 'video_completed').length || 0
+        videosWatchedCount: 0,
+        shopPurchasesCount: 0,
+        subscriptionMonths: 0
     };
 
-    // For accuracy on videos watched, it's safer to query library_progress
+    // 1. Accuracy on videos watched
     const { count: libraryItemsCompletedCount } = await supabase
         .from('library_progress')
         .select('*', { count: 'exact', head: true })
         .eq('user_id', userId)
         .eq('is_completed', true);
-        
     globalStats.videosWatchedCount = libraryItemsCompletedCount || 0;
+
+    // 2. Accuracy on shop purchases (skins unlocked)
+    const { count: purchasedSkinsCount } = await supabase
+        .from('user_unlocked_skins')
+        .select('*', { count: 'exact', head: true })
+        .eq('user_id', userId);
+    globalStats.shopPurchasesCount = purchasedSkinsCount || 0;
+
+    // 3. Accuracy on subscription months
+    const { data: activeSub } = await supabase
+        .from('subscriptions')
+        .select('created')
+        .eq('user_id', userId)
+        .eq('status', 'active')
+        .maybeSingle();
+
+    if (activeSub && activeSub.created) {
+        const startDate = new Date(activeSub.created).getTime();
+        const now = Date.now();
+        const monthsPassed = Math.floor((now - startDate) / (1000 * 60 * 60 * 24 * 30.44));
+        globalStats.subscriptionMonths = monthsPassed;
+    }
 
     for (const quest of pendingQuests) {
         let conditionMet = false;
@@ -56,6 +78,12 @@ export async function evaluateQuests(userId: string) {
                 break;
             case 'videos_watched':
                 conditionMet = globalStats.videosWatchedCount >= quest.trigger_value;
+                break;
+            case 'shop_purchases':
+                conditionMet = globalStats.shopPurchasesCount >= quest.trigger_value;
+                break;
+            case 'subscription_months':
+                conditionMet = globalStats.subscriptionMonths >= quest.trigger_value;
                 break;
             case 'consecutive_days':
                 // Not implemented yet, ignore
@@ -73,6 +101,7 @@ export async function evaluateQuests(userId: string) {
             
             if (!insertError) {
                 newCompletions++;
+                newQuestsData.push(quest);
                 console.log(`[Quest System] User ${userId} completed quest "${quest.title}"`);
                 
                 // 2. Grant Reward
@@ -96,5 +125,5 @@ export async function evaluateQuests(userId: string) {
         }
     }
 
-    return { success: true, newCompletions };
+    return { success: true, newCompletions, newQuestsData };
 }

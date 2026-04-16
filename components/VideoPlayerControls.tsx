@@ -28,11 +28,12 @@ export default function VideoPlayerControls({ videoId, courseId, isCompleted: in
                 const res = await validateKidsCourseVideo(videoId, courseId, !isCompleted);
                 if (res?.success) {
                     setIsCompleted(!isCompleted);
-                    if (!isCompleted && 'gainedXP' in res && (res.gainedXP || res.leveledUpTo || res.unlockedWelcome)) {
+                    if (!isCompleted && 'gainedXP' in res && (res.gainedXP || res.leveledUpTo || res.unlockedWelcome || (res.newQuestsData && res.newQuestsData.length > 0))) {
                         setEvent({
                             gainedXP: res.gainedXP as number,
                             leveledUpTo: res.leveledUpTo as string | null,
-                            unlockedWelcome: res.unlockedWelcome as boolean
+                            unlockedWelcome: res.unlockedWelcome as boolean,
+                            newQuestsData: res.newQuestsData as any[]
                         });
                     } else {
                         router.refresh();

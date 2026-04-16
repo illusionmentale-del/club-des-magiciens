@@ -5,6 +5,7 @@ import Image from "next/image";
 import { Check, Lock, Loader2, UserRound, Sparkles, X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { equipSkin, buySkinWithXP } from "@/app/actions/avatars";
+import GamificationModal, { GamificationEvent } from "./GamificationModal";
 
 type Skin = {
     id: string;
@@ -25,6 +26,7 @@ export default function SkinLocker({ skins, unlockedSkinIds, equippedSkinId, tru
     const router = useRouter();
     const [loadingMap, setLoadingMap] = useState<Record<string, boolean>>({});
     const [previewSkin, setPreviewSkin] = useState<Skin | null>(null);
+    const [event, setEvent] = useState<GamificationEvent | null>(null);
 
     const handleEquip = async (skinId: string) => {
         setLoadingMap(prev => ({ ...prev, [skinId]: true }));
@@ -52,7 +54,11 @@ export default function SkinLocker({ skins, unlockedSkinIds, equippedSkinId, tru
                 alert(res.error || "Erreur lors de l'achat.");
             } else {
                 setPreviewSkin(null);
-                router.refresh();
+                if (res.newQuestsData && res.newQuestsData.length > 0) {
+                    setEvent({ newQuestsData: res.newQuestsData });
+                } else {
+                    router.refresh();
+                }
             }
         } finally {
             setLoadingMap(prev => ({ ...prev, [skinId]: false }));
@@ -71,6 +77,7 @@ export default function SkinLocker({ skins, unlockedSkinIds, equippedSkinId, tru
                 <UserRound className="text-pink-400" />
                 Mon Casier d'Avatars
             </h2>
+            <GamificationModal event={event} onClose={() => { setEvent(null); router.refresh(); }} />
 
             {/* Preview Modal */}
             {previewSkin && (

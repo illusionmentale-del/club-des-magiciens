@@ -60,12 +60,16 @@ export async function grantAwardXP(userId: string, actionType: string, amount: n
     console.log(`[XP System] Awarded ${amount} XP to ${userId} for ${actionType}`);
 
     // Automatically evaluate quests if this is not a quest reward itself (prevent infinite loop)
+    let newQuestsData: any[] = [];
     if (!actionType.startsWith('quest_')) {
-        // Fire and forget background evaluation
-        import('./quests').then(({ evaluateQuests }) => evaluateQuests(userId)).catch(console.error);
+        const { evaluateQuests } = await import('./quests');
+        const questResult = await evaluateQuests(userId);
+        if (questResult?.newQuestsData) {
+            newQuestsData = questResult.newQuestsData;
+        }
     }
 
-    return { success: true };
+    return { success: true, newQuestsData };
 }
 
 /**
@@ -123,6 +127,10 @@ export async function purchaseWithXP(itemId: string) {
         xp_awarded: 10,
         reference_id: `unlock_boost_${itemId}_${Date.now()}`
     });
+
+    // 6. Evaluate quests for new purchases stats
+    const { evaluateQuests } = await import('./quests');
+    await evaluateQuests(user.id);
 
     return { success: true };
 }

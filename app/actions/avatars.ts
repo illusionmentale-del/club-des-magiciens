@@ -60,6 +60,9 @@ export async function buySkinWithXP(skinId: string, itemPrice: number) {
     // 4. Optionally equip it immediately
     await equipSkin(skinId);
 
-    revalidatePath("/", "layout");
-    return { success: true };
+    // 5. Evaluate Quests (for 'shop_purchases' trigger)
+    const { evaluateQuests } = await import('./quests');
+    const questResult = await evaluateQuests(user.id);
+
+    return { success: true, newQuestsData: questResult.newQuestsData };
 }
