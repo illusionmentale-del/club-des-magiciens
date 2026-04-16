@@ -17,6 +17,16 @@ ON public.gamification_levels FOR SELECT USING (true);
 -- 3.B. Insertion des niveaux par défaut pour ne rien casser
 INSERT INTO public.gamification_levels (name, xp_threshold) VALUES
 ('Apprenti', 0),
-('Magicien', 50),
-('Illusionniste', 150)
+('Curieux de la Magie', 150),
+('Chercheur de Secrets', 300),
+('Manipulateur d''Ombres', 600),
+('Magicien Initié', 1000),
+('As de la Dextérité', 1800),
+('Créateur d''Illusions', 3000),
+('Maître du Détournement', 5000),
+('Illusionniste', 8000),
+('Prodige de la Magie', 12000),
+('Expert des Mystères', 18000),
+('Gardien des Secrets', 25000),
+('Sorcier Suprême', 40000)
 ON CONFLICT DO NOTHING;

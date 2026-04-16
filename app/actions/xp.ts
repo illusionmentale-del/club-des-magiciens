@@ -120,11 +120,11 @@ export async function purchaseWithXP(itemId: string) {
         return { success: false, error: "Achat validé mais objet non reçu, contacte le support !" };
     }
 
-    // 5. Grant +10 XP as Level-up Progression Boost / Cashback
+    // 5. Grant +50 XP as Level-up Progression Boost / Cashback
     await supabaseAdmin.from("user_xp_logs").insert({
         user_id: user.id,
         action_type: 'trick_unlocked_boost',
-        xp_awarded: 10,
+        xp_awarded: 50,
         reference_id: `unlock_boost_${itemId}_${Date.now()}`
     });
 

@@ -242,10 +242,36 @@ export default async function KidsHomePage({ searchParams }: { searchParams: Pro
         .order("completed_at", { ascending: false })
         .limit(3);
 
+    // XP & Grade Logic
+    const { data: xpLogs } = await supabase.from("user_xp_logs").select("xp_awarded").eq("user_id", user.id);
+    const totalXP = xpLogs?.reduce((acc, log) => acc + (log.xp_awarded > 0 ? log.xp_awarded : 0), 0) || 0;
+
+    const { data: levels } = await supabase.from('gamification_levels').select('*').order('xp_threshold', { ascending: false });
+    
+    let currentGrade = "Apprenti";
+    let nextGrade: string | null = null;
+    let nextThreshold: number | null = null;
+
+    if (levels && levels.length > 0) {
+        const currentLevelObj = levels.find(l => totalXP >= l.xp_threshold);
+        if (currentLevelObj) {
+            currentGrade = currentLevelObj.name;
+        } else {
+            currentGrade = levels[levels.length - 1].name;
+        }
+
+        const ascLevels = [...levels].reverse();
+        const nextLevelObj = ascLevels.find(l => l.xp_threshold > totalXP);
+        if (nextLevelObj) {
+            nextGrade = nextLevelObj.name;
+            nextThreshold = nextLevelObj.xp_threshold;
+        }
+    }
+
     // Progression Logic
     const validatedItems = validatedCount || 0;
     const TOTAL_ITEMS_TO_MAX = 50;
-    const currentLevel = Math.floor(validatedItems / 5) + 1;
+    const currentLevelNumber = Math.floor(validatedItems / 5) + 1;
 
     // Fetch Purchase Count for Block 6
     const { count: purchaseCount } = await supabase
@@ -255,16 +281,7 @@ export default async function KidsHomePage({ searchParams }: { searchParams: Pro
         .eq("status", "active");
     const hasPurchases = (purchaseCount || 0) > 0;
 
-    // Calculate XP for Gamification Level
-    const { data: xpLogs } = await supabase.from("user_xp_logs").select("xp_awarded").eq("user_id", user.id);
-    let lifetimeXP = 0;
-    if (xpLogs) {
-        lifetimeXP = xpLogs.reduce((acc, log) => acc + (log.xp_awarded > 0 ? log.xp_awarded : 0), 0);
-    }
 
-    let userGrade = "Apprenti";
-    if (lifetimeXP >= 150) userGrade = "Légendaire";
-    else if (lifetimeXP >= 50) userGrade = "Holo-Magicien";
 
     const userName = profile.username || profile.full_name || profile.display_name || profile.first_name || user.user_metadata?.full_name || "Jeune Magicien";
 
@@ -363,8 +380,11 @@ export default async function KidsHomePage({ searchParams }: { searchParams: Pro
                         <KidsProgression
                             validatedCount={validatedItems}
                             totalItemsToMax={TOTAL_ITEMS_TO_MAX}
-                            userGrade={userGrade}
-                            currentLevel={currentLevel}
+                            userGrade={currentGrade}
+                            currentLevel={currentLevelNumber}
+                            totalXP={totalXP}
+                            nextGrade={nextGrade}
+                            nextThreshold={nextThreshold}
                         />
 
                         {/* BLOC 5: SUCCESS (WINS) */}

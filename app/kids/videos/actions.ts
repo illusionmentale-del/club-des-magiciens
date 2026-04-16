@@ -55,11 +55,11 @@ export async function calculateAndGrantXP(userId: string, videoId: string) {
     // 1. Bonus de bienvenue (Seule la 1ère vidéo le débloquera grâce à l'unicité stricte)
     const welcomeRes = await grantAwardXP(userId, "welcome_bonus", 100, `welcome_bonus_first_video`);
 
-    // 2. XP normal pour la complétion (1 point par vidéo)
-    const normalRes = await grantAwardXP(userId, "video_completed", 1, `video_completed_${videoId}`);
+    // 2. XP normal pour la complétion (50 points par vidéo)
+    const normalRes = await grantAwardXP(userId, "video_completed", 50, `video_completed_${videoId}`);
 
     const unlockedWelcome = welcomeRes?.success && !welcomeRes.warning;
-    const gainedXP = (unlockedWelcome ? 100 : 0) + (normalRes?.success && !normalRes.warning ? 1 : 0);
+    const gainedXP = (unlockedWelcome ? 100 : 0) + (normalRes?.success && !normalRes.warning ? 50 : 0);
     
     const newQuestsData = [
         ...(welcomeRes?.newQuestsData || []),
@@ -74,7 +74,8 @@ export async function calculateAndGrantXP(userId: string, videoId: string) {
         
         const getTitle = (xp: number) => {
             if (!levels || levels.length === 0) {
-                if (xp >= 150) return "Illusionniste";
+                if (xp >= 40000) return "Sorcier Suprême";
+                if (xp >= 150) return "Curieux de la Magie";
                 if (xp >= 50) return "Magicien";
                 return "Apprenti";
             }
