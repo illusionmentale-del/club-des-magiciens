@@ -127,7 +127,7 @@ export default async function KidsAchievementsPage() {
                                 key={quest.id} 
                                 className={`relative group h-full flex flex-col rounded-3xl overflow-hidden shadow-xl cursor-default
                                     ${isUnlocked ? 'bg-gradient-to-br from-brand-card to-brand-bg border border-brand-purple/20 hover:-translate-y-1 transition-all duration-300' 
-                                                 : 'bg-black/50 border border-white/5 opacity-80 grayscale hover:grayscale-0 hover:opacity-100 hover:scale-[1.02] transition-all duration-500'}`}
+                                                 : 'bg-black/50 border border-white/5 opacity-80 grayscale hover:grayscale-0 active:grayscale-0 hover:opacity-100 active:opacity-100 hover:scale-[1.02] active:scale-[1.02] transition-all duration-500'}`}
                             >
                                 <div className="p-6 flex flex-col items-center text-center h-full">
                                     {/* Icon Container */}
@@ -148,11 +148,11 @@ export default async function KidsAchievementsPage() {
                                         )}
                                     </div>
 
-                                    <h3 className={`text-lg font-black mb-2 leading-tight ${isUnlocked ? 'text-white' : 'text-gray-500'}`}>
+                                    <h3 className={`text-lg font-black mb-2 leading-tight transition-colors duration-500 ${isUnlocked ? 'text-white' : 'text-gray-500 group-hover:text-white group-active:text-white'}`}>
                                         {quest.title}
                                     </h3>
                                     
-                                    <p className={`text-sm flex-1 ${isUnlocked ? 'text-brand-text-muted mt-2' : 'text-gray-600 mt-2'}`}>
+                                    <p className={`text-sm flex-1 transition-colors duration-500 ${isUnlocked ? 'text-brand-text-muted mt-2' : 'text-gray-600 group-hover:text-brand-text-muted group-active:text-brand-text-muted mt-2'}`}>
                                         {quest.description || (isUnlocked ? "Tu as accompli ce succès !" : "Un secret t'attend...")}
                                     </p>
 
@@ -174,9 +174,9 @@ export default async function KidsAchievementsPage() {
 
                                     {/* Reward Tag */}
                                     {quest.reward_xp > 0 && (
-                                        <div className={`mt-auto px-4 py-1.5 rounded-full text-xs font-bold flex items-center gap-1.5 shadow-lg border
+                                        <div className={`mt-auto px-4 py-1.5 rounded-full text-xs font-bold flex items-center gap-1.5 shadow-lg border transition-colors duration-500
                                             ${isUnlocked ? 'bg-brand-gold/10 text-brand-gold border-brand-gold/20' 
-                                                         : 'bg-black border-white/10 text-gray-700'}`}
+                                                         : 'bg-black border-white/10 text-gray-700 group-hover:text-brand-gold group-active:text-brand-gold group-hover:border-brand-gold/50 group-active:border-brand-gold/50'}`}
                                         >
                                             <Star className={`w-3.5 h-3.5 ${isUnlocked ? 'fill-current' : ''}`} />
                                             {isUnlocked ? `+ ${quest.reward_xp} Poussières GAGNÉES` : `${quest.reward_xp} Poussières à gagner`}
