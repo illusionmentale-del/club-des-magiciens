@@ -37,6 +37,29 @@ export default async function KidsAchievementsPage() {
 
     const quests = allQuests || [];
 
+    // 3. Fetch global stats for individual progress bars
+    const globalStats = {
+        lifetimeXP: 0,
+        videosWatchedCount: 0,
+        shopPurchasesCount: 0,
+        subscriptionMonths: 0
+    };
+
+    const { data: xpLogs } = await supabase.from("user_xp_logs").select("xp_awarded").eq("user_id", user.id);
+    globalStats.lifetimeXP = xpLogs?.filter(log => log.xp_awarded > 0).reduce((acc, log) => acc + log.xp_awarded, 0) || 0;
+
+    const { count: libraryItemsCompletedCount } = await supabase.from('library_progress').select('*', { count: 'exact', head: true }).eq('user_id', user.id).eq('is_completed', true);
+    globalStats.videosWatchedCount = libraryItemsCompletedCount || 0;
+
+    const { count: purchasedSkinsCount } = await supabase.from('user_unlocked_skins').select('*', { count: 'exact', head: true }).eq('user_id', user.id);
+    globalStats.shopPurchasesCount = purchasedSkinsCount || 0;
+
+    const { data: activeSub } = await supabase.from('subscriptions').select('created').eq('user_id', user.id).eq('status', 'active').maybeSingle();
+    if (activeSub && activeSub.created) {
+        const startDate = new Date(activeSub.created).getTime();
+        globalStats.subscriptionMonths = Math.floor((Date.now() - startDate) / (1000 * 60 * 60 * 24 * 30.44));
+    }
+
     return (
         <div className="min-h-screen bg-brand-bg text-brand-text p-4 md:p-8 pb-32 font-sans relative selection:bg-brand-gold/30">
             {/* Ambient Background Lights */}
@@ -90,6 +113,15 @@ export default async function KidsAchievementsPage() {
                     {quests.map(quest => {
                         const isUnlocked = completedQuestIds.has(quest.id);
 
+                        let currentValue = 0;
+                        switch (quest.trigger_type) {
+                            case 'lifetime_xp': currentValue = globalStats.lifetimeXP; break;
+                            case 'videos_watched': currentValue = globalStats.videosWatchedCount; break;
+                            case 'shop_purchases': currentValue = globalStats.shopPurchasesCount; break;
+                            case 'subscription_months': currentValue = globalStats.subscriptionMonths; break;
+                        }
+                        const progressPercent = Math.min((currentValue / quest.trigger_value) * 100, 100);
+
                         return (
                             <div 
                                 key={quest.id} 
@@ -120,15 +152,31 @@ export default async function KidsAchievementsPage() {
                                         {quest.title}
                                     </h3>
                                     
-                                    <p className={`text-sm mb-4 flex-1 ${isUnlocked ? 'text-brand-text-muted' : 'text-gray-600'}`}>
+                                    <p className={`text-sm flex-1 ${isUnlocked ? 'text-brand-text-muted mt-2' : 'text-gray-600 mt-2'}`}>
                                         {quest.description || (isUnlocked ? "Tu as accompli ce succès !" : "Un secret t'attend...")}
                                     </p>
+
+                                    {/* Individual Progress Bar (if locked) */}
+                                    {!isUnlocked && (
+                                        <div className="w-full mt-auto mb-4 border-t border-white/5 pt-4">
+                                            <div className="flex justify-between items-end mb-1">
+                                                <span className="text-[10px] font-bold text-brand-purple uppercase tracking-wider">Progression</span>
+                                                <span className="text-xs font-bold text-gray-500">{currentValue} / {quest.trigger_value}</span>
+                                            </div>
+                                            <div className="h-1.5 w-full bg-white/5 rounded-full overflow-hidden">
+                                                <div 
+                                                    className="h-full bg-brand-purple transition-all duration-1000 ease-out" 
+                                                    style={{ width: `${progressPercent}%` }}
+                                                ></div>
+                                            </div>
+                                        </div>
+                                    )}
 
                                     {/* Reward Tag */}
                                     {quest.reward_xp > 0 && (
                                         <div className={`mt-auto px-4 py-1.5 rounded-full text-xs font-bold flex items-center gap-1.5 shadow-lg border
                                             ${isUnlocked ? 'bg-brand-gold/10 text-brand-gold border-brand-gold/20' 
-                                                         : 'bg-black border-white/10 text-gray-500'}`}
+                                                         : 'bg-black border-white/10 text-gray-700'}`}
                                         >
                                             <Star className={`w-3.5 h-3.5 ${isUnlocked ? 'fill-current' : ''}`} />
                                             {isUnlocked ? `+ ${quest.reward_xp} Poussières GAGNÉES` : `${quest.reward_xp} Poussières à gagner`}
