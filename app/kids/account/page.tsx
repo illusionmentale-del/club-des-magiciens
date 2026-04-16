@@ -121,10 +121,10 @@ export default async function KidsAccountPage({
                                 </p>
                                 <a 
                                     href="/kids/shop"
-                                    className="w-full py-4 bg-gradient-to-r from-brand-gold to-yellow-500 hover:scale-[1.02] text-black font-black uppercase tracking-widest rounded-2xl transition-all shadow-[0_10px_30px_rgba(250,204,21,0.4)] flex justify-center items-center gap-2"
+                                    className="w-full px-4 py-4 bg-gradient-to-r from-brand-gold to-yellow-500 hover:scale-[1.02] text-black font-black uppercase tracking-widest rounded-2xl transition-all shadow-[0_10px_30px_rgba(250,204,21,0.4)] flex justify-center items-center gap-3 text-center"
                                 >
-                                    <ShoppingBag className="w-5 h-5" />
-                                    Dépenser mes Poussières d'étoiles
+                                    <ShoppingBag className="w-5 h-5 shrink-0" />
+                                    <span>Dépenser mes Poussières d'étoiles</span>
                                 </a>
                             </div>
 
