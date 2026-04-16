@@ -9,6 +9,7 @@ CREATE TABLE IF NOT EXISTS public.gamification_quests (
     trigger_value INTEGER NOT NULL, -- la cible à atteindre (ex: 5 pour '5 videos_watched')
     reward_xp INTEGER DEFAULT 0, -- combien ça rapporte d'Éclats/XP à la réussite
     reward_item_id UUID REFERENCES public.library_items(id) ON DELETE SET NULL, -- Un secret gratuit offert (optionnel)
+    icon_url TEXT, -- URL de l'icône du succès
     is_active BOOLEAN DEFAULT true,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );

@@ -135,7 +135,8 @@ export default function AdminGamificationPage() {
         trigger_type: "videos_watched",
         trigger_value: 0,
         reward_xp: 0,
-        reward_item_id: ""
+        reward_item_id: "",
+        icon_url: ""
     });
 
     const handleCreateQuest = async () => {
@@ -154,7 +155,7 @@ export default function AdminGamificationPage() {
             alert("Erreur lors de la création de la quête");
         } else {
             setShowQuestForm(false);
-            setNewQuest({ title: "", description: "", trigger_type: "videos_watched", trigger_value: 0, reward_xp: 0, reward_item_id: "" });
+            setNewQuest({ title: "", description: "", trigger_type: "videos_watched", trigger_value: 0, reward_xp: 0, reward_item_id: "", icon_url: "" });
             fetchQuests();
         }
     };
@@ -183,7 +184,7 @@ export default function AdminGamificationPage() {
                     )}
                     {activeTab === 'quests' && (
                         <button onClick={() => setShowQuestForm(!showQuestForm)} className="bg-green-600 hover:bg-green-500 text-white px-6 py-3 rounded-xl font-bold flex items-center gap-2 transition-all shadow-lg">
-                            <Plus className="w-5 h-5" /> Nouvelle Quête
+                            <Plus className="w-5 h-5" /> Nouveau Succès
                         </button>
                     )}
                     {activeTab === 'levels' && (
@@ -203,7 +204,7 @@ export default function AdminGamificationPage() {
                         className={`font-bold pb-4 -mb-4 px-4 ${activeTab === 'quests' ? 'text-green-400 border-b-2 border-green-400' : 'text-gray-500 hover:text-white'}`}
                         onClick={() => setActiveTab('quests')}
                     >
-                        Quêtes Automatiques
+                        Les Succès (Quêtes)
                     </button>
                     <button
                         className={`font-bold pb-4 -mb-4 px-4 ${activeTab === 'levels' ? 'text-blue-400 border-b-2 border-blue-400' : 'text-gray-500 hover:text-white'}`}
@@ -217,35 +218,42 @@ export default function AdminGamificationPage() {
                     >
                         Avatars (Skins)
                     </button>
-                    <button
+                    {/* <button
                         className={`font-bold pb-4 -mb-4 px-4 ${activeTab === 'badges' ? 'text-purple-400 border-b-2 border-purple-400' : 'text-gray-500 hover:text-white'}`}
                         onClick={() => setActiveTab('badges')}
                     >
                         Badges (Ancien système)
-                    </button>
+                    </button> */}
                 </div>
 
                 {activeTab === 'quests' && (
                     <>
                         {showQuestForm && (
                             <div className="bg-magic-card border border-green-500/30 rounded-2xl p-6 mb-8 animate-in slide-in-from-top-4">
-                                <h2 className="font-bold text-lg mb-4 text-green-300">Créer une Quête</h2>
+                                <h2 className="font-bold text-lg mb-4 text-green-300">Créer un Succès</h2>
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                                     <input
-                                        placeholder="Nom de la Quête (Ex: L'Élève Modèle)"
+                                        placeholder="Nom du Succès (Ex: L'Élève Modèle)"
                                         className="bg-black/40 border border-white/10 rounded-lg p-3 text-white outline-none focus:border-green-500"
                                         value={newQuest.title}
                                         onChange={e => setNewQuest({ ...newQuest, title: e.target.value })}
                                     />
-                                    <div className="flex gap-2">
+                                    <input
+                                        placeholder="URL de l'Icone (Optionnel)"
+                                        className="bg-black/40 border border-white/10 rounded-lg p-3 text-white outline-none focus:border-green-500"
+                                        value={newQuest.icon_url}
+                                        onChange={e => setNewQuest({ ...newQuest, icon_url: e.target.value })}
+                                    />
+                                    <div className="md:col-span-2 flex gap-2">
                                         <select
                                             className="w-1/2 bg-black/40 border border-white/10 rounded-lg p-3 text-white outline-none focus:border-green-500"
                                             value={newQuest.trigger_type}
                                             onChange={e => setNewQuest({ ...newQuest, trigger_type: e.target.value })}
                                         >
                                             <option value="videos_watched">Vidéos Validées</option>
+                                            <option value="subscription_months">Mois d'Abonnement</option>
+                                            <option value="shop_purchases">Achats Boutique</option>
                                             <option value="lifetime_xp">Total XP Atteint</option>
-                                            <option value="consecutive_days">Jours Consécutifs (Futur)</option>
                                         </select>
                                         <input
                                             type="number"
@@ -307,12 +315,17 @@ export default function AdminGamificationPage() {
                             {loading ? <div className="text-center py-8">Chargement...</div> : quests.map(quest => (
                                 <div key={quest.id} className="bg-[#1a1025] border border-green-500/20 rounded-xl p-5 flex items-center gap-6 hover:border-green-500/40 transition-colors relative overflow-hidden">
                                     <div className="absolute top-0 left-0 w-2 h-full bg-green-500"></div>
+                                    {quest.icon_url && (
+                                        <div className="w-14 h-14 flex-shrink-0 bg-black/50 rounded-xl flex items-center justify-center p-2 relative overflow-hidden border border-white/10">
+                                            <Image src={quest.icon_url} alt="" fill className="object-contain p-2" />
+                                        </div>
+                                    )}
                                     <div className="flex-1">
                                         <h3 className="font-bold text-white text-lg">{quest.title}</h3>
                                         <p className="text-sm text-gray-400 mb-3">{quest.description}</p>
                                         <div className="flex items-center gap-3">
                                             <span className="text-xs uppercase font-bold bg-white/10 px-2.5 py-1 rounded-md text-gray-300 flex items-center gap-1">
-                                                🎯 {quest.trigger_type === 'videos_watched' ? 'Vidéos vues' : 'Total XP'} : <span className="text-green-400">{quest.trigger_value}</span>
+                                                🎯 {quest.trigger_type === 'videos_watched' ? 'Vidéos vues' : quest.trigger_type === 'subscription_months' ? "Mois d'abonnement" : quest.trigger_type === 'shop_purchases' ? "Achats Boutique" : 'Total XP'} : <span className="text-green-400">{quest.trigger_value}</span>
                                             </span>
                                             {quest.reward_xp > 0 && (
                                                 <span className="text-xs uppercase font-bold bg-yellow-500/10 px-2.5 py-1 rounded-md text-yellow-400 flex items-center gap-1">
