@@ -24,44 +24,46 @@ export default async function KidsVideoPlayerPage({ params }: { params: { videoI
 
     const video = await getKidsVideoById(params.videoId);
 
-    if (!video) {
-        notFound();
-    }
-
     // --- Premium Content Protection Check ---
     // Try to fetch the item using normal user RLS
     let { data: libraryItem } = await supabase
         .from('library_items')
-        .select('id, sales_page_url, title, price_label, week_number')
-        .eq('video_url', params.videoId) // Assuming video_url stores the Bunny GUID
+        .select('id, sales_page_url, title, price_label, week_number, created_at, published_at')
+        .eq('video_url', params.videoId)
         .single();
     
     let isLockedPremium = false;
     let isTimeLocked = false;
-    let fallbackTitle = video.title;
+    let fallbackTitle = video?.title || libraryItem?.title || "Vidéo";
     
+    const { createClient: createAdminClient } = await import('@supabase/supabase-js');
+    const supabaseAdmin = createAdminClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        process.env.SUPABASE_SERVICE_ROLE_KEY!,
+        { auth: { persistSession: false }}
+    );
+    
+    let adminItem = libraryItem;
     if (!libraryItem) {
         // Did not find the video in DB with user RLS.
-        // It could be missing entirely (not in library) OR it could be hidden by the Time-Drip (week_number) RLS!
-        // We MUST verify with admin privileges to avoid a Fail-Open scenario.
-        const { createClient: createAdminClient } = await import('@supabase/supabase-js');
-        const supabaseAdmin = createAdminClient(
-            process.env.NEXT_PUBLIC_SUPABASE_URL!,
-            process.env.SUPABASE_SERVICE_ROLE_KEY!,
-            { auth: { persistSession: false }}
-        );
-        
-        const { data: adminItem } = await supabaseAdmin
+        // It could be missing entirely OR hidden by the Time-Drip RLS!
+        const { data: fetchedAdminItem } = await supabaseAdmin
             .from('library_items')
-            .select('id, title, week_number')
+            .select('id, title, week_number, created_at, published_at')
             .eq('video_url', params.videoId)
             .single();
             
-        if (adminItem) {
+        if (fetchedAdminItem) {
+            adminItem = fetchedAdminItem;
             // Video exists in DB but user RLS blocked it! This means it's a future week's content.
             isTimeLocked = true;
             fallbackTitle = adminItem.title || "Secret inconnu";
         }
+    }
+
+    // If it's not in the DB AT ALL and it's not in Bunny API, then it's a real 404.
+    if (!video && !adminItem) {
+        notFound();
     }
 
     if (libraryItem && libraryItem.sales_page_url) {
@@ -129,7 +131,8 @@ export default async function KidsVideoPlayerPage({ params }: { params: { videoI
     };
 
     // Format date
-    const formatDate = (dateString: string) => {
+    const formatDate = (dateString?: string) => {
+        if (!dateString) return "";
         try {
             return new Intl.DateTimeFormat('fr-FR', {
                 day: 'numeric',
@@ -141,7 +144,22 @@ export default async function KidsVideoPlayerPage({ params }: { params: { videoI
         }
     };
 
-    const iframeUrl = await getSecureBunnyIframeUrl(video.videoLibraryId, video.guid, true); // true = isKid
+    // Construct the IFrame securely using the best info available
+    const libraryId = video?.videoLibraryId || process.env.BUNNY_KIDS_LIBRARY_ID || "";
+    let guid = video?.guid || params.videoId;
+    let displayLength = video?.length || 0;
+    let displayViews = video?.views || 0;
+    let displayDate = video?.dateUploaded || adminItem?.published_at || adminItem?.created_at || new Date().toISOString(); 
+
+    if (!video && params.videoId.includes('_')) {
+        const parts = params.videoId.split('_');
+        // Handle format LIBRARYID_GUID
+        if (parts.length >= 2 && !isNaN(Number(parts[0]))) {
+            guid = parts.slice(1).join('_');
+        }
+    }
+
+    const iframeUrl = await getSecureBunnyIframeUrl(libraryId, guid, true); // true = isKid
 
     return (
         <div className="min-h-screen bg-[#050507] text-white p-4 md:p-8 relative font-sans selection:bg-brand-purple/30">
@@ -195,9 +213,9 @@ export default async function KidsVideoPlayerPage({ params }: { params: { videoI
                         /* 16:9 Aspect Ratio Container for iFrame */
                         <div className="relative pt-[56.25%] w-full bg-black">
                             <BunnyVideoTracker
-                                videoId={video.videoLibraryId.toString() + '_' + video.guid} // Unique ID for DB
+                                videoId={libraryId.toString() + '_' + guid} // Unique ID for DB
                                 iframeUrl={iframeUrl}
-                                totalSeconds={video.length}
+                                totalSeconds={displayLength}
                             />
                         </div>
                     )}
@@ -212,25 +230,29 @@ export default async function KidsVideoPlayerPage({ params }: { params: { videoI
                         <span className="text-brand-purple drop-shadow-[0_0_15px_rgba(124,58,237,0.5)] bg-white/5 p-2 rounded-xl">
                             <PlayCircle className="w-8 h-8" />
                         </span>
-                        <span className="mt-1 flex-1 leading-tight tracking-tight">{video.title}</span>
+                        <span className="mt-1 flex-1 leading-tight tracking-tight">{fallbackTitle}</span>
                     </h1>
 
                     <div className="flex flex-wrap gap-4 text-sm font-bold tracking-wide">
                         <div className="flex items-center gap-3 bg-white/5 text-gray-300 py-2.5 px-5 rounded-xl border border-white/5 shadow-inner">
                             <Calendar className="w-4 h-4 text-brand-blue" />
-                            <span>{formatDate(video.dateUploaded)}</span>
+                            <span>{formatDate(displayDate)}</span>
                         </div>
 
-                        <div className="flex items-center gap-3 bg-white/5 text-gray-300 py-2.5 px-5 rounded-xl border border-white/5 shadow-inner">
-                            <Clock className="w-4 h-4 text-brand-purple" />
-                            <span>{formatDuration(video.length)}</span>
-                        </div>
+                        {displayLength > 0 && (
+                            <div className="flex items-center gap-3 bg-white/5 text-gray-300 py-2.5 px-5 rounded-xl border border-white/5 shadow-inner">
+                                <Clock className="w-4 h-4 text-brand-purple" />
+                                <span>{formatDuration(displayLength)}</span>
+                            </div>
+                        )}
 
                         {/* Vues (Optionnel) */}
-                        <div className="flex items-center gap-3 bg-white/5 text-gray-300 py-2.5 px-5 rounded-xl border border-white/5 shadow-inner">
-                            <Eye className="w-4 h-4 text-brand-pink" />
-                            <span>{video.views} vue{video.views !== 1 ? 's' : ''}</span>
-                        </div>
+                        {displayViews > 0 && (
+                            <div className="flex items-center gap-3 bg-white/5 text-gray-300 py-2.5 px-5 rounded-xl border border-white/5 shadow-inner">
+                                <Eye className="w-4 h-4 text-brand-pink" />
+                                <span>{displayViews} vue{displayViews !== 1 ? 's' : ''}</span>
+                            </div>
+                        )}
                     </div>
                 </div>
 
