@@ -93,13 +93,7 @@ export default async function KidsVideoPlayerPage({ params }: { params: { videoI
         }));
     }
 
-    // Check if user is admin or Jérémy
-    const { data: profile } = await supabase
-        .from("profiles")
-        .select("role")
-        .eq("id", user.id)
-        .single();
-    const isAdmin = profile?.role === 'admin' || (user.email?.includes('admin@') ?? false);
+
 
     // If the kid visits this page, mark any pending notifications for them on this video as read
     if (!isAdmin) {
