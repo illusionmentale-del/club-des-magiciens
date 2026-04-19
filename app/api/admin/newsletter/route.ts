@@ -12,9 +12,9 @@ export async function POST(req: Request) {
         const { data: { user } } = await supabase.auth.getUser();
         if (!user) return NextResponse.json({ error: 'Non autorisé.' }, { status: 401 });
 
-        // Ensure user is admin (checking email domain or specific email)
-        const isSuperAdmin = user.email === 'illusionmentale@gmail.com' || user.email?.endsWith('@jeremymarouani.com');
-        if (!isSuperAdmin) {
+        // Ensure user is admin via database role check
+        const { data: profile } = await supabase.from('profiles').select('role').eq('id', user.id).single();
+        if (profile?.role !== 'admin' && profile?.role !== 'super_admin') {
             return NextResponse.json({ error: 'Accès interdit. Seuls les administrateurs peuvent envoyer des newsletters.' }, { status: 403 });
         }
 
@@ -54,7 +54,7 @@ export async function POST(req: Request) {
                 return NextResponse.json({ error: "Aucun utilisateur inscrit à la newsletter pour cette cible." }, { status: 400 });
             }
 
-            emailsToTarget = [...new Set(profiles.map(p => p.email))]; // Remove potential duplicates
+            emailsToTarget = [...new Set(profiles.filter(p => p.email && p.email.includes('@')).map(p => p.email))]; // Remove potential duplicates and invalid/null emails
         }
 
         // --- FETCH DYNAMIC CONTENT FOR TRAMES ---

@@ -5,6 +5,7 @@ import { ArrowLeft, PlayCircle, Eye, Calendar, Clock, Lock, ShoppingBag } from '
 import { createClient } from '@/lib/supabase/server';
 import BunnyVideoTracker from '@/components/BunnyVideoTracker';
 import KidsCommentsSection from '@/components/KidsComments';
+import CheckoutButton from '@/components/CheckoutButton';
 
 export const metadata = {
     title: 'Lecture Vidéo | Club des Magiciens',
@@ -38,6 +39,14 @@ export default async function KidsVideoPlayerPage({ params }: { params: { videoI
     let isLockedPremium = false;
     let salesUrl = "";
 
+    // Check if user is admin or Jérémy
+    const { data: profile } = await supabase
+        .from("profiles")
+        .select("role")
+        .eq("id", user.id)
+        .single();
+    const isAdmin = profile?.role === 'admin' || (user.email?.includes('admin@') ?? false);
+
     if (libraryItem && libraryItem.sales_page_url) {
         // It's a premium item, we must check if the user owns it
         const { data: purchase } = await supabase
@@ -47,9 +56,18 @@ export default async function KidsVideoPlayerPage({ params }: { params: { videoI
             .eq('library_item_id', libraryItem.id)
             .single();
 
-        if (!purchase) {
+        if (!purchase && !isAdmin) {
             isLockedPremium = true;
-            salesUrl = `${libraryItem.sales_page_url}?prefilled_email=${encodeURIComponent(user.email || '')}&client_reference_id=${user.id}___${libraryItem.id}`;
+        }
+    } else if (libraryItem && libraryItem.week_number && !isAdmin) {
+        // --- Drip Feed Time Lock Check ---
+        const { data: userProfile } = await supabase.from('profiles').select('created_at').eq('id', user.id).single();
+        if (userProfile && userProfile.created_at) {
+            const diffDays = Math.ceil(Math.abs(new Date().getTime() - new Date(userProfile.created_at).getTime()) / (1000 * 60 * 60 * 24));
+            const currentWeek = Math.floor(diffDays / 7) + 1; // Adult offsets 1
+            if (libraryItem.week_number > currentWeek) {
+                redirect('/dashboard/library');
+            }
         }
     }
 
@@ -150,10 +168,10 @@ export default async function KidsVideoPlayerPage({ params }: { params: { videoI
                                     Pour regarder <strong className="text-white">{video.title}</strong>, tu dois posséder ce secret dans ta collection.
                                 </p>
 
-                                <a href={salesUrl} target="_blank" rel="noopener noreferrer" className="bg-gradient-to-r from-brand-royal to-yellow-500 text-black font-black py-4 px-8 rounded-xl flex items-center gap-3 hover:scale-105 transition-transform shadow-[0_10px_30px_rgba(250,204,21,0.4)]">
+                                <CheckoutButton itemId={libraryItem?.id} space="adults" className="bg-gradient-to-r from-brand-royal to-yellow-500 text-black font-black py-4 px-8 rounded-xl flex items-center gap-3 hover:scale-105 transition-transform shadow-[0_10px_30px_rgba(250,204,21,0.4)]">
                                     <ShoppingBag className="w-5 h-5" />
                                     Acheter pour débloquer {libraryItem?.price_label ? `(${libraryItem.price_label})` : ''}
-                                </a>
+                                </CheckoutButton>
                             </div>
                         </div>
                     ) : (

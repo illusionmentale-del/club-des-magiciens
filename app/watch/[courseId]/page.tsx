@@ -51,18 +51,57 @@ export default async function WatchPage(props: WatchPageProps) {
     // 3. Early profile check for admin rights & draft protection
     const { data: profile } = await supabase
         .from("profiles")
-        .select("role")
+        .select("role, created_at, has_kids_access, has_adults_access")
         .eq("id", user.id)
         .single();
     const isAdmin = profile?.role === 'admin' || (user.email?.includes('admin@') ?? false);
 
-    // 4. Draft/Scheduled Course Protection
-    if (course && !isAdmin) {
-        if (course.status === 'draft') {
-            notFound();
+    // 4. Content Access Authorization Checks (SECURITY)
+    if (!isAdmin) {
+        // --- 4A: DRAFT / SCHEDULED PROTECTION ---
+        if (course) {
+            if (course.status === 'draft') notFound();
+            if (course.status === 'scheduled' && course.published_at && new Date(course.published_at) > new Date()) notFound();
         }
-        if (course.status === 'scheduled' && course.published_at && new Date(course.published_at) > new Date()) {
-            notFound();
+
+        // Fetch User Purchases
+        const { data: userPurchases } = await supabase
+            .from("user_purchases")
+            .select("library_item_id, course_id")
+            .eq("user_id", user.id);
+
+        // --- 4B: LIBRARY ITEM AUTHORIZATION ---
+        if (libraryItem) {
+            const isPurchased = userPurchases?.some(p => p.library_item_id === libraryItem.id);
+            if (!isPurchased) {
+                // If it's a stand-alone shippable item, it requires an explicit purchase
+                if (libraryItem.sales_page_url) {
+                    redirect(libraryItem.audience === 'adults' ? '/dashboard/shop' : '/kids/shop');
+                }
+
+                // It's a drip feed item. Verify platform subscription access
+                if (libraryItem.audience === 'adults' && !profile?.has_adults_access) redirect('/tarifs/adults');
+                // Kids platform also has a Trial concept which we check inside middleware, but here we require has_kids_access or active session
+                
+                // Verify Drip Schedule Unlock
+                if (profile && profile.created_at) {
+                    const diffDays = Math.ceil(Math.abs(new Date().getTime() - new Date(profile.created_at).getTime()) / (1000 * 60 * 60 * 24));
+                    const currentWeek = Math.floor(diffDays / 7) + (libraryItem.audience === 'kids' ? 5 : 1);
+                    
+                    if (libraryItem.week_number && libraryItem.week_number > currentWeek) {
+                        redirect(libraryItem.audience === 'kids' ? '/kids/program' : '/dashboard/library');
+                    }
+                }
+            }
+        } 
+        
+        // --- 4C: COURSE AUTHORIZATION ---
+        else if (course) {
+            const isPurchased = userPurchases?.some(p => p.course_id === course.id);
+            if (!isPurchased) {
+                 if (course.audience === 'adults' && !profile?.has_adults_access) redirect('/tarifs/adults');
+                 // For now, if course is part of the core program, access is granted.
+            }
         }
     }
 

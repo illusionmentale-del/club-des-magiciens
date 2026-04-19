@@ -4,6 +4,12 @@ import { createClient } from "@/lib/supabase/client";
 import { useEffect, useState } from "react";
 import { Plus, Trash2, Trophy, Loader2, Save } from "lucide-react";
 import Image from "next/image";
+import { 
+    createBadgeAdmin, deleteBadgeAdmin, 
+    createLevelAdmin, deleteLevelAdmin, 
+    createSkinAdmin, deleteSkinAdmin, 
+    createQuestAdmin, deleteQuestAdmin 
+} from "./actions";
 
 type Badge = {
     id: string;
@@ -29,7 +35,7 @@ export default function AdminGamificationPage() {
     const [activeTab, setActiveTab] = useState<'badges' | 'quests' | 'levels' | 'skins'>('quests');
 
     const [newLevel, setNewLevel] = useState({ name: "", xp_threshold: 0 });
-    const [newSkin, setNewSkin] = useState({ name: "", image_url: "", price_xp: 0, is_default: false });
+    const [newSkin, setNewSkin] = useState({ name: "", image_url: "", price_xp: 0, is_default: false, target_audience: "kids" });
 
     // New Badge State
     const [newBadge, setNewBadge] = useState<Partial<Badge>>({
@@ -82,50 +88,68 @@ export default function AdminGamificationPage() {
 
     const handleDelete = async (id: string) => {
         if (!confirm("Supprimer ce badge ?")) return;
-        const { error } = await supabase.from("badges").delete().eq("id", id);
-        if (error) alert("Erreur lors de la suppression");
-        else fetchBadges();
+        try {
+            await deleteBadgeAdmin(id);
+            fetchBadges();
+        } catch (error: any) {
+            alert("Erreur lors de la suppression: " + error.message);
+        }
     };
 
     const handleCreateLevel = async () => {
         if (!newLevel.name) return;
-        await supabase.from("gamification_levels").insert([newLevel]);
-        setShowLevelForm(false);
-        setNewLevel({ name: "", xp_threshold: 0 });
-        fetchLevels();
+        try {
+            await createLevelAdmin(newLevel);
+            setShowLevelForm(false);
+            setNewLevel({ name: "", xp_threshold: 0 });
+            fetchLevels();
+        } catch (error: any) {
+            alert("Erreur: " + error.message);
+        }
     };
 
     const handleDeleteLevel = async (id: string) => {
         if (!confirm("Supprimer ce niveau ?")) return;
-        await supabase.from("gamification_levels").delete().eq("id", id);
-        fetchLevels();
+        try {
+            await deleteLevelAdmin(id);
+            fetchLevels();
+        } catch (error: any) {
+            alert("Erreur: " + error.message);
+        }
     };
 
     const handleCreateSkin = async () => {
         if (!newSkin.name || !newSkin.image_url) return alert("Nom et image requis");
-        await supabase.from("avatar_skins").insert([newSkin]);
-        setShowSkinForm(false);
-        setNewSkin({ name: "", image_url: "", price_xp: 0, is_default: false });
-        fetchSkins();
+        try {
+            await createSkinAdmin(newSkin);
+            setShowSkinForm(false);
+            setNewSkin({ name: "", image_url: "", price_xp: 0, is_default: false, target_audience: "kids" });
+            fetchSkins();
+        } catch (error: any) {
+            alert("Erreur: " + error.message);
+        }
     };
 
     const handleDeleteSkin = async (id: string) => {
         if (!confirm("Attention: si des enfants utilisent ce skin, ils le perdront. Continuer ?")) return;
-        await supabase.from("avatar_skins").delete().eq("id", id);
-        fetchSkins();
+        try {
+            await deleteSkinAdmin(id);
+            fetchSkins();
+        } catch (error: any) {
+            alert("Erreur: " + error.message);
+        }
     };
 
     const handleCreate = async () => {
         if (!newBadge.name) return alert("Nom requis");
-
-        const { error } = await supabase.from("badges").insert([newBadge]);
-        if (error) {
-            console.error(error);
-            alert("Erreur lors de la création");
-        } else {
+        try {
+            await createBadgeAdmin(newBadge);
             setShowForm(false);
             setNewBadge({ name: "", description: "", image_url: "", condition_type: "manual", condition_value: "" });
             fetchBadges();
+        } catch (error: any) {
+            console.error(error);
+            alert("Erreur lors de la création: " + error.message);
         }
     };
 
@@ -137,7 +161,8 @@ export default function AdminGamificationPage() {
         reward_type: "badge", // 'badge', 'avatar', 'video'
         reward_xp: 0,
         reward_item_id: "",
-        icon_url: ""
+        icon_url: "",
+        target_audience: "kids"
     });
 
     const handleCreateQuest = async () => {
@@ -152,24 +177,28 @@ export default function AdminGamificationPage() {
             reward_xp: parseInt(newQuest.reward_xp) || 0,
             reward_item_id: newQuest.reward_item_id || null,
             icon_url: newQuest.icon_url || null,
+            target_audience: newQuest.target_audience
         };
 
-        const { error } = await supabase.from("gamification_quests").insert(payload);
-        if (error) {
-            console.error(error);
-            alert("Erreur lors de la création de la quête (Assurez-vous d'avoir ajouté la colonne reward_type en SQL)");
-        } else {
+        try {
+            await createQuestAdmin(payload);
             setShowQuestForm(false);
-            setNewQuest({ title: "", description: "", trigger_type: "videos_watched", trigger_value: 0, reward_type: "badge", reward_xp: 0, reward_item_id: "", icon_url: "" });
+            setNewQuest({ title: "", description: "", trigger_type: "videos_watched", trigger_value: 0, reward_type: "badge", reward_xp: 0, reward_item_id: "", icon_url: "", target_audience: "kids" });
             fetchQuests();
+        } catch (error: any) {
+            console.error(error);
+            alert("Erreur lors de la création de la quête: " + error.message);
         }
     };
 
     const handleDeleteQuest = async (id: string) => {
         if (!confirm("Supprimer cette quête ?")) return;
-        const { error } = await supabase.from("gamification_quests").delete().eq("id", id);
-        if (error) alert("Erreur lors de la suppression");
-        else fetchQuests();
+        try {
+            await deleteQuestAdmin(id);
+            fetchQuests();
+        } catch (error: any) {
+            alert("Erreur: " + error.message);
+        }
     };
 
     return (
@@ -243,12 +272,23 @@ export default function AdminGamificationPage() {
                                         value={newQuest.title}
                                         onChange={e => setNewQuest({ ...newQuest, title: e.target.value })}
                                     />
-                                    <input
-                                        placeholder="URL de l'Icone (Optionnel)"
-                                        className="bg-black/40 border border-white/10 rounded-lg p-3 text-white outline-none focus:border-green-500"
-                                        value={newQuest.icon_url}
-                                        onChange={e => setNewQuest({ ...newQuest, icon_url: e.target.value })}
-                                    />
+                                    <div className="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <input
+                                            placeholder="URL icône (Optionnel)"
+                                            className="bg-black/40 border border-white/10 rounded-lg p-3 text-white outline-none focus:border-green-500"
+                                            value={newQuest.icon_url}
+                                            onChange={e => setNewQuest({ ...newQuest, icon_url: e.target.value })}
+                                        />
+                                        <select
+                                            className="bg-black/40 border border-white/10 rounded-lg p-3 text-white outline-none focus:border-green-500"
+                                            value={newQuest.target_audience}
+                                            onChange={e => setNewQuest({ ...newQuest, target_audience: e.target.value })}
+                                        >
+                                            <option value="kids">Enfants uniquement</option>
+                                            <option value="adults">Adultes uniquement</option>
+                                            <option value="all">Pour tous</option>
+                                        </select>
+                                    </div>
                                     <div className="md:col-span-2 flex gap-2">
                                         <select
                                             className="w-1/2 bg-black/40 border border-white/10 rounded-lg p-3 text-white outline-none focus:border-green-500"
@@ -357,7 +397,7 @@ export default function AdminGamificationPage() {
                                         </div>
                                     )}
                                     <div className="flex-1">
-                                        <h3 className="font-bold text-white text-lg">{quest.title}</h3>
+                                        <h3 className="font-bold text-white text-lg">{quest.title} <span className="text-[10px] bg-white/10 px-1.5 py-0.5 rounded text-gray-400 ml-2 uppercase tracking-widest">{quest.target_audience}</span></h3>
                                         <p className="text-sm text-gray-400 mb-3">{quest.description}</p>
                                         <div className="flex items-center gap-3">
                                             <span className="text-xs uppercase font-bold bg-white/10 px-2.5 py-1 rounded-md text-gray-300 flex items-center gap-1">
@@ -455,6 +495,15 @@ export default function AdminGamificationPage() {
                                         value={newSkin.image_url}
                                         onChange={e => setNewSkin({ ...newSkin, image_url: e.target.value })}
                                     />
+                                    <select
+                                        className="bg-black/40 border border-white/10 rounded-lg p-3 text-white outline-none focus:border-pink-500 md:col-span-2"
+                                        value={newSkin.target_audience}
+                                        onChange={e => setNewSkin({ ...newSkin, target_audience: e.target.value })}
+                                    >
+                                        <option value="kids">Enfants uniquement</option>
+                                        <option value="adults">Adultes uniquement (Noir, Or, Bleu Roi)</option>
+                                        <option value="all">Pour tous</option>
+                                    </select>
                                     <div className="flex items-center gap-2 bg-white/5 p-3 rounded-lg border border-white/5">
                                         <span className="text-yellow-400 font-bold">⭐ Prix en Éclats :</span>
                                         <input
@@ -500,6 +549,7 @@ export default function AdminGamificationPage() {
                                     </div>
                                     
                                     <h3 className="font-bold text-white text-lg">{skin.name}</h3>
+                                    <span className="text-[10px] text-gray-400 uppercase tracking-widest">{skin.target_audience}</span>
                                     
                                     <div className="mt-2 text-sm font-bold">
                                         {skin.is_default ? (

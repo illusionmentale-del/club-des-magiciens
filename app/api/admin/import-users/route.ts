@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { createClient } from "@/lib/supabase/server";
 import { Resend } from "resend";
 import WelcomeEmail from "@/emails/WelcomeEmail";
 import * as React from "react";
@@ -8,6 +9,18 @@ const resend = new Resend(process.env.RESEND_API_KEY!);
 
 export async function POST(req: Request) {
     try {
+        const supabase = await createClient();
+        const { data: { user } } = await supabase.auth.getUser();
+
+        if (!user) {
+            return NextResponse.json({ error: "Non autorisé" }, { status: 401 });
+        }
+
+        const { data: profile } = await supabase.from('profiles').select('role').eq('id', user.id).single();
+        if (profile?.role !== 'admin' && profile?.role !== 'super_admin') {
+            return NextResponse.json({ error: "Accès refusé. Privilèges insuffisants." }, { status: 403 });
+        }
+
         const { users } = await req.json();
         const supabaseAdmin = await createAdminClient();
 
@@ -43,15 +56,15 @@ export async function POST(req: Request) {
                     // Si l'utilisateur existe déjà, on le gère gracieusement
                     if (authError.message.includes("User already registered") || authError.status === 422) {
                         // User exists! We should fetch them and update their profile with has_kids_access = true
-                        const { data: searchData } = await supabaseAdmin.auth.admin.listUsers();
-                        const existingUser = searchData.users.find((u: any) => u.email === email);
+                        // Trouver le user ID via la table profiles pour éviter le bug de pagination strict de listUsers()
+                        const { data: existingProfile } = await supabaseAdmin.from('profiles').select('id').eq('email', email).single();
 
-                        if (existingUser) {
+                        if (existingProfile) {
                             // Mettre à jour has_kids_access et access_level dans profile
                             await supabaseAdmin
                                 .from('profiles')
                                 .update({ has_kids_access: true, access_level: 'kid' })
-                                .eq('id', existingUser.id);
+                                .eq('id', existingProfile.id);
 
                             errors.push({ email, message: "L'utilisateur existait déjà. Son compte a été mis à jour avec l'accès Enfant." });
                         } else {

@@ -54,6 +54,12 @@ export async function registerAccount(prevState: any, formData: FormData) {
         return { error: "Compte créé mais erreur de connexion automatique." };
     }
 
-    // 4. Redirect them to where they were going (e.g. /tarifs/kids)
-    redirect(redirectUrl);
+    // 5. SECURITY: Prevent Open Redirect attacks
+    let finalRedirectUrl = redirectUrl;
+    if (!finalRedirectUrl.startsWith('/') || finalRedirectUrl.startsWith('//')) {
+        finalRedirectUrl = '/kids';
+    }
+
+    // 6. Redirect them to where they were going (e.g. /tarifs/kids)
+    redirect(finalRedirectUrl);
 }

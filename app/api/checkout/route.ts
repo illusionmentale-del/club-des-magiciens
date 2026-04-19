@@ -73,6 +73,15 @@ export async function POST(req: Request) {
             clientReferenceId = user.id;
         }
 
+        // Verify price ID on server to prevent Price Spoofing (Data Tampering)
+        const { data: productData } = await supabase.from('products').select('stripe_price_id').eq('id', productId).single();
+        
+        if (!productData || !productData.stripe_price_id) {
+            return NextResponse.json({ error: "Configuration du prix introuvable." }, { status: 400 });
+        }
+        
+        const verifiedPriceId = productData.stripe_price_id;
+
         const origin = new URL(req.url).origin;
 
         // 2. Create Session
@@ -80,7 +89,7 @@ export async function POST(req: Request) {
             customer: customerId,
             line_items: [
                 {
-                    price: priceId,
+                    price: verifiedPriceId,
                     quantity: 1,
                 },
             ],

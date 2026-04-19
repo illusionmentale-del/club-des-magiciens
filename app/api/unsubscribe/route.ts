@@ -10,11 +10,12 @@ export async function GET(req: Request) {
     }
 
     try {
-        const supabase = await createClient();
+        const { createAdminClient } = require('@/lib/supabase/admin');
+        const supabaseAdmin = await createAdminClient();
         const decodedEmail = decodeURIComponent(email);
 
-        // Update the profile to revoke newsletter consent
-        const { error } = await supabase
+        // Update the profile to revoke newsletter consent (Bypass RLS because user is likely anonymous here)
+        const { error } = await supabaseAdmin
             .from('profiles')
             .update({ newsletter_opt_in: false })
             .eq('email', decodedEmail);

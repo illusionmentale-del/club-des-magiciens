@@ -15,6 +15,8 @@ export async function createNews(formData: FormData) {
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) throw new Error("Unauthorized");
+    const { data: profileCheck } = await supabase.from('profiles').select('role').eq('id', user.id).single();
+    if (profileCheck?.role !== 'admin') throw new Error("Forbidden");
 
     const title = formData.get("title") as string;
     const content = formData.get("content") as string;
@@ -40,6 +42,11 @@ export async function createNews(formData: FormData) {
 
 export async function deleteNews(id: string) {
     const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) throw new Error("Unauthorized");
+    const { data: profileCheck } = await supabase.from('profiles').select('role').eq('id', user.id).single();
+    if (profileCheck?.role !== 'admin') throw new Error("Forbidden");
+
     const { error } = await supabase.from("news").delete().eq("id", id);
     if (error) {
         console.error("Error deleting news:", error);
@@ -53,6 +60,11 @@ export async function deleteNews(id: string) {
 
 export async function updateSettings(formData: FormData) {
     const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) throw new Error("Unauthorized");
+    const { data: profileCheck } = await supabase.from('profiles').select('role').eq('id', user.id).single();
+    if (profileCheck?.role !== 'admin') throw new Error("Forbidden");
+
     const context = formData.get("context") as string; // 'adult' | 'kid'
     const isKid = context === 'kid';
     const prefix = isKid ? 'kid_' : '';
@@ -250,8 +262,10 @@ export async function uploadLogo(formData: FormData) {
 
 export async function createLive(formData: FormData) {
     const supabase = await createClient();
-
-    // Auth check should be here or rely on RLS (Admin only)
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) throw new Error("Unauthorized");
+    const { data: profileCheck } = await supabase.from('profiles').select('role').eq('id', user.id).single();
+    if (profileCheck?.role !== 'admin') throw new Error("Forbidden");
 
     const title = formData.get("title") as string;
     const start_date = formData.get("start_date") as string;
@@ -278,6 +292,10 @@ export async function createLive(formData: FormData) {
 
 export async function updateLiveStatus(id: string, status: string, vimeoId?: string) {
     const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) throw new Error("Unauthorized");
+    const { data: profileCheck } = await supabase.from('profiles').select('role').eq('id', user.id).single();
+    if (profileCheck?.role !== 'admin') throw new Error("Forbidden");
 
     const updates: any = { status };
     if (status === 'terminé' && vimeoId) {
@@ -293,12 +311,22 @@ export async function updateLiveStatus(id: string, status: string, vimeoId?: str
 
 export async function deleteLive(id: string) {
     const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) throw new Error("Unauthorized");
+    const { data: profileCheck } = await supabase.from('profiles').select('role').eq('id', user.id).single();
+    if (profileCheck?.role !== 'admin') throw new Error("Forbidden");
+
     await supabase.from("lives").delete().eq("id", id);
     revalidatePath("/admin/lives");
 }
 
 export async function updateLiveRoom(id: string, newPlatformId: string, newTitle?: string) {
     const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) throw new Error("Unauthorized");
+    const { data: profileCheck } = await supabase.from('profiles').select('role').eq('id', user.id).single();
+    if (profileCheck?.role !== 'admin') throw new Error("Forbidden");
+
     const updates: any = { platform_id: newPlatformId };
     if (newTitle) updates.title = newTitle;
     await supabase.from("lives").update(updates).eq("id", id);
@@ -312,6 +340,8 @@ export async function createCourse(formData: FormData) {
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) throw new Error("Unauthorized");
+    const { data: profileCheck } = await supabase.from('profiles').select('role').eq('id', user.id).single();
+    if (profileCheck?.role !== 'admin') throw new Error("Forbidden");
 
     const title = formData.get("title") as string;
     const description = formData.get("description") as string;
@@ -344,6 +374,8 @@ export async function updateCourse(id: string, formData: FormData) {
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) throw new Error("Unauthorized");
+    const { data: profileCheck } = await supabase.from('profiles').select('role').eq('id', user.id).single();
+    if (profileCheck?.role !== 'admin') throw new Error("Forbidden");
 
     const title = formData.get("title") as string;
     const description = formData.get("description") as string;
@@ -376,6 +408,8 @@ export async function deleteCourse(id: string) {
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) throw new Error("Unauthorized");
+    const { data: profileCheck } = await supabase.from('profiles').select('role').eq('id', user.id).single();
+    if (profileCheck?.role !== 'admin') throw new Error("Forbidden");
 
     const { error } = await supabase.from("courses").delete().eq('id', id);
 
@@ -396,6 +430,8 @@ export async function addVideo(courseId: string, formData: FormData) {
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) throw new Error("Unauthorized");
+    const { data: profileCheck } = await supabase.from('profiles').select('role').eq('id', user.id).single();
+    if (profileCheck?.role !== 'admin') throw new Error("Forbidden");
 
     const title = formData.get("title") as string;
     const description = formData.get("description") as string;
@@ -422,6 +458,8 @@ export async function deleteVideo(courseId: string, videoId: string) {
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) throw new Error("Unauthorized");
+    const { data: profileCheck } = await supabase.from('profiles').select('role').eq('id', user.id).single();
+    if (profileCheck?.role !== 'admin') throw new Error("Forbidden");
 
     await supabase.from("videos").delete().eq("id", videoId);
     revalidatePath(`/admin/courses/${courseId}`);
@@ -995,11 +1033,24 @@ export async function updateLibraryItemsOrder(items: { id: string, position: num
 }
 
 // --- GAMIFICATION ADMIN ACTIONS ---
-export async function getAdminUserGamificationDetails(userId: string) {
+async function verifyCallerIsAdmin() {
+    const { createClient: createLocalClient } = await import("@/lib/supabase/server");
+    const supabase = await createLocalClient();
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) throw new Error("Unauthorized");
+    
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
     const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
     const { createClient } = await import("@supabase/supabase-js");
     const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey, { auth: { persistSession: false }});
+    
+    const { data: profileCheck } = await supabaseAdmin.from('profiles').select('role').eq('id', user.id).single();
+    if (profileCheck?.role !== 'admin') throw new Error("Forbidden");
+    return supabaseAdmin;
+}
+
+export async function getAdminUserGamificationDetails(userId: string) {
+    const supabaseAdmin = await verifyCallerIsAdmin();
 
     // Fetches bypass RLS
     const [
@@ -1057,50 +1108,35 @@ export async function getAdminUserGamificationDetails(userId: string) {
 }
 
 export async function adminValidateItem(userId: string, itemId: string) {
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-    const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
-    const { createClient } = await import("@supabase/supabase-js");
-    const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey, { auth: { persistSession: false }});
+    const supabaseAdmin = await verifyCallerIsAdmin();
     
     const { error } = await supabaseAdmin.from("library_progress").insert({ user_id: userId, item_id: itemId });
     return { success: !error, error: error?.message };
 }
 
 export async function adminRevokeItem(progressId: string) {
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-    const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
-    const { createClient } = await import("@supabase/supabase-js");
-    const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey, { auth: { persistSession: false }});
+    const supabaseAdmin = await verifyCallerIsAdmin();
     
     const { error } = await supabaseAdmin.from("library_progress").delete().eq("id", progressId);
     return { success: !error, error: error?.message };
 }
 
 export async function adminGiveBadge(userId: string, badgeId: string) {
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-    const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
-    const { createClient } = await import("@supabase/supabase-js");
-    const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey, { auth: { persistSession: false }});
+    const supabaseAdmin = await verifyCallerIsAdmin();
     
     const { error } = await supabaseAdmin.from("user_badges").insert({ user_id: userId, badge_id: badgeId });
     return { success: !error, error: error?.message };
 }
 
 export async function adminRevokeBadge(userBadgeId: string) {
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-    const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
-    const { createClient } = await import("@supabase/supabase-js");
-    const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey, { auth: { persistSession: false }});
+    const supabaseAdmin = await verifyCallerIsAdmin();
     
     const { error } = await supabaseAdmin.from("user_badges").delete().eq("id", userBadgeId);
     return { success: !error, error: error?.message };
 }
 
 export async function adminGiveGift(userId: string, itemId: string) {
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-    const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
-    const { createClient } = await import("@supabase/supabase-js");
-    const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey, { auth: { persistSession: false }});
+    const supabaseAdmin = await verifyCallerIsAdmin();
     
     const { error } = await supabaseAdmin.from("user_purchases").upsert({
         user_id: userId,
@@ -1111,11 +1147,29 @@ export async function adminGiveGift(userId: string, itemId: string) {
     return { success: !error, error: error?.message };
 }
 
-export async function adminRevokeGift(purchaseId: string) {
+export async function adminGiveGiftXP(userId: string, amount: number) {
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
     const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
     const { createClient } = await import("@supabase/supabase-js");
+    // Ensure caller is admin (bypasses RLS so we must check)
+    // Wait, since admin actions don't check `supabase.auth.getUser()`, is it protected?
+    // YES, admin actions are protected in the middleware usually, but they should really check it.
+    // I'll add a quick check.
+    const { createClient: createLocalClient } = await import("@/lib/supabase/server");
+    const supabase = await createLocalClient();
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) throw new Error("Unauthorized");
     const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey, { auth: { persistSession: false }});
+    const { data: profileCheck } = await supabaseAdmin.from('profiles').select('role').eq('id', user.id).single();
+    if (profileCheck?.role !== 'admin') throw new Error("Forbidden");
+
+    const { internal_grantAwardXP } = await import("@/lib/gamification");
+    const res = await internal_grantAwardXP(userId, 'admin_manual_gift', amount, `admin_gift_${Date.now()}`);
+    return { success: res.success, error: res.error || null };
+}
+
+export async function adminRevokeGift(purchaseId: string) {
+    const supabaseAdmin = await verifyCallerIsAdmin();
     
     const { error } = await supabaseAdmin.from("user_purchases").delete().eq("id", purchaseId);
     return { success: !error, error: error?.message };
@@ -1123,10 +1177,7 @@ export async function adminRevokeGift(purchaseId: string) {
 
 export async function generateImpersonationLink(userId: string) {
     try {
-        const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-        const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
-        const { createClient } = await import("@supabase/supabase-js");
-        const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey, { auth: { persistSession: false }});
+        const supabaseAdmin = await verifyCallerIsAdmin();
 
         // 1. Fetch user email
         const { data: user, error: userError } = await supabaseAdmin.auth.admin.getUserById(userId);
@@ -1152,4 +1203,44 @@ export async function generateImpersonationLink(userId: string) {
     } catch (error: any) {
         return { success: false, error: `CRASH SERVEUR: ${error.message}` };
     }
+}
+// --- USER PROGRESS AND GAMIFICATION ACTIONS ---
+export async function adminValidateLibraryItem(userId: string, itemId: string) {
+    const supabaseAdmin = await verifyCallerIsAdmin();
+    const { error } = await supabaseAdmin.from("library_progress").insert({ user_id: userId, item_id: itemId });
+    if (error) return { error: error.message };
+    revalidatePath(`/admin/adults/users/${userId}`);
+    return { success: true };
+}
+
+export async function adminRevokeLibraryItem(progressId: string, userId: string) {
+    const supabaseAdmin = await verifyCallerIsAdmin();
+    const { error } = await supabaseAdmin.from("library_progress").delete().eq("id", progressId);
+    if (error) return { error: error.message };
+    revalidatePath(`/admin/adults/users/${userId}`);
+    return { success: true };
+}
+
+export async function adminGiveBadge(userId: string, badgeId: string) {
+    const supabaseAdmin = await verifyCallerIsAdmin();
+    const { error } = await supabaseAdmin.from("user_badges").insert({ user_id: userId, badge_id: badgeId });
+    if (error) return { error: error.message };
+    revalidatePath(`/admin/adults/users/${userId}`);
+    return { success: true };
+}
+
+export async function adminRevokeBadge(userBadgeId: string, userId: string) {
+    const supabaseAdmin = await verifyCallerIsAdmin();
+    const { error } = await supabaseAdmin.from("user_badges").delete().eq("id", userBadgeId);
+    if (error) return { error: error.message };
+    revalidatePath(`/admin/adults/users/${userId}`);
+    return { success: true };
+}
+
+export async function adminToggleNewsletter(userId: string, status: boolean) {
+    const supabaseAdmin = await verifyCallerIsAdmin();
+    const { error } = await supabaseAdmin.from("profiles").update({ newsletter_opt_in: status }).eq("id", userId);
+    if (error) return { error: error.message };
+    revalidatePath(`/admin/adults/users/${userId}`);
+    return { success: true };
 }

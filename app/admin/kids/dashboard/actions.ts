@@ -4,6 +4,10 @@ import { createClient } from "@/lib/supabase/server";
 
 export async function getKidsDashboardStats() {
     const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return null;
+    const { data: profileCheck } = await supabase.from('profiles').select('role').eq('id', user.id).single();
+    if (profileCheck?.role !== 'admin') return null;
 
     // 1. Get total kids profiles and tracking connections
     const { data: profiles, error: profileError } = await supabase

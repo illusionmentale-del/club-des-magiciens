@@ -360,14 +360,17 @@ export default function AdminUserDetailPage() {
                                                 const val = parseInt(el.value);
                                                 if (isNaN(val) || val === 0) return alert("Montant invalide");
                                                 if (!confirm(`Créditer ${val} Éclats / XP à cet enfant ?`)) return;
-                                                const { grantAwardXP } = await import("@/app/actions/xp");
-                                                const res = await grantAwardXP(id as string, 'admin_manual_gift', val, `admin_gift_${Date.now()}`);
-                                                if (res?.success) {
-                                                    alert("Éclats / XP ajoutés !");
-                                                    el.value = "";
-                                                    fetchData();
-                                                } else {
-                                                    alert(res?.error || res?.warning || "Erreur inconnue");
+                                                try {
+                                                    const { adminGiveGiftXP } = await import("@/app/admin/actions");
+                                                    const res = await adminGiveGiftXP(id as string, val);
+                                                    if (res?.error) {
+                                                        alert(res.error);
+                                                    } else {
+                                                        alert(`✅ ${val} XP ajoutés avec succès !`);
+                                                        window.location.reload();
+                                                    }
+                                                } catch (e: any) {
+                                                    alert("Erreur: " + e.message);
                                                 }
                                             }}
                                             className="bg-yellow-500 hover:bg-yellow-400 text-black font-bold px-4 rounded-lg text-xs tracking-widest uppercase transition-colors"

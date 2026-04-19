@@ -2,6 +2,7 @@ import Sidebar from "@/components/Sidebar";
 import MobileNav from "@/components/MobileNav";
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
+import { enforceDeviceLimit } from "@/lib/deviceLimit";
 
 export default async function DashboardLayout({
     children,
@@ -15,6 +16,9 @@ export default async function DashboardLayout({
         // Redirect to login if not authenticated (though middleware usually handles this)
         // redirect("/login");
     } else {
+        // STRICT DEVICE SHARING LIMIT
+        await enforceDeviceLimit(user.id);
+
         // STRICT SEPARATION: Check if user has adult access
         const { data: profile } = await supabase.from('profiles').select('has_adults_access').eq('id', user.id).single();
         if (!profile?.has_adults_access) {
@@ -39,10 +43,38 @@ export default async function DashboardLayout({
         enable_adults_catalog: true,
     };
 
+    let currentXP = 0;
+    let lifetimeXP = 0;
+    let magicLevel = "Initié";
+    let avatarUrl = "";
+    let userName = "";
+
     if (user) {
-        const { data: profile } = await supabase.from("profiles").select("role, has_kids_access").eq("id", user.id).single();
+        const { data: profile } = await supabase.from("profiles").select("role, has_kids_access, full_name, username, avatar_skins(image_url)").eq("id", user.id).single();
         isAdmin = profile?.role === 'admin';
         hasKidsAccess = profile?.has_kids_access || false;
+
+        // Fetch XP Balance
+        try {
+            const { data: xpLogs } = await supabase.from('user_xp_logs').select('xp_awarded').eq('user_id', user.id);
+            if (xpLogs) {
+                currentXP = xpLogs.reduce((acc, log) => acc + log.xp_awarded, 0);
+                lifetimeXP = xpLogs.reduce((acc, log) => acc + (log.xp_awarded > 0 ? log.xp_awarded : 0), 0);
+            }
+        } catch (e) {
+            console.error("Layout could not fetch XP", e);
+        }
+
+        // Determine Adult Magic Levels
+        if (lifetimeXP >= 150) magicLevel = "Illusionniste Confirmé";
+        else if (lifetimeXP >= 50) magicLevel = "Praticien";
+        else magicLevel = "Initié";
+
+        userName = profile?.username || profile?.full_name || "Élève";
+
+        if (profile?.avatar_skins && !Array.isArray(profile.avatar_skins) && typeof profile.avatar_skins === 'object') {
+             avatarUrl = (profile.avatar_skins as any).image_url || "";
+        }
 
         const { data: settings } = await supabase.from("settings").select("*");
 
@@ -70,9 +102,9 @@ export default async function DashboardLayout({
 
     return (
         <div className="flex h-screen bg-magic-bg overflow-hidden">
-            <Sidebar isAdmin={isAdmin} socialLinks={socialLinks} logoUrl={siteLogo} hasKidsAccess={hasKidsAccess} toggles={toggles} />
+            <Sidebar isAdmin={isAdmin} socialLinks={socialLinks} logoUrl={siteLogo} hasKidsAccess={hasKidsAccess} toggles={toggles} xpBalance={currentXP} lifetimeXP={lifetimeXP} magicLevel={magicLevel} avatarUrl={avatarUrl} userName={userName} />
             <div className="flex-1 flex flex-col md:pl-0">
-                <MobileNav isAdmin={isAdmin} hasKidsAccess={hasKidsAccess} toggles={toggles} />
+                <MobileNav isAdmin={isAdmin} hasKidsAccess={hasKidsAccess} toggles={toggles} xpBalance={currentXP} lifetimeXP={lifetimeXP} magicLevel={magicLevel} avatarUrl={avatarUrl} userName={userName} />
                 <main className="flex-1 overflow-y-auto bg-magic-bg p-4 md:p-8">
                     {children}
                 </main>

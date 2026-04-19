@@ -27,6 +27,7 @@ type LibraryItem = {
     published_at?: string;
     sales_page_url?: string | null;
     price_label?: string | null;
+    stripe_price_id?: string | null;
     public_slug?: string | null;
     public_description?: string | null;
     tags?: string[];
@@ -60,6 +61,7 @@ export default function LibraryItemForm({ initialData }: { initialData?: Library
         published_at: new Date().toISOString().split('T')[0],
         sales_page_url: "",
         price_label: "",
+        stripe_price_id: "",
         public_slug: "",
         public_description: "",
         tags: []
@@ -147,6 +149,7 @@ export default function LibraryItemForm({ initialData }: { initialData?: Library
                 subtitle: formData.audience === 'adults' ? formData.subtitle : null,
                 sales_page_url: (isPremium && formData.sales_page_url?.trim()) ? formData.sales_page_url.trim() : null,
                 price_label: (isPremium && formData.price_label?.trim()) ? formData.price_label.trim() : null,
+                stripe_price_id: (isPremium && formData.stripe_price_id?.trim()) ? formData.stripe_price_id.trim() : null,
                 public_slug: (isPublic && formData.public_slug?.trim()) ? formData.public_slug.trim() : null,
                 public_description: (isPublic && formData.public_description?.trim()) ? formData.public_description.trim() : null,
             };
@@ -340,7 +343,7 @@ export default function LibraryItemForm({ initialData }: { initialData?: Library
                                                     const checked = e.target.checked;
                                                     setIsPremium(checked);
                                                     if (!checked) {
-                                                        setFormData(prev => ({ ...prev, sales_page_url: "", price_label: "" }));
+                                                        setFormData(prev => ({ ...prev, sales_page_url: "", price_label: "", stripe_price_id: "" }));
                                                     }
                                                 }}
                                                 className="sr-only peer"
@@ -374,6 +377,18 @@ export default function LibraryItemForm({ initialData }: { initialData?: Library
                                                 className="w-full bg-brand-bg border border-brand-border rounded-xl p-4 text-brand-text focus:border-brand-purple outline-none transition-all placeholder:text-brand-text-muted/20"
                                                 placeholder="Ex: 49,00 €"
                                             />
+                                        </div>
+                                        <div>
+                                            <label className="block text-brand-text-muted text-xs font-bold uppercase tracking-wider mb-2">ID Prix Stripe (price_...)</label>
+                                            <input
+                                                type="text"
+                                                name="stripe_price_id"
+                                                value={formData.stripe_price_id || ""}
+                                                onChange={handleChange}
+                                                className="w-full bg-brand-bg border border-brand-border rounded-xl p-4 text-brand-text focus:border-brand-purple outline-none transition-all placeholder:text-brand-text-muted/20"
+                                                placeholder="price_1QxYzZ..."
+                                            />
+                                            <p className="text-[10px] text-brand-text-muted mt-2">Nouveau système de paiement direct</p>
                                         </div>
                                     </div>
                                 )}

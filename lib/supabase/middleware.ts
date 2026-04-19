@@ -34,7 +34,23 @@ export async function updateSession(request: NextRequest) {
         data: { user },
     } = await supabase.auth.getUser()
 
-    // 0. DÉTECTION DU DOMAINE (Multi-Domain Routing)
+    // 0. DEVICE TRACKING (Fingerprinting)
+    let deviceSessionId = request.cookies.get('device_session_id')?.value;
+    if (!deviceSessionId) {
+        deviceSessionId = crypto.randomUUID();
+        // Set the cookie for future requests
+        supabaseResponse.cookies.set('device_session_id', deviceSessionId, {
+            path: '/',
+            maxAge: 60 * 60 * 24 * 365 * 5, // 5 years
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'lax',
+        });
+        // Mutate the request object so downstream handlers (layouts) can read it immediately during this request!
+        request.cookies.set('device_session_id', deviceSessionId);
+    }
+
+    // 1. DÉTECTION DU DOMAINE (Multi-Domain Routing)
     const hostname = request.headers.get('host') || '';
     // On considère "Atelier" si le host contient atelierdesmagiciens ou commence par atelier.
     const isAdultsDomain = hostname.includes('atelierdesmagiciens') || hostname.startsWith('atelier.');

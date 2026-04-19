@@ -4,6 +4,7 @@ import KidsLayoutClient from "@/components/KidsLayoutClient";
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
+import { enforceDeviceLimit } from "@/lib/deviceLimit";
 
 export const revalidate = 0;
 
@@ -18,6 +19,9 @@ export default async function KidsLayout({
     if (!user) {
         redirect("/login");
     }
+
+    // STRICT DEVICE SHARING LIMIT
+    await enforceDeviceLimit(user.id);
 
     // STRICT SEPARATION: Check if user has kids access or an active 24h trial
     const { data: profileCheck } = await supabase.from('profiles').select('has_kids_access, kids_trial_expires_at').eq('id', user.id).single();

@@ -25,6 +25,7 @@ export default async function KidsAchievementsPage() {
         .from("gamification_quests")
         .select("*")
         .eq("is_active", true)
+        .in("target_audience", ["kids", "all"])
         .order("reward_xp", { ascending: true }); // Trier par la taille de la récompense (donc difficulté globale)
 
     // 2. Fetch completed quests for user
@@ -134,8 +135,13 @@ export default async function KidsAchievementsPage() {
                                 >
                                     <div className="p-6 flex flex-col h-full">
                                         <div className="flex justify-between items-start mb-4">
-                                            <div className={`p-4 rounded-2xl ${isUnlocked ? 'bg-blue-500/20 text-blue-400' : 'bg-white/5 text-gray-500'}`}>
-                                                {quest.reward_type === 'video' ? <span className="text-3xl">🎬</span> : <span className="text-3xl">🎭</span>}
+                                            <div className={`w-16 h-16 rounded-2xl flex items-center justify-center p-2 shadow-inner 
+                                                ${isUnlocked ? 'bg-blue-500/20 border border-blue-500/30' : 'bg-white/5 border border-white/10'}`}>
+                                                {quest.reward_type === 'video' ? (
+                                                    <Image src="/achievements/reward_video.png" alt="Vidéo Secrète" width={48} height={48} className="drop-shadow-[0_0_8px_rgba(59,130,246,0.8)]" />
+                                                ) : (
+                                                    <Image src="/achievements/reward_avatar.png" alt="Avatar Légendaire" width={48} height={48} className="drop-shadow-[0_0_8px_rgba(236,72,153,0.8)]" />
+                                                )}
                                             </div>
                                             {!isUnlocked && <Lock className="w-6 h-6 text-gray-500" />}
                                         </div>
@@ -257,12 +263,12 @@ export default async function KidsAchievementsPage() {
                                         )}
 
                                         {quest.reward_xp > 0 && (
-                                            <div className={`mt-auto px-4 py-1.5 rounded-full text-xs font-bold flex items-center gap-1.5 shadow-lg border transition-colors duration-500
-                                                ${isUnlocked ? 'bg-brand-gold/10 text-brand-gold border-brand-gold/20' 
-                                                            : 'bg-black border-white/10 text-gray-700 group-hover:text-brand-gold group-hover:border-brand-gold/50'}`}
+                                            <div className={`mt-auto px-4 py-1.5 rounded-full text-xs font-bold flex items-center gap-2 shadow-lg border transition-colors duration-500
+                                                ${isUnlocked ? 'bg-brand-purple/20 text-brand-purple border-brand-purple/30' 
+                                                            : 'bg-black border-white/10 text-gray-700 group-hover:text-brand-purple group-hover:border-brand-purple/40'}`}
                                             >
-                                                <Star className={`w-3.5 h-3.5 ${isUnlocked ? 'fill-current' : ''}`} />
-                                                {isUnlocked ? `+ ${quest.reward_xp} Poussières GAGNÉES` : `${quest.reward_xp} Poussières à gagner`}
+                                                <Image src="/achievements/stardust.png" alt="XP" width={16} height={16} className={!isUnlocked ? "grayscale opacity-50 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500" : ""} />
+                                                {isUnlocked ? `+ ${quest.reward_xp} GAGNÉES` : `${quest.reward_xp} à gagner`}
                                             </div>
                                         )}
                                     </div>

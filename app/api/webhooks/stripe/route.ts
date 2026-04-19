@@ -18,20 +18,14 @@ export async function POST(req: Request) {
         const signature = req.headers.get('stripe-signature');
 
         if (!signature || !webhookSecret) {
-            console.error("Missing Stripe signature or Webhook Secret.");
-            // To allow testing without a webhook secret easily in dev:
-            // return NextResponse.json({ error: 'Missing configuration' }, { status: 400 });
+            console.error("Missing Stripe signature or Webhook Secret. Ensure STRIPE_WEBHOOK_SECRET is set.");
+            return NextResponse.json({ error: 'Missing configuration or signature' }, { status: 400 });
         }
 
         let event: Stripe.Event;
 
         try {
-            if (webhookSecret) {
-                event = stripe.webhooks.constructEvent(body, signature!, webhookSecret);
-            } else {
-                // Warning: Unverified webhook (Fallback for local dev if secret not set)
-                event = JSON.parse(body);
-            }
+            event = stripe.webhooks.constructEvent(body, signature, webhookSecret);
         } catch (err: any) {
             console.error(`Webhook signature verification failed: ${err.message}`);
             return NextResponse.json({ error: `Webhook Error: ${err.message}` }, { status: 400 });
@@ -45,15 +39,9 @@ export async function POST(req: Request) {
             let userId = session.metadata?.user_id;
             let libraryItemId = session.metadata?.library_item_id;
 
-            // Handle Payment Links which pass combined info in client_reference_id
+            // Safe identity resolution (client_reference_id now ONLY contains user ID from checkout)
             if (session.client_reference_id) {
-                if (session.client_reference_id.includes('___')) {
-                    const parts = session.client_reference_id.split('___');
-                    userId = userId || parts[0];
-                    libraryItemId = libraryItemId || parts[1];
-                } else {
-                    userId = userId || session.client_reference_id;
-                }
+                userId = userId || session.client_reference_id;
             }
 
             const productId = session.metadata?.product_id;

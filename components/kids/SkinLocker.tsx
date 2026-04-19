@@ -17,12 +17,13 @@ type Skin = {
 
 type Props = {
     skins: Skin[];
-    unlockedSkinIds: string[];
+    unlockedSkinIds?: string[];
     equippedSkinId: string | null;
-    trueXP: number;
+    trueXP?: number;
+    adultMode?: boolean;
 };
 
-export default function SkinLocker({ skins, unlockedSkinIds, equippedSkinId, trueXP }: Props) {
+export default function SkinLocker({ skins, unlockedSkinIds = [], equippedSkinId, trueXP = 0, adultMode = false }: Props) {
     const router = useRouter();
     const [loadingMap, setLoadingMap] = useState<Record<string, boolean>>({});
     const [previewSkin, setPreviewSkin] = useState<Skin | null>(null);
@@ -71,12 +72,21 @@ export default function SkinLocker({ skins, unlockedSkinIds, equippedSkinId, tru
 
     if (!skins || skins.length === 0) return null;
 
+    const accentColor = adultMode ? "text-magic-royal" : "text-pink-400";
+    const previewRing = adultMode ? "border-magic-royal shadow-[0_0_40px_rgba(0,102,255,0.4)]" : "border-brand-purple/50 shadow-[0_0_40px_rgba(168,85,247,0.4)]";
+    const btnEquippedBg = adultMode ? "bg-magic-royal/20 text-magic-royal border border-magic-royal/30" : "bg-pink-500/20 text-pink-400 border border-pink-500/30";
+    const btnEquipBg = adultMode ? "bg-white/10 hover:bg-white/20 text-white" : "bg-white/10 hover:bg-white/20 text-white";
+    const equippedRing = adultMode ? "border-magic-royal shadow-[0_0_20px_rgba(0,102,255,0.3)]" : "border-pink-500 shadow-[0_0_20px_rgba(236,72,153,0.3)]";
+    const avatarRing = adultMode ? "hover:border-magic-royal/50 hover:shadow-[0_0_20px_rgba(0,102,255,0.5)]" : "hover:border-brand-purple/50 hover:shadow-[0_0_20px_rgba(168,85,247,0.5)]";
+
     return (
-        <section className="mb-16">
-            <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-2">
-                <UserRound className="text-pink-400" />
-                Mon Casier d'Avatars
-            </h2>
+        <section className={adultMode ? "" : "mb-16"}>
+            {!adultMode && (
+                <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-2">
+                    <UserRound className={accentColor} />
+                    Mon Casier d'Avatars
+                </h2>
+            )}
             <GamificationModal event={event} onClose={() => { setEvent(null); router.refresh(); }} />
 
             {/* Preview Modal */}
@@ -89,7 +99,7 @@ export default function SkinLocker({ skins, unlockedSkinIds, equippedSkinId, tru
                         
                         <h3 className="text-xl font-bold text-white mb-6 text-center">{previewSkin.name}</h3>
                         
-                        <div className="w-48 h-48 rounded-full border-4 border-brand-purple/50 bg-black/50 shadow-[0_0_40px_rgba(168,85,247,0.4)] relative flex items-center justify-center overflow-hidden mb-8">
+                        <div className={`w-48 h-48 rounded-full border-4 bg-black/50 relative flex items-center justify-center overflow-hidden mb-8 ${previewRing}`}>
                                 {previewSkin.image_url ? (
                                     <Image src={previewSkin.image_url} alt={previewSkin.name} fill className="object-cover" />
                                 ) : (
@@ -100,9 +110,9 @@ export default function SkinLocker({ skins, unlockedSkinIds, equippedSkinId, tru
                         <div className="w-full space-y-3">
                             <button 
                                 onClick={confirmPurchase}
-                                disabled={loadingMap[previewSkin.id] || trueXP < previewSkin.price_xp}
+                                disabled={loadingMap[previewSkin.id] || (trueXP || 0) < previewSkin.price_xp}
                                 className={`w-full font-black uppercase tracking-widest py-3 px-4 rounded-xl flex items-center justify-center gap-2 transition-transform shadow-[0_10px_30px_rgba(250,204,21,0.3)] disabled:opacity-50 ${
-                                    trueXP >= previewSkin.price_xp 
+                                    (trueXP || 0) >= previewSkin.price_xp 
                                         ? 'bg-gradient-to-r from-yellow-500 to-amber-500 text-black hover:scale-[1.02]' 
                                         : 'bg-gray-800 text-gray-500 border border-gray-700 shadow-none'
                                 }`}
@@ -112,9 +122,9 @@ export default function SkinLocker({ skins, unlockedSkinIds, equippedSkinId, tru
                                 ) : (
                                     <>
                                         <Sparkles className="w-5 h-5" />
-                                        {trueXP >= previewSkin.price_xp 
-                                            ? `Confirmer (${previewSkin.price_xp} Poussières)` 
-                                            : `Poussières insuffisantes (${previewSkin.price_xp})`
+                                        {(trueXP || 0) >= previewSkin.price_xp 
+                                            ? `Confirmer (${previewSkin.price_xp} XP)` 
+                                            : `XP insuffisant (${previewSkin.price_xp})`
                                         }
                                     </>
                                 )}
@@ -134,14 +144,14 @@ export default function SkinLocker({ skins, unlockedSkinIds, equippedSkinId, tru
                 {skins.map(skin => {
                     const isUnlocked = skin.is_default || unlockedSkinIds.includes(skin.id);
                     const isEquipped = equippedSkinId === skin.id || (!equippedSkinId && skin.is_default);
-                    const canAfford = trueXP >= skin.price_xp;
+                    const canAfford = (trueXP || 0) >= skin.price_xp;
                     const isLoading = loadingMap[skin.id];
 
                     return (
-                        <div key={skin.id} className={`bg-brand-card/80 border p-4 rounded-3xl flex flex-col items-center text-center transition-all ${isEquipped ? 'border-pink-500 shadow-[0_0_20px_rgba(236,72,153,0.3)]' : 'border-white/5 hover:border-white/20'}`}>
+                        <div key={skin.id} className={`bg-brand-card/80 border p-4 rounded-3xl flex flex-col items-center text-center transition-all ${isEquipped ? equippedRing : 'border-white/5 hover:border-white/20'}`}>
                             
                             <div 
-                                className="w-20 h-20 bg-black/50 rounded-full border-2 border-white/10 relative overflow-hidden mb-3 cursor-pointer group hover:border-brand-purple/50 transition-all duration-300 hover:scale-[1.4] hover:z-20 hover:shadow-[0_0_20px_rgba(168,85,247,0.5)]"
+                                className={`w-20 h-20 bg-black/50 rounded-full border-2 border-white/10 relative overflow-hidden mb-3 cursor-pointer group transition-all duration-300 hover:scale-[1.4] hover:z-20 ${avatarRing}`}
                                 onClick={() => !isUnlocked && handleBuyClick(skin)}
                             >
                                 {skin.image_url ? (
@@ -161,14 +171,14 @@ export default function SkinLocker({ skins, unlockedSkinIds, equippedSkinId, tru
 
                             <div className="mt-auto w-full">
                                 {isEquipped ? (
-                                    <button disabled className="w-full bg-pink-500/20 text-pink-400 font-bold py-2 rounded-xl text-xs flex items-center justify-center gap-1 border border-pink-500/30">
+                                    <button disabled className={`w-full font-bold py-2 rounded-xl text-xs flex items-center justify-center gap-1 ${btnEquippedBg}`}>
                                         <Check className="w-3.5 h-3.5" /> Équipé
                                     </button>
                                 ) : isUnlocked ? (
                                     <button 
                                         onClick={() => handleEquip(skin.id)}
                                         disabled={isLoading}
-                                        className="w-full bg-white/10 hover:bg-white/20 text-white font-bold py-2 rounded-xl text-xs transition-colors disabled:opacity-50"
+                                        className={`w-full font-bold py-2 rounded-xl text-xs transition-colors disabled:opacity-50 ${btnEquipBg}`}
                                     >
                                         {isLoading ? <Loader2 className="w-4 h-4 animate-spin mx-auto" /> : "Équiper"}
                                     </button>

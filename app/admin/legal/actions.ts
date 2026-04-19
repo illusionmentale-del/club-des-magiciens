@@ -18,6 +18,11 @@ export async function fetchLegalPages() {
 
 export async function updateLegalPage(id: string, content: string) {
     const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return { success: false, error: "Unauthorized" };
+    const { data: profileCheck } = await supabase.from('profiles').select('role').eq('id', user.id).single();
+    if (profileCheck?.role !== 'admin') return { success: false, error: "Forbidden" };
+
     const { error } = await supabase
         .from('legal_pages')
         .update({ content })

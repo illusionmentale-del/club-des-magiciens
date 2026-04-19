@@ -27,10 +27,8 @@ export async function GET(request: Request) {
     const isManualAllowed = apiKey === process.env.CRON_SECRET;
 
     if (!isCronTask && !isManualAllowed) {
-         // Return 401 but generic message for security
          console.warn("Unauthorized Cron Attempt", { authHeader, ip: request.headers.get('x-forwarded-for') });
-         // return new NextResponse("Unauthorized", { status: 401 });
-         // Removing strict block temporarily for easy testing, but should be enabled in prod.
+         return new NextResponse("Unauthorized", { status: 401 });
     }
 
     // Initialize Supabase Admin (bypasses RLS)

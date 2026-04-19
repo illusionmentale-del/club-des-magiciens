@@ -55,6 +55,7 @@ export default function AdminAdultsMobileNav() {
                             <Link href="/admin/adults/push" onClick={close} className="flex items-center gap-3 px-4 py-2 font-bold uppercase tracking-widest text-[10px] text-gray-400 hover:bg-white/5 rounded-xl"><MessageCircle className="w-4 h-4" /> Envoi Push</Link>
 
                             <div className="my-4 border-t border-white/5 px-4"><span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Pilotage</span></div>
+                            <Link href="/admin/adults/gamification" onClick={close} className="flex items-center gap-3 px-4 py-2 font-bold uppercase tracking-widest text-[10px] text-gray-400 hover:bg-white/5 rounded-xl"><Trophy className="w-4 h-4" /> Gamification</Link>
                             <Link href="/admin/adults/analytics" onClick={close} className="flex items-center gap-3 px-4 py-2 font-bold uppercase tracking-widest text-[10px] text-gray-400 hover:bg-white/5 rounded-xl"><BarChart className="w-4 h-4" /> Analytics</Link>
                             <Link href="/admin/adults/settings" onClick={close} className="flex items-center gap-3 px-4 py-2 font-bold uppercase tracking-widest text-[10px] text-gray-400 hover:bg-white/5 rounded-xl"><Settings className="w-4 h-4" /> Vitrine & Identité</Link>
                             <Link href="/admin/legal" onClick={close} className="flex items-center gap-3 px-4 py-2 font-bold uppercase tracking-widest text-[10px] text-gray-400 hover:bg-white/5 rounded-xl"><BookOpen className="w-4 h-4" /> Textes Légaux</Link>

@@ -26,7 +26,7 @@ export async function updateProfile(prevState: any, formData: FormData) {
     if (username) updates.username = username;
     if (city) updates.city = city;
     if (bio) updates.bio = bio;
-    if (magic_level) updates.magic_level = magic_level;
+    // magic_level is strictly controlled by the Gamification Engine now
 
     const targetProfile = formData.get("targetProfile") as string; // 'kid' or 'adult'
 

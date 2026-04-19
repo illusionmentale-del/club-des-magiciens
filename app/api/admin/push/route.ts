@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
+import { createAdminClient } from '@/lib/supabase/admin';
 import webPush from 'web-push';
 
 // Configuration VAPID
@@ -24,10 +25,12 @@ export async function POST(req: Request) {
         const { data: { user } } = await supabase.auth.getUser();
         if (!user) return NextResponse.json({ error: 'Non autorisé' }, { status: 401 });
 
-        const isSuperAdmin = user.email === 'illusionmentale@gmail.com' || user.email?.endsWith('@jeremymarouani.com');
-        if (!isSuperAdmin) {
+        const { data: profile } = await supabase.from('profiles').select('role').eq('id', user.id).single();
+        if (profile?.role !== 'admin' && profile?.role !== 'super_admin') {
             return NextResponse.json({ error: 'Réservé aux administrateurs.' }, { status: 403 });
         }
+
+        const supabaseAdmin = await createAdminClient();
 
         const { title, message, url, targetAudience = 'all' } = await req.json();
 
@@ -35,8 +38,8 @@ export async function POST(req: Request) {
             return NextResponse.json({ error: 'Titre et message requis.' }, { status: 400 });
         }
 
-        // Fetch target users
-        let profilesQuery = supabase.from('profiles').select('id, has_adults_access, has_kids_access');
+        // Fetch target users USING ADMIN CLIENT to avoid any RLS limitation across spaces
+        let profilesQuery = supabaseAdmin.from('profiles').select('id, has_adults_access, has_kids_access');
 
         if (targetAudience === 'adults') {
             profilesQuery = profilesQuery.eq('has_adults_access', true);
@@ -52,8 +55,8 @@ export async function POST(req: Request) {
 
         const validUserIds = targetProfiles.map(p => p.id);
 
-        // Fetch their push subscriptions
-        const { data: subscriptions, error: subsError } = await supabase
+        // Fetch their push subscriptions USING ADMIN CLIENT (RLS fallback protection)
+        const { data: subscriptions, error: subsError } = await supabaseAdmin
             .from('push_subscriptions')
             .select('*')
             .in('user_id', validUserIds);
@@ -104,7 +107,7 @@ export async function POST(req: Request) {
 
         // Clean up stale subscriptions safely
         if (staleEndpoints.length > 0) {
-            await supabase
+            await supabaseAdmin
                 .from('push_subscriptions')
                 .delete()
                 .in('endpoint', staleEndpoints);

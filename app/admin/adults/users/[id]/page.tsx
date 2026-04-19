@@ -6,7 +6,7 @@ import { ArrowLeft, Save, Trophy, Star, CheckCircle, X, Shield, History, Key } f
 import Link from "next/link";
 import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
-import { adminChangeUserPassword } from "@/app/admin/actions";
+import { adminChangeUserPassword, adminValidateLibraryItem, adminRevokeLibraryItem, adminGiveBadge, adminRevokeBadge, adminToggleNewsletter } from "@/app/admin/actions";
 
 // Types
 type Profile = {
@@ -111,29 +111,29 @@ export default function AdminUserDetailPage() {
     // Actions
     const handleValidateItem = async (itemId: string) => {
         if (!itemId) return;
-        const { error } = await supabase.from("library_progress").insert({ user_id: id, item_id: itemId });
-        if (error) alert("Erreur (déjà validé ?)");
+        const result = await adminValidateLibraryItem(id as string, itemId);
+        if (result.error) alert(result.error);
         else fetchData();
     };
 
     const handleRevokeItem = async (progressId: string) => {
         if (!confirm("Annuler cette validation ?")) return;
-        const { error } = await supabase.from("library_progress").delete().eq("id", progressId);
-        if (error) alert("Erreur");
+        const result = await adminRevokeLibraryItem(progressId, id as string);
+        if (result.error) alert(result.error);
         else fetchData();
     };
 
     const handleGiveBadge = async (badgeId: string) => {
         if (!badgeId) return;
-        const { error } = await supabase.from("user_badges").insert({ user_id: id, badge_id: badgeId });
-        if (error) alert("Erreur (déjà acquis ?)");
+        const result = await adminGiveBadge(id as string, badgeId);
+        if (result.error) alert(result.error);
         else fetchData();
     };
 
     const handleRevokeBadge = async (userBadgeId: string) => {
         if (!confirm("Retirer ce badge ?")) return;
-        const { error } = await supabase.from("user_badges").delete().eq("id", userBadgeId);
-        if (error) alert("Erreur");
+        const result = await adminRevokeBadge(userBadgeId, id as string);
+        if (result.error) alert(result.error);
         else fetchData();
     };
 
@@ -143,8 +143,8 @@ export default function AdminUserDetailPage() {
         // Optimistic UI update
         setProfile({ ...profile, newsletter_opt_in: newStatus });
 
-        const { error } = await supabase.from("profiles").update({ newsletter_opt_in: newStatus }).eq("id", id);
-        if (error) {
+        const result = await adminToggleNewsletter(id as string, newStatus);
+        if (result.error) {
             alert("Erreur lors de la modification de l'abonnement newsletter");
             fetchData(); // Rollback
         }

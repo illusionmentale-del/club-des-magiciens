@@ -5,6 +5,7 @@ import { ArrowLeft, PlayCircle, Eye, Calendar, Clock, Lock, ShoppingBag } from '
 import { createClient } from '@/lib/supabase/server';
 import BunnyVideoTracker from '@/components/BunnyVideoTracker';
 import KidsCommentsSection from '@/components/KidsComments';
+import CheckoutButton from '@/components/CheckoutButton';
 
 export const metadata = {
     title: 'Lecture Vidéo | Club des Magiciens',
@@ -28,15 +29,40 @@ export default async function KidsVideoPlayerPage({ params }: { params: { videoI
     }
 
     // --- Premium Content Protection Check ---
-    // Check if this video exists in our library_items database as a premium item
-    const { data: libraryItem } = await supabase
+    // Try to fetch the item using normal user RLS
+    let { data: libraryItem } = await supabase
         .from('library_items')
-        .select('id, sales_page_url, title, price_label')
+        .select('id, sales_page_url, title, price_label, week_number')
         .eq('video_url', params.videoId) // Assuming video_url stores the Bunny GUID
         .single();
-
+    
     let isLockedPremium = false;
-    let salesUrl = "";
+    let isTimeLocked = false;
+    let fallbackTitle = video.title;
+    
+    if (!libraryItem) {
+        // Did not find the video in DB with user RLS.
+        // It could be missing entirely (not in library) OR it could be hidden by the Time-Drip (week_number) RLS!
+        // We MUST verify with admin privileges to avoid a Fail-Open scenario.
+        const { createClient: createAdminClient } = await import('@supabase/supabase-js');
+        const supabaseAdmin = createAdminClient(
+            process.env.NEXT_PUBLIC_SUPABASE_URL!,
+            process.env.SUPABASE_SERVICE_ROLE_KEY!,
+            { auth: { persistSession: false }}
+        );
+        
+        const { data: adminItem } = await supabaseAdmin
+            .from('library_items')
+            .select('id, title, week_number')
+            .eq('video_url', params.videoId)
+            .single();
+            
+        if (adminItem) {
+            // Video exists in DB but user RLS blocked it! This means it's a future week's content.
+            isTimeLocked = true;
+            fallbackTitle = adminItem.title || "Secret inconnu";
+        }
+    }
 
     if (libraryItem && libraryItem.sales_page_url) {
         // It's a premium item, we must check if the user owns it
@@ -49,11 +75,8 @@ export default async function KidsVideoPlayerPage({ params }: { params: { videoI
 
         if (!purchase) {
             isLockedPremium = true;
-            salesUrl = `${libraryItem.sales_page_url}?prefilled_email=${encodeURIComponent(user.email || '')}&client_reference_id=${user.id}___${libraryItem.id}`;
         }
     }
-
-    // --- Fetch Comments and Admin Status ---
     // Fetch comments manually to avoid Supabase PGRST200 schema cache bug
     const { data: rawComments } = await supabase
         .from("course_comments")
@@ -139,7 +162,19 @@ export default async function KidsVideoPlayerPage({ params }: { params: { videoI
 
                 {/* Video Player Container */}
                 <div className="bg-[#0A0A0E] border border-white/5 rounded-[2rem] overflow-hidden shadow-[0_0_50px_rgba(124,58,237,0.1)] mb-8 relative ring-1 ring-white/5">
-                    {isLockedPremium ? (
+                    {isTimeLocked ? (
+                        <div className="relative pt-[56.25%] w-full bg-black/80 flex flex-col items-center justify-center p-8 text-center border-y border-brand-purple/30">
+                            <div className="absolute inset-0 flex flex-col items-center justify-center">
+                                <div className="w-20 h-20 bg-brand-purple/20 rounded-full flex items-center justify-center mb-6 border border-brand-purple/40 shadow-[0_0_30px_rgba(168,85,247,0.3)]">
+                                    <Lock className="w-10 h-10 text-brand-purple" />
+                                </div>
+                                <h2 className="text-2xl md:text-3xl font-black uppercase text-white mb-2">Contenu Classifié</h2>
+                                <p className="text-brand-text-muted max-w-md">
+                                    Ce secret n'a pas encore été dévoilé. Reviens plus tard dans ta formation pour le découvrir !
+                                </p>
+                            </div>
+                        </div>
+                    ) : isLockedPremium ? (
                         <div className="relative pt-[56.25%] w-full bg-black/80 flex flex-col items-center justify-center p-8 text-center border-y border-brand-gold/30">
                             <div className="absolute inset-0 flex flex-col items-center justify-center">
                                 <div className="w-20 h-20 bg-brand-gold/20 rounded-full flex items-center justify-center mb-6 border border-brand-gold/40 shadow-[0_0_30px_rgba(250,204,21,0.3)]">
@@ -147,13 +182,13 @@ export default async function KidsVideoPlayerPage({ params }: { params: { videoI
                                 </div>
                                 <h2 className="text-2xl md:text-3xl font-black uppercase text-white mb-2">Secret Verrouillé</h2>
                                 <p className="text-brand-text-muted mb-8 max-w-md">
-                                    Pour regarder <strong className="text-white">{video.title}</strong>, tu dois posséder ce secret dans ta collection.
+                                    Pour regarder <strong className="text-white">{libraryItem?.title || video.title}</strong>, tu dois posséder ce secret dans ta collection.
                                 </p>
 
-                                <a href={salesUrl} target="_blank" rel="noopener noreferrer" className="bg-gradient-to-r from-brand-gold to-yellow-500 text-black font-black py-4 px-8 rounded-xl flex items-center gap-3 hover:scale-105 transition-transform shadow-[0_10px_30px_rgba(250,204,21,0.4)]">
+                                <CheckoutButton itemId={libraryItem?.id} space="kids" className="bg-gradient-to-r from-brand-gold to-yellow-500 text-black font-black py-4 px-8 rounded-xl flex items-center gap-3 hover:scale-105 transition-transform shadow-[0_10px_30px_rgba(250,204,21,0.4)]">
                                     <ShoppingBag className="w-5 h-5" />
                                     Acheter pour débloquer {libraryItem?.price_label ? `(${libraryItem.price_label})` : ''}
-                                </a>
+                                </CheckoutButton>
                             </div>
                         </div>
                     ) : (

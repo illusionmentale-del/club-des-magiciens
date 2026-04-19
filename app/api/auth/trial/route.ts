@@ -29,11 +29,10 @@ export async function POST(req: Request) {
         if (createError) {
             if (createError.message.includes("already registered")) {
                 isExistingUser = true;
-                // Trouver le user ID
-                const { data: existingUsers } = await supabaseAdmin.auth.admin.listUsers();
-                const matchedUser = existingUsers.users.find(u => u.email === email);
-                if (matchedUser) {
-                    userAuthId = matchedUser.id;
+                // Trouver le user ID via la table profiles pour éviter le bug de pagination de listUsers()
+                const { data: matchedProfile } = await supabaseAdmin.from('profiles').select('id').eq('email', email).single();
+                if (matchedProfile) {
+                    userAuthId = matchedProfile.id;
                 } else {
                     return NextResponse.json({ error: "Utilisateur introuvable." }, { status: 400 });
                 }

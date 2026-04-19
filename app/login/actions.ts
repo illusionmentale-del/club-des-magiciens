@@ -71,5 +71,10 @@ export async function loginWithPassword(prevState: any, formData: FormData) {
         }
     }
 
+    // SECURITY: Prevent Open Redirect attacks
+    if (!finalRedirectUrl.startsWith('/') || finalRedirectUrl.startsWith('//')) {
+        finalRedirectUrl = '/dashboard';
+    }
+
     redirect(finalRedirectUrl);
 }

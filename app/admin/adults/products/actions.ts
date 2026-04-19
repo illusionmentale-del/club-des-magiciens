@@ -6,6 +6,10 @@ import { redirect } from "next/navigation";
 
 export async function createProduct(formData: FormData) {
     const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) throw new Error("Unauthorized");
+    const { data: profileCheck } = await supabase.from('profiles').select('role').eq('id', user.id).single();
+    if (profileCheck?.role !== 'admin') throw new Error("Forbidden");
 
     const title = formData.get("title") as string;
     const description = formData.get("description") as string;
@@ -41,6 +45,10 @@ export async function createProduct(formData: FormData) {
 
 export async function deleteProduct(id: string) {
     const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) throw new Error("Unauthorized");
+    const { data: profileCheck } = await supabase.from('profiles').select('role').eq('id', user.id).single();
+    if (profileCheck?.role !== 'admin') throw new Error("Forbidden");
 
     const { error } = await supabase.from("products").delete().eq("id", id);
 
@@ -54,6 +62,10 @@ export async function deleteProduct(id: string) {
 
 export async function toggleProductStatus(id: string, currentStatus: boolean) {
     const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) throw new Error("Unauthorized");
+    const { data: profileCheck } = await supabase.from('profiles').select('role').eq('id', user.id).single();
+    if (profileCheck?.role !== 'admin') throw new Error("Forbidden");
 
     const { error } = await supabase
         .from("products")

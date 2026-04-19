@@ -7,6 +7,7 @@ import { ShoppingBag, Star, Lock, Play, CheckCircle2, Package } from "lucide-rea
 import ShopBuyWithXP from "@/components/kids/ShopBuyWithXP";
 import SkinLocker from "@/components/kids/SkinLocker";
 import BackButton from "@/components/BackButton";
+import CheckoutButton from "@/components/CheckoutButton";
 
 export const metadata = {
     title: 'La Boutique | Club des Magiciens',
@@ -162,10 +163,10 @@ export default async function KidsShopPage() {
                                                 </Link>
                                             ) : (
                                                 <>
-                                                    <a href={`${item.sales_page_url}?prefilled_email=${encodeURIComponent(user.email || '')}&client_reference_id=${user.id}___${item.id}`} target="_blank" rel="noopener noreferrer" className="w-full bg-gradient-to-r from-brand-gold to-yellow-500 text-black font-black py-3 px-4 rounded-xl flex items-center justify-center gap-2 hover:scale-[1.02] transition-transform shadow-[0_10px_30px_rgba(250,204,21,0.3)]">
+                                                    <CheckoutButton itemId={item.id} space="kids" className="w-full bg-gradient-to-r from-brand-gold to-yellow-500 text-black font-black py-3 px-4 rounded-xl flex items-center justify-center gap-2 hover:scale-[1.02] transition-transform shadow-[0_10px_30px_rgba(250,204,21,0.3)]">
                                                         <ShoppingBag className="w-5 h-5" />
                                                         Obtenir ce secret
-                                                    </a>
+                                                    </CheckoutButton>
                                                     {item.xp_price && item.xp_price > 0 && (
                                                         <ShopBuyWithXP itemId={item.id} xpPrice={item.xp_price} trueXP={trueXP} />
                                                     )}

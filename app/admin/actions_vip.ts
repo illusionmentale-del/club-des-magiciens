@@ -17,6 +17,10 @@ export async function approveVipRequest(requestId: string) {
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return { error: "Unauthorized" };
+    
+    // VERIFY ADMIN
+    const { data: profileCheck } = await supabaseAdmin.from('profiles').select('role').eq('id', user.id).single();
+    if (profileCheck?.role !== 'admin') return { error: "Forbidden - Admins only" };
 
     // Fetch request
     const { data: request, error: reqError } = await supabaseAdmin
@@ -207,6 +211,13 @@ export async function rejectVipRequest(requestId: string) {
     const supabaseAdmin = createSupabaseAdmin(supabaseUrl, supabaseServiceKey, {
         auth: { autoRefreshToken: false, persistSession: false }
     });
+
+    // VERIFY ADMIN
+    const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return { error: "Unauthorized" };
+    const { data: profileCheck } = await supabaseAdmin.from('profiles').select('role').eq('id', user.id).single();
+    if (profileCheck?.role !== 'admin') return { error: "Forbidden - Admins only" };
 
     await supabaseAdmin.from("vip_requests").update({ status: 'rejete' }).eq("id", requestId);
     revalidatePath("/admin/kids/vip-requests");

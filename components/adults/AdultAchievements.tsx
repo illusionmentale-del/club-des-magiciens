@@ -18,7 +18,7 @@ export default function AdultAchievements({ recentValids }: { recentValids: any[
                 Visionnés Récemment
             </h3>
 
-            <div className="space-y-3">
+            <div className="space-y-3 mb-6">
                 {recentValids.slice(0, 3).map((progress) => (
                     <div key={progress.course_id} className="flex items-start gap-3 bg-[#111] p-3 rounded-xl border border-white/5 group hover:border-magic-royal/20 transition-colors">
                         <div className="mt-0.5">
@@ -35,6 +35,11 @@ export default function AdultAchievements({ recentValids }: { recentValids: any[
                     </div>
                 ))}
             </div>
+
+            <a href="/dashboard/achievements" className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl border border-white/10 hover:border-magic-royal/30 bg-white/5 hover:bg-magic-royal/10 transition-colors text-xs font-bold text-slate-300 hover:text-white uppercase tracking-widest">
+                <Trophy className="w-3.5 h-3.5 text-magic-gold" />
+                Mon Journal Magique
+            </a>
         </section>
     );
 }

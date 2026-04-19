@@ -4,11 +4,11 @@ import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { Menu, X, BookOpen, Settings, Video, LogOut, Shield, Star, GraduationCap, ShoppingBag } from "lucide-react";
+import { Menu, X, BookOpen, Settings, Video, LogOut, Shield, Star, GraduationCap, ShoppingBag, Sparkles } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 
-export default function MobileNav({ isAdmin, hasKidsAccess, toggles }: {
+export default function MobileNav({ isAdmin, hasKidsAccess, toggles, xpBalance = 0, lifetimeXP = 0, magicLevel = "Initié", avatarUrl = "", userName = "" }: {
     isAdmin: boolean;
     hasKidsAccess?: boolean;
     toggles?: {
@@ -16,7 +16,12 @@ export default function MobileNav({ isAdmin, hasKidsAccess, toggles }: {
         enable_adults_masterclass: boolean;
         enable_adults_account: boolean;
         enable_adults_catalog: boolean;
-    }
+    };
+    xpBalance?: number;
+    lifetimeXP?: number;
+    magicLevel?: string;
+    avatarUrl?: string;
+    userName?: string;
 }) {
     const [isOpen, setIsOpen] = useState(false);
     const [isOpening, setIsOpening] = useState(false);
@@ -42,6 +47,12 @@ export default function MobileNav({ isAdmin, hasKidsAccess, toggles }: {
         router.refresh();
         router.push("/login");
     };
+
+    // Calculate Adult Progress Bar
+    const isLegendary = (lifetimeXP || 0) >= 150;
+    const isMaster = (lifetimeXP || 0) >= 50 && (lifetimeXP || 0) < 150;
+    const maxForLevel = isLegendary ? 500 : (isMaster ? 150 : 50);
+    const progressPercent = Math.min(((lifetimeXP || 0) / maxForLevel) * 100, 100);
 
     return (
         <div className="md:hidden bg-magic-card border-b border-white/10 sticky top-0 z-50">
@@ -81,10 +92,47 @@ export default function MobileNav({ isAdmin, hasKidsAccess, toggles }: {
 
                     {/* Menu Content */}
                     <div className="relative w-64 h-full bg-magic-card border-r border-white/10 flex flex-col p-4 animate-in slide-in-from-left duration-200">
-                        <div className="flex justify-end mb-4">
+                        <div className="flex justify-end mb-2">
                             <button onClick={close} className="p-2 text-gray-400 hover:text-white">
                                 <X className="w-6 h-6" />
                             </button>
+                        </div>
+                        
+                        {/* Profile Area */}
+                        <div className="pb-4 border-b border-white/10 flex flex-col items-center gap-2 text-center mb-4">
+                            <Link href="/dashboard/account" onClick={close} className="flex flex-col items-center gap-2 group w-full rounded-2xl hover:bg-white/5 transition-colors p-2">
+                                <div className="relative w-16 h-16">
+                                    {avatarUrl ? (
+                                        <Image
+                                            src={avatarUrl}
+                                            alt="Avatar"
+                                            fill
+                                            className="object-cover rounded-full border border-magic-royal group-hover:border-magic-gold transition-colors"
+                                        />
+                                    ) : (
+                                        <div className="w-full h-full rounded-full bg-slate-800 flex items-center justify-center border border-magic-royal group-hover:border-magic-gold transition-colors">
+                                            <LogOut className="w-6 h-6 text-gray-400" />
+                                        </div>
+                                    )}
+                                </div>
+                                <div className="w-full text-center px-1">
+                                    <h2 className="font-bold text-white text-xs leading-tight group-hover:text-magic-gold transition-colors truncate">{userName || "Élève"}</h2>
+                                    <div className="flex items-center justify-center gap-1.5 mt-1">
+                                        <p className="text-[9px] text-magic-royal font-mono truncate">{magicLevel}</p>
+                                        <div className="flex items-center gap-1 bg-black/40 rounded-full px-1 py-0.5 border border-white/10 shrink-0">
+                                            <Star className="w-2 h-2 text-magic-gold" />
+                                            <span className="text-[8px] font-bold text-white leading-none">{xpBalance} XP</span>
+                                        </div>
+                                    </div>
+                                    {/* Mini Progress Bar Premium */}
+                                    <div className="h-1 w-full bg-black/50 rounded-full overflow-hidden border border-white/10 mt-1.5 mx-auto max-w-[80%] relative">
+                                        <div
+                                            className={`h-full absolute left-0 top-0 rounded-full ${isLegendary ? "bg-gradient-to-r from-amber-600 to-magic-gold" : isMaster ? "bg-gradient-to-r from-blue-700 to-blue-400" : "bg-gradient-to-r from-slate-600 to-slate-400"}`}
+                                            style={{ width: `${Math.max(progressPercent, 2)}%` }}
+                                        />
+                                    </div>
+                                </div>
+                            </Link>
                         </div>
 
                         <nav className="space-y-2 flex-1">
@@ -113,7 +161,7 @@ export default function MobileNav({ isAdmin, hasKidsAccess, toggles }: {
                                     className={`flex items-center gap-3 px-4 py-3 font-medium transition-all ${isActive('/dashboard/library') ? 'bg-gradient-to-r from-magic-royal/20 to-transparent text-magic-royal border-l-2 border-magic-royal' : 'text-gray-400 hover:bg-white/5 hover:text-white border-l-2 border-transparent'}`}
                                 >
                                     <BookOpen className="w-5 h-5" />
-                                    Bibliothèque
+                                    La Formation
                                 </Link>
                             )}
 
@@ -139,6 +187,15 @@ export default function MobileNav({ isAdmin, hasKidsAccess, toggles }: {
                                 </Link>
                             )}
 
+                            <Link
+                                href="/dashboard/shop"
+                                onClick={close}
+                                className={`flex items-center gap-3 px-4 py-3 font-medium transition-all ${isActive('/dashboard/shop') ? 'bg-gradient-to-r from-magic-royal/20 to-transparent text-magic-royal border-l-2 border-magic-royal' : 'text-gray-400 hover:bg-white/5 hover:text-white border-l-2 border-transparent'}`}
+                            >
+                                <Sparkles className="w-5 h-5" />
+                                Le Cabinet
+                            </Link>
+
                             {toggles?.enable_adults_account !== false && (
                                 <Link
                                     href="/dashboard/account"
@@ -149,15 +206,6 @@ export default function MobileNav({ isAdmin, hasKidsAccess, toggles }: {
                                     Mon Compte
                                 </Link>
                             )}
-
-                            <Link
-                                href="/dashboard/live"
-                                onClick={close}
-                                className={`flex items-center gap-3 px-4 py-3 font-medium transition-all ${isActive('/dashboard/live') ? 'bg-gradient-to-r from-magic-royal/20 to-transparent text-magic-royal border-l-2 border-magic-royal' : 'text-gray-400 hover:bg-white/5 hover:text-white border-l-2 border-transparent'}`}
-                            >
-                                <Video className="w-5 h-5" />
-                                Replays / Lives
-                            </Link>
 
                             {(isAdmin || hasKidsAccess) && (
                                 <>

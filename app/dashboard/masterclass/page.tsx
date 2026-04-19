@@ -58,13 +58,15 @@ export default async function AdultMasterclassPage() {
         }
     }
 
-    // Fetch videos from Bunny Stream
-    // For adults, we fetch from their replays collection
-    const replaysCollectionId = process.env.BUNNY_ADULTS_REPLAYS_COLLECTION_ID;
-    const videos = await getAdultVideos(1, 50, replaysCollectionId);
+    // Fetch 'Ateliers' from our own database instead of raw Bunny Stream
+    const { data: videos } = await supabase
+        .from('library_items')
+        .select('*')
+        .eq('audience', 'adults')
+        .eq('type', 'atelier')
+        .order('published_at', { ascending: false });
 
-    // Sort by most recent uploaded first (assuming the API already does it, but double checking)
-    const sortedVideos = videos.sort((a, b) => new Date(b.dateUploaded).getTime() - new Date(a.dateUploaded).getTime());
+    const sortedVideos = videos || [];
 
     return (
         <div className="min-h-screen bg-[#050507] text-white p-4 md:p-8 pb-32 font-sans relative selection:bg-magic-royal/30">
@@ -173,17 +175,20 @@ export default async function AdultMasterclassPage() {
                         </div>
                     ) : (
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                            {sortedVideos.map((video) => (
-                                <AdultVideoCard
-                                    key={video.guid}
-                                    id={video.guid}
-                                    title={video.title}
-                                    thumbnailUrl={getBunnyThumbnailUrl(video.videoLibraryId, video.guid, video.thumbnailFileName)}
-                                    date={video.dateUploaded}
-                                    durationSeconds={video.length}
-                                    href={`/watch/${video.guid}`}
-                                />
-                            ))}
+                            {sortedVideos.map((video) => {
+                                const videoIdForLink = video.video_url || video.id;
+                                return (
+                                    <AdultVideoCard
+                                        key={video.id}
+                                        id={videoIdForLink}
+                                        title={video.title}
+                                        thumbnailUrl={video.thumbnail_url || ''}
+                                        date={video.published_at || video.created_at}
+                                        durationSeconds={0}
+                                        href={`/watch/${videoIdForLink}`}
+                                    />
+                                );
+                            })}
                         </div>
                     )}
                 </div>
