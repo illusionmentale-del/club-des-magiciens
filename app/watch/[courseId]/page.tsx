@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft, PlayCircle, Lock, CheckCircle, Trophy, Star, Download } from "lucide-react";
 import { cn } from "@/lib/utils";
-import CommentsSection from "@/components/Comments";
+import AdultComments from "@/components/adults/AdultComments";
 import VideoPlayerControls from "@/components/VideoPlayerControls";
 import KidsCommentsSection from "@/components/KidsComments";
 import KidsValidateButton from "@/components/kids/KidsValidateButton";
@@ -315,7 +315,7 @@ export default async function WatchPage(props: WatchPageProps) {
                             isAdmin={isAdmin}
                         />
                     ) : (
-                        <CommentsSection courseId={libraryItem.id} comments={comments} user={user} />
+                        <AdultComments courseId={libraryItem.id} comments={comments} user={user} />
                     )}
                 </div>
             </div>
@@ -516,7 +516,7 @@ export default async function WatchPage(props: WatchPageProps) {
                             isAdmin={isAdmin}
                         />
                     ) : (
-                        comments && <CommentsSection courseId={course.id} comments={comments} user={user} />
+                        comments && <AdultComments courseId={course.id} comments={comments} user={user} />
                     )}
                 </div>
 

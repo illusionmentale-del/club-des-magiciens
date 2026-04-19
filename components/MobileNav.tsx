@@ -48,11 +48,6 @@ export default function MobileNav({ isAdmin, hasKidsAccess, toggles, xpBalance =
         router.push("/login");
     };
 
-    // Calculate Adult Progress Bar
-    const isLegendary = (lifetimeXP || 0) >= 150;
-    const isMaster = (lifetimeXP || 0) >= 50 && (lifetimeXP || 0) < 150;
-    const maxForLevel = isLegendary ? 500 : (isMaster ? 150 : 50);
-    const progressPercent = Math.min(((lifetimeXP || 0) / maxForLevel) * 100, 100);
 
     return (
         <div className="md:hidden bg-magic-card border-b border-white/10 sticky top-0 z-50">
@@ -116,20 +111,9 @@ export default function MobileNav({ isAdmin, hasKidsAccess, toggles, xpBalance =
                                     )}
                                 </div>
                                 <div className="w-full text-center px-1">
-                                    <h2 className="font-bold text-white text-xs leading-tight group-hover:text-magic-gold transition-colors truncate">{userName || "Élève"}</h2>
+                                    <h2 className="font-bold text-white text-xs leading-tight group-hover:text-magic-gold transition-colors truncate">{userName || "Illusionniste"}</h2>
                                     <div className="flex items-center justify-center gap-1.5 mt-1">
-                                        <p className="text-[9px] text-magic-royal font-mono truncate">{magicLevel}</p>
-                                        <div className="flex items-center gap-1 bg-black/40 rounded-full px-1 py-0.5 border border-white/10 shrink-0">
-                                            <Star className="w-2 h-2 text-magic-gold" />
-                                            <span className="text-[8px] font-bold text-white leading-none">{xpBalance} XP</span>
-                                        </div>
-                                    </div>
-                                    {/* Mini Progress Bar Premium */}
-                                    <div className="h-1 w-full bg-black/50 rounded-full overflow-hidden border border-white/10 mt-1.5 mx-auto max-w-[80%] relative">
-                                        <div
-                                            className={`h-full absolute left-0 top-0 rounded-full ${isLegendary ? "bg-gradient-to-r from-amber-600 to-magic-gold" : isMaster ? "bg-gradient-to-r from-blue-700 to-blue-400" : "bg-gradient-to-r from-slate-600 to-slate-400"}`}
-                                            style={{ width: `${Math.max(progressPercent, 2)}%` }}
-                                        />
+                                        <p className="text-[9px] text-gray-500 font-mono truncate">Paramètres</p>
                                     </div>
                                 </div>
                             </Link>
@@ -137,21 +121,12 @@ export default function MobileNav({ isAdmin, hasKidsAccess, toggles, xpBalance =
 
                         <nav className="space-y-2 flex-1">
                             <Link
-                                href="/dashboard/feed"
-                                onClick={close}
-                                className={`flex items-center gap-3 px-4 py-3 font-medium transition-all ${isActive('/dashboard/feed') ? 'bg-gradient-to-r from-magic-royal/20 to-transparent text-magic-royal border-l-2 border-magic-royal' : 'text-gray-400 hover:bg-white/5 hover:text-white border-l-2 border-transparent'}`}
-                            >
-                                <Video className="w-5 h-5" />
-                                Vidéos
-                            </Link>
-
-                            <Link
                                 href="/dashboard"
                                 onClick={close}
                                 className={`flex items-center gap-3 px-4 py-3 font-medium transition-all ${isActive('/dashboard') ? 'bg-gradient-to-r from-magic-royal/20 to-transparent text-magic-royal border-l-2 border-magic-royal' : 'text-gray-400 hover:bg-white/5 hover:text-white border-l-2 border-transparent'}`}
                             >
                                 <Star className="w-5 h-5" />
-                                Le QG
+                                L'Actu du Club
                             </Link>
 
                             {toggles?.enable_adults_program !== false && (
@@ -161,7 +136,7 @@ export default function MobileNav({ isAdmin, hasKidsAccess, toggles, xpBalance =
                                     className={`flex items-center gap-3 px-4 py-3 font-medium transition-all ${isActive('/dashboard/library') ? 'bg-gradient-to-r from-magic-royal/20 to-transparent text-magic-royal border-l-2 border-magic-royal' : 'text-gray-400 hover:bg-white/5 hover:text-white border-l-2 border-transparent'}`}
                                 >
                                     <BookOpen className="w-5 h-5" />
-                                    La Formation
+                                    Mes Vidéos
                                 </Link>
                             )}
 
@@ -172,18 +147,7 @@ export default function MobileNav({ isAdmin, hasKidsAccess, toggles, xpBalance =
                                     className={`flex items-center gap-3 px-4 py-3 font-medium transition-all ${isActive('/dashboard/masterclass') ? 'bg-gradient-to-r from-magic-royal/20 to-transparent text-magic-royal border-l-2 border-magic-royal' : 'text-gray-400 hover:bg-white/5 hover:text-white border-l-2 border-transparent'}`}
                                 >
                                     <Video className="w-5 h-5" />
-                                    Les Ateliers
-                                </Link>
-                            )}
-
-                            {toggles?.enable_adults_catalog !== false && (
-                                <Link
-                                    href="/dashboard/catalog"
-                                    onClick={close}
-                                    className={`flex items-center gap-3 px-4 py-3 font-medium transition-all ${isActive('/dashboard/catalog') ? 'bg-gradient-to-r from-magic-royal/20 to-transparent text-magic-royal border-l-2 border-magic-royal' : 'text-gray-400 hover:bg-white/5 hover:text-white border-l-2 border-transparent'}`}
-                                >
-                                    <ShoppingBag className="w-5 h-5" />
-                                    Catalogue
+                                    Mes Formations
                                 </Link>
                             )}
 
@@ -193,17 +157,17 @@ export default function MobileNav({ isAdmin, hasKidsAccess, toggles, xpBalance =
                                 className={`flex items-center gap-3 px-4 py-3 font-medium transition-all ${isActive('/dashboard/shop') ? 'bg-gradient-to-r from-magic-royal/20 to-transparent text-magic-royal border-l-2 border-magic-royal' : 'text-gray-400 hover:bg-white/5 hover:text-white border-l-2 border-transparent'}`}
                             >
                                 <Sparkles className="w-5 h-5" />
-                                Le Cabinet
+                                La Boutique
                             </Link>
 
                             {toggles?.enable_adults_account !== false && (
                                 <Link
-                                    href="/dashboard/account"
+                                    href="/dashboard/account?view=settings"
                                     onClick={close}
-                                    className={`flex items-center gap-3 px-4 py-3 font-medium transition-all ${isActive('/dashboard/account') ? 'bg-gradient-to-r from-magic-royal/20 to-transparent text-magic-royal border-l-2 border-magic-royal' : 'text-gray-400 hover:bg-white/5 hover:text-white border-l-2 border-transparent'}`}
+                                    className={`flex items-center gap-3 px-4 py-3 font-medium transition-all ${(isActive('/dashboard/account') || searchParams?.get('view') === 'settings') ? 'bg-gradient-to-r from-magic-royal/20 to-transparent text-magic-royal border-l-2 border-magic-royal' : 'text-gray-400 hover:bg-white/5 hover:text-white border-l-2 border-transparent'}`}
                                 >
                                     <Settings className="w-5 h-5" />
-                                    Mon Compte
+                                    Mes Paramètres
                                 </Link>
                             )}
 
