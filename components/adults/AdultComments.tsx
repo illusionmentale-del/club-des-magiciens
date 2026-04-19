@@ -2,7 +2,7 @@
 
 import { useFormStatus } from "react-dom";
 import { addComment } from "@/app/watch/[courseId]/actions";
-import { deleteKidsComment } from "@/app/kids/videos/[videoId]/actions"; // Reuse delete action for now
+import { deleteKidsComment } from "@/app/kids/videos/[...videoId]/actions"; // Reuse delete action for now
 import { User, MessageCircle, Send, Trash2, ArrowRight } from "lucide-react";
 import { useRef, useState } from "react";
 import { usePathname } from "next/navigation";
