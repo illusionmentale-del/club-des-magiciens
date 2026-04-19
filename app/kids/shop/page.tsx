@@ -157,7 +157,7 @@ export default async function KidsShopPage() {
 
                                             {/* Action Button */}
                                             {isUnlocked ? (
-                                                <Link href={`/kids/videos/${item.video_url || item.id}`} className="w-full bg-brand-purple/20 hover:bg-brand-purple text-white font-bold py-3 px-4 rounded-xl flex items-center justify-center gap-2 transition-colors border border-brand-purple/30">
+                                                <Link href={`/kids/videos/${item.id}`} className="w-full bg-brand-purple/20 hover:bg-brand-purple text-white font-bold py-3 px-4 rounded-xl flex items-center justify-center gap-2 transition-colors border border-brand-purple/30">
                                                     <Play className="w-5 h-5" />
                                                     Regarder la vidéo
                                                 </Link>

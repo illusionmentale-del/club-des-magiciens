@@ -2,7 +2,7 @@
 
 import { Send, Sparkles, File, CheckCircle, Trash2 } from "lucide-react";
 import { useRef, useState, useTransition } from "react";
-import { addKidsComment, deleteKidsComment } from "@/app/kids/videos/[videoId]/actions";
+import { addKidsComment, deleteKidsComment } from "@/app/kids/videos/[...videoId]/actions";
 import { usePathname } from "next/navigation";
 
 export default function KidsCommentsSection({ videoId, comments, isAdmin }: { videoId: string, comments: any[], isAdmin: boolean }) {

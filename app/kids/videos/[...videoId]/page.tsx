@@ -14,7 +14,9 @@ export const metadata = {
 // Next.js Revalidation settings
 export const revalidate = 60;
 
-export default async function KidsVideoPlayerPage({ params }: { params: { videoId: string } }) {
+export default async function KidsVideoPlayerPage({ params }: { params: Promise<{ videoId: string | string[] }> }) {
+    const resolvedParams = await params;
+    const rawVideoId = Array.isArray(resolvedParams.videoId) ? resolvedParams.videoId.join('/') : resolvedParams.videoId;
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
 
@@ -22,10 +24,10 @@ export default async function KidsVideoPlayerPage({ params }: { params: { videoI
         redirect("/login");
     }
 
-    const video = await getKidsVideoById(params.videoId);
+    const video = await getKidsVideoById(rawVideoId);
 
     // --- Premium Content Protection Check ---
-    const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(params.videoId);
+    const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(rawVideoId);
     
     // Try to fetch the item using normal user RLS
     let query = supabase
@@ -33,9 +35,9 @@ export default async function KidsVideoPlayerPage({ params }: { params: { videoI
         .select('id, sales_page_url, title, price_label, week_number, created_at, published_at, video_url');
         
     if (isUuid) {
-        query = query.or(`video_url.eq.${params.videoId},id.eq.${params.videoId}`);
+        query = query.or(`video_url.eq.${rawVideoId},id.eq.${rawVideoId}`);
     } else {
-        query = query.eq('video_url', params.videoId);
+        query = query.eq('video_url', rawVideoId);
     }
         
     let { data: libraryItem } = await query.single();
@@ -60,9 +62,9 @@ export default async function KidsVideoPlayerPage({ params }: { params: { videoI
             .select('id, title, week_number, created_at, published_at, video_url');
             
         if (isUuid) {
-            adminQuery = adminQuery.or(`video_url.eq.${params.videoId},id.eq.${params.videoId}`);
+            adminQuery = adminQuery.or(`video_url.eq.${rawVideoId},id.eq.${rawVideoId}`);
         } else {
-            adminQuery = adminQuery.eq('video_url', params.videoId);
+            adminQuery = adminQuery.eq('video_url', rawVideoId);
         }
             
         const { data: fetchedAdminItem } = await adminQuery.single();
@@ -97,7 +99,7 @@ export default async function KidsVideoPlayerPage({ params }: { params: { videoI
     const { data: rawComments } = await supabase
         .from("course_comments")
         .select("*")
-        .eq("course_id", params.videoId)
+        .eq("course_id", rawVideoId)
         .order("created_at", { ascending: true });
 
     let comments: any[] = [];
@@ -127,7 +129,7 @@ export default async function KidsVideoPlayerPage({ params }: { params: { videoI
         await supabase
             .from("course_comments")
             .update({ kid_notified: true })
-            .eq("course_id", params.videoId)
+            .eq("course_id", rawVideoId)
             .eq("target_user_id", user.id)
             .eq("kid_notified", false);
     }
@@ -161,7 +163,7 @@ export default async function KidsVideoPlayerPage({ params }: { params: { videoI
     // Construct the IFrame securely using the best info available
     const libraryId = video?.videoLibraryId || process.env.BUNNY_KIDS_LIBRARY_ID || "";
     // Priority: Bunny GUID > DB video_url > URL parameter
-    let baseGuid = video?.guid || adminItem?.video_url || params.videoId;
+    let baseGuid = video?.guid || adminItem?.video_url || rawVideoId;
     let guid = baseGuid;
     let displayLength = video?.length || 0;
     let displayViews = video?.views || 0;
@@ -276,7 +278,7 @@ export default async function KidsVideoPlayerPage({ params }: { params: { videoI
                 {!isLockedPremium && (
                     <div className="mt-12">
                         <KidsCommentsSection
-                            videoId={params.videoId}
+                            videoId={rawVideoId}
                             comments={comments || []}
                             isAdmin={isAdmin}
                         />
