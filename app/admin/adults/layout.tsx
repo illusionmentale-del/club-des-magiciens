@@ -48,7 +48,7 @@ export default function AdultsAdminLayout({
                     </Link>
                     <Link href="/admin/adults/settings/masterclass" className="flex items-center gap-3 px-4 py-3 text-sm font-bold uppercase tracking-widest text-brand-text-muted hover:text-white hover:bg-white/5 rounded-xl transition-all group">
                         <Sparkles className="w-5 h-5 group-hover:text-brand-royal transition-colors" />
-                        Page "Les Ateliers"
+                        Page "Mes Formations"
                     </Link>
                     <Link href="/admin/adults/products" className="flex items-center gap-3 px-4 py-3 text-sm font-bold uppercase tracking-widest text-brand-text-muted hover:text-white hover:bg-white/5 rounded-xl transition-all group">
                         <ShoppingBag className="w-5 h-5 group-hover:text-brand-royal transition-colors" />

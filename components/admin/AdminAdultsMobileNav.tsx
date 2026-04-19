@@ -44,7 +44,7 @@ export default function AdminAdultsMobileNav() {
                             
                             <div className="my-4 border-t border-white/5 px-4"><span className="text-[10px] font-black text-brand-royal uppercase tracking-widest">Contenu</span></div>
                             <Link href="/admin/adults/library" onClick={close} className="flex items-center gap-3 px-4 py-2 font-bold uppercase tracking-widest text-[10px] text-gray-400 hover:bg-white/5 rounded-xl"><Video className="w-4 h-4" /> Vidéos & Ateliers</Link>
-                            <Link href="/admin/adults/settings/masterclass" onClick={close} className="flex items-center gap-3 px-4 py-2 font-bold uppercase tracking-widest text-[10px] text-gray-400 hover:bg-white/5 rounded-xl"><Sparkles className="w-4 h-4" /> Page "Les Ateliers"</Link>
+                            <Link href="/admin/adults/settings/masterclass" onClick={close} className="flex items-center gap-3 px-4 py-2 font-bold uppercase tracking-widest text-[10px] text-gray-400 hover:bg-white/5 rounded-xl"><Sparkles className="w-4 h-4" /> Page "Mes Formations"</Link>
                             <Link href="/admin/adults/products" onClick={close} className="flex items-center gap-3 px-4 py-2 font-bold uppercase tracking-widest text-[10px] text-gray-400 hover:bg-white/5 rounded-xl"><ShoppingBag className="w-4 h-4" /> Boutique</Link>
                             <Link href="/admin/adults/lives" onClick={close} className="flex items-center gap-3 px-4 py-2 font-bold uppercase tracking-widest text-[10px] text-gray-400 hover:bg-white/5 rounded-xl"><Video className="w-4 h-4" /> Lives</Link>
 
