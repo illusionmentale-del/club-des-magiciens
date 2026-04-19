@@ -83,7 +83,7 @@ export default async function KidsPurchasesPage() {
                 {purchasedItems.length > 0 ? (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                         {purchasedItems.map((item) => (
-                            <Link href={`/kids/videos/${item.video_url || item.id}`} key={item.id} className="group flex flex-col bg-brand-bg rounded-2xl overflow-hidden border border-white/5 hover:border-brand-purple/50 transition-all hover:-translate-y-1 hover:shadow-[0_10px_40px_rgba(168,85,247,0.2)] h-full">
+                            <Link href={`/kids/videos/${item.id}`} key={item.id} className="group flex flex-col bg-brand-bg rounded-2xl overflow-hidden border border-white/5 hover:border-brand-purple/50 transition-all hover:-translate-y-1 hover:shadow-[0_10px_40px_rgba(168,85,247,0.2)] h-full">
                                 {/* Thumbnail Container */}
                                 <div className="relative aspect-video bg-black/50 overflow-hidden shrink-0">
                                     {item.thumbnail_url ? (

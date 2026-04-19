@@ -25,12 +25,20 @@ export default async function KidsVideoPlayerPage({ params }: { params: { videoI
     const video = await getKidsVideoById(params.videoId);
 
     // --- Premium Content Protection Check ---
+    const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(params.videoId);
+    
     // Try to fetch the item using normal user RLS
-    let { data: libraryItem } = await supabase
+    let query = supabase
         .from('library_items')
-        .select('id, sales_page_url, title, price_label, week_number, created_at, published_at')
-        .eq('video_url', params.videoId)
-        .single();
+        .select('id, sales_page_url, title, price_label, week_number, created_at, published_at, video_url');
+        
+    if (isUuid) {
+        query = query.or(`video_url.eq.${params.videoId},id.eq.${params.videoId}`);
+    } else {
+        query = query.eq('video_url', params.videoId);
+    }
+        
+    let { data: libraryItem } = await query.single();
     
     let isLockedPremium = false;
     let isTimeLocked = false;
@@ -47,11 +55,17 @@ export default async function KidsVideoPlayerPage({ params }: { params: { videoI
     if (!libraryItem) {
         // Did not find the video in DB with user RLS.
         // It could be missing entirely OR hidden by the Time-Drip RLS!
-        const { data: fetchedAdminItem } = await supabaseAdmin
+        let adminQuery = supabaseAdmin
             .from('library_items')
-            .select('id, title, week_number, created_at, published_at')
-            .eq('video_url', params.videoId)
-            .single();
+            .select('id, title, week_number, created_at, published_at, video_url');
+            
+        if (isUuid) {
+            adminQuery = adminQuery.or(`video_url.eq.${params.videoId},id.eq.${params.videoId}`);
+        } else {
+            adminQuery = adminQuery.eq('video_url', params.videoId);
+        }
+            
+        const { data: fetchedAdminItem } = await adminQuery.single();
             
         if (fetchedAdminItem) {
             adminItem = fetchedAdminItem;
@@ -146,13 +160,15 @@ export default async function KidsVideoPlayerPage({ params }: { params: { videoI
 
     // Construct the IFrame securely using the best info available
     const libraryId = video?.videoLibraryId || process.env.BUNNY_KIDS_LIBRARY_ID || "";
-    let guid = video?.guid || params.videoId;
+    // Priority: Bunny GUID > DB video_url > URL parameter
+    let baseGuid = video?.guid || adminItem?.video_url || params.videoId;
+    let guid = baseGuid;
     let displayLength = video?.length || 0;
     let displayViews = video?.views || 0;
     let displayDate = video?.dateUploaded || adminItem?.published_at || adminItem?.created_at || new Date().toISOString(); 
 
-    if (!video && params.videoId.includes('_')) {
-        const parts = params.videoId.split('_');
+    if (!video && baseGuid.includes('_')) {
+        const parts = baseGuid.split('_');
         // Handle format LIBRARYID_GUID
         if (parts.length >= 2 && !isNaN(Number(parts[0]))) {
             guid = parts.slice(1).join('_');

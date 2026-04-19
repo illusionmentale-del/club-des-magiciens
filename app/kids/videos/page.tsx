@@ -129,7 +129,7 @@ export default async function KidsVideosPage({ searchParams }: { searchParams: P
                                     )}
                                     <div className="absolute inset-0 bg-gradient-to-t from-brand-card via-transparent to-transparent md:bg-gradient-to-r" />
 
-                                    <Link href={`/kids/videos/${featuredVideo.video_url || featuredVideo.id}`} className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                    <Link href={`/kids/videos/${featuredVideo.id}`} className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                                         <div className="w-20 h-20 bg-brand-gold/90 text-black rounded-full flex items-center justify-center shadow-[0_0_30px_rgba(251,191,36,0.5)] transform scale-50 group-hover:scale-100 transition-all duration-300">
                                             <Play className="w-8 h-8 ml-2" />
                                         </div>
@@ -148,7 +148,7 @@ export default async function KidsVideosPage({ searchParams }: { searchParams: P
                                     </p>
 
                                     <Link
-                                        href={`/kids/videos/${featuredVideo.video_url || featuredVideo.id}`}
+                                        href={`/kids/videos/${featuredVideo.id}`}
                                         className="inline-flex items-center gap-2 bg-brand-purple text-white px-8 py-4 rounded-xl font-bold uppercase tracking-widest text-sm hover:bg-brand-purple/80 transition-colors self-start shadow-[0_0_20px_rgba(168,85,247,0.3)]"
                                     >
                                         <Play className="w-4 h-4" />
@@ -168,7 +168,7 @@ export default async function KidsVideosPage({ searchParams }: { searchParams: P
                                 <Search className="w-4 h-4" /> RÉSULTATS DE RECHERCHE
                             </h2>
                             {sortedVideos.length > 0 ? sortedVideos.map(video => {
-                                const videoIdForLink = video.video_url || video.id;
+                                const videoIdForLink = video.id;
                                 return (
                                     <Link key={video.id} href={`/kids/videos/${videoIdForLink}`} className="flex flex-col sm:flex-row gap-4 bg-brand-card hover:bg-brand-card/80 p-4 rounded-2xl border border-brand-border hover:border-brand-purple/50 transition-all group shadow-sm hover:shadow-[0_10px_30px_rgba(168,85,247,0.1)]">
                                         <div className="w-full sm:w-64 md:w-56 aspect-video relative rounded-xl overflow-hidden bg-black shrink-0 border border-white/5">
@@ -233,7 +233,7 @@ export default async function KidsVideosPage({ searchParams }: { searchParams: P
                             ) : (
                                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                                     {sortedVideos.map((video) => {
-                                        const videoIdForLink = video.video_url || video.id;
+                                        const videoIdForLink = video.id;
                                         return (
                                             <VideoCard
                                                 key={video.id}
