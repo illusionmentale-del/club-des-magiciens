@@ -37,6 +37,25 @@ export default async function AdultLibraryPage() {
         .lte("week_number", currentWeek)
         .order("week_number", { ascending: false });
 
+    // 3. Fetch Settings for labels
+    const { data: settings } = await supabase.from("settings").select("*");
+    const settingsMap = settings?.reduce((acc, curr) => {
+        acc[curr.key] = curr.value;
+        return acc;
+    }, {} as Record<string, string>) || {};
+
+    let uiLabelsMap: Record<string, string> = {
+        page_videos_title: "Les Vidéos"
+    };
+
+    if (settingsMap["adult_ui_labels"]) {
+        try {
+            uiLabelsMap = { ...uiLabelsMap, ...JSON.parse(settingsMap["adult_ui_labels"]) };
+        } catch (e) {
+            console.error("Failed to parse adult_ui_labels", e);
+        }
+    }
+
     // Group items by week
     const weeksData: Record<number, any[]> = {};
     if (unlockedItems) {
@@ -74,8 +93,8 @@ export default async function AdultLibraryPage() {
                             <Star className="w-5 h-5 fill-current animate-pulse text-magic-royal" />
                             <span className="text-xs font-bold uppercase tracking-widest">Le QG de la Magie</span>
                         </div>
-                        <h1 className="text-3xl md:text-5xl font-black text-white tracking-tight">
-                            La <span className="text-transparent bg-clip-text bg-gradient-to-r from-magic-royal to-blue-500">Bibliothèque</span>
+                        <h1 className="text-3xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-magic-royal to-blue-500 tracking-tight">
+                            {uiLabelsMap.page_videos_title || "Les Vidéos"}
                         </h1>
                         <p className="text-slate-400 mt-2 text-lg">
                             Retrouvez ici votre parcours d'apprentissage de la magie.

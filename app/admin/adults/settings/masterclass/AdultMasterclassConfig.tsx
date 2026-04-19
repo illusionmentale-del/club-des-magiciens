@@ -14,12 +14,28 @@ interface LibraryItem {
     thumbnail_url?: string;
 }
 
+interface CourseItem {
+    id: string;
+    title: string;
+}
+
+interface HubCard {
+    id: string;
+    title: string;
+    description: string;
+    level: string;
+    color: string;
+    buttonText: string;
+    courseId: string;
+}
+
 interface AdultMasterclassConfigProps {
     initialSettings: Record<string, any>;
     libraryItems: LibraryItem[];
+    courses: CourseItem[];
 }
 
-export default function AdultMasterclassConfig({ initialSettings, libraryItems }: AdultMasterclassConfigProps) {
+export default function AdultMasterclassConfig({ initialSettings, libraryItems, courses }: AdultMasterclassConfigProps) {
     const [activeTab, setActiveTab] = useState("hero");
     const [loading, setLoading] = useState(false);
 
@@ -41,12 +57,65 @@ export default function AdultMasterclassConfig({ initialSettings, libraryItems }
         }
     );
 
+    // Hub Cards State
+    const defaultCards: HubCard[] = [
+        {
+            id: "card-1",
+            title: "Formation Débutant",
+            description: "Les bases fondamentales de la prestidigitation.",
+            level: "Pour bien démarrer",
+            color: "from-blue-600 to-blue-400",
+            buttonText: "Commencer",
+            courseId: ""
+        },
+        {
+            id: "card-2",
+            title: "Formation Intermédiaire",
+            description: "Techniques avancées et perfectionnement.",
+            level: "Pour aller plus loin",
+            color: "from-magic-royal to-amber-500",
+            buttonText: "Découvrir",
+            courseId: ""
+        },
+        {
+            id: "card-3",
+            title: "Formation Professionnelle",
+            description: "Le secret des professionnels : construction de spectacle.",
+            level: "L'Excellence",
+            color: "from-purple-600 to-pink-500",
+            buttonText: "Découvrir",
+            courseId: ""
+        }
+    ];
+
+    const [hubCards, setHubCards] = useState<HubCard[]>(
+        initialSettings.adult_masterclass_hub_cards 
+            ? JSON.parse(initialSettings.adult_masterclass_hub_cards) 
+            : defaultCards
+    );
+
+    const handleCreateCourse = async (cardIndex: number) => {
+        const title = prompt("Nom de la nouvelle formation ?");
+        if (!title) return;
+        
+        try {
+            // Placeholder: we'll call an actual action here if needed, or simply redirect to a creation page
+            // But since we want to create it quickly:
+            // We can just rely on the existing "Save" mechanism, but to create a real Course in DB requires a Server Action.
+            // For now, we will add a small alert.
+            alert("Veuillez d'abord sauvegarder cette page, puis rendez-vous sur le tableau de bord pour créer un programme via la BDD manuel, ou on va utiliser la route dédiée !");
+        } catch (e) {
+            console.error(e);
+        }
+    };
+
     const handleSave = async () => {
         setLoading(true);
         try {
             await saveAdultHomeSettings({
                 adult_masterclass_page_config: JSON.stringify(pageConfig),
-                adult_masterclass_featured_config: JSON.stringify(featuredConfig)
+                adult_masterclass_featured_config: JSON.stringify(featuredConfig),
+                adult_masterclass_hub_cards: JSON.stringify(hubCards)
             });
             alert("Configuration enregistrée avec succès !");
         } catch (error) {
@@ -63,6 +132,7 @@ export default function AdultMasterclassConfig({ initialSettings, libraryItems }
             <div className="lg:col-span-1 space-y-2">
                 {[
                     { id: "hero", label: "Page & Contenu à la Une", icon: Sparkles },
+                    { id: "hub", label: "Parcours (Cartes)", icon: Video },
                 ].map((tab) => (
                     <button
                         key={tab.id}
@@ -185,6 +255,152 @@ export default function AdultMasterclassConfig({ initialSettings, libraryItems }
                                     )}
                                 </div>
 
+                            </div>
+                        )}
+
+                        {activeTab === "hub" && (
+                            <div className="space-y-10">
+                                <div className="flex items-center justify-between border-b border-white/10 pb-4">
+                                    <div>
+                                        <h3 className="text-lg font-bold text-white">Cartes de Formation</h3>
+                                        <p className="text-[10px] text-brand-text-muted mt-1 uppercase tracking-widest font-bold">Configurez les 3 grandes offres du portail</p>
+                                    </div>
+                                    <Button
+                                        onClick={() => setHubCards([...hubCards, { id: `card-${Date.now()}`, title: "Nouvelle Option", description: "", level: "Nouveau", color: "from-gray-600 to-gray-400", buttonText: "Découvrir", courseId: "" }])}
+                                        variant="outline"
+                                        className="border-white/20 text-white hover:bg-white/10"
+                                    >
+                                        + Ajouter une carte
+                                    </Button>
+                                </div>
+
+                                <div className="space-y-8">
+                                    {hubCards.map((card, index) => (
+                                        <div key={card.id} className="bg-black/20 border border-white/5 rounded-2xl p-6 relative">
+                                            {/* Delete Card */}
+                                            <button 
+                                                onClick={() => setHubCards(hubCards.filter((_, i) => i !== index))}
+                                                className="absolute top-4 right-4 text-red-400 hover:text-red-300 transition-colors"
+                                            >
+                                                Supprimer
+                                            </button>
+
+                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                                <div className="space-y-2">
+                                                    <label className="text-[10px] font-black uppercase tracking-widest text-brand-text-muted">Titre</label>
+                                                    <input
+                                                        type="text"
+                                                        value={card.title}
+                                                        onChange={(e) => {
+                                                            const newCards = [...hubCards];
+                                                            newCards[index].title = e.target.value;
+                                                            setHubCards(newCards);
+                                                        }}
+                                                        className="w-full bg-brand-bg border border-white/10 rounded-lg p-3 text-white focus:outline-none focus:border-brand-royal/50"
+                                                    />
+                                                </div>
+
+                                                <div className="space-y-2">
+                                                    <label className="text-[10px] font-black uppercase tracking-widest text-brand-text-muted">Badge / Niveau</label>
+                                                    <input
+                                                        type="text"
+                                                        value={card.level}
+                                                        onChange={(e) => {
+                                                            const newCards = [...hubCards];
+                                                            newCards[index].level = e.target.value;
+                                                            setHubCards(newCards);
+                                                        }}
+                                                        className="w-full bg-brand-bg border border-white/10 rounded-lg p-3 text-white focus:outline-none focus:border-brand-royal/50"
+                                                    />
+                                                </div>
+
+                                                <div className="space-y-2 md:col-span-2">
+                                                    <label className="text-[10px] font-black uppercase tracking-widest text-brand-text-muted">Description</label>
+                                                    <textarea
+                                                        value={card.description}
+                                                        onChange={(e) => {
+                                                            const newCards = [...hubCards];
+                                                            newCards[index].description = e.target.value;
+                                                            setHubCards(newCards);
+                                                        }}
+                                                        className="w-full bg-brand-bg border border-white/10 rounded-lg p-3 text-white focus:outline-none focus:border-brand-royal/50"
+                                                    />
+                                                </div>
+
+                                                <div className="space-y-2">
+                                                    <label className="text-[10px] font-black uppercase tracking-widest text-brand-text-muted">Dégradé de couleurs (Classes Tailwind)</label>
+                                                    <input
+                                                        type="text"
+                                                        value={card.color}
+                                                        onChange={(e) => {
+                                                            const newCards = [...hubCards];
+                                                            newCards[index].color = e.target.value;
+                                                            setHubCards(newCards);
+                                                        }}
+                                                        className="w-full bg-brand-bg border border-white/10 rounded-lg p-3 text-white focus:outline-none focus:border-brand-royal/50 text-xs font-mono"
+                                                    />
+                                                </div>
+
+                                                <div className="space-y-2">
+                                                    <label className="text-[10px] font-black uppercase tracking-widest text-brand-text-muted">Texte du bouton Action</label>
+                                                    <input
+                                                        type="text"
+                                                        value={card.buttonText}
+                                                        onChange={(e) => {
+                                                            const newCards = [...hubCards];
+                                                            newCards[index].buttonText = e.target.value;
+                                                            setHubCards(newCards);
+                                                        }}
+                                                        className="w-full bg-brand-bg border border-white/10 rounded-lg p-3 text-white focus:outline-none focus:border-brand-royal/50"
+                                                    />
+                                                </div>
+
+                                                <div className="space-y-2 md:col-span-2 pt-4 border-t border-white/5">
+                                                    <label className="text-[10px] font-black uppercase tracking-widest text-brand-royal">Connexion au Contenu (Base de données)</label>
+                                                    <p className="text-[10px] text-brand-text-muted -mt-1 leading-snug">
+                                                        Sélectionnez la Formation dans la BDD pour ce bloc. S'il y a un lien, le visiteur sera redirigé vers ce parcours.
+                                                    </p>
+                                                    <div className="flex items-center gap-4">
+                                                        <select
+                                                            value={card.courseId}
+                                                            onChange={(e) => {
+                                                                const newCards = [...hubCards];
+                                                                newCards[index].courseId = e.target.value;
+                                                                setHubCards(newCards);
+                                                            }}
+                                                            className="flex-1 bg-brand-bg border border-white/10 rounded-lg p-3 text-white focus:outline-none focus:border-brand-royal/50"
+                                                        >
+                                                            <option value="">-- Lier à aucune formation spécifique --</option>
+                                                            {courses.map(course => (
+                                                                <option key={course.id} value={course.id}>{course.title}</option>
+                                                            ))}
+                                                        </select>
+                                                    </div>
+
+                                                    {/* BOUTON MAGIC: GO TO COURSE MANAGER */}
+                                                    {card.courseId && (
+                                                        <div className="mt-4 flex flex-col items-start gap-2">
+                                                            <Button
+                                                                onClick={(e) => {
+                                                                    e.preventDefault();
+                                                                    // Navigate to the Course Manager
+                                                                    window.location.href = `/admin/adults/courses/${card.courseId}`;
+                                                                }}
+                                                                className="bg-brand-royal text-black hover:bg-yellow-500 font-bold"
+                                                            >
+                                                                <Eye className="w-4 h-4 mr-2" />
+                                                                Gérer les vidéos de cette formation
+                                                            </Button>
+                                                            <p className="text-[10px] bg-red-500/10 text-red-400 p-2 rounded"><strong>Attention:</strong> N'oubliez pas d'enregistrer vos modifications ici avant de partir !</p>
+                                                        </div>
+                                                    )}
+                                                    
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    ))}
+                                </div>
                             </div>
                         )}
 

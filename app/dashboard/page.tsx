@@ -102,6 +102,18 @@ export default async function DashboardPage() {
         }
     }
 
+    let uiLabelsMap: Record<string, string> = {
+        page_dashboard_title: "Le QG de la Magie"
+    };
+
+    if (settingsMap["adult_ui_labels"]) {
+        try {
+            uiLabelsMap = { ...uiLabelsMap, ...JSON.parse(settingsMap["adult_ui_labels"]) };
+        } catch (e) {
+            console.error("Failed to parse adult_ui_labels", e);
+        }
+    }
+
     // Determine which items to show in the "Nouveautés" block
     const newsItems = newsConfigIds.length > 0
         ? newsConfigIds.map((item: any) => {
@@ -155,7 +167,7 @@ export default async function DashboardPage() {
                 <div className="flex-1">
                     <div className="flex items-center gap-2 text-magic-royal mb-2">
                         <Sparkles className="w-5 h-5 animate-pulse" />
-                        <span className="text-xs font-bold uppercase tracking-widest">Le Club des Magiciens</span>
+                        <span className="text-xs font-bold uppercase tracking-widest">{uiLabelsMap.page_dashboard_title || "Le QG de la Magie"}</span>
                     </div>
                     <h1 className="text-3xl md:text-5xl font-black text-white tracking-tight">
                         Bienvenue, <span className="text-magic-royal">{userName}</span> ! ✨

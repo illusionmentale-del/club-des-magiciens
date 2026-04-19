@@ -4,6 +4,7 @@ import SettingsForm from "./SettingsForm";
 import AdultHomeConfig from "./AdultHomeConfig";
 import AdultMenuToggles from "@/components/admin/AdultMenuToggles";
 import AdultHomeBlockToggles from "@/components/admin/AdultHomeBlockToggles";
+import AdultLabelsConfig from "@/components/admin/AdultLabelsConfig";
 
 export default async function AdminSettingsPage() {
     const supabase = await createClient();
@@ -39,6 +40,8 @@ export default async function AdminSettingsPage() {
                 <AdultMenuToggles initialSettings={settingsMap} />
                 <AdultHomeBlockToggles initialSettings={settingsMap} />
             </div>
+
+            <AdultLabelsConfig initialSettings={settingsMap} />
 
             <div className="pt-8 border-t border-white/10 mt-12">
                 <h2 className="text-xl font-bold text-white mb-6 uppercase tracking-wider">Réglages Publics (Site vitrine)</h2>

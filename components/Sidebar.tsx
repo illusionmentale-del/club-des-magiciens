@@ -80,7 +80,7 @@ export default function Sidebar({ isAdmin, socialLinks, logoUrl, hasKidsAccess, 
                     className={`flex items-center gap-3 px-4 py-3 font-medium transition-all ${isActive('/dashboard') ? 'bg-gradient-to-r from-magic-royal/20 to-transparent text-magic-royal border-l-2 border-magic-royal' : 'text-gray-400 hover:bg-white/5 hover:text-white border-l-2 border-transparent'}`}
                 >
                     <Star className="w-5 h-5" />
-                    L'Actu du Club
+                    {uiLabels?.nav_actu || "L'Actu du Club"}
                 </Link>
 
                 {toggles?.enable_adults_program !== false && (
@@ -89,7 +89,7 @@ export default function Sidebar({ isAdmin, socialLinks, logoUrl, hasKidsAccess, 
                         className={`flex items-center gap-3 px-4 py-3 font-medium transition-all ${isActive('/dashboard/library') ? 'bg-gradient-to-r from-magic-royal/20 to-transparent text-magic-royal border-l-2 border-magic-royal' : 'text-gray-400 hover:bg-white/5 hover:text-white border-l-2 border-transparent'}`}
                     >
                         <BookOpen className="w-5 h-5" />
-                        Mes Vidéos
+                        {uiLabels?.nav_videos || "Mes Vidéos"}
                     </Link>
                 )}
 
@@ -99,7 +99,7 @@ export default function Sidebar({ isAdmin, socialLinks, logoUrl, hasKidsAccess, 
                         className={`flex items-center gap-3 px-4 py-3 font-medium transition-all ${isActive('/dashboard/masterclass') ? 'bg-gradient-to-r from-magic-royal/20 to-transparent text-magic-royal border-l-2 border-magic-royal' : 'text-gray-400 hover:bg-white/5 hover:text-white border-l-2 border-transparent'}`}
                     >
                         <Video className="w-5 h-5" />
-                        Mes Formations
+                        {uiLabels?.nav_formations || "Mes Formations"}
                     </Link>
                 )}
 
@@ -108,7 +108,7 @@ export default function Sidebar({ isAdmin, socialLinks, logoUrl, hasKidsAccess, 
                     className={`flex items-center gap-3 px-4 py-3 font-medium transition-all ${isActive('/dashboard/shop') ? 'bg-gradient-to-r from-magic-royal/20 to-transparent text-magic-royal border-l-2 border-magic-royal' : 'text-gray-400 hover:bg-white/5 hover:text-white border-l-2 border-transparent'}`}
                 >
                     <Sparkles className="w-5 h-5" />
-                    La Boutique
+                    {uiLabels?.nav_boutique || "La Boutique"}
                 </Link>
 
                 {toggles?.enable_adults_account !== false && (
@@ -117,7 +117,7 @@ export default function Sidebar({ isAdmin, socialLinks, logoUrl, hasKidsAccess, 
                         className={`flex items-center gap-3 px-4 py-3 font-medium transition-all ${(isActive('/dashboard/account') || searchParams?.get('view') === 'settings') ? 'bg-gradient-to-r from-magic-royal/20 to-transparent text-magic-royal border-l-2 border-magic-royal' : 'text-gray-400 hover:bg-white/5 hover:text-white border-l-2 border-transparent'}`}
                     >
                         <Settings className="w-5 h-5" />
-                        Mes Paramètres
+                        {uiLabels?.nav_settings || "Mes Paramètres"}
                     </Link>
                 )}
 

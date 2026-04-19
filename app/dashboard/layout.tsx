@@ -48,6 +48,17 @@ export default async function DashboardLayout({
     let magicLevel = "Initié";
     let avatarUrl = "";
     let userName = "";
+    let uiLabelsMap: Record<string, string> = {
+        nav_actu: "L'Actu du Club",
+        nav_videos: "Mes Vidéos",
+        nav_formations: "Mes Formations",
+        nav_boutique: "La Boutique",
+        nav_settings: "Mes Paramètres",
+        page_dashboard_title: "Le QG de la Magie",
+        page_videos_title: "Les Vidéos",
+        page_formations_title: "Mes Formations",
+        page_formations_subtitle: "Apprentissage Structuré"
+    };
 
     if (user) {
         const { data: profile } = await supabase.from("profiles").select("role, has_kids_access, full_name, username, avatar_skins(image_url)").eq("id", user.id).single();
@@ -98,13 +109,21 @@ export default async function DashboardLayout({
         };
 
         siteLogo = settingsMap["site_logo"] || "/logo.png";
+
+        if (settingsMap["adult_ui_labels"]) {
+            try {
+                uiLabelsMap = { ...uiLabelsMap, ...JSON.parse(settingsMap["adult_ui_labels"]) };
+            } catch (e) {
+                console.error("Failed to parse adult_ui_labels in layout", e);
+            }
+        }
     }
 
     return (
         <div className="flex h-screen bg-magic-bg overflow-hidden">
-            <Sidebar isAdmin={isAdmin} socialLinks={socialLinks} logoUrl={siteLogo} hasKidsAccess={hasKidsAccess} toggles={toggles} xpBalance={currentXP} lifetimeXP={lifetimeXP} magicLevel={magicLevel} avatarUrl={avatarUrl} userName={userName} />
+            <Sidebar isAdmin={isAdmin} socialLinks={socialLinks} logoUrl={siteLogo} hasKidsAccess={hasKidsAccess} toggles={toggles} xpBalance={currentXP} lifetimeXP={lifetimeXP} magicLevel={magicLevel} avatarUrl={avatarUrl} userName={userName} uiLabels={uiLabelsMap} />
             <div className="flex-1 flex flex-col md:pl-0">
-                <MobileNav isAdmin={isAdmin} hasKidsAccess={hasKidsAccess} toggles={toggles} xpBalance={currentXP} lifetimeXP={lifetimeXP} magicLevel={magicLevel} avatarUrl={avatarUrl} userName={userName} />
+                <MobileNav isAdmin={isAdmin} hasKidsAccess={hasKidsAccess} toggles={toggles} xpBalance={currentXP} lifetimeXP={lifetimeXP} magicLevel={magicLevel} avatarUrl={avatarUrl} userName={userName} uiLabels={uiLabelsMap} />
                 <main className="flex-1 overflow-y-auto bg-magic-bg p-4 md:p-8">
                     {children}
                 </main>

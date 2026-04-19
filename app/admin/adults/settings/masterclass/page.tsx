@@ -19,6 +19,13 @@ export default async function AdultMasterclassSettingsPage() {
         .eq("audience", "adults")
         .order("title");
 
+    // 3. Fetch courses for the Hub Formations
+    const { data: courses } = await supabase
+        .from("courses")
+        .select("id, title, status")
+        .eq("audience", "adults")
+        .order("title");
+
     return (
         <div className="space-y-10 selection:bg-brand-royal/30">
             <div>
@@ -36,6 +43,7 @@ export default async function AdultMasterclassSettingsPage() {
             <AdultMasterclassConfig
                 initialSettings={settingsMap}
                 libraryItems={libraryItems || []}
+                courses={courses || []}
             />
         </div>
     )

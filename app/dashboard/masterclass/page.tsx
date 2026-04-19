@@ -6,40 +6,95 @@ export const metadata = {
     description: 'Accède à tes formations complètes.',
 };
 
+import { createClient } from "@/lib/supabase/server";
+
 export default async function AdultMasterclassPage() {
-    // Les 3 formations piliers
-    const formations = [
+    const supabase = await createClient();
+
+    // Fetch Settings for labels and cards
+    const { data: settings } = await supabase.from("settings").select("*");
+    const settingsMap = settings?.reduce((acc, curr) => {
+        acc[curr.key] = curr.value;
+        return acc;
+    }, {} as Record<string, string>) || {};
+
+    const { data: { user } } = await supabase.auth.getUser();
+    
+    // Check if purchased courses
+    let purchasedCourseIds = new Set<string>();
+    let isAdmin = false;
+    
+    if (user) {
+        const { data: purchases } = await supabase.from("user_purchases").select("course_id").eq("user_id", user.id);
+        if (purchases) purchasedCourseIds = new Set(purchases.map(p => p.course_id));
+
+        const { data: profile } = await supabase.from("profiles").select("role").eq("id", user.id).single();
+        if (profile?.role === 'admin' || user.email?.includes('admin@')) {
+            isAdmin = true;
+        }
+    }
+
+    let uiLabelsMap: Record<string, string> = {
+        page_formations_title: "Mes Formations",
+        page_formations_subtitle: "Apprentissage Structuré"
+    };
+
+    if (settingsMap["adult_ui_labels"]) {
+        try {
+            uiLabelsMap = { ...uiLabelsMap, ...JSON.parse(settingsMap["adult_ui_labels"]) };
+        } catch (e) {
+            console.error("Failed to parse adult_ui_labels", e);
+        }
+    }
+
+    // Configuration des cartes depuis la base de données
+    const defaultFormations = [
         {
             id: 'debutant',
             title: 'Formation Débutant',
-            description: 'Les bases fondamentales de la prestidigitation. Cartomagie, pièces, et psychologie du détournement d\'attention.',
+            description: 'Les bases fondamentales de la prestidigitation.',
             level: 'Pour bien démarrer',
-            isUnlocked: true, // A relier plus tard à la BDD via les achats
             color: 'from-blue-600 to-blue-400',
             buttonText: 'Commencer',
-            href: '/dashboard/library', // Placeholder
+            courseId: '',
         },
         {
             id: 'intermediaire',
             title: 'Formation Intermédiaire',
-            description: 'Techniques avancées, routines complètes et perfectionnement de tes manipulations invisibles.',
+            description: 'Techniques avancées et perfectionnement.',
             level: 'Pour aller plus loin',
-            isUnlocked: false,
             color: 'from-magic-royal to-amber-500',
             buttonText: 'Découvrir',
-            href: '/dashboard/shop',
+            courseId: '',
         },
         {
             id: 'professionnelle',
             title: 'Formation Professionnelle',
-            description: 'Le secret des professionnels : construction de spectacle, close-up en conditions réelles et mentalisme avancé.',
+            description: 'Le secret des professionnels : construction de spectacle.',
             level: 'L\'Excellence',
-            isUnlocked: false,
             color: 'from-purple-600 to-pink-500',
             buttonText: 'Découvrir',
-            href: '/dashboard/shop',
+            courseId: '',
         }
     ];
+
+    let hubCardsConfig = defaultFormations;
+    if (settingsMap["adult_masterclass_hub_cards"]) {
+        try {
+            hubCardsConfig = JSON.parse(settingsMap["adult_masterclass_hub_cards"]);
+        } catch (e) {
+            console.error("Failed to parse hub cards", e);
+        }
+    }
+
+    const formations = hubCardsConfig.map((card: any) => {
+        const isUnlocked = isAdmin || (card.courseId && purchasedCourseIds.has(card.courseId));
+        return {
+            ...card,
+            isUnlocked,
+            href: isUnlocked && card.courseId ? `/watch/${card.courseId}` : '/dashboard/shop'
+        };
+    });
 
     return (
         <div className="min-h-screen bg-[#050507] text-white p-4 md:p-8 pb-32 font-sans relative selection:bg-magic-royal/30">
@@ -55,10 +110,10 @@ export default async function AdultMasterclassPage() {
                     <div className="flex-1">
                         <div className="flex items-center gap-2 text-magic-royal mb-2">
                             <Star className="w-5 h-5 fill-current animate-pulse text-magic-royal" />
-                            <span className="text-xs font-bold uppercase tracking-widest">Apprentissage Structuré</span>
+                            <span className="text-xs font-bold uppercase tracking-widest">{uiLabelsMap.page_formations_subtitle || "Apprentissage Structuré"}</span>
                         </div>
-                        <h1 className="text-3xl md:text-5xl font-black text-white tracking-tight">
-                            Mes <span className="text-transparent bg-clip-text bg-gradient-to-r from-magic-royal to-blue-500">Formations</span>
+                        <h1 className="text-3xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-magic-royal to-blue-500 tracking-tight">
+                            {uiLabelsMap.page_formations_title || "Mes Formations"}
                         </h1>
                         <p className="text-slate-400 mt-2 text-lg">
                             Choisis ton parcours et progresse pas à pas avec une méthode éprouvée.
