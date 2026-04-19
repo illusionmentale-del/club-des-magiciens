@@ -4,8 +4,9 @@ import { useState } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { Sparkles, Video, Save, Eye } from "lucide-react";
+import { Sparkles, Video, Save, Eye, PlusCircle } from "lucide-react";
 import { saveAdultHomeSettings } from "@/app/admin/actions";
+import { createCourseQuick } from "@/app/admin/adults/courses/[courseId]/actions";
 import CoverImageUpload from "@/components/admin/CoverImageUpload";
 
 interface LibraryItem {
@@ -94,18 +95,30 @@ export default function AdultMasterclassConfig({ initialSettings, libraryItems, 
             : defaultCards
     );
 
-    const handleCreateCourse = async (cardIndex: number) => {
-        const title = prompt("Nom de la nouvelle formation ?");
+    const handleCreateCourse = async (index: number) => {
+        const title = prompt("Nom de la nouvelle formation ? (ex: 'Formation Expert')");
         if (!title) return;
         
+        setLoading(true);
         try {
-            // Placeholder: we'll call an actual action here if needed, or simply redirect to a creation page
-            // But since we want to create it quickly:
-            // We can just rely on the existing "Save" mechanism, but to create a real Course in DB requires a Server Action.
-            // For now, we will add a small alert.
-            alert("Veuillez d'abord sauvegarder cette page, puis rendez-vous sur le tableau de bord pour créer un programme via la BDD manuel, ou on va utiliser la route dédiée !");
+            // Créer le course en BDD
+            const newCourseId = await createCourseQuick(title, "adults");
+            
+            // Relier la carte à ce nouveau course
+            const newCards = [...hubCards];
+            newCards[index].courseId = newCourseId;
+            setHubCards(newCards);
+            
+            // Ne pas oublier de sauvegarder
+            alert("La base de données a créé le course ! Pensez à 'Enregistrer' la page pour valider la carte sur le Hub public.");
+            
+            // Recharger la page pour rafraichir la liste des dropdowns 
+            window.location.reload();
         } catch (e) {
             console.error(e);
+            alert("Erreur serveur lors de la création.");
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -375,6 +388,17 @@ export default function AdultMasterclassConfig({ initialSettings, libraryItems, 
                                                                 <option key={course.id} value={course.id}>{course.title}</option>
                                                             ))}
                                                         </select>
+                                                        <Button
+                                                            onClick={(e) => {
+                                                                e.preventDefault();
+                                                                handleCreateCourse(index);
+                                                            }}
+                                                            variant="outline"
+                                                            className="shrink-0 border-brand-royal text-brand-royal hover:bg-brand-royal/10"
+                                                        >
+                                                            <PlusCircle className="w-4 h-4 mr-2" />
+                                                            Créer une nouvelle Formation
+                                                        </Button>
                                                     </div>
 
                                                     {/* BOUTON MAGIC: GO TO COURSE MANAGER */}
