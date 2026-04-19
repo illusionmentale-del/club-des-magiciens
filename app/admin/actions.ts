@@ -1121,19 +1121,7 @@ export async function adminRevokeItem(progressId: string) {
     return { success: !error, error: error?.message };
 }
 
-export async function adminGiveBadge(userId: string, badgeId: string) {
-    const supabaseAdmin = await verifyCallerIsAdmin();
-    
-    const { error } = await supabaseAdmin.from("user_badges").insert({ user_id: userId, badge_id: badgeId });
-    return { success: !error, error: error?.message };
-}
 
-export async function adminRevokeBadge(userBadgeId: string) {
-    const supabaseAdmin = await verifyCallerIsAdmin();
-    
-    const { error } = await supabaseAdmin.from("user_badges").delete().eq("id", userBadgeId);
-    return { success: !error, error: error?.message };
-}
 
 export async function adminGiveGift(userId: string, itemId: string) {
     const supabaseAdmin = await verifyCallerIsAdmin();
@@ -1229,11 +1217,11 @@ export async function adminGiveBadge(userId: string, badgeId: string) {
     return { success: true };
 }
 
-export async function adminRevokeBadge(userBadgeId: string, userId: string) {
+export async function adminRevokeBadge(userBadgeId: string, userId?: string) {
     const supabaseAdmin = await verifyCallerIsAdmin();
     const { error } = await supabaseAdmin.from("user_badges").delete().eq("id", userBadgeId);
     if (error) return { error: error.message };
-    revalidatePath(`/admin/adults/users/${userId}`);
+    if (userId) revalidatePath(`/admin/adults/users/${userId}`);
     return { success: true };
 }
 
