@@ -86,8 +86,7 @@ export default async function AdultsPricingPage() {
                 {/* Subscriptions - Fixed Equal Layout */}
                 <div className="mt-20 mb-16">
                     <AtelierPricingCards
-                        monthlyProduct={monthlyProduct}
-                        yearlyProduct={yearlyProduct}
+                        product={monthlyProduct}
                         userLoggedIn={!!user}
                     />
                 </div>

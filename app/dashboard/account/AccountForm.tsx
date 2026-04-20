@@ -9,16 +9,17 @@ import { useState } from "react";
 import AvatarUpload from "@/components/AvatarUpload";
 import KidsAvatarSelector from "@/components/KidsAvatarSelector";
 
-function SubmitButton({ theme }: { theme: 'light' | 'dark' }) {
+function SubmitButton({ theme, isKidProfile }: { theme: 'light' | 'dark', isKidProfile?: boolean }) {
     const { pending } = useFormStatus();
     return (
         <button
             type="submit"
             disabled={pending}
-            className={`w-full py-4 font-bold rounded-xl transition-all disabled:opacity-50 flex justify-center items-center shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 ${theme === 'light'
-                ? 'bg-gradient-to-r from-purple-600 to-pink-500 text-white shadow-purple-500/20'
-                : 'bg-magic-purple hover:bg-magic-purple/80 text-white shadow-[0_0_20px_rgba(124,58,237,0.3)]'
-                }`}
+            className={`w-full py-4 font-bold rounded-xl transition-all disabled:opacity-50 flex justify-center items-center shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 ${
+                isKidProfile
+                    ? 'bg-gradient-to-r from-purple-600 to-pink-500 text-white shadow-purple-500/20'
+                    : 'bg-magic-royal hover:bg-magic-royal/80 text-black shadow-[0_0_20px_rgba(203,213,225,0.1)]'
+            }`}
         >
             {pending ? "Enregistrement..." : "Enregistrer les modifications"}
         </button>
@@ -135,7 +136,7 @@ export default function AccountForm({ user, profile, theme = 'dark', isKidProfil
                 </div>
             )}
 
-            <SubmitButton theme={theme} />
+            <SubmitButton theme={theme} isKidProfile={isKidProfile} />
         </form>
     );
 }

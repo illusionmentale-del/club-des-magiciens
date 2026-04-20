@@ -15,6 +15,7 @@ export default async function manifest(): Promise<MetadataRoute.Manifest> {
             display: 'standalone',
             background_color: '#050507',
             theme_color: '#Fcd34d',
+            gcm_sender_id: '103953800507',
             icons: [
                 {
                     src: '/adults-icon-192x192.png',
@@ -43,6 +44,7 @@ export default async function manifest(): Promise<MetadataRoute.Manifest> {
         display: 'standalone',
         background_color: '#15111B',
         theme_color: '#8B5CF6',
+        gcm_sender_id: '103953800507',
         icons: [
             {
                 src: '/kids-icon-192x192.png',
