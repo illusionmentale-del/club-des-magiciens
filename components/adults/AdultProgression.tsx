@@ -27,7 +27,7 @@ export default function AdultProgression({
                 <div className="text-4xl font-black text-white mb-2 font-serif group-hover:text-magic-royal transition-colors duration-500">
                     {validatedCount} <span className="text-lg text-slate-500 font-sans font-medium">/ {totalCourses}</span>
                 </div>
-                <div className="text-xs font-bold text-slate-400 uppercase tracking-widest">Formations Validées</div>
+                <div className="text-xs font-bold text-slate-400 uppercase tracking-widest">Vidéos Visionnées</div>
             </div>
 
             <div className="relative h-2.5 w-full bg-black/50 border border-white/5 rounded-full overflow-hidden mb-6 shadow-inner z-10">
@@ -46,7 +46,7 @@ export default function AdultProgression({
                 </p>
             </div>
 
-            <Link href="/dashboard/program" className="block w-full text-center py-3 text-xs font-bold text-black uppercase tracking-widest bg-magic-royal hover:bg-blue-400 rounded-xl transition-all shadow-[0_0_15px_rgba(238,195,67,0.1)] hover:shadow-[0_0_25px_rgba(238,195,67,0.3)] hover:-translate-y-0.5 relative z-10">
+            <Link href="/dashboard/library" className="block w-full text-center py-3 text-xs font-bold text-black uppercase tracking-widest bg-magic-royal hover:bg-blue-400 rounded-xl transition-all hover:-translate-y-0.5 relative z-10 shadow-lg shadow-white/5">
                 Reprendre ma session
             </Link>
         </section>

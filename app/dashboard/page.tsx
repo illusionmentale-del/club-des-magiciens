@@ -44,8 +44,8 @@ export default async function DashboardPage() {
         supabase.from("user_purchases").select("course_id").eq("user_id", user.id),
         supabase.from("settings").select("*"),
         supabase.from("lives").select("*").order("start_date", { ascending: true }),
-        supabase.from("user_course_progress").select("*", { count: 'exact', head: true }).eq("user_id", user.id),
-        supabase.from("user_course_progress").select("course_id, completed_at, courses(title)").eq("user_id", user.id).eq("is_completed", true).order("completed_at", { ascending: false }).limit(3),
+        supabase.from("library_progress").select("*", { count: 'exact', head: true }).eq("user_id", user.id).eq("is_completed", true),
+        supabase.from("library_progress").select("library_item_id, completed_at, library_items(title)").eq("user_id", user.id).eq("is_completed", true).order("completed_at", { ascending: false }).limit(3),
         supabase.from("lives").select("*").or("audience.eq.adults,audience.eq.all").in("status", ["programmé", "en_cours"]).order("start_date", { ascending: true }).limit(1).maybeSingle(),
         supabase.from("global_alerts").select("*").or("target_audience.eq.adults,target_audience.eq.all").order("created_at", { ascending: false }),
         supabase.from("user_alerts_read").select("alert_id").eq("user_id", user.id)
@@ -237,7 +237,7 @@ export default async function DashboardPage() {
                         {settingsMap?.show_adults_progression !== 'false' && (
                             <AdultProgression
                                 validatedCount={validatedCount}
-                                totalCourses={libraryItems.length}
+                                totalCourses={libraryItems.filter(i => !i.sales_page_url).length}
                             />
                         )}
 
