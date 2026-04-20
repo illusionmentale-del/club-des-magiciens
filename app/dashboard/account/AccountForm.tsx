@@ -98,40 +98,7 @@ export default function AccountForm({ user, profile, theme = 'dark', isKidProfil
             </section>
             )}
 
-            {/* Magic Level */}
-            {!isKidProfile && (
-                <section className={`${cardClass} rounded-2xl p-8`}>
-                    <h2 className={`text-xl font-bold mb-6 flex items-center gap-2 ${titleClass}`}>
-                    <Wand2 className={`w-5 h-5 ${iconClass}`} />
-                    Niveau de Magie
-                </h2>
 
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    {levels.map((lvl) => {
-                        const isSelected = level === lvl.id;
-                        let optionClass = "cursor-pointer border rounded-xl p-4 flex flex-col items-center gap-2 transition-all ";
-
-                        if (theme === 'light') {
-                            optionClass += isSelected
-                                ? "bg-purple-50 border-purple-500 text-purple-700 shadow-md transform scale-105"
-                                : "bg-white border-gray-200 text-gray-500 hover:bg-gray-50 hover:border-gray-300";
-                        } else {
-                            optionClass += isSelected
-                                ? "bg-white/10 border-white text-white"
-                                : "bg-transparent border-white/5 text-gray-500 hover:bg-white/5";
-                        }
-
-                        return (
-                            <label key={lvl.id} className={optionClass}>
-                                <input type="radio" name="magic_level" value={lvl.id} checked={isSelected} onChange={() => setLevel(lvl.id)} className="hidden" />
-                                <span className="text-2xl">{lvl.icon}</span>
-                                <span className="text-sm font-medium text-center">{lvl.label}</span>
-                            </label>
-                        );
-                    })}
-                </div>
-            </section>
-            )}
 
             {/* Security Section */}
             <section className={`${cardClass} rounded-2xl p-8 ${theme === 'dark' ? 'opacity-80 hover:opacity-100' : ''} transition-opacity`}>

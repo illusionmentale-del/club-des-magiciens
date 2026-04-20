@@ -65,10 +65,8 @@ export default function MagicCard({ user, profile, isKid = false, lifetimeXP, av
         const nextRank = KIDS_RANKS[actualIndex + 1];
         nextRankXpCap = nextRank ? nextRank.minXp : currentRank.minXp; // If maxed out, bar is full
     } else {
-        computedLevel = profile?.magic_level || "Membre";
-        if (xp >= 150) { rarityStyle = "legendary"; nextRankXpCap = 500; }
-        else if (xp >= 50) { rarityStyle = "diamond"; nextRankXpCap = 150; }
-        else { nextRankXpCap = 50; }
+        computedLevel = "Membre";
+        rarityStyle = "diamond"; // Sleek premium look for adults without gamification
     }
 
     // Map rarities to visual booleans
@@ -187,10 +185,12 @@ export default function MagicCard({ user, profile, isKid = false, lifetimeXP, av
                                 <div className={cn("px-3 py-1 rounded-t-lg rounded-br-lg text-[10px] sm:text-xs font-bold tracking-widest uppercase border", isLegendary ? "bg-amber-500/20 text-[#FFD700] border-[#FFD700]/30" : isKid ? "bg-brand-purple/20 text-purple-300 border-purple-500/30" : "bg-brand-royal/20 text-blue-300 border-brand-royal/30")}>
                                     {computedLevel}
                                 </div>
-                                <div className="flex items-center gap-1 bg-black/40 px-3 py-1 rounded-full border border-white/10 backdrop-blur-md">
-                                    <Sparkles className={cn("w-3 h-3", isLegendary ? "text-[#FFD700]" : "text-white/70")} />
-                                    <span className={cn("text-xs font-bold", isLegendary ? "text-[#FFD700]" : "text-white/90")}>{xp} XP</span>
-                                </div>
+                                {isKid && (
+                                    <div className="flex items-center gap-1 bg-black/40 px-3 py-1 rounded-full border border-white/10 backdrop-blur-md">
+                                        <Sparkles className={cn("w-3 h-3", isLegendary ? "text-[#FFD700]" : "text-white/70")} />
+                                        <span className={cn("text-xs font-bold", isLegendary ? "text-[#FFD700]" : "text-white/90")}>{xp} XP</span>
+                                    </div>
+                                )}
                             </div>
 
                             {/* Center Avatar Illustration */}
@@ -241,22 +241,23 @@ export default function MagicCard({ user, profile, isKid = false, lifetimeXP, av
                                     </div>
                                 )}
 
-                                {/* Inner Card XP Progress Bar */}
-                                <div className="mb-3 px-2 flex flex-col gap-1.5">
-                                    <div className="flex justify-between text-[8px] md:text-[9px] font-bold text-white/50 uppercase tracking-widest mb-1">
-                                        <span>Vers {xp >= 2000 ? "le Max" : "le Prochain Rang"}</span>
-                                        <span className={isLegendary ? "text-amber-400" : "text-white"}>{xp} / {nextRankXpCap} XP</span>
-                                    </div>
-                                    {/* Progress track, clearer background and height */}
-                                    <div className="h-2 w-full bg-white/10 rounded-full border border-white/5 relative z-0">
-                                        <div
-                                            className={cn("h-full absolute left-0 top-0 rounded-full transition-all duration-1000 z-10", isLegendary ? "bg-gradient-to-r from-amber-600 to-yellow-400" : isKid ? "bg-gradient-to-r from-purple-600 to-cyan-400" : "bg-gradient-to-r from-blue-600 to-cyan-400")}
-                                            style={{ width: `${Math.max(Math.min((xp / nextRankXpCap) * 100, 100), 2)}%` }}
-                                        >
-                                            <div className="absolute inset-0 bg-white/30 rounded-full w-full animate-[pulse_2s_infinite]"></div>
+                                {/* Inner Card XP Progress Bar (Only for Kids) */}
+                                {isKid && (
+                                    <div className="mb-3 px-2 flex flex-col gap-1.5">
+                                        <div className="flex justify-between text-[8px] md:text-[9px] font-bold text-white/50 uppercase tracking-widest mb-1">
+                                            <span>Vers {xp >= 2000 ? "le Max" : "le Prochain Rang"}</span>
+                                            <span className={isLegendary ? "text-amber-400" : "text-white"}>{xp} / {nextRankXpCap} XP</span>
+                                        </div>
+                                        <div className="h-2 w-full bg-white/10 rounded-full border border-white/5 relative z-0">
+                                            <div
+                                                className={cn("h-full absolute left-0 top-0 rounded-full transition-all duration-1000 z-10", isLegendary ? "bg-gradient-to-r from-amber-600 to-yellow-400" : isKid ? "bg-gradient-to-r from-purple-600 to-cyan-400" : "bg-gradient-to-r from-blue-600 to-cyan-400")}
+                                                style={{ width: `${Math.max(Math.min((xp / nextRankXpCap) * 100, 100), 2)}%` }}
+                                            >
+                                                <div className="absolute inset-0 bg-white/30 rounded-full w-full animate-[pulse_2s_infinite]"></div>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
+                                )}
 
                                 <div className="grid grid-cols-2 gap-2 text-center border-t border-white/5 pt-2">
                                     <div className="flex flex-col items-center bg-white/5 rounded-lg py-1 border border-white/5">
