@@ -12,6 +12,23 @@ export default function PushAdminPage() {
     const [isSending, setIsSending] = useState(false);
     const [stats, setStats] = useState<{ sent: number; failed: number; staleRemoved: number } | null>(null);
 
+    const [subscribers, setSubscribers] = useState<any[] | null>(null);
+    const [isLoadingSubs, setIsLoadingSubs] = useState(false);
+
+    const fetchSubscribers = async () => {
+        try {
+            setIsLoadingSubs(true);
+            const res = await fetch("/api/admin/push/subscribers");
+            const data = await res.json();
+            if (!res.ok) throw new Error(data.error);
+            setSubscribers(data);
+        } catch (e: any) {
+            toast.error("Erreur de récupération : " + e.message);
+        } finally {
+            setIsLoadingSubs(false);
+        }
+    };
+
     const handleSendPush = async () => {
         if (!title.trim() || !message.trim()) {
             return toast.error("Le titre et le message sont requis.");
@@ -203,6 +220,70 @@ export default function PushAdminPage() {
                     </div>
                 </div>
 
+            </div>
+
+            {/* Liste des Abonnés */}
+            <div className="bg-brand-card border border-white/5 rounded-3xl p-8 shadow-2xl relative overflow-hidden mt-8">
+                <div className="flex items-center justify-between mb-6">
+                    <div>
+                        <h2 className="text-xl font-black uppercase text-white mb-1">Base d'Abonnés Push</h2>
+                        <p className="text-sm text-brand-text-muted">Découvrez exactement qui reçoit les alertes de votre plateforme.</p>
+                    </div>
+                    <button
+                        onClick={fetchSubscribers}
+                        disabled={isLoadingSubs}
+                        className="px-6 py-3 bg-white/5 border border-white/10 rounded-xl text-sm font-bold uppercase tracking-widest hover:bg-white/10 transition-colors flex items-center gap-2"
+                    >
+                        {isLoadingSubs ? <Loader2 className="w-4 h-4 animate-spin" /> : "Actualiser la liste"}
+                    </button>
+                </div>
+
+                {!subscribers ? (
+                    <div className="py-12 text-center text-brand-text-muted border border-dashed border-white/10 rounded-2xl">
+                        Cliquez sur le bouton pour analyser la base d'appareils enregistrés.
+                    </div>
+                ) : subscribers.length === 0 ? (
+                    <div className="py-12 text-center text-brand-text-muted border border-dashed border-white/10 rounded-2xl">
+                        Aucun abonné aux notifications trouvé pour le moment.
+                    </div>
+                ) : (
+                    <div className="overflow-x-auto">
+                        <table className="w-full text-left border-collapse">
+                            <thead>
+                                <tr className="border-b border-white/10">
+                                    <th className="py-3 px-4 text-xs font-bold uppercase tracking-widest text-brand-text-muted">Utilisateur</th>
+                                    <th className="py-3 px-4 text-xs font-bold uppercase tracking-widest text-brand-text-muted">Appareils</th>
+                                    <th className="py-3 px-4 text-xs font-bold uppercase tracking-widest text-brand-text-muted">Accès (Formation)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {subscribers.map((sub, idx) => (
+                                    <tr key={idx} className="border-b border-white/5 hover:bg-white/5 transition-colors">
+                                        <td className="py-3 px-4">
+                                            <div className="font-bold text-white text-sm flex items-center gap-2">
+                                                {sub.full_name}
+                                                {sub.role === 'admin' && <span className="bg-red-500/20 text-red-500 text-[10px] px-2 py-0.5 rounded-full uppercase tracking-widest border border-red-500/30">Admin</span>}
+                                            </div>
+                                            <div className="text-xs text-brand-text-muted font-mono mt-0.5">{sub.email}</div>
+                                        </td>
+                                        <td className="py-3 px-4 text-sm text-gray-300">
+                                            <div className="flex items-center gap-2">
+                                                <span className="font-bold text-brand-royal">{sub.devices} appareil(s)</span>
+                                                <span className="text-xs opacity-50">({sub.platforms.join(', ')})</span>
+                                            </div>
+                                        </td>
+                                        <td className="py-3 px-4 text-xs">
+                                            <div className="flex flex-col gap-1">
+                                                {sub.access?.adults ? <span className="text-magic-royal">✅ L'Atelier (Adultes)</span> : <span className="text-gray-600">❌ L'Atelier</span>}
+                                                {sub.access?.kids ? <span className="text-brand-purple">✅ Le Club (Enfants)</span> : <span className="text-gray-600">❌ Le Club</span>}
+                                            </div>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                )}
             </div>
         </div>
     );
