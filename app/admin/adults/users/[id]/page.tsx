@@ -1,12 +1,20 @@
 "use client";
 
-import { createClient } from "@/lib/supabase/client";
 import { useEffect, useState } from "react";
-import { ArrowLeft, Save, Trophy, Star, CheckCircle, X, Shield, History, Key } from "lucide-react";
+import { ArrowLeft, Save, Star, CheckCircle, X, Shield, History, Key, Eye, ExternalLink } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
-import { adminChangeUserPassword, adminValidateLibraryItem, adminRevokeLibraryItem, adminGiveBadge, adminRevokeBadge, adminToggleNewsletter } from "@/app/admin/actions";
+import { 
+    adminChangeUserPassword, 
+    getAdminAdultUserDetails,
+    adminValidateItem,
+    adminRevokeItem,
+    adminGiveGift,
+    adminRevokeGift,
+    generateImpersonationLink,
+    adminToggleNewsletter
+} from "@/app/admin/actions";
 
 // Types
 type Profile = {
@@ -15,11 +23,16 @@ type Profile = {
     last_name: string;
     display_name: string;
     avatar_url_kids: string;
-    magic_level: string;
-    xp: number;
-    email?: string; // Often attached to auth user, but maybe we can fetch profile ext
-    newsletter_opt_in?: boolean;
+    email?: string; 
     created_at: string;
+    newsletter_opt_in?: boolean;
+};
+
+type LastVideoInfo = {
+    video_id: string;
+    updated_at: string;
+    progress_percent: number;
+    title: string | null;
 };
 
 type Progress = {
@@ -32,13 +45,13 @@ type Progress = {
     };
 };
 
-type UserBadge = {
+type UserPurchase = {
     id: string;
-    badge_id: string;
-    awarded_at: string;
-    badges: {
-        name: string;
-        image_url: string;
+    library_item_id: string;
+    created_at: string;
+    systeme_io_order_id: string;
+    library_items: {
+        title: string;
     };
 };
 
@@ -48,25 +61,23 @@ type LibraryItem = {
     week_number: number;
 };
 
-type Badge = {
-    id: string;
-    name: string;
-};
-
-export default function AdminUserDetailPage() {
-    const { id } = useParams();
+export default function AdminAdultUserDetailPage() {
+    const params = useParams();
     const router = useRouter();
-    const supabase = createClient();
+    
+    const id = typeof params?.id === 'string' ? params.id : Array.isArray(params?.id) ? params.id[0] : '';
 
     const [profile, setProfile] = useState<Profile | null>(null);
     const [progress, setProgress] = useState<Progress[]>([]);
-    const [userBadges, setUserBadges] = useState<UserBadge[]>([]);
+    const [purchases, setPurchases] = useState<UserPurchase[]>([]);
+    const [lastVideo, setLastVideo] = useState<LastVideoInfo | null>(null);
 
     // For selection
     const [allItems, setAllItems] = useState<LibraryItem[]>([]);
-    const [allBadges, setAllBadges] = useState<Badge[]>([]);
+    const [shopItems, setShopItems] = useState<LibraryItem[]>([]);
 
     const [loading, setLoading] = useState(true);
+    const [isGeneratingLink, setIsGeneratingLink] = useState(false);
     const [newPassword, setNewPassword] = useState("");
     const [isChangingPassword, setIsChangingPassword] = useState(false);
 
@@ -74,66 +85,54 @@ export default function AdminUserDetailPage() {
         setLoading(true);
         if (!id) return;
 
-        // Profile
-        const { data: p } = await supabase.from("profiles").select("*").eq("id", id).single();
-        setProfile(p);
-
-        // Progress
-        const { data: pr } = await supabase
-            .from("library_progress")
-            .select("*, library_items(title, week_number)")
-            .eq("user_id", id)
-            .order("completed_at", { ascending: false });
-        setProgress(pr || []);
-
-        // User Badges
-        const { data: ub } = await supabase
-            .from("user_badges")
-            .select("*, badges(name, image_url)")
-            .eq("user_id", id)
-            .order("awarded_at", { ascending: false });
-        setUserBadges(ub || []);
-
-        // Form Data
-        const { data: items } = await supabase.from("library_items").select("id, title, week_number").eq("audience", "kids").order("week_number");
-        setAllItems(items || []);
-
-        const { data: badges } = await supabase.from("badges").select("id, name");
-        setAllBadges(badges || []);
+        try {
+            const data = await getAdminAdultUserDetails(id);
+            setProfile(data.profile);
+            setProgress(data.progress);
+            setPurchases(data.purchases);
+            setAllItems(data.allItems);
+            setShopItems(data.shopItems || []);
+            setLastVideo(data.lastVideoInfo || null);
+        } catch (err) {
+            console.error("Erreur de récupération:", err);
+            alert("Erreur de chargement du profil via API admin.");
+        }
 
         setLoading(false);
     };
 
     useEffect(() => {
-        fetchData();
+        if (id) {
+            fetchData();
+        }
     }, [id]);
 
     // Actions
     const handleValidateItem = async (itemId: string) => {
         if (!itemId) return;
-        const result = await adminValidateLibraryItem(id as string, itemId);
-        if (result.error) alert(result.error);
+        const res = await adminValidateItem(id, itemId);
+        if (res.error) alert("Erreur: " + res.error);
         else fetchData();
     };
 
     const handleRevokeItem = async (progressId: string) => {
         if (!confirm("Annuler cette validation ?")) return;
-        const result = await adminRevokeLibraryItem(progressId, id as string);
-        if (result.error) alert(result.error);
+        const res = await adminRevokeItem(progressId);
+        if (res.error) alert("Erreur: " + res.error);
         else fetchData();
     };
 
-    const handleGiveBadge = async (badgeId: string) => {
-        if (!badgeId) return;
-        const result = await adminGiveBadge(id as string, badgeId);
-        if (result.error) alert(result.error);
+    const handleGiveGift = async (itemId: string) => {
+        if (!itemId) return;
+        const res = await adminGiveGift(id, itemId);
+        if (res.error) alert("Erreur lors de l'ajout: " + res.error);
         else fetchData();
     };
 
-    const handleRevokeBadge = async (userBadgeId: string) => {
-        if (!confirm("Retirer ce badge ?")) return;
-        const result = await adminRevokeBadge(userBadgeId, id as string);
-        if (result.error) alert(result.error);
+    const handleRevokeGift = async (purchaseId: string) => {
+        if (!confirm("Attention : Retirer l'accès à ce produit de la boutique pour cet adulte ?")) return;
+        const res = await adminRevokeGift(purchaseId);
+        if (res.error) alert("Erreur: " + res.error);
         else fetchData();
     };
 
@@ -162,7 +161,7 @@ export default function AdminUserDetailPage() {
         const formData = new FormData();
         formData.append("new_password", newPassword);
 
-        const result = await adminChangeUserPassword(id as string, formData);
+        const result = await adminChangeUserPassword(id, formData);
         setIsChangingPassword(false);
 
         if (result.error) {
@@ -173,56 +172,98 @@ export default function AdminUserDetailPage() {
         }
     };
 
-    if (loading) return <div className="min-h-screen bg-gray-900 text-white flex items-center justify-center">Chargement...</div>;
-    if (!profile) return <div className="min-h-screen bg-gray-900 text-white flex items-center justify-center">Profil introuvable</div>;
+    const handleImpersonate = async () => {
+        setIsGeneratingLink(true);
+        try {
+            const res = await generateImpersonationLink(id as string);
+            if (res.success && res.link) {
+                window.open(res.link, '_blank');
+            } else {
+                alert(res.error || "Erreur lors de la génération du lien.");
+            }
+        } catch (e: any) {
+            console.error(e);
+            alert(`Erreur réseau/système détaillée: ${e?.message || e}`);
+        } finally {
+            setIsGeneratingLink(false);
+        }
+    };
+
+    if (loading) return <div className="min-h-screen bg-brand-bg text-white flex items-center justify-center">Chargement...</div>;
+    if (!profile) return <div className="min-h-screen bg-brand-bg text-white flex items-center justify-center">Profil introuvable</div>;
 
     return (
-        <div className="min-h-screen bg-gray-900 text-white p-8 font-sans">
-            <div className="max-w-6xl mx-auto">
-                <header className="mb-8 flex items-center justify-between">
-                    <Link href="/admin/adults/users" className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors">
+        <div className="flex flex-col gap-6 md:gap-8 font-sans w-full max-w-full overflow-x-hidden text-brand-text">
+            <header className="mb-4 md:mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <Link href="/admin/adults/users" className="flex items-center gap-2 text-brand-text-muted hover:text-white transition-colors">
                         <ArrowLeft className="w-5 h-5" /> Retour
                     </Link>
                     <div className="text-right">
-                        <div className="text-xs text-gray-500 uppercase font-bold tracking-widest">Membre Depuis</div>
-                        <div className="text-sm font-mono">{new Date(profile.created_at).toLocaleDateString()}</div>
+                        <div className="text-xs text-brand-text-muted uppercase font-bold tracking-widest">Membre Depuis</div>
+                        <div className="text-sm font-mono text-white">{new Date(profile.created_at).toLocaleDateString()}</div>
                     </div>
                 </header>
 
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                     {/* LEFT COLUMN: IDENTITY */}
                     <div className="lg:col-span-1 space-y-6">
-                        <div className="bg-white/5 border border-white/10 rounded-2xl p-6 flex flex-col items-center text-center">
-                            <div className="w-32 h-32 bg-black rounded-full mb-4 relative overflow-hidden border-4 border-purple-500/20">
+                        <div className="bg-brand-card/40 border border-white/5 rounded-2xl p-6 flex flex-col items-center text-center">
+                            <div className="w-32 h-32 bg-black rounded-full mb-4 relative overflow-hidden border-4 border-brand-royal/20">
                                 {profile.avatar_url_kids ? (
                                     <Image src={profile.avatar_url_kids} alt="" fill className="object-cover" />
                                 ) : (
-                                    <div className="w-full h-full flex items-center justify-center text-4xl">🪄</div>
+                                    <div className="w-full h-full flex items-center justify-center text-4xl">🎩</div>
                                 )}
                             </div>
                             <h1 className="text-2xl font-black text-white mb-1">{profile.first_name || "Sans Nom"}</h1>
-                            <p className="text-purple-400 font-bold mb-4">@{profile.display_name}</p>
+                            <p className="text-brand-royal font-bold">@{profile.display_name}</p>
+                        </div>
 
-                            <div className="w-full grid grid-cols-2 gap-2 text-left bg-black/20 p-4 rounded-xl">
+                        {/* STATISTIQUES */}
+                        <div className="bg-brand-card/40 border border-white/5 rounded-2xl p-6 text-sm">
+                            <h3 className="text-xs font-bold text-brand-text-muted uppercase tracking-widest mb-4">Activité Adulte</h3>
+                            <div className="space-y-4">
                                 <div>
-                                    <div className="text-[10px] text-gray-500 uppercase">Grade</div>
-                                    <div className="font-bold text-blue-400">{profile.magic_level || "Apprenti"}</div>
-                                </div>
-                                <div>
-                                    <div className="text-[10px] text-gray-500 uppercase">XP</div>
-                                    <div className="font-bold text-white">{profile.xp || 0}</div>
+                                    <div className="text-[10px] text-brand-text-muted uppercase mb-1">Dernière Vidéo Visionnée</div>
+                                    {lastVideo ? (
+                                        <>
+                                            <div className="font-bold text-brand-royal line-clamp-2 leading-tight">
+                                                {lastVideo.title || "Vidéo Inconnue"}
+                                            </div>
+                                            <div className="flex items-center justify-between mt-2">
+                                                <span className="text-xs text-brand-text-muted">
+                                                    Le {new Date(lastVideo.updated_at).toLocaleDateString('fr-FR')}
+                                                </span>
+                                                <span className={`text-[10px] uppercase font-bold px-2 py-0.5 rounded ${lastVideo.progress_percent >= 90 ? 'bg-green-500/20 text-green-400' : 'bg-white/10 text-gray-300'}`}>
+                                                    {lastVideo.progress_percent}%
+                                                </span>
+                                            </div>
+                                        </>
+                                    ) : (
+                                        <div className="text-brand-text-muted italic text-xs">Aucune vidéo visionnée</div>
+                                    )}
                                 </div>
                             </div>
                         </div>
 
                         {/* ACTIONS RAPIDES */}
-                        <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
-                            <h3 className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-4">Actions Admin</h3>
+                        <div className="bg-brand-card/40 border border-white/5 rounded-2xl p-6">
+                            <h3 className="text-xs font-bold text-brand-text-muted uppercase tracking-widest mb-4">Actions Admin</h3>
                             <div className="space-y-4">
                                 <div>
-                                    <label className="text-xs text-purple-300 block mb-1">Valider un Atelier (Manuel)</label>
+                                    <button 
+                                        onClick={handleImpersonate}
+                                        disabled={isGeneratingLink}
+                                        className="w-full flex items-center justify-center gap-2 bg-brand-royal/10 hover:bg-brand-royal/20 text-brand-royal hover:text-white border border-brand-royal/30 font-bold text-xs uppercase tracking-wider py-3 px-4 rounded-xl transition-all duration-300"
+                                    >
+                                        <Eye className="w-4 h-4" />
+                                        {isGeneratingLink ? "Génération..." : "Visualiser son espace"}
+                                    </button>
+                                </div>
+                                <div className="border-t border-white/5 pt-4 mt-4">
+                                    <label className="text-xs text-brand-royal block mb-1">Valider un Atelier (Manuel)</label>
                                     <select
-                                        className="w-full bg-black/40 border border-white/10 rounded-lg p-2 text-sm outline-none"
+                                        className="w-full bg-black/40 border border-white/10 rounded-lg p-2 text-sm outline-none text-white focus:border-brand-royal transition-colors"
                                         onChange={(e) => handleValidateItem(e.target.value)}
                                         value=""
                                     >
@@ -232,21 +273,22 @@ export default function AdminUserDetailPage() {
                                         ))}
                                     </select>
                                 </div>
-                                <div>
-                                    <label className="text-xs text-yellow-300 block mb-1">Attribuer un Badge</label>
+
+                                <div className="border-t border-white/5 pt-4 mt-4">
+                                    <label className="text-xs text-green-400 font-bold block mb-1">🎁 Offrir une Formation / Objet</label>
                                     <select
-                                        className="w-full bg-black/40 border border-white/10 rounded-lg p-2 text-sm outline-none"
-                                        onChange={(e) => handleGiveBadge(e.target.value)}
+                                        className="w-full bg-green-500/10 border border-green-500/30 rounded-lg p-2 text-sm outline-none text-green-100"
+                                        onChange={(e) => handleGiveGift(e.target.value)}
                                         value=""
                                     >
-                                        <option value="" disabled>Choisir un badge...</option>
-                                        {allBadges.map(badge => (
-                                            <option key={badge.id} value={badge.id}>{badge.name}</option>
+                                        <option value="" disabled>Choisir un contenu premium...</option>
+                                        {shopItems.map(item => (
+                                            <option key={item.id} value={item.id}>{item.title}</option>
                                         ))}
                                     </select>
                                 </div>
 
-                                <div className="pt-4 border-t border-white/10 mt-4 flex items-center justify-between">
+                                <div className="pt-4 border-t border-white/5 mt-4 flex items-center justify-between">
                                     <label className="text-xs text-white block">Abonné Newsletter</label>
                                     <button
                                         onClick={handleToggleNewsletter}
@@ -259,120 +301,132 @@ export default function AdminUserDetailPage() {
                                 </div>
                             </div>
                         </div>
+
+                        {/* SECURITE / MOT DE PASSE */}
+                        <div className="bg-brand-card/40 border border-white/5 rounded-2xl p-6">
+                            <h3 className="text-xs font-bold text-brand-text-muted uppercase tracking-widest mb-4 flex items-center gap-2">
+                                <Key className="w-4 h-4" /> Sécurité
+                            </h3>
+                            <form onSubmit={handlePasswordChange} className="space-y-3">
+                                <div>
+                                    <label className="text-[10px] text-brand-text-muted uppercase tracking-wider block mb-1">Nouveau mot de passe</label>
+                                    <input
+                                        type="text"
+                                        placeholder="Min. 6 caractères"
+                                        className="w-full bg-black/40 w-full border border-white/10 rounded-lg p-2 text-sm text-white outline-none focus:border-brand-royal transition-colors"
+                                        value={newPassword}
+                                        onChange={(e) => setNewPassword(e.target.value)}
+                                        minLength={6}
+                                    />
+                                </div>
+                                <button
+                                    type="submit"
+                                    disabled={!newPassword || newPassword.length < 6 || isChangingPassword}
+                                    className="w-full bg-brand-royal hover:bg-brand-royal/80 text-black disabled:opacity-50 disabled:cursor-not-allowed text-xs font-bold uppercase tracking-widest py-2 rounded-lg transition-colors"
+                                >
+                                    {isChangingPassword ? "Modification..." : "Forcer ce Mot de Passe"}
+                                </button>
+                                <p className="text-[10px] text-brand-text-muted text-center mt-2 leading-tight">
+                                    L'ancien mot de passe ne fonctionnera plus. Copiez-le et envoyez-le à l'élève.
+                                </p>
+                            </form>
+                        </div>
+
                     </div>
 
-                    {/* SECURITE / MOT DE PASSE */}
-                    <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
-                        <h3 className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-4 flex items-center gap-2">
-                            <Key className="w-4 h-4" /> Sécurité
-                        </h3>
-                        <form onSubmit={handlePasswordChange} className="space-y-3">
-                            <div>
-                                <label className="text-[10px] text-gray-400 uppercase tracking-wider block mb-1">Nouveau mot de passe</label>
-                                <input
-                                    type="text"
-                                    placeholder="Min. 6 caractères"
-                                    className="w-full bg-black/40 w-full border border-white/10 rounded-lg p-2 text-sm outline-none focus:border-brand-royal transition-colors"
-                                    value={newPassword}
-                                    onChange={(e) => setNewPassword(e.target.value)}
-                                    minLength={6}
-                                />
-                            </div>
-                            <button
-                                type="submit"
-                                disabled={!newPassword || newPassword.length < 6 || isChangingPassword}
-                                className="w-full bg-brand-royal hover:bg-brand-royal/80 text-black disabled:opacity-50 disabled:cursor-not-allowed text-xs font-bold uppercase tracking-widest py-2 rounded-lg transition-colors"
-                            >
-                                {isChangingPassword ? "Modification..." : "Forcer ce Mot de Passe"}
-                            </button>
-                            <p className="text-[10px] text-gray-500 text-center mt-2 leading-tight">
-                                L'ancien mot de passe ne fonctionnera plus. Copiez-le et envoyez-le à l'élève.
-                            </p>
-                        </form>
-                    </div>
+                    {/* RIGHT COLUMN: PROGRESS & HISTORY */}
+                    <div className="lg:col-span-2 space-y-8">
 
-                </div>
-
-                {/* RIGHT COLUMN: PROGRESS & HISTORY */}
-                <div className="lg:col-span-2 space-y-8">
-
-                    {/* PROGRESSION */}
-                    <section>
-                        <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
-                            <History className="text-purple-500" />
-                            Progression ({progress.length} ateliers)
-                        </h2>
-                        <div className="bg-white/5 border border-white/10 rounded-2xl overflow-hidden">
-                            <table className="w-full text-sm text-left">
-                                <thead className="bg-white/5 text-gray-400 font-bold uppercase text-xs">
-                                    <tr>
-                                        <th className="p-4">Atelier</th>
-                                        <th className="p-4">Date Validation</th>
-                                        <th className="p-4 text-right">Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody className="divide-y divide-white/5">
-                                    {progress.map((p) => (
-                                        <tr key={p.id} className="hover:bg-white/5 transition-colors">
-                                            <td className="p-4">
-                                                <span className="text-xs text-gray-500 mr-2 font-mono">S{p.library_items?.week_number}</span>
-                                                <span className="font-bold text-white">{p.library_items?.title}</span>
-                                            </td>
-                                            <td className="p-4 text-gray-400">{new Date(p.completed_at).toLocaleDateString()}</td>
-                                            <td className="p-4 text-right">
-                                                <button onClick={() => handleRevokeItem(p.id)} className="text-red-500 hover:text-red-400 text-xs uppercase font-bold px-2 py-1 rounded bg-red-500/10 hover:bg-red-500/20 transition-colors">
-                                                    Annuler
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    ))}
-                                    {progress.length === 0 && (
+                        {/* ACHATS DEBOQUÉS (BOUTIQUE) */}
+                        <section>
+                            <h2 className="text-xl font-bold mb-4 flex items-center gap-2 text-white">
+                                <span className="text-green-500">🎁</span>
+                                Achats & Cadeaux Premium ({purchases.length})
+                            </h2>
+                            <div className="bg-brand-card/40 border border-white/5 rounded-2xl overflow-x-auto w-full max-w-full">
+                                <table className="w-full text-sm text-left">
+                                    <thead className="bg-white/5 text-brand-text-muted font-bold uppercase text-xs">
                                         <tr>
-                                            <td colSpan={3} className="p-8 text-center text-gray-500 italic">Aucune progression enregistrée.</td>
+                                            <th className="p-4">Produit Boutique</th>
+                                            <th className="p-4">Détail</th>
+                                            <th className="p-4 text-right">Action</th>
                                         </tr>
-                                    )}
-                                </tbody>
-                            </table>
-                        </div>
-                    </section>
-
-                    {/* BADGES */}
-                    <section>
-                        <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
-                            <Trophy className="text-yellow-500" />
-                            Badges ({userBadges.length})
-                        </h2>
-                        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                            {userBadges.map((ub) => (
-                                <div key={ub.id} className="bg-black/40 border border-white/10 rounded-xl p-4 flex flex-col items-center relative group">
-                                    <button
-                                        onClick={() => handleRevokeBadge(ub.id)}
-                                        className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 bg-red-500 text-white p-1 rounded hover:bg-red-600 transition-all"
-                                        title="Retirer"
-                                    >
-                                        <X className="w-3 h-3" />
-                                    </button>
-                                    <div className="w-12 h-12 bg-white/10 rounded-full mb-2 flex items-center justify-center">
-                                        {ub.badges?.image_url ? (
-                                            <Image src={ub.badges.image_url} alt="" width={32} height={32} className="object-contain" />
-                                        ) : (
-                                            <Trophy className="w-6 h-6 text-yellow-500" />
+                                    </thead>
+                                    <tbody className="divide-y divide-white/5">
+                                        {purchases.map((p) => (
+                                            <tr key={p.id} className="hover:bg-white/5 transition-colors">
+                                                <td className="p-4">
+                                                    <span className="font-bold text-green-400 drop-shadow-[0_0_10px_rgba(74,222,128,0.2)]">{p.library_items?.title}</span>
+                                                </td>
+                                                <td className="p-4">
+                                                    <div className="text-xs text-brand-text-muted">
+                                                        Débloqué le : {new Date(p.created_at).toLocaleDateString()}
+                                                    </div>
+                                                    {p.systeme_io_order_id === 'admin_gift' && (
+                                                        <div className="text-[10px] font-bold text-yellow-500 uppercase tracking-wider mt-1">
+                                                            Cadeau Admin
+                                                        </div>
+                                                    )}
+                                                </td>
+                                                <td className="p-4 text-right">
+                                                    <button onClick={() => handleRevokeGift(p.id)} className="text-red-500 hover:text-red-400 text-xs uppercase font-bold px-2 py-1 rounded bg-red-500/10 hover:bg-red-500/20 transition-colors">
+                                                        Retirer
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        ))}
+                                        {purchases.length === 0 && (
+                                            <tr>
+                                                <td colSpan={3} className="p-8 text-center text-brand-text-muted italic">Aucune transaction enregistrée.</td>
+                                            </tr>
                                         )}
-                                    </div>
-                                    <div className="font-bold text-white text-sm text-center">{ub.badges?.name}</div>
-                                    <div className="text-[10px] text-gray-500 mt-1">{new Date(ub.awarded_at).toLocaleDateString()}</div>
-                                </div>
-                            ))}
-                            {userBadges.length === 0 && (
-                                <div className="col-span-3 text-center py-8 text-gray-500 bg-white/5 rounded-xl border border-dashed border-white/10">
-                                    Aucun badge.
-                                </div>
-                            )}
-                        </div>
-                    </section>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </section>
 
+                        {/* PROGRESSION */}
+                        <section>
+                            <h2 className="text-xl font-bold mb-4 flex items-center gap-2 text-white">
+                                <History className="text-brand-royal" />
+                                Vidéos & Ateliers ({progress.length})
+                            </h2>
+                            <div className="bg-brand-card/40 border border-white/5 rounded-2xl overflow-x-auto w-full max-w-full">
+                                <table className="w-full text-sm text-left">
+                                    <thead className="bg-white/5 text-brand-text-muted font-bold uppercase text-xs">
+                                        <tr>
+                                            <th className="p-4">Vidéo</th>
+                                            <th className="p-4">Date Validation</th>
+                                            <th className="p-4 text-right">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody className="divide-y divide-white/5">
+                                        {progress.map((p) => (
+                                            <tr key={p.id} className="hover:bg-white/5 transition-colors">
+                                                <td className="p-4">
+                                                    <span className="text-xs text-brand-text-muted mr-2 font-mono">S{p.library_items?.week_number}</span>
+                                                    <span className="font-bold text-white">{p.library_items?.title}</span>
+                                                </td>
+                                                <td className="p-4 text-brand-text-muted">{new Date(p.completed_at).toLocaleDateString()}</td>
+                                                <td className="p-4 text-right">
+                                                    <button onClick={() => handleRevokeItem(p.id)} className="text-red-500 hover:text-red-400 text-xs uppercase font-bold px-2 py-1 rounded bg-red-500/10 hover:bg-red-500/20 transition-colors">
+                                                        Annuler
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        ))}
+                                        {progress.length === 0 && (
+                                            <tr>
+                                                <td colSpan={3} className="p-8 text-center text-brand-text-muted italic">Aucune progression enregistrée.</td>
+                                            </tr>
+                                        )}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </section>
+
+                    </div>
                 </div>
-            </div>
         </div>
     );
 }

@@ -54,16 +54,17 @@ export default function MagicCard({ user, profile, isKid = false, lifetimeXP, av
     
     if (isKid) {
         // Find current rank (highest rank where xp >= minXp)
-        const currentRankIndex = [...KIDS_RANKS].reverse().findIndex(r => xp >= r.minXp);
-        const actualIndex = KIDS_RANKS.length - 1 - currentRankIndex;
-        const currentRank = KIDS_RANKS[actualIndex];
+        const safeXp = isNaN(Number(xp)) ? 0 : Math.max(0, Number(xp));
+        const currentRankIndex = [...KIDS_RANKS].reverse().findIndex(r => safeXp >= r.minXp);
+        const actualIndex = currentRankIndex === -1 ? 0 : KIDS_RANKS.length - 1 - currentRankIndex;
+        const currentRank = KIDS_RANKS[actualIndex] || KIDS_RANKS[0];
         
-        computedLevel = currentRank.name;
-        rarityStyle = currentRank.rarity;
+        computedLevel = currentRank.name || "Membre";
+        rarityStyle = currentRank.rarity || "bronze";
         
         // Find next rank for progress bar
         const nextRank = KIDS_RANKS[actualIndex + 1];
-        nextRankXpCap = nextRank ? nextRank.minXp : currentRank.minXp; // If maxed out, bar is full
+        nextRankXpCap = nextRank ? nextRank.minXp : (currentRank.minXp || 150); // If maxed out, bar is full
     } else {
         computedLevel = "Membre";
         rarityStyle = "diamond"; // Sleek premium look for adults without gamification

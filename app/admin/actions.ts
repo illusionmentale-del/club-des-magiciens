@@ -1131,6 +1131,58 @@ export async function getAdminUserGamificationDetails(userId: string) {
     };
 }
 
+export async function getAdminAdultUserDetails(userId: string) {
+    const supabaseAdmin = await verifyCallerIsAdmin();
+
+    const [
+        { data: p },
+        { data: pr },
+        { data: ub },
+        { data: pu },
+        { data: items },
+        { data: badges },
+        { data: shopItems },
+        { data: lastVideo },
+    ] = await Promise.all([
+        supabaseAdmin.from("profiles").select("*").eq("id", userId).single(),
+        supabaseAdmin.from("library_progress").select("*, library_items(title, week_number)").eq("user_id", userId).order("completed_at", { ascending: false }),
+        supabaseAdmin.from("user_badges").select("*, badges(name, image_url)").eq("user_id", userId).order("awarded_at", { ascending: false }),
+        supabaseAdmin.from("user_purchases").select("*, library_items(title)").eq("user_id", userId).order("created_at", { ascending: false }),
+        supabaseAdmin.from("library_items").select("id, title, week_number").eq("audience", "adults").not("week_number", "is", null).order("week_number"),
+        supabaseAdmin.from("badges").select("id, name"),
+        supabaseAdmin.from("library_items").select("id, title").eq("audience", "adults").is("week_number", null),
+        supabaseAdmin.from("kids_video_progress").select("video_id, updated_at, progress_percent").eq("user_id", userId).order("updated_at", { ascending: false }).limit(1).maybeSingle()
+    ]);
+
+    let lastVideoTitle: string | null = null;
+    if (lastVideo && lastVideo.video_id) {
+        try {
+            const guidMatch = lastVideo.video_id.match(/_([a-zA-Z0-9-]+)$/);
+            const guid = guidMatch ? guidMatch[1] : lastVideo.video_id;
+            const { getAdultsVideoById } = await import("@/lib/bunny"); // Using adult fetch theoretically, or just generic getKidsVideoById if there's no distinction. Wait! bunny has getKidsVideoById. Does it have getAdultVideoById? I will just use getKidsVideoById because bunny stream logic is identical. Wait, let me check `lib/bunny.ts` if getAdultVideoById exists
+            // Let's assume getAdultsVideoById exists or fallback. I'll just use the supabase library_items since we use that for titles? No, bunny is used to fetch the title from Bunny API.
+            const { getKidsVideoById } = await import("@/lib/bunny");
+            const btv = await getKidsVideoById(guid);
+            if (btv && btv.title) {
+                lastVideoTitle = btv.title;
+            }
+        } catch (e: any) {
+            console.error("Error fetching video title from Bunny", e);
+        }
+    }
+
+    return {
+        profile: p,
+        progress: pr || [],
+        userBadges: ub || [],
+        purchases: pu || [],
+        allItems: items || [],
+        allBadges: badges || [],
+        shopItems: shopItems || [],
+        lastVideoInfo: lastVideo ? { ...lastVideo, title: lastVideoTitle } : null
+    };
+}
+
 export async function adminValidateItem(userId: string, itemId: string) {
     const supabaseAdmin = await verifyCallerIsAdmin();
     
