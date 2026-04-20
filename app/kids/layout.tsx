@@ -124,13 +124,22 @@ export default async function KidsLayout({
             if (unreadComments && unreadComments.length > 0) {
                 const uniqueCourseIds = [...new Set(unreadComments.map(c => c.course_id))];
                 
-                // Determine if they belong to Formation (courses table) or Ateliers (library_items table)
+                // Determine if they belong to Formation or Ateliers
                 if (uniqueCourseIds.length > 0) {
+                    // Les cours (bonus/adultes partagés) sont forcément dans La Formation
                     const { data: coursesData } = await supabase.from("courses").select("id").in("id", uniqueCourseIds);
                     if (coursesData && coursesData.length > 0) hasUnreadFormation = true;
 
-                    const { data: libraryData } = await supabase.from("library_items").select("id").in("id", uniqueCourseIds);
-                    if (libraryData && libraryData.length > 0) hasUnreadAtelier = true;
+                    // La majorité du programme enfant ET les ateliers sont dans library_items
+                    const { data: libraryData } = await supabase.from("library_items").select("id, type").in("id", uniqueCourseIds);
+                    if (libraryData && libraryData.length > 0) {
+                        if (libraryData.some(item => item.type === "atelier")) {
+                            hasUnreadAtelier = true;
+                        }
+                        if (libraryData.some(item => item.type !== "atelier")) {
+                            hasUnreadFormation = true;
+                        }
+                    }
                 }
             }
         }
