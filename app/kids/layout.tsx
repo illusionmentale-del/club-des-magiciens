@@ -55,7 +55,8 @@ export default async function KidsLayout({
     let isAdmin = false;
     let hasAdultsAccess = false;
 
-    let hasUnreadReplies = false;
+    let hasUnreadFormation = false;
+    let hasUnreadAtelier = false;
 
     let enableProgram = true;
     let enableMasterclass = true;
@@ -112,15 +113,26 @@ export default async function KidsLayout({
 
         siteLogo = getSetting("site_logo", "/logo.png");
 
-        // Check for unread replies from Jérémy for the kid's notification badge
+        // Disable count here to fetch exact courses IDs
         if (!isAdmin) {
-            const { count } = await supabase
+            const { data: unreadComments } = await supabase
                 .from("course_comments")
-                .select("id", { count: "exact", head: true })
+                .select("course_id")
                 .eq("target_user_id", user.id)
                 .eq("kid_notified", false);
 
-            hasUnreadReplies = (count || 0) > 0;
+            if (unreadComments && unreadComments.length > 0) {
+                const uniqueCourseIds = [...new Set(unreadComments.map(c => c.course_id))];
+                
+                // Determine if they belong to Formation (courses table) or Ateliers (library_items table)
+                if (uniqueCourseIds.length > 0) {
+                    const { data: coursesData } = await supabase.from("courses").select("id").in("id", uniqueCourseIds);
+                    if (coursesData && coursesData.length > 0) hasUnreadFormation = true;
+
+                    const { data: libraryData } = await supabase.from("library_items").select("id").in("id", uniqueCourseIds);
+                    if (libraryData && libraryData.length > 0) hasUnreadAtelier = true;
+                }
+            }
         }
 
         // Fetch XP Balance
@@ -150,12 +162,12 @@ export default async function KidsLayout({
         <KidsLayoutClient
             sidebar={
                 <Suspense fallback={<div className="w-64 bg-magic-card hidden md:block" />}>
-                    <KidsSidebar logoUrl={siteLogo} isAdmin={isAdmin} hasPurchases={hasPurchases} hasUnreadReplies={hasUnreadReplies} hasAdultsAccess={hasAdultsAccess} enableProgram={enableProgram} enableMasterclass={enableMasterclass} enableAccount={enableAccount} enableShop={enableShop} xpBalance={currentXP} lifetimeXP={lifetimeXP} magicLevel={magicLevel} avatarUrl={avatarUrl} userName={userName} />
+                    <KidsSidebar logoUrl={siteLogo} isAdmin={isAdmin} hasPurchases={hasPurchases} hasUnreadFormation={hasUnreadFormation} hasUnreadAtelier={hasUnreadAtelier} hasAdultsAccess={hasAdultsAccess} enableProgram={enableProgram} enableMasterclass={enableMasterclass} enableAccount={enableAccount} enableShop={enableShop} xpBalance={currentXP} lifetimeXP={lifetimeXP} magicLevel={magicLevel} avatarUrl={avatarUrl} userName={userName} />
                 </Suspense>
             }
             mobileNav={
                 <Suspense fallback={<div className="h-16 bg-magic-card md:hidden" />}>
-                    <KidsMobileNav logoUrl={siteLogo} isAdmin={isAdmin} hasPurchases={hasPurchases} hasUnreadReplies={hasUnreadReplies} enableProgram={enableProgram} enableMasterclass={enableMasterclass} enableAccount={enableAccount} enableShop={enableShop} xpBalance={currentXP} lifetimeXP={lifetimeXP} magicLevel={magicLevel} avatarUrl={avatarUrl} userName={userName} />
+                    <KidsMobileNav logoUrl={siteLogo} isAdmin={isAdmin} hasPurchases={hasPurchases} hasUnreadFormation={hasUnreadFormation} hasUnreadAtelier={hasUnreadAtelier} enableProgram={enableProgram} enableMasterclass={enableMasterclass} enableAccount={enableAccount} enableShop={enableShop} xpBalance={currentXP} lifetimeXP={lifetimeXP} magicLevel={magicLevel} avatarUrl={avatarUrl} userName={userName} />
                 </Suspense>
             }
         >

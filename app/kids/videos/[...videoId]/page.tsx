@@ -102,6 +102,14 @@ export default async function KidsVideoPlayerPage({ params }: { params: Promise<
         .eq("course_id", rawVideoId)
         .order("created_at", { ascending: true });
 
+    // Check if user is admin or Jérémy (done early to secure the payload)
+    const { data: profile } = await supabase
+        .from("profiles")
+        .select("role")
+        .eq("id", user.id)
+        .single();
+    const isAdmin = profile?.role === 'admin' || (user.email?.includes('admin@') ?? false);
+
     let comments: any[] = [];
     if (rawComments && rawComments.length > 0) {
         const userIds = [...new Set(rawComments.map(c => c.user_id))];
@@ -110,19 +118,25 @@ export default async function KidsVideoPlayerPage({ params }: { params: Promise<
             .select("id, full_name, role, email")
             .in("id", userIds);
 
-        comments = rawComments.map(c => ({
-            ...c,
-            profiles: profiles?.find(p => p.id === c.user_id) || null
-        }));
+        comments = rawComments.map(c => {
+            const p = profiles?.find(p => p.id === c.user_id);
+            if (!p) return { ...c, profiles: null };
+            
+            // Only send sensitive Profile data if the viewing user is ADMIN, 
+            // OR if the comment itself is from an admin (needed to style the admin's post).
+            const isCommentByAdmin = p.role === 'admin' || p.email?.includes('admin@');
+            
+            return {
+                ...c,
+                profiles: {
+                    role: p.role,
+                    // If the current logged in user is admin, they see all emails. Otherwise they ONLY see admin emails (for the UI check).
+                    email: isAdmin || isCommentByAdmin ? p.email : undefined,
+                    full_name: isAdmin ? p.full_name : undefined
+                }
+            };
+        });
     }
-
-    // Check if user is admin or Jérémy
-    const { data: profile } = await supabase
-        .from("profiles")
-        .select("role")
-        .eq("id", user.id)
-        .single();
-    const isAdmin = profile?.role === 'admin' || (user.email?.includes('admin@') ?? false);
 
     // If the kid visits this page, mark any pending notifications for them on this video as read
     if (!isAdmin) {
