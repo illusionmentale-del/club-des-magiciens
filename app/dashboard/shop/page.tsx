@@ -1,13 +1,13 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import Image from "next/image";
-import { Sparkles, PackageSearch } from "lucide-react";
-import ShopBuyWithXP from "@/components/kids/ShopBuyWithXP";
-import SkinLocker from "@/components/kids/SkinLocker";
+import Link from "next/link";
+import { Sparkles, ShoppingBag, CheckCircle2, Lock, Play } from "lucide-react";
+import CheckoutButton from "@/components/CheckoutButton";
 
 export const metadata = {
-    title: 'Cabinet de Curiosité | Club des Magiciens',
-    description: 'Dépensez votre XP pour débloquer de nouveaux avatars exclusifs et objets pour l\'Atelier.',
+    title: 'La Boutique | Club des Magiciens',
+    description: 'Découvrez des tours de magie exclusifs et des formations premium pour adultes.',
 };
 
 export default async function AdultShopPage() {
@@ -18,39 +18,21 @@ export default async function AdultShopPage() {
         redirect("/login");
     }
 
-    // 1. Fetch XP balance for the user
-    let trueXP = 0;
-    try {
-        const { data: xpLogs } = await supabase.from("user_xp_logs").select("xp_awarded").eq("user_id", user.id);
-        if (xpLogs) {
-            trueXP = xpLogs.reduce((acc, log) => acc + log.xp_awarded, 0);
-        }
-    } catch(e) {
-        console.error("Could not fetch xp logs for adults");
-    }
+    // 1. Fetch Shop Items (Library items with a sales_page_url for adults)
+    const { data: shopItems } = await supabase
+        .from("library_items")
+        .select("*")
+        .eq("audience", "adults")
+        .not("sales_page_url", "is", null)
+        .order("published_at", { ascending: false });
 
-    // 2. Fetch Avatars Data (Only Adults or All)
-    const { data: skins } = await supabase
-        .from('avatar_skins')
-        .select('*')
-        .in('target_audience', ['adults', 'all'])
-        .order('price_xp', { ascending: true });
-    
-    // 3. Fetch Profile (for equipped skin)
-    const { data: profile } = await supabase.from('profiles').select('equipped_skin_id').eq('id', user.id).single();
-    
-    // 4. Fetch Unlocked Skins
-    const { data: unlockedSkins } = await supabase.from('user_unlocked_skins').select('skin_id').eq('user_id', user.id);
-    const unlockedSkinIds = unlockedSkins?.map(s => s.skin_id) || [];
+    // 2. Fetch User Purchases to see what is already unlocked
+    const { data: purchases } = await supabase
+        .from("user_purchases")
+        .select("library_item_id")
+        .eq("user_id", user.id);
 
-    // Ensure Default skin is always unlocked
-    if (!unlockedSkinIds.includes('default')) {
-        unlockedSkinIds.push('default');
-    }
-
-    // 5. Partition skins into unlocked vs locked for the Locker
-    const mySkins = skins?.filter(s => unlockedSkinIds.includes(s.id)) || [];
-    const lockedSkins = skins?.filter(s => !unlockedSkinIds.includes(s.id)) || [];
+    const unlockedItemIds = new Set(purchases?.map(p => p.library_item_id) || []);
 
     return (
         <div className="min-h-screen bg-[#050507] text-white p-4 md:p-8 pb-32 font-sans relative selection:bg-magic-royal/30">
@@ -64,81 +46,98 @@ export default async function AdultShopPage() {
                     <div className="flex-1">
                         <div className="flex items-center gap-2 text-magic-royal mb-2">
                             <Sparkles className="w-5 h-5" />
-                            <span className="text-xs font-bold uppercase tracking-widest">Récompenses & XP</span>
+                            <span className="text-xs font-bold uppercase tracking-widest">Nouveautés & Exclusivités</span>
                         </div>
                         <h1 className="text-3xl md:text-5xl font-black text-white tracking-tight font-serif mb-2">
-                            Le <span className="text-magic-gold">Cabinet</span> de Curiosités
+                            La <span className="text-magic-gold">Boutique</span>
                         </h1>
                         <p className="text-slate-400 mt-2 text-lg font-light max-w-2xl">
-                            Dépensez votre Expérience acquise en regardant les Ateliers pour débloquer de nouveaux avatars de profil.
+                            Découvrez des accessoires exclusifs et des masterclass premium pour parfaire votre art de l'illusion.
                         </p>
-                    </div>
-                    
-                    {/* XP Balance Display */}
-                    <div className="bg-black/40 border border-magic-gold/20 backdrop-blur-md rounded-2xl p-4 flex items-center justify-center min-w-[200px] shadow-[0_0_20px_rgba(251,191,36,0.1)]">
-                        <div className="text-center">
-                            <p className="text-xs text-magic-gold font-bold uppercase tracking-wider mb-1">Solde Disponible</p>
-                            <div className="flex items-center justify-center gap-2 text-white font-black text-4xl">
-                                {trueXP} <span className="text-lg text-magic-gold mt-1">XP</span>
-                            </div>
-                        </div>
                     </div>
                 </header>
 
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                    {/* Left Column: Locker */}
-                    <div className="lg:col-span-1 space-y-6">
-                        <div className="bg-black/30 border border-white/5 rounded-3xl p-6 shadow-xl">
-                            <h2 className="text-xl font-bold text-white mb-6 font-serif flex items-center gap-2">
-                                <PackageSearch className="w-5 h-5 text-magic-royal" />
-                                Mon Vestiaire
-                            </h2>
-                            <p className="text-slate-400 text-sm mb-6">
-                                Sélectionnez l'avatar qui s'affichera sur votre profil d'Illusionniste.
-                            </p>
-                            
-                            <SkinLocker 
-                                skins={mySkins} 
-                                equippedId={profile?.equipped_skin_id || 'default'} 
-                                adultMode={true}
-                            />
-                        </div>
-                    </div>
+                {/* Shop Grid */}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    {shopItems && shopItems.length > 0 ? (
+                        shopItems.map((item) => {
+                            const isUnlocked = unlockedItemIds.has(item.id);
 
-                    {/* Right Column: Shop Items to unlock */}
-                    <div className="lg:col-span-2">
-                        <div className="bg-black/30 border border-white/5 rounded-3xl p-6 shadow-xl relative overflow-hidden">
-                            <h2 className="text-xl font-bold text-white mb-6 font-serif border-b border-white/5 pb-4">
-                                Catalogues d'Avatars (Adultes)
-                            </h2>
-                            
-                            {lockedSkins.length > 0 ? (
-                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
-                                    {lockedSkins.map((skin) => (
-                                        <ShopBuyWithXP 
-                                            key={skin.id}
-                                            itemId={skin.id}
-                                            title={skin.name}
-                                            description="Modifie votre avatar de profil"
-                                            imageUrl={skin.image_url}
-                                            priceXP={skin.price_xp}
-                                            currentXP={trueXP}
-                                            itemType="skin"
-                                            adultMode={true}
-                                        />
-                                    ))}
-                                </div>
-                            ) : (
-                                <div className="text-center py-12">
-                                    <div className="w-16 h-16 bg-magic-gold/10 rounded-full flex items-center justify-center mx-auto mb-4 border border-magic-gold/20">
-                                        <Sparkles className="w-8 h-8 text-magic-gold" />
+                            return (
+                                <div key={item.id} className="relative group h-full flex flex-col hover:-translate-y-2 transition-transform duration-500">
+                                    <div className="absolute -inset-1 bg-gradient-to-r from-magic-royal to-blue-500 rounded-3xl opacity-0 blur-lg group-hover:opacity-40 transition duration-1000 pointer-events-none"></div>
+                                    <div className="relative bg-black/40 border border-white/10 rounded-3xl overflow-hidden shadow-[0_10px_40px_rgba(0,0,0,0.5)] flex flex-col h-full backdrop-blur-xl">
+                                        {/* Thumbnail */}
+                                        <div className="relative aspect-video bg-black/80 overflow-hidden">
+                                            {item.thumbnail_url ? (
+                                                <Image
+                                                    src={item.thumbnail_url}
+                                                    alt={item.title}
+                                                    fill
+                                                    className={`object-cover transition-transform duration-500 group-hover:scale-105 ${!isUnlocked ? 'opacity-80 mix-blend-luminosity' : ''}`}
+                                                />
+                                            ) : (
+                                                <div className="absolute inset-0 flex items-center justify-center bg-[#0A0A0A]">
+                                                    <Sparkles className="w-12 h-12 text-white/10" />
+                                                </div>
+                                            )}
+
+                                            {/* Status Badge */}
+                                            <div className="absolute top-4 right-4">
+                                                {isUnlocked ? (
+                                                    <div className="bg-green-500/90 backdrop-blur-md text-white px-3 py-1.5 rounded-full text-xs font-bold flex items-center gap-1.5 shadow-lg">
+                                                        <CheckCircle2 className="w-3.5 h-3.5" />
+                                                        Possédé
+                                                    </div>
+                                                ) : (
+                                                    <div className="bg-black/60 backdrop-blur-md text-white px-3 py-1.5 rounded-full text-xs font-bold flex items-center gap-1.5 shadow-lg border border-white/10">
+                                                        <Lock className="w-3.5 h-3.5 text-magic-gold" />
+                                                        Verrouillé
+                                                    </div>
+                                                )}
+                                            </div>
+
+                                            {/* Price Tag (if locked) */}
+                                            {!isUnlocked && item.price_label && (
+                                                <div className="absolute bottom-4 left-4 bg-magic-gold text-black font-black px-4 py-2 rounded-xl shadow-xl transform -rotate-2">
+                                                    {item.price_label}
+                                                </div>
+                                            )}
+                                        </div>
+
+                                        {/* Content */}
+                                        <div className="p-6 flex flex-col flex-1">
+                                            <h3 className="text-xl font-bold text-white mb-2 font-serif leading-tight">
+                                                {item.title}
+                                            </h3>
+                                            <p className="text-sm text-slate-400 mb-6 flex-1 line-clamp-3">
+                                                {item.description || "Aucune description disponible."}
+                                            </p>
+
+                                            {/* Action Button */}
+                                            {isUnlocked ? (
+                                                <Link href={`/watch/${item.id}`} className="w-full bg-magic-royal/20 hover:bg-magic-royal text-white font-bold py-3 px-4 rounded-xl flex items-center justify-center gap-2 transition-colors border border-magic-royal/30">
+                                                    <Play className="w-5 h-5" />
+                                                    Accéder au contenu
+                                                </Link>
+                                            ) : (
+                                                <CheckoutButton itemId={item.id} space="adults" className="w-full bg-gradient-to-r from-magic-gold to-yellow-600 text-black font-black py-3 px-4 rounded-xl flex items-center justify-center gap-2 hover:scale-[1.02] transition-transform shadow-[0_10px_30px_rgba(251,191,36,0.2)]">
+                                                    <ShoppingBag className="w-5 h-5" />
+                                                    Obtenir ce contenu
+                                                </CheckoutButton>
+                                            )}
+                                        </div>
                                     </div>
-                                    <h3 className="text-xl font-bold text-white">Vous possédez tout !</h3>
-                                    <p className="text-slate-400 mt-2">D'autres objets magiques prestigieux viendront plus tard.</p>
                                 </div>
-                            )}
+                            );
+                        })
+                    ) : (
+                        <div className="col-span-full bg-white/5 border border-white/5 p-12 rounded-3xl text-center flex flex-col items-center">
+                            <ShoppingBag className="w-16 h-16 text-white/20 mb-4" />
+                            <h3 className="text-xl font-bold text-white mb-2 font-serif">La Boutique est en cours de réapprovisionnement</h3>
+                            <p className="text-slate-400">Revenez plus tard pour découvrir de nouvelles masterclass exclusives !</p>
                         </div>
-                    </div>
+                    )}
                 </div>
 
             </div>
