@@ -8,7 +8,7 @@ import { Menu, X, BookOpen, Settings, Video, LogOut, Shield, Star, GraduationCap
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 
-export default function MobileNav({ isAdmin, hasKidsAccess, toggles, xpBalance = 0, lifetimeXP = 0, magicLevel = "Initié", avatarUrl = "", userName = "" }: {
+export default function MobileNav({ isAdmin, hasKidsAccess, toggles, xpBalance = 0, lifetimeXP = 0, magicLevel = "Initié", avatarUrl = "", userName = "", uiLabels }: {
     isAdmin: boolean;
     hasKidsAccess?: boolean;
     toggles?: {
