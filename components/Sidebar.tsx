@@ -6,7 +6,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { LogOut, BookOpen, Settings, Shield, Video, Star, Youtube, Instagram, Facebook, GraduationCap, ShoppingBag, User, Sparkles } from "lucide-react";
 
-export default function Sidebar({ isAdmin, socialLinks, logoUrl, hasKidsAccess, toggles, xpBalance = 0, lifetimeXP = 0, magicLevel = "Apprenti", avatarUrl = "", userName = "" }: {
+export default function Sidebar({ isAdmin, socialLinks, logoUrl, hasKidsAccess, toggles, xpBalance = 0, lifetimeXP = 0, magicLevel = "Apprenti", avatarUrl = "", userName = "", uiLabels }: {
     isAdmin: boolean;
     socialLinks?: { youtube: string; instagram: string; facebook: string; tiktok: string };
     logoUrl?: string;
@@ -22,6 +22,7 @@ export default function Sidebar({ isAdmin, socialLinks, logoUrl, hasKidsAccess, 
     magicLevel?: string;
     avatarUrl?: string;
     userName?: string;
+    uiLabels?: Record<string, string>;
 }) {
     const pathname = usePathname();
     const router = useRouter();
