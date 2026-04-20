@@ -67,13 +67,13 @@ export const WelcomeVIPEmail = ({
                         
                         <Section className="text-center mt-[32px] mb-[32px]">
                             <Text className="text-black text-[14px] mb-4">
-                                Clique simplement sur le bouton magique ci-dessous. Tu n'as même pas besoin de taper de mot de passe, l'accès se fera automatiquement.
+                                Clique sur le bouton ci-dessous pour te rendre sur la page de connexion, puis utilise les informations fournies.
                             </Text>
                             <Button
                                 className="bg-[#7c3aed] rounded text-white text-[12px] font-bold no-underline text-center px-6 py-4"
-                                href={recoveryUrl || loginUrl}
+                                href={loginUrl}
                             >
-                                ENTRER DANS LE CLUB 🎩
+                                SE CONNECTER 🎩
                             </Button>
                         </Section>
 
