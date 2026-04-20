@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Sparkles, ShoppingBag, CheckCircle2, Lock, Play } from "lucide-react";
 import CheckoutButton from "@/components/CheckoutButton";
+import BackButton from "@/components/BackButton";
 
 export const metadata = {
     title: 'La Boutique | Club des Magiciens',
@@ -39,8 +40,8 @@ export default async function AdultShopPage() {
             {/* Ambient Background Lights */}
             <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-magic-royal/5 blur-[150px] rounded-full pointer-events-none mix-blend-screen"></div>
 
-            <div className="max-w-6xl mx-auto relative z-10 space-y-12">
-            
+            <div className="max-w-6xl mx-auto relative z-10">
+                <BackButton />
                 {/* Header */}
                 <header className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 pt-4 border-b border-white/5 pb-8">
                     <div className="flex-1">

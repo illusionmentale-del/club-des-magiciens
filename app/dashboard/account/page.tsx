@@ -2,6 +2,7 @@ import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import AccountForm from "./AccountForm";
 import MagicCard from "@/components/MagicCard";
+import BackButton from "@/components/BackButton";
 import MagicParticles from "@/components/MagicParticles";
 import { NotificationPreferences } from "@/components/NotificationPreferences";
 
@@ -33,7 +34,10 @@ export default async function AccountPage({
                 <MagicParticles count={50} color="rgba(234, 179, 8, 0.3)" />
             </div>
 
-            <div className="relative z-10 w-full max-w-4xl mx-auto space-y-8">
+            <div className="relative z-10 w-full max-w-4xl mx-auto">
+                <div className="absolute -top-12 left-0">
+                    <BackButton />
+                </div>
                 {isSettingsView ? (
                     <div className="relative group mt-8">
                         <div className="absolute -inset-1 bg-gradient-to-r from-brand-royal to-blue-500 rounded-3xl opacity-0 blur-lg group-hover:opacity-40 transition duration-1000 pointer-events-none"></div>

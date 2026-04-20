@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import AdultBoutiqueCard from "@/components/AdultBoutiqueCard";
 import BientotDispo from "@/components/dashboard/BientotDispo";
 import { ShoppingBag, Star } from "lucide-react";
+import BackButton from "@/components/BackButton";
 
 export const metadata = {
     title: 'La Boutique | Club des Magiciens',
@@ -55,10 +56,10 @@ export default async function CatalogPage() {
             <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] bg-amber-600/10 blur-[150px] rounded-full pointer-events-none mix-blend-screen"></div>
             <div className="absolute top-[20%] right-[-10%] w-[40%] h-[40%] bg-magic-royal/5 blur-[120px] rounded-full pointer-events-none mix-blend-screen"></div>
 
-            <div className="max-w-6xl mx-auto relative z-10 space-y-12">
-
+            <div className="max-w-6xl mx-auto relative z-10">
+                <BackButton />
                 {/* Header */}
-                <header className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 pt-4">
+                <header className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 pt-4 mb-12">
                     <div className="flex-1">
                         <div className="flex items-center gap-2 text-magic-royal mb-2">
                             <Star className="w-5 h-5 fill-current animate-pulse text-magic-royal" />

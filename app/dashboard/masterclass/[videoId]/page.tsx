@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { ArrowLeft, PlayCircle, Eye, Calendar, Clock, Lock, ShoppingBag } from 'lucide-react';
 import { createClient } from '@/lib/supabase/server';
 import BunnyVideoTracker from '@/components/BunnyVideoTracker';
+import BackButton from '@/components/BackButton';
 import KidsCommentsSection from '@/components/KidsComments';
 import CheckoutButton from '@/components/CheckoutButton';
 
@@ -139,14 +140,9 @@ export default async function KidsVideoPlayerPage({ params }: { params: { videoI
             <div className="absolute top-[30%] right-[-10%] w-[40%] h-[40%] bg-brand-blue/5 blur-[120px] rounded-full pointer-events-none mix-blend-screen z-0"></div>
 
             <div className="max-w-6xl mx-auto pb-12 relative z-10">
-                {/* Back Button / Header (Frosted Glass) */}
-                <div className="mb-8 sticky top-4 z-50">
-                    <div className="inline-block bg-black/40 backdrop-blur-md border border-white/10 p-1.5 rounded-2xl shadow-xl">
-                        <Link href="/kids/videos" className="inline-flex items-center gap-2 text-white/70 hover:text-white hover:bg-white/10 transition-all py-2 px-4 rounded-xl text-sm font-medium">
-                            <ArrowLeft className="w-4 h-4" />
-                            Retour à la Galerie
-                        </Link>
-                    </div>
+                {/* Back Button */}
+                <div className="mb-8 relative z-50">
+                    <BackButton />
                 </div>
 
                 {/* Video Player Container */}
