@@ -5,7 +5,7 @@ import { useFormStatus } from "react-dom";
 import Link from "next/link";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
-import { Loader2, Lock, User, ArrowRight, AlertCircle, Sparkles } from "lucide-react";
+import { Loader2, Lock, Mail, ArrowRight, AlertCircle, Sparkles } from "lucide-react";
 import { loginWithPassword } from "../actions";
 
 // Submit Button Component
@@ -57,14 +57,14 @@ function LoginFormContent() {
                     <input type="hidden" name="redirect" value={redirectUrl} />
 
                     <div className="space-y-2">
-                        <label className="block text-xs font-black uppercase tracking-widest text-brand-purple ml-1">Ton Nom de Magicien</label>
+                        <label className="block text-xs font-black uppercase tracking-widest text-brand-purple ml-1">Ton adresse e-mail de connexion</label>
                         <div className="relative group/input">
-                            <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-brand-purple transition-transform group-focus-within/input:scale-110" />
+                            <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-brand-purple transition-transform group-focus-within/input:scale-110" />
                             <input
                                 name="identifier"
                                 type="text"
                                 className="w-full pl-12 pr-4 py-4 bg-brand-bg/50 border-2 border-brand-border rounded-2xl focus:border-brand-purple focus:ring-4 focus:ring-brand-purple/20 focus:outline-none transition-all placeholder:text-gray-500 font-bold text-lg"
-                                placeholder="Ex: Merlin"
+                                placeholder="Ex: parent@email.com"
                                 required
                             />
                         </div>

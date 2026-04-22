@@ -67,7 +67,7 @@ export const WelcomeVIPEmail = ({
                         
                         <Section className="text-center mt-[32px] mb-[32px]">
                             <Text className="text-black text-[14px] mb-4">
-                                Clique sur le bouton ci-dessous pour te rendre sur la page de connexion, puis utilise les informations fournies.
+                                Tu auras besoin de l'identifiant et du mot de passe ci-dessous pour te connecter sur la plateforme. Clique sur le bouton pour t'y rendre.
                             </Text>
                             <Button
                                 className="bg-[#7c3aed] rounded text-white text-[12px] font-bold no-underline text-center px-6 py-4"
@@ -82,7 +82,7 @@ export const WelcomeVIPEmail = ({
                                 Tes informations de connexion :
                             </Text>
                             <Text className="text-black text-[13px] mt-4 mb-1">
-                                Email : <strong>{parentEmail}</strong>
+                                Identifiant (ton adresse e-mail) : <strong>{parentEmail}</strong>
                             </Text>
                             {password && (
                                 <Text className="text-black text-[13px] my-1">

@@ -66,10 +66,10 @@ export const WelcomeKidEmail = ({
                             {password ? (
                                 <>
                                     <Text className="text-black font-bold text-lg my-1">
-                                        Voici tes identifiants d'accès :
+                                        Tu auras besoin des identifiants d'accès ci-dessous pour te connecter :
                                     </Text>
                                     <Text className="text-black text-md mt-4">
-                                        Email : <strong>{username}</strong>
+                                        Identifiant (ton adresse e-mail) : <strong>{username}</strong>
                                     </Text>
                                     <Text className="text-black text-md my-1">
                                         Mot de passe provisoire : <strong>{password}</strong>
