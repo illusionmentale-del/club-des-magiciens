@@ -20,7 +20,8 @@ export async function equipSkin(skinId: string) {
             .select('id')
             .eq('user_id', user.id)
             .eq('skin_id', skinId)
-            .single();
+            .limit(1)
+            .maybeSingle();
             
         if (!ownership) {
             return { success: false, error: "Tu dois d'abord débloquer ce skin" };

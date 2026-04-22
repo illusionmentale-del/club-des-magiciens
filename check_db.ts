@@ -1,13 +1,19 @@
 import { createClient } from "@supabase/supabase-js";
 import * as dotenv from 'dotenv';
-dotenv.config({ path: '.env.local' });
+dotenv.config({ path: '/Users/jeremymarouani/Downloads/Club des Magiciens/club-des-magiciens/.env.local' });
 
-const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!);
-async function main() {
-    const { data: cols, error: colError } = await supabase.from('products').select('*').limit(0);
-    console.log("Error querying products:", colError);
-    if (!colError) {
-        console.log("No error, so table config is valid for a generic select.");
-    }
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
+const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
+
+const supabase = createClient(supabaseUrl, supabaseKey);
+
+async function run() {
+    const { data: duplicates } = await supabase
+        .from('user_unlocked_skins')
+        .select('*');
+    
+    console.log("Total unlocked skins:", duplicates?.length);
+    console.dir(duplicates, { depth: null });
 }
-main();
+
+run().catch(console.error);
