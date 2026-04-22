@@ -17,7 +17,7 @@ export async function equipSkin(skinId: string) {
     if (!skin.is_default) {
         const { data: ownership } = await supabase
             .from('user_unlocked_skins')
-            .select('id')
+            .select('skin_id')
             .eq('user_id', user.id)
             .eq('skin_id', skinId)
             .limit(1)
