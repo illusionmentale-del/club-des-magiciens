@@ -36,7 +36,7 @@ function ToggleSwitch({ checked, onChange, disabled }: { checked: boolean, onCha
     );
 }
 
-export function NotificationPreferences({ profile }: { profile: any }) {
+export function NotificationPreferences({ profile, space = "kids" }: { profile: any, space?: "adults" | "kids" }) {
     const [isPending, startTransition] = useTransition();
 
     // Local states for instant visual feedback
@@ -156,19 +156,23 @@ export function NotificationPreferences({ profile }: { profile: any }) {
                 {/* 1. Newsletter */}
                 <div className="flex items-center justify-between p-5 bg-white/5 border border-white/10 rounded-2xl hover:bg-white/10 transition-colors">
                     <div className="flex items-start gap-4 pr-4">
-                        <div className="p-2 bg-white/10 rounded-xl text-brand-purple shrink-0 mt-0.5">
+                        <div className={`p-2 bg-white/10 rounded-xl shrink-0 mt-0.5 ${space === 'adults' ? 'text-magic-royal' : 'text-brand-purple'}`}>
                             <Mail className="w-5 h-5" />
                         </div>
                         <div>
-                            <h3 className="text-white font-bold mb-1">La Newsletter</h3>
+                            <h3 className="text-white font-bold mb-1">
+                                {space === 'adults' ? "Actualités de l'Atelier" : "La Newsletter"}
+                            </h3>
                             <p className="text-sm text-brand-text-muted leading-relaxed">
-                                Recevoir les actualités du Club, les coulisses et les offres promotionnelles par email.
+                                {space === 'adults' 
+                                    ? "Recevoir les nouveautés de l'Atelier, les nouvelles masterclass et les offres exclusives."
+                                    : "Recevoir les actualités du Club, les coulisses et les offres promotionnelles par email."}
                             </p>
                         </div>
                     </div>
                     <div className="shrink-0 flex items-center justify-center min-w-[3rem]">
                         {isPending ? (
-                            <Loader2 className="w-5 h-5 animate-spin text-brand-purple" />
+                            <Loader2 className={`w-5 h-5 animate-spin ${space === 'adults' ? 'text-magic-royal' : 'text-brand-purple'}`} />
                         ) : (
                             <ToggleSwitch checked={newsletterOptIn} onChange={handleToggleNewsletter} />
                         )}

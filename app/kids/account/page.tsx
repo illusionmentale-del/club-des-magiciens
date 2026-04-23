@@ -121,7 +121,7 @@ export default async function KidsAccountPage({
                                             <Bell className="w-5 h-5 text-brand-blue" />
                                             Préférences de Communication
                                         </h2>
-                                        <NotificationPreferences profile={profile} />
+                                        <NotificationPreferences profile={profile} space="kids" />
                                     </div>
 
                                     {/* Additional settings could go here (e.g. Subscription status) */}

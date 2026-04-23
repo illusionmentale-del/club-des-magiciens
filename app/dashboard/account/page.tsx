@@ -49,7 +49,7 @@ export default async function AccountPage({
                                 {/* Section Notifications */}
                                 <div className="mt-12 space-y-6 border-t border-white/10 pt-8">
                                     <h2 className="text-xl font-black uppercase tracking-widest text-brand-royal text-center mb-6">Préférences de Communication</h2>
-                                    <NotificationPreferences profile={profile} />
+                                    <NotificationPreferences profile={profile} space="adults" />
                                 </div>
                             </div>
                         </div>
