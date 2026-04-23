@@ -40,6 +40,8 @@ export async function equipSkin(skinId: string) {
     }
 
     revalidatePath("/", "layout");
+    revalidatePath("/kids", "layout");
+    revalidatePath("/kids/shop");
     return { success: true };
 }
 

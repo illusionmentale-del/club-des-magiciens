@@ -29,6 +29,8 @@ export default function SkinLocker({ skins, unlockedSkinIds = [], equippedSkinId
     const [previewSkin, setPreviewSkin] = useState<Skin | null>(null);
     const [event, setEvent] = useState<GamificationEvent | null>(null);
 
+    const [activeTab, setActiveTab] = useState<string>("Magiciens");
+
     const handleEquip = async (skinId: string) => {
         setLoadingMap(prev => ({ ...prev, [skinId]: true }));
         try {
@@ -36,7 +38,7 @@ export default function SkinLocker({ skins, unlockedSkinIds = [], equippedSkinId
             if (!res.success) {
                 alert(res.error);
             } else {
-                router.refresh();
+                window.location.reload();
             }
         } finally {
             setLoadingMap(prev => ({ ...prev, [skinId]: false }));
@@ -58,7 +60,7 @@ export default function SkinLocker({ skins, unlockedSkinIds = [], equippedSkinId
                 if (res.newQuestsData && res.newQuestsData.length > 0) {
                     setEvent({ newQuestsData: res.newQuestsData });
                 } else {
-                    router.refresh();
+                    window.location.reload();
                 }
             }
         } finally {
@@ -79,15 +81,34 @@ export default function SkinLocker({ skins, unlockedSkinIds = [], equippedSkinId
     const equippedRing = adultMode ? "border-magic-royal shadow-[0_0_20px_rgba(0,102,255,0.3)]" : "border-pink-500 shadow-[0_0_20px_rgba(236,72,153,0.3)]";
     const avatarRing = adultMode ? "hover:border-magic-royal/50 hover:shadow-[0_0_20px_rgba(0,102,255,0.5)]" : "hover:border-brand-purple/50 hover:shadow-[0_0_20px_rgba(168,85,247,0.5)]";
 
+    const CATEGORIES = ["Magiciens", "Familiers", "Collection Nox", "Emblèmes"];
+    
+    const getCategory = (name: string) => {
+        const lName = name.toLowerCase();
+        if (lName.includes("emblème")) return "Emblèmes";
+        if (lName.includes("nox")) return "Collection Nox";
+        if (["chat", "chiot", "hibou", "lapin"].some(k => lName.includes(k))) return "Familiers";
+        return "Magiciens";
+    };
+
+    const skinsByCategory = skins.reduce((acc, skin) => {
+        const cat = getCategory(skin.name);
+        if (!acc[cat]) acc[cat] = [];
+        acc[cat].push(skin);
+        return acc;
+    }, {} as Record<string, Skin[]>);
+
+    const currentSkins = skinsByCategory[activeTab] || [];
+
     return (
         <section className={adultMode ? "" : "mb-16"}>
             {!adultMode && (
-                <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-2">
+                <h2 className="text-2xl font-bold text-white mb-4 flex items-center gap-2">
                     <UserRound className={accentColor} />
                     Mon Casier d'Avatars
                 </h2>
             )}
-            <GamificationModal event={event} onClose={() => { setEvent(null); router.refresh(); }} />
+            <GamificationModal event={event} onClose={() => { setEvent(null); window.location.reload(); }} />
 
             {/* Preview Modal */}
             {previewSkin && (
@@ -140,10 +161,31 @@ export default function SkinLocker({ skins, unlockedSkinIds = [], equippedSkinId
                 </div>
             )}
             
+            {/* Tabs */}
+            <div className="flex flex-wrap gap-2 mb-6">
+                {CATEGORIES.map(cat => {
+                    if (!skinsByCategory[cat] || skinsByCategory[cat].length === 0) return null;
+                    const isActive = activeTab === cat;
+                    return (
+                        <button
+                            key={cat}
+                            onClick={() => setActiveTab(cat)}
+                            className={`px-4 py-2 rounded-full text-sm font-bold transition-all ${
+                                isActive 
+                                ? (adultMode ? 'bg-magic-royal text-white shadow-[0_0_15px_rgba(0,102,255,0.4)]' : 'bg-brand-purple text-white shadow-[0_0_15px_rgba(168,85,247,0.4)]')
+                                : 'bg-white/5 text-brand-text-muted hover:bg-white/10 hover:text-white'
+                            }`}
+                        >
+                            {cat}
+                        </button>
+                    )
+                })}
+            </div>
+
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-                {skins.map(skin => {
+                {currentSkins.map(skin => {
                     const isUnlocked = skin.is_default || unlockedSkinIds.includes(skin.id);
-                    const isEquipped = equippedSkinId === skin.id || (!equippedSkinId && skin.is_default);
+                    const isEquipped = equippedSkinId === skin.id || (!equippedSkinId && skin.id === skins.find(s => s.is_default)?.id); 
                     const canAfford = (trueXP || 0) >= skin.price_xp;
                     const isLoading = loadingMap[skin.id];
 
@@ -197,7 +239,7 @@ export default function SkinLocker({ skins, unlockedSkinIds = [], equippedSkinId
                                         ) : (
                                             <>
                                                 <Sparkles className="w-3 h-3" />
-                                                {skin.price_xp} Poussières d'étoiles
+                                                {skin.price_xp}  XP
                                             </>
                                         )}
                                     </button>

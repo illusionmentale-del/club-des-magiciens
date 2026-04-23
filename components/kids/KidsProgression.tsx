@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Sparkles, PartyPopper } from "lucide-react";
+import MagicAvatar from "@/components/kids/MagicAvatar";
 
 type KidsProgressionProps = {
     validatedCount: number;
@@ -10,13 +11,15 @@ type KidsProgressionProps = {
     totalXP?: number;
     nextGrade?: string | null;
     nextThreshold?: number | null;
+    avatarUrl?: string;
 };
 
 export default function KidsProgression({
     userGrade = "Apprenti",
     totalXP = 0,
     nextGrade,
-    nextThreshold
+    nextThreshold,
+    avatarUrl = ""
 }: KidsProgressionProps) {
 
     let progressPercentage = 100;
@@ -35,9 +38,9 @@ export default function KidsProgression({
             </h3>
 
             <div className="text-center mb-6 relative z-10 flex flex-col items-center">
-                {/* 3D Shield */}
-                <div className="relative w-24 h-24 mb-3 drop-shadow-[0_0_15px_rgba(168,85,247,0.3)] group-hover:drop-shadow-[0_0_20px_rgba(168,85,247,0.6)] transition-all duration-500">
-                    <Image src="/achievements/magic_shield.png" alt="Emblème de Grade" fill className="object-contain" priority />
+                {/* 3D Shield / Dynamic Avatar */}
+                <div className="mb-4">
+                    <MagicAvatar imageUrl={avatarUrl} levelName={userGrade} size="lg" className="drop-shadow-[0_0_15px_rgba(168,85,247,0.3)] group-hover:drop-shadow-[0_0_20px_rgba(168,85,247,0.6)] transition-all duration-500" />
                 </div>
 
                 <div className="inline-block px-3 py-1 rounded-full bg-brand-purple/20 border border-brand-purple/30 text-brand-purple text-xs font-bold uppercase tracking-widest mb-3 shadow-[0_0_10px_rgba(168,85,247,0.2)]">

@@ -6,6 +6,7 @@ import { Settings, Trophy, Shield, Star, Bell, ShoppingBag } from "lucide-react"
 import BackButton from "@/components/BackButton";
 import { NotificationPreferences } from "@/components/NotificationPreferences";
 import KidsIdentityForm from "@/components/kids/KidsIdentityForm";
+import QuickSkinSelector from "@/components/kids/QuickSkinSelector";
 
 export default async function KidsAccountPage({
     searchParams,
@@ -45,6 +46,16 @@ export default async function KidsAccountPage({
     if (profile?.equipped_skin_id && profile?.avatar_skins?.image_url) {
         computedAvatarUrl = profile.avatar_skins.image_url;
     }
+
+    // Fetch unlocked skins for the Quick Selector
+    const { data: unlockedSkinsData } = await supabase
+        .from("user_unlocked_skins")
+        .select("skin_id")
+        .eq("user_id", user.id);
+    const unlockedSkinIds = unlockedSkinsData?.map(s => s.skin_id) || [];
+
+    const { data: skins } = await supabase.from("avatar_skins").select("*");
+    const availableSkins = skins?.filter(s => s.is_default || unlockedSkinIds.includes(s.id)) || [];
 
     return (
         <div className="min-h-screen bg-brand-bg text-brand-text p-4 md:p-8 pb-32 font-sans selection:bg-brand-purple/30 overflow-hidden relative">
@@ -126,6 +137,8 @@ export default async function KidsAccountPage({
                         <div className="flex flex-col items-center">
                             <MagicCard user={user} profile={profile} isKid={true} lifetimeXP={lifetimeXP} avatarUrl={computedAvatarUrl} />
                             
+                            <QuickSkinSelector skins={availableSkins} equippedSkinId={profile?.equipped_skin_id} />
+
                             {/* Solde et Bouton pour dépenser */}
                             <div className="mt-8 mb-4 w-full max-w-[400px] flex flex-col items-center">
                                 <p className="mb-3 text-sm font-bold text-brand-gold animate-in fade-in zoom-in duration-500">

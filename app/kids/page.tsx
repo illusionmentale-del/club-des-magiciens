@@ -33,7 +33,7 @@ export default async function KidsHomePage({ searchParams }: { searchParams: Pro
         [{ data: profile }, { data: settings }] = await Promise.all([
             supabase
                 .from("profiles")
-                .select("*") // Use * to avoid crash if a specific column (like xp) is missing
+                .select("*, avatar_skins(image_url)") // Fetch avatar info too
                 .eq("id", user.id)
                 .single(),
             supabase
@@ -285,6 +285,11 @@ export default async function KidsHomePage({ searchParams }: { searchParams: Pro
 
     const userName = profile.username || profile.full_name || profile.display_name || profile.first_name || user.user_metadata?.full_name || "Jeune Magicien";
 
+    let avatarUrl = "";
+    if (profile?.avatar_skins && !Array.isArray(profile.avatar_skins) && typeof profile.avatar_skins === 'object') {
+         avatarUrl = (profile.avatar_skins as any).image_url || "";
+    }
+
     const isShopEnabled = settingsMap.enable_kids_shop !== 'false';
 
     return (
@@ -385,6 +390,7 @@ export default async function KidsHomePage({ searchParams }: { searchParams: Pro
                             totalXP={totalXP}
                             nextGrade={nextGrade}
                             nextThreshold={nextThreshold}
+                            avatarUrl={avatarUrl}
                         />
 
                         {/* BLOC 5: SUCCESS (WINS) */}
