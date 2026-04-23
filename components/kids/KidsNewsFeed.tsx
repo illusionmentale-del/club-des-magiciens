@@ -38,7 +38,7 @@ export default function KidsNewsFeed({ items }: { items: NewsItem[] }) {
                                 target={isExternal ? "_blank" : "_self"}
                                 className="group block"
                             >
-                                <div className="bg-brand-card/50 border border-brand-border rounded-xl p-4 flex items-center gap-4 hover:bg-brand-surface transition-all hover:border-brand-purple/30 group-hover:translate-x-1 duration-300">
+                                <div className="bg-[#100b1a] border border-white/10 rounded-2xl p-4 flex items-center gap-4 hover:bg-[#1a112c] transition-all hover:border-brand-purple/30 group-hover:translate-x-1 duration-300 shadow-md">
                                     {/* Thumbnail / Icon */}
                                     <div className="w-16 h-16 bg-black rounded-lg shrink-0 overflow-hidden relative border border-white/5">
                                         {item.thumbnail_url ? (
@@ -84,7 +84,7 @@ export default function KidsNewsFeed({ items }: { items: NewsItem[] }) {
                         )
                     })
                 ) : (
-                    <div className="text-brand-text-muted text-sm italic bg-brand-card/30 p-4 rounded-xl border border-dashed border-white/10 text-center">
+                    <div className="text-gray-500 text-sm italic bg-[#100b1a] p-4 rounded-2xl border border-dashed border-white/10 text-center">
                         Pas de nouveautés pour le moment.
                     </div>
                 )}

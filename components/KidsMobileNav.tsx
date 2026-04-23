@@ -74,7 +74,7 @@ export default function KidsMobileNav({ logoUrl, isAdmin, hasPurchases, hasUnrea
     };
 
     return (
-        <div className={`${isForcedDesktop ? 'hidden' : (isForcedMobile ? 'block' : 'md:hidden')} bg-magic-card border-b border-white/10 sticky top-0 z-50`}>
+        <div className={`${isForcedDesktop ? 'hidden' : (isForcedMobile ? 'block' : 'md:hidden')} bg-[#0a0a0a] border-b border-white/10 sticky top-0 z-50`}>
             <div className="flex items-center justify-between p-4">
                 <Link href="/kids/account" className="flex items-center gap-3 group">
                     <MagicAvatar imageUrl={avatarUrl} levelName={magicLevel} size="sm" />
@@ -117,7 +117,7 @@ export default function KidsMobileNav({ logoUrl, isAdmin, hasPurchases, hasUnrea
                     />
 
                     {/* Menu Content */}
-                    <div className="relative w-64 h-full bg-magic-card border-r border-white/10 flex flex-col p-4 animate-in slide-in-from-left duration-200">
+                    <div className="relative w-64 h-full bg-[#0a0a0a] border-r border-white/10 flex flex-col p-4 animate-in slide-in-from-left duration-200">
                         <div className="flex items-start justify-between mb-6">
                             <Link href="/kids/account" onClick={close} className="flex items-center gap-3 group">
                                 <MagicAvatar imageUrl={avatarUrl} levelName={magicLevel} size="sm" />

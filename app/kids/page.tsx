@@ -295,9 +295,8 @@ export default async function KidsHomePage({ searchParams }: { searchParams: Pro
     return (
         <div className="min-h-screen bg-brand-bg text-brand-text p-4 md:p-8 pb-32 font-sans overflow-hidden relative selection:bg-brand-purple/30">
             <WelcomeModal />
-            {/* Background Ambience */}
-            <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] bg-brand-purple/20 blur-[150px] rounded-full pointer-events-none mix-blend-screen"></div>
-            <div className="absolute top-[20%] right-[-10%] w-[40%] h-[40%] bg-brand-blue/10 blur-[120px] rounded-full pointer-events-none mix-blend-screen"></div>
+            {/* Ambient Background */}
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-brand-purple/10 via-brand-bg to-brand-bg pointer-events-none"></div>
 
             <div className="max-w-5xl mx-auto relative z-10 space-y-12">
 
@@ -358,7 +357,7 @@ export default async function KidsHomePage({ searchParams }: { searchParams: Pro
                                     <Package className="w-5 h-5 text-brand-gold" />
                                     La Boutique Magique
                                 </h3>
-                                <div className="bg-gradient-to-r from-brand-gold/10 to-transparent border border-brand-gold/20 rounded-2xl p-6 flex flex-col sm:flex-row items-center gap-6">
+                                <div className="bg-[#151025] border border-brand-gold/20 rounded-2xl p-6 flex flex-col sm:flex-row items-center gap-6 shadow-[0_10px_30px_-10px_rgba(255,215,0,0.1)]">
                                     <div className="w-16 h-16 bg-brand-gold/20 rounded-full flex items-center justify-center shrink-0">
                                         <ShoppingBag className="w-8 h-8 text-brand-gold" />
                                     </div>

@@ -14,7 +14,7 @@ function SubmitButton() {
         <button
             type="submit"
             disabled={pending}
-            className="w-full py-4 bg-gradient-to-r from-brand-purple to-pink-500 hover:brightness-110 text-white font-bold rounded-xl transition-all disabled:opacity-50 flex justify-center items-center gap-2 shadow-[0_5px_20px_rgba(168,85,247,0.3)]"
+            className="w-full py-3.5 bg-white hover:bg-gray-200 text-black font-bold rounded-xl transition-all disabled:opacity-50 flex justify-center items-center gap-2 shadow-[0_4px_14px_0_rgba(255,255,255,0.1)]"
         >
             {pending ? <Loader2 className="w-5 h-5 animate-spin" /> : <span className="flex items-center gap-2">Créer mon compte <ArrowRight className="w-4 h-4" /></span>}
         </button>
@@ -31,14 +31,14 @@ function RegisterFormContent() {
     return (
         <div className="w-full max-w-md z-10">
             <div className="text-center mb-10">
-                <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-brand-purple/30 bg-brand-purple/10 text-brand-purple text-xs font-bold uppercase tracking-widest shadow-[0_0_20px_rgba(168,85,247,0.2)] mb-4">
+                <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-white/20 bg-white/5 text-white text-xs font-bold uppercase tracking-widest mb-4">
                     <Sparkles className="w-3.5 h-3.5" />
                     Bienvenue au Club
                 </div>
             </div>
 
-            <div className="bg-white/5 border border-white/10 rounded-3xl p-8 shadow-2xl backdrop-blur-md">
-                <h2 className="text-3xl font-black text-center mb-2 tracking-tight">Inscription</h2>
+            <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-8 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.8)]">
+                <h2 className="text-2xl font-bold text-center mb-2 tracking-tight">Inscription</h2>
                 <p className="text-gray-400 text-center mb-8 text-sm">Crée ton compte parent/enfant pour débloquer la magie.</p>
 
                 <form action={formAction} className="space-y-5">
@@ -51,7 +51,7 @@ function RegisterFormContent() {
                             <input
                                 name="username"
                                 type="text"
-                                className="w-full pl-12 pr-4 py-3.5 bg-black/40 border border-white/10 rounded-xl focus:border-brand-purple focus:ring-1 focus:ring-brand-purple focus:outline-none transition-all placeholder:text-gray-600"
+                                className="w-full pl-12 pr-4 py-3 bg-black border border-white/10 rounded-xl focus:border-white focus:ring-1 focus:ring-white focus:outline-none transition-all placeholder:text-gray-600"
                                 placeholder="Ex: Léo Magicien"
                                 required
                             />
@@ -65,7 +65,7 @@ function RegisterFormContent() {
                             <input
                                 name="email"
                                 type="email"
-                                className="w-full pl-12 pr-4 py-3.5 bg-black/40 border border-white/10 rounded-xl focus:border-brand-purple focus:ring-1 focus:ring-brand-purple focus:outline-none transition-all placeholder:text-gray-600"
+                                className="w-full pl-12 pr-4 py-3 bg-black border border-white/10 rounded-xl focus:border-white focus:ring-1 focus:ring-white focus:outline-none transition-all placeholder:text-gray-600"
                                 placeholder="parent@email.com"
                                 required
                             />
@@ -79,7 +79,7 @@ function RegisterFormContent() {
                             <input
                                 name="password"
                                 type="password"
-                                className="w-full pl-12 pr-4 py-3.5 bg-black/40 border border-white/10 rounded-xl focus:border-brand-purple focus:ring-1 focus:ring-brand-purple focus:outline-none transition-all placeholder:text-gray-600"
+                                className="w-full pl-12 pr-4 py-3 bg-black border border-white/10 rounded-xl focus:border-white focus:ring-1 focus:ring-white focus:outline-none transition-all placeholder:text-gray-600"
                                 placeholder="••••••••"
                                 required
                             />
@@ -100,7 +100,7 @@ function RegisterFormContent() {
 
                 <div className="mt-8 text-center text-sm text-gray-400">
                     Tu as déjà un compte ?{" "}
-                    <Link href={`/login?redirect=${encodeURIComponent(redirectUrl)}`} className="text-brand-purple font-bold hover:underline">
+                    <Link href={`/login?redirect=${encodeURIComponent(redirectUrl)}`} className="text-white font-bold hover:underline">
                         Connecte-toi
                     </Link>
                 </div>
@@ -111,8 +111,9 @@ function RegisterFormContent() {
 
 export default function RegisterPage() {
     return (
-        <div className="min-h-screen bg-[#0F0A1F] text-white flex flex-col items-center justify-center p-4 relative overflow-hidden">
-            <div className="absolute top-0 w-full h-full bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-brand-purple/20 via-[#0F0A1F] to-[#0F0A1F] opacity-50 pointer-events-none"></div>
+        <div className="min-h-[100dvh] bg-black text-white flex flex-col items-center justify-center p-4 relative overflow-y-auto">
+            {/* Subtle central glow */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-lg h-full max-h-lg bg-white/5 blur-[120px] rounded-full pointer-events-none fixed"></div>
 
             <Suspense fallback={<Loader2 className="w-8 h-8 animate-spin text-brand-purple absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />}>
                 <RegisterFormContent />

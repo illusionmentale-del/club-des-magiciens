@@ -5,7 +5,7 @@ import { Resend } from "resend";
 import WelcomeEmail from "@/emails/WelcomeEmail";
 import * as React from "react";
 
-const resend = new Resend(process.env.RESEND_API_KEY!);
+const resend = new Resend(process.env.RESEND_API_KEY || 're_123');
 
 export async function POST(req: Request) {
     try {

@@ -38,7 +38,7 @@ export default function UserRow({ profile, isProtected, basePath }: UserRowProps
     };
 
     return (
-        <div className="bg-magic-card border border-white/10 rounded-2xl p-6 flex flex-col md:flex-row gap-6 items-start md:items-center transition-all">
+        <div className="bg-[#100b1a] border border-white/10 rounded-2xl p-6 flex flex-col md:flex-row gap-6 items-start md:items-center transition-all shadow-[0_10px_30px_-10px_rgba(0,0,0,0.5)]">
             {/* INFO */}
             <div className="flex items-center gap-4 min-w-[250px]">
                 {basePath ? (

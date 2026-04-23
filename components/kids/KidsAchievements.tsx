@@ -12,7 +12,7 @@ export default function KidsAchievements({ recentValids, completedQuests }: { re
     if (!recentValids?.length && !completedQuests?.length) return null;
 
     return (
-        <section className="bg-brand-card/30 border border-brand-border/50 rounded-2xl p-6 mt-8">
+        <section className="bg-[#100b1a] border border-white/10 rounded-2xl p-6 mt-8 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.5)]">
             <h3 className="text-lg font-bold text-white uppercase tracking-tight mb-4 flex items-center gap-2">
                 <Trophy className="w-5 h-5 text-brand-gold" />
                 Derniers Succès

@@ -21,7 +21,7 @@ export default async function KidsDashboardPage() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <Card className="bg-brand-card border-brand-border hover:border-brand-purple/50 transition-all shadow-xl">
+                <Card className="bg-[#100b1a] border border-white/10 hover:border-brand-purple/50 transition-all shadow-[0_20px_50px_-15px_rgba(0,0,0,0.5)]">
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                         <CardTitle className="text-xs font-bold uppercase tracking-wider text-brand-text-muted">Élèves Actifs (7j)</CardTitle>
                         <Users className="h-5 w-5 text-brand-purple" />
@@ -32,7 +32,7 @@ export default async function KidsDashboardPage() {
                     </CardContent>
                 </Card>
 
-                <Card className="bg-brand-card border-brand-border hover:border-brand-blue/50 transition-all shadow-xl">
+                <Card className="bg-[#100b1a] border border-white/10 hover:border-brand-blue/50 transition-all shadow-[0_20px_50px_-15px_rgba(0,0,0,0.5)]">
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                         <CardTitle className="text-xs font-bold uppercase tracking-wider text-brand-text-muted">Temps de Visionnage</CardTitle>
                         <Clock className="h-5 w-5 text-brand-blue" />
@@ -43,7 +43,7 @@ export default async function KidsDashboardPage() {
                     </CardContent>
                 </Card>
 
-                <Card className="bg-brand-card border-brand-border hover:border-brand-gold/50 transition-all shadow-xl">
+                <Card className="bg-[#100b1a] border border-white/10 hover:border-brand-gold/50 transition-all shadow-[0_20px_50px_-15px_rgba(0,0,0,0.5)]">
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                         <CardTitle className="text-xs font-bold uppercase tracking-wider text-brand-text-muted">Taux d'Activité</CardTitle>
                         <Sparkles className="h-5 w-5 text-brand-gold" />
@@ -56,7 +56,7 @@ export default async function KidsDashboardPage() {
                     </CardContent>
                 </Card>
 
-                <Card className="bg-brand-card border-brand-border hover:border-red-500/50 transition-all shadow-xl relative overflow-hidden">
+                <Card className="bg-[#100b1a] border border-white/10 hover:border-red-500/50 transition-all shadow-[0_20px_50px_-15px_rgba(0,0,0,0.5)] relative overflow-hidden">
                     <div className="absolute top-0 right-0 w-16 h-16 bg-red-500/10 rounded-bl-full pointer-events-none"></div>
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                         <CardTitle className="text-xs font-bold uppercase tracking-wider text-brand-text-muted">Risque Décrochage</CardTitle>
@@ -71,7 +71,7 @@ export default async function KidsDashboardPage() {
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-8">
                 {/* Top Videos */}
-                <Card className="bg-brand-card border-brand-border shadow-xl">
+                <Card className="bg-[#100b1a] border border-white/10 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.5)]">
                     <CardHeader className="border-b border-brand-border pb-4">
                         <CardTitle className="flex items-center gap-2 text-lg font-bold text-brand-text uppercase tracking-tight">
                             <PlayCircle className="w-5 h-5 text-brand-purple" />
@@ -112,7 +112,7 @@ export default async function KidsDashboardPage() {
                 </Card>
 
                 {/* Ghost Kids List */}
-                <Card className="bg-brand-card border-brand-border shadow-xl">
+                <Card className="bg-[#100b1a] border border-white/10 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.5)]">
                     <CardHeader className="border-b border-brand-border pb-4">
                         <CardTitle className="flex items-center gap-2 text-lg font-bold text-brand-text uppercase tracking-tight">
                             <AlertTriangle className="w-5 h-5 text-red-400" />

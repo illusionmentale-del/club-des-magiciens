@@ -41,11 +41,8 @@ export default async function KidsPricingPage() {
     };
 
     return (
-        <div className="min-h-screen bg-[#050507] text-white font-sans selection:bg-brand-purple/30 relative overflow-hidden">
-            {/* Ambient Background Effects */}
-            <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] bg-brand-purple/10 blur-[150px] rounded-full pointer-events-none mix-blend-screen z-0 animate-pulse-slow"></div>
-            <div className="absolute top-[20%] right-[-10%] w-[40%] h-[40%] bg-brand-blue/10 blur-[120px] rounded-full pointer-events-none mix-blend-screen z-0"></div>
-            <div className="absolute bottom-[-10%] left-[20%] w-[50%] h-[50%] bg-pink-600/5 blur-[120px] rounded-full pointer-events-none mix-blend-screen z-0"></div>
+        <div className="min-h-screen bg-black text-white font-sans selection:bg-brand-purple/30 relative overflow-hidden">
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-white/[0.02] via-black to-black pointer-events-none z-0"></div>
 
             {/* Simple Header */}
             <header className="absolute top-0 w-full p-6 flex justify-between items-center z-20">
@@ -92,16 +89,15 @@ export default async function KidsPricingPage() {
 
                 {/* Video Teaser Block */}
                 <section className="relative z-20 mb-16 max-w-4xl mx-auto">
-                    <div className="absolute -inset-1 bg-gradient-to-r from-brand-purple to-brand-blue rounded-3xl opacity-30 blur-lg pointer-events-none"></div>
-                    <div className="relative bg-brand-card border border-brand-purple/30 rounded-2xl overflow-hidden shadow-2xl backdrop-blur-sm aspect-video flex flex-col items-center justify-center group cursor-pointer hover:bg-brand-surface transition-colors">
+                    <div className="relative bg-[#050505] border border-white/10 rounded-2xl overflow-hidden shadow-2xl backdrop-blur-sm aspect-video flex flex-col items-center justify-center group cursor-pointer hover:border-brand-purple/30 transition-colors">
                         {/* 
                             TODO: Remplacer ceci par le vrai lecteur Bunny Stream.
                             Pour l'instant, c'est un espace réservé visuellement attrayant.
                         */}
-                        <div className="w-20 h-20 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center border border-white/20 group-hover:scale-110 transition-transform shadow-[0_0_30px_rgba(255,255,255,0.3)] mb-4">
+                        <div className="w-20 h-20 bg-black/50 backdrop-blur-md rounded-full flex items-center justify-center border border-brand-purple/50 group-hover:bg-brand-purple/20 transition-all z-20 shadow-[0_0_30px_rgba(0,0,0,0.5)] mb-4">
                             <PlayCircle className="w-10 h-10 text-white fill-current ml-1" />
                         </div>
-                        <h3 className="text-2xl font-black text-white uppercase tracking-wider text-center px-4">Découvrez le Club en Vidéo</h3>
+                        <h3 className="text-2xl font-black text-white uppercase tracking-wider text-center px-4 z-20">Découvrez le Club en Vidéo</h3>
                         <p className="text-brand-purple-light font-medium mt-2">Appuie sur lecture !</p>
                     </div>
 
@@ -110,8 +106,7 @@ export default async function KidsPricingPage() {
                 {/* Social Proof dynamique */}
                 <div className="flex flex-col items-center justify-center mt-8 mb-8 relative z-10 w-full mx-auto animate-in slide-in-from-bottom-4 duration-700">
                     <div className="relative group cursor-pointer inline-block">
-                        <div className="absolute -inset-1.5 bg-gradient-to-r from-brand-purple via-brand-blue to-purple-600 rounded-full blur opacity-40 group-hover:opacity-75 transition duration-1000 group-hover:duration-200 animate-pulse-slow"></div>
-                        <div className="relative text-sm md:text-base font-bold text-gray-200 text-center bg-[#0A0A0E] border border-brand-purple/50 px-8 py-4 rounded-full shadow-[0_0_30px_rgba(139,92,246,0.4)] flex items-center justify-center gap-3">
+                        <div className="relative text-sm md:text-base font-bold text-gray-200 text-center bg-black border-y border-brand-purple/30 px-12 py-4 shadow-lg flex items-center justify-center gap-4">
                             <Sparkles className="w-5 h-5 text-brand-gold animate-pulse" />
                             <span>
                                 Rejoins déjà plus de <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-gold to-yellow-300 text-xl font-black mx-1 drop-shadow-[0_0_10px_rgba(252,211,77,0.5)]">100</span> apprentis magiciens !
@@ -125,7 +120,7 @@ export default async function KidsPricingPage() {
                 <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 items-stretch max-w-5xl mx-auto pt-4">
 
                     {/* MONTHLY PLAN */}
-                    <div className="bg-white/[0.03] border border-white/5 rounded-[2rem] p-8 md:p-10 flex flex-col relative overflow-hidden backdrop-blur-xl transition-all hover:bg-white/[0.05] mt-8 md:mt-12 shadow-2xl hover:shadow-[0_0_30px_rgba(255,255,255,0.05)] group">
+                    <div className="bg-[#050505] border border-white/5 rounded-2xl p-8 md:p-10 flex flex-col relative overflow-hidden transition-all hover:bg-[#080808] hover:border-brand-blue/20 mt-8 md:mt-12 group">
                         <div className="mb-6">
                             <h2 className="text-2xl font-black text-white mb-2">Abonnement Mensuel</h2>
                             <p className="text-gray-400 font-medium mb-4">Idéal pour découvrir le club à son rythme.</p>
@@ -179,20 +174,14 @@ export default async function KidsPricingPage() {
                             space="kids"
                             userLoggedIn={!!user}
                             buttonText="Commencer l'Aventure"
-                            className="bg-white/10 hover:bg-white/20 text-white border border-white/10"
+                            className="bg-transparent hover:bg-white/5 text-white border border-white/20 uppercase tracking-widest text-sm font-bold py-4 rounded-xl"
                         />
                     </div>
 
                     {/* YEARLY PLAN (HIGHLIGHTED) */}
-                    <div className="bg-gradient-to-br from-[#1A0B2E] to-[#14081E] border border-brand-purple/40 rounded-[2rem] p-8 flex flex-col relative overflow-hidden shadow-[0_20px_60px_-15px_rgba(168,85,247,0.4)] transform md:-translate-y-4 ring-1 ring-brand-purple/30">
-                        {/* Inner subtle glow */}
-                        <div className="absolute inset-0 bg-gradient-to-b from-white/5 to-transparent pointer-events-none rounded-[2rem]"></div>
-
-                        {/* Glow effect */}
-                        <div className="absolute top-0 right-0 w-64 h-64 bg-brand-purple/30 blur-[80px] rounded-full -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
-
+                    <div className="bg-[#0A0A0A] border border-brand-purple/40 rounded-2xl p-8 flex flex-col relative overflow-hidden shadow-2xl transform md:-translate-y-4">
                         {/* Badge */}
-                        <div className="absolute top-0 right-0 bg-gradient-to-r from-brand-purple to-pink-500 text-white font-black text-xs uppercase tracking-widest py-2 px-6 rounded-bl-2xl">
+                        <div className="absolute top-0 right-0 bg-brand-purple text-white font-bold text-xs uppercase tracking-[0.2em] py-2 px-6">
                             Le Choix des Maîtres
                         </div>
 
@@ -244,10 +233,9 @@ export default async function KidsPricingPage() {
                             </li>
 
                             {/* Premium Bonus Callout */}
-                            <li className="flex items-start gap-4 text-brand-purple-light font-black mt-8 bg-gradient-to-r from-brand-purple/20 to-brand-blue/20 p-5 rounded-2xl border border-brand-purple/30 shadow-[0_10px_30px_rgba(139,92,246,0.1)] relative">
-                                <div className="absolute top-0 right-0 w-full h-full bg-[url('/noise.png')] opacity-20 pointer-events-none mix-blend-overlay rounded-2xl"></div>
-                                <div className="w-10 h-10 rounded-full bg-gradient-to-r from-brand-purple to-brand-blue flex items-center justify-center shrink-0 shadow-[0_0_20px_rgba(139,92,246,0.5)] z-10">
-                                    <Gift className="w-5 h-5 text-white" />
+                            <li className="flex items-start gap-4 text-brand-purple font-bold mt-8 border-y border-brand-purple/20 py-6 relative">
+                                <div className="mt-0.5 w-6 flex justify-center">
+                                    <Gift className="w-5 h-5 text-brand-purple" />
                                 </div>
                                 <div className="z-10">
                                     <span className="block text-white mb-1 text-sm tracking-widest uppercase">Cadeau Exclusif :</span>
@@ -267,7 +255,7 @@ export default async function KidsPricingPage() {
                                 space="kids"
                                 userLoggedIn={!!user}
                                 buttonText="M'abonner pour 1 an"
-                                className="bg-gradient-to-r from-brand-purple to-brand-blue hover:from-purple-500 hover:to-blue-500 text-white shadow-[0_0_30px_rgba(139,92,246,0.4)] border border-brand-purple/50"
+                                className="bg-brand-purple hover:bg-brand-purple/80 text-white border-none font-bold text-sm uppercase tracking-widest w-full py-4 rounded-xl"
                             />
                         </div>
                     </div>
@@ -275,9 +263,9 @@ export default async function KidsPricingPage() {
                 </div>
 
                 <div className="mt-16 text-center">
-                    <div className="inline-flex flex-col items-center justify-center p-6 bg-brand-surface/50 border border-brand-purple/20 rounded-2xl max-w-3xl mx-auto shadow-lg">
+                    <div className="inline-flex flex-col items-center justify-center p-6 bg-[#0A0A0E] border border-white/5 rounded-2xl max-w-3xl mx-auto shadow-lg">
                         <h3 className="text-xl font-bold text-white mb-3">Informations Légales & Droit de Rétractation</h3>
-                        <p className="text-brand-text-muted text-sm leading-relaxed text-justify md:text-center">
+                        <p className="text-gray-400 text-sm leading-relaxed text-justify md:text-center">
                             Conformément à l'Article L221-18 du Code de la consommation, vous bénéficiez d'un délai de rétractation de 14 jours.
                             <strong> Cependant</strong>, le Club des Magiciens fournissant un contenu numérique immédiatement accessible après paiement,
                             <strong className="text-white"> vous renoncez expressément à votre droit de rétractation</strong> en validant votre inscription pour accéder sans délai à la plateforme.

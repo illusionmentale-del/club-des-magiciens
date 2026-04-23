@@ -38,8 +38,8 @@ export default async function AdminLayout({
             <AdminKidsMobileNav />
             
             {/* Custom Sidebar for Kids */}
-            <aside className="fixed inset-y-0 left-0 z-50 w-64 bg-brand-card border-r border-white/5 hidden md:flex flex-col shadow-2xl">
-                <div className="flex items-center h-20 px-6 border-b border-white/5 bg-gradient-to-r from-brand-card to-brand-bg">
+            <aside className="fixed inset-y-0 left-0 z-50 w-64 bg-[#0a0a0a] border-r border-white/10 hidden md:flex flex-col shadow-2xl">
+                <div className="flex items-center h-20 px-6 border-b border-white/10 bg-[#0a0a0a]">
                     <div className="w-10 h-10 bg-brand-purple/20 rounded-xl flex items-center justify-center mr-3 border border-brand-purple/30">
                         <Sparkles className="w-6 h-6 text-brand-purple" />
                     </div>

@@ -64,8 +64,7 @@ export default async function KidsAchievementsPage() {
     return (
         <div className="min-h-screen bg-brand-bg text-brand-text p-4 md:p-8 pb-32 font-sans relative selection:bg-brand-gold/30">
             {/* Ambient Background Lights */}
-            <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] bg-brand-purple/10 blur-[150px] rounded-full pointer-events-none mix-blend-screen"></div>
-            <div className="absolute top-[20%] right-[-10%] w-[40%] h-[40%] bg-brand-blue/10 blur-[120px] rounded-full pointer-events-none mix-blend-screen"></div>
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-brand-purple/10 via-brand-bg to-brand-bg pointer-events-none z-0"></div>
 
             <div className="max-w-5xl mx-auto relative z-10 space-y-12">
                 {/* Header */}
@@ -89,13 +88,13 @@ export default async function KidsAchievementsPage() {
 
                 {/* Milestones Stats */}
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <div className="bg-brand-card border border-white/5 p-4 rounded-2xl flex flex-col items-center justify-center text-center shadow-xl">
+                    <div className="bg-[#100b1a] border border-white/10 p-4 rounded-2xl flex flex-col items-center justify-center text-center shadow-[0_20px_50px_-15px_rgba(0,0,0,0.5)]">
                         <Trophy className="w-8 h-8 text-yellow-400 mb-2" />
                         <div className="text-2xl font-black text-white">{completedQuestIds.size} / {quests.length}</div>
                         <div className="text-xs text-brand-text-muted uppercase tracking-widest font-bold mt-1">Succès Débloqués</div>
                     </div>
                     {/* Visual Progress Bar taking remaining space */}
-                    <div className="col-span-2 md:col-span-3 bg-brand-card border border-white/5 p-6 rounded-2xl flex flex-col justify-center shadow-xl relative overflow-hidden">
+                    <div className="col-span-2 md:col-span-3 bg-[#100b1a] border border-white/10 p-6 rounded-2xl flex flex-col justify-center shadow-[0_20px_50px_-15px_rgba(0,0,0,0.5)] relative overflow-hidden">
                         <div className="absolute top-0 right-0 p-4 opacity-5 pointer-events-none">
                             <Star className="w-32 h-32" />
                         </div>
@@ -129,9 +128,9 @@ export default async function KidsAchievementsPage() {
                             return (
                                 <div 
                                     key={quest.id} 
-                                    className={`relative group h-full flex flex-col rounded-3xl overflow-hidden shadow-xl cursor-default border-2
-                                        ${isUnlocked ? 'bg-gradient-to-br from-brand-card to-brand-bg border-blue-500/50 hover:-translate-y-1 transition-all duration-300' 
-                                                     : 'bg-black/60 border-blue-500/10 hover:border-blue-500/30 hover:-translate-y-1 transition-all duration-500'}`}
+                                    className={`relative group h-full flex flex-col rounded-2xl overflow-hidden shadow-[0_20px_50px_-15px_rgba(0,0,0,0.5)] cursor-default border
+                                        ${isUnlocked ? 'bg-[#100b1a] border-blue-500/50 hover:-translate-y-1 transition-all duration-300' 
+                                                     : 'bg-black border-white/10 hover:border-blue-500/30 hover:-translate-y-1 transition-all duration-500'}`}
                                 >
                                     <div className="p-6 flex flex-col h-full">
                                         <div className="flex justify-between items-start mb-4">
@@ -207,9 +206,9 @@ export default async function KidsAchievementsPage() {
                             return (
                                 <div 
                                     key={quest.id} 
-                                    className={`relative group h-full flex flex-col rounded-3xl overflow-hidden shadow-xl cursor-default
-                                        ${isUnlocked ? 'bg-gradient-to-br from-brand-card to-brand-bg border border-brand-purple/20 hover:-translate-y-1 transition-all duration-300' 
-                                                     : 'bg-black/50 border border-white/5 opacity-80 grayscale hover:grayscale-0 hover:opacity-100 hover:scale-[1.02] transition-all duration-500'}`}
+                                    className={`relative group h-full flex flex-col rounded-2xl overflow-hidden shadow-[0_20px_50px_-15px_rgba(0,0,0,0.5)] cursor-default
+                                        ${isUnlocked ? 'bg-[#100b1a] border border-brand-purple/20 hover:-translate-y-1 transition-all duration-300' 
+                                                     : 'bg-black border border-white/5 opacity-80 grayscale hover:grayscale-0 hover:opacity-100 hover:scale-[1.02] transition-all duration-500'}`}
                                 >
                                     <div className="p-6 flex flex-col items-center text-center h-full">
                                         <div className={`w-28 h-28 rounded-full flex items-center justify-center mb-4 relative overflow-hidden shadow-inner transition-all duration-500

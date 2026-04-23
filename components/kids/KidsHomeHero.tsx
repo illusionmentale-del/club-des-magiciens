@@ -21,11 +21,10 @@ export default function KidsHomeHero({
 }) {
     if (!item) {
         return (
-            <div className="relative bg-brand-card border border-brand-purple/50 rounded-2xl overflow-hidden shadow-2xl p-12 text-center">
-                <div className="absolute -inset-1 bg-gradient-to-r from-brand-purple to-brand-blue rounded-3xl opacity-30 blur-lg pointer-events-none"></div>
+            <div className="relative bg-[#100b1a] border border-white/10 rounded-2xl overflow-hidden shadow-xl p-12 text-center">
                 <div className="relative z-10">
                     <h3 className="text-xl font-bold text-white mb-2">Patience...</h3>
-                    <p className="text-brand-text-muted">Ton prochain tour de magie arrive bientôt !</p>
+                    <p className="text-gray-400">Ton prochain tour de magie arrive bientôt !</p>
                 </div>
             </div>
         );
@@ -38,10 +37,7 @@ export default function KidsHomeHero({
 
     return (
         <section id="atelier" className="relative group scroll-mt-24">
-            {/* Animated Glow */}
-            <div className="absolute -inset-1 bg-gradient-to-r from-brand-purple to-brand-blue rounded-3xl opacity-30 blur-lg group-hover:opacity-50 transition duration-1000"></div>
-
-            <div className="relative bg-brand-card border border-brand-purple/50 rounded-2xl overflow-hidden shadow-2xl flex flex-col md:flex-row">
+            <div className="relative bg-[#100b1a] border border-white/10 rounded-2xl overflow-hidden shadow-[0_20px_50px_-15px_rgba(0,0,0,0.5)] flex flex-col md:flex-row group-hover:border-brand-purple/30 transition-colors">
                 {/* Thumbnail Side */}
                 <div className="md:w-3/5 relative aspect-video md:aspect-auto bg-black group-hover:scale-[1.01] transition-transform duration-500">
                     {thumbnail ? (
@@ -70,8 +66,7 @@ export default function KidsHomeHero({
                 </div>
 
                 {/* Content Side */}
-                <div className="md:w-2/5 p-6 md:p-8 flex flex-col justify-center bg-gradient-to-br from-brand-card to-brand-bg relative">
-                    <div className="absolute top-0 right-0 w-32 h-32 bg-brand-purple/20 blur-3xl rounded-full pointer-events-none"></div>
+                <div className="md:w-2/5 p-6 md:p-8 flex flex-col justify-center bg-transparent relative">
 
                     <div className="mb-auto relative z-10">
                         <div className="text-brand-purple text-xs font-bold uppercase tracking-widest mb-2">

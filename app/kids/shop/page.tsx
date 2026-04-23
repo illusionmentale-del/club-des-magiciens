@@ -62,8 +62,7 @@ export default async function KidsShopPage() {
     return (
         <div className="min-h-screen bg-brand-bg text-brand-text p-4 md:p-8 pb-32 font-sans relative selection:bg-brand-gold/30">
             {/* Ambient Background Lights (Homogenized with Home) */}
-            <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] bg-brand-purple/20 blur-[150px] rounded-full pointer-events-none mix-blend-screen"></div>
-            <div className="absolute top-[20%] right-[-10%] w-[40%] h-[40%] bg-brand-blue/10 blur-[120px] rounded-full pointer-events-none mix-blend-screen"></div>
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-brand-purple/10 via-brand-bg to-brand-bg pointer-events-none z-0"></div>
 
             {/* Main Wrapper Container */}
             <div className="max-w-5xl mx-auto relative z-10 space-y-12">
@@ -106,8 +105,7 @@ export default async function KidsShopPage() {
 
                             return (
                                 <div key={item.id} className="relative group h-full flex flex-col hover:-translate-y-2 transition-transform duration-500">
-                                    <div className="absolute -inset-1 bg-gradient-to-r from-brand-purple to-brand-blue rounded-3xl opacity-0 blur-lg group-hover:opacity-40 transition duration-1000 pointer-events-none"></div>
-                                    <div className="relative bg-brand-card border border-white/5 rounded-3xl overflow-hidden shadow-[0_10px_40px_rgba(0,0,0,0.2)] flex flex-col h-full">
+                                    <div className="relative bg-[#100b1a] border border-white/10 rounded-2xl overflow-hidden shadow-[0_20px_50px_-15px_rgba(0,0,0,0.5)] group-hover:border-brand-purple/30 flex flex-col h-full transition-colors">
                                         {/* Thumbnail */}
                                         <div className="relative aspect-video bg-black/50 overflow-hidden">
                                             {item.thumbnail_url ? (
@@ -178,7 +176,7 @@ export default async function KidsShopPage() {
                             );
                         })
                     ) : (
-                        <div className="col-span-full bg-white/5 border border-white/5 p-12 rounded-3xl text-center flex flex-col items-center">
+                        <div className="col-span-full bg-[#100b1a] border border-white/10 p-12 rounded-2xl text-center flex flex-col items-center">
                             <ShoppingBag className="w-16 h-16 text-white/20 mb-4" />
                             <h3 className="text-xl font-bold text-white mb-2">La Boutique est fermée pour le moment</h3>
                             <p className="text-brand-text-muted">Reviens plus tard pour découvrir de nouveaux secrets magiques !</p>

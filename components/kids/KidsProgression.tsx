@@ -28,9 +28,7 @@ export default function KidsProgression({
     }
 
     return (
-        <section className="bg-brand-card border border-brand-border rounded-2xl p-6 sticky top-8 shadow-xl relative overflow-hidden">
-            {/* Background Magic Runes effect */}
-            <div className="absolute top-0 right-0 w-32 h-32 bg-brand-purple/5 rounded-full blur-[50px] pointer-events-none"></div>
+        <section className="bg-[#100b1a] border border-white/10 rounded-2xl p-6 sticky top-8 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.5)] relative overflow-hidden">
 
             <h3 className="text-lg font-bold text-white uppercase tracking-tight mb-4 flex items-center gap-2 relative z-10">
                 <Sparkles className="w-5 h-5 text-brand-purple" />

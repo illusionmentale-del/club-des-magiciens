@@ -15,7 +15,7 @@ function SubmitButton() {
         <button
             type="submit"
             disabled={pending}
-            className="w-full py-3 bg-magic-purple hover:bg-magic-purple/80 text-white font-bold rounded-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed flex justify-center items-center gap-2"
+            className="w-full py-3.5 bg-white hover:bg-gray-200 text-black font-bold rounded-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed flex justify-center items-center gap-2 shadow-[0_4px_14px_0_rgba(255,255,255,0.1)]"
         >
             {pending ? <Loader2 className="w-5 h-5 animate-spin" /> : <span className="flex items-center gap-2">Se connecter <ArrowRight className="w-4 h-4" /></span>}
         </button>
@@ -44,8 +44,8 @@ function LoginFormContent() {
                 </div>
             </div>
 
-            <div className="bg-magic-card border border-white/10 rounded-2xl p-8 shadow-2xl backdrop-blur-sm">
-                <h2 className="text-2xl font-serif font-bold text-center mb-8">Connexion</h2>
+            <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-8 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.8)]">
+                <h2 className="text-2xl font-bold text-center mb-8">Connexion</h2>
 
                 <form action={formAction} className="space-y-6">
                     <input type="hidden" name="redirect" value={redirectUrl} />
@@ -56,7 +56,7 @@ function LoginFormContent() {
                             <input
                                 name="identifier"
                                 type="text"
-                                className="w-full pl-10 pr-4 py-3 bg-black/40 border border-white/10 rounded-xl focus:ring-2 focus:ring-magic-purple focus:outline-none transition-all placeholder:text-gray-600 focus:bg-black/60"
+                                className="w-full pl-10 pr-4 py-3 bg-black border border-white/10 rounded-xl focus:border-white focus:ring-1 focus:ring-white focus:outline-none transition-all placeholder:text-gray-600"
                                 placeholder="lemagicien"
                                 required
                             />
@@ -66,7 +66,7 @@ function LoginFormContent() {
                     <div>
                         <div className="flex justify-between mb-2">
                             <label className="block text-sm font-medium text-gray-300">Mot de passe</label>
-                            <Link href="/forgot-password" className="text-xs text-magic-purple hover:text-magic-purple/80 transition-colors">
+                            <Link href="/forgot-password" className="text-xs text-gray-400 hover:text-white transition-colors">
                                 Mot de passe oublié ?
                             </Link>
                         </div>
@@ -75,7 +75,7 @@ function LoginFormContent() {
                             <input
                                 name="password"
                                 type="password"
-                                className="w-full pl-10 pr-4 py-3 bg-black/40 border border-white/10 rounded-xl focus:ring-2 focus:ring-magic-purple focus:outline-none transition-all placeholder:text-gray-600 focus:bg-black/60"
+                                className="w-full pl-10 pr-4 py-3 bg-black border border-white/10 rounded-xl focus:border-white focus:ring-1 focus:ring-white focus:outline-none transition-all placeholder:text-gray-600"
                                 placeholder="••••••••"
                                 required
                             />
@@ -87,7 +87,7 @@ function LoginFormContent() {
                             type="checkbox"
                             id="remember"
                             name="remember"
-                            className="w-4 h-4 rounded border-white/20 bg-black/40 text-magic-purple focus:ring-magic-purple"
+                            className="w-4 h-4 rounded border-white/10 bg-black text-white focus:ring-white focus:ring-offset-black"
                         />
                         <label htmlFor="remember" className="text-sm text-gray-300 select-none cursor-pointer">
                             Rester connecté
@@ -110,9 +110,9 @@ function LoginFormContent() {
 
 export default function LoginPage() {
     return (
-        <div className="min-h-[100dvh] bg-magic-bg text-white flex flex-col p-4 relative overflow-y-auto">
-            {/* Background noise */}
-            <div className="absolute inset-0 bg-[url('/noise.svg')] opacity-20 pointer-events-none fixed"></div>
+        <div className="min-h-[100dvh] bg-black text-white flex flex-col p-4 relative overflow-y-auto">
+            {/* Subtle central glow */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-lg h-full max-h-lg bg-white/5 blur-[120px] rounded-full pointer-events-none fixed"></div>
 
             <div className="flex-1 flex flex-col justify-center items-center w-full max-w-md mx-auto py-8">
                 <Suspense fallback={<Loader2 className="w-8 h-8 animate-spin text-magic-purple" />}>

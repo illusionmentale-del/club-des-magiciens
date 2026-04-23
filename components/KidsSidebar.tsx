@@ -62,7 +62,7 @@ export default function KidsSidebar({ socialLinks, logoUrl, isAdmin, hasPurchase
     const progressPercent = Math.min(((lifetimeXP || 0) / maxForLevel) * 100, 100);
 
     return (
-        <aside className={`w-64 bg-magic-card border-r border-white/10 ${isForcedMobile ? 'hidden' : (isForcedDesktop ? 'flex' : 'hidden md:flex')} flex-col flex-shrink-0 h-full`}>
+        <aside className={`w-64 bg-[#0a0a0a] border-r border-white/10 ${isForcedMobile ? 'hidden' : (isForcedDesktop ? 'flex' : 'hidden md:flex')} flex-col flex-shrink-0 h-full`}>
             <div className="p-6 border-b border-white/10 flex flex-col items-center gap-4 text-center">
                 <Link href="/kids/account" className="flex flex-col items-center gap-2 group relative w-full rounded-2xl p-2 hover:bg-white/5 transition-colors">
                     <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity z-10">

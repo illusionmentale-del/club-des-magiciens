@@ -195,9 +195,8 @@ export default async function KidsVideoPlayerPage({ params }: { params: Promise<
 
     return (
         <div className="min-h-screen bg-[#050507] text-white p-4 md:p-8 relative font-sans selection:bg-brand-purple/30">
-            {/* Ambient Ambient Particles (Kids Theme) */}
-            <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] bg-brand-purple/5 blur-[150px] rounded-full pointer-events-none mix-blend-screen z-0"></div>
-            <div className="absolute top-[30%] right-[-10%] w-[40%] h-[40%] bg-brand-blue/5 blur-[120px] rounded-full pointer-events-none mix-blend-screen z-0"></div>
+            {/* Ambient Background Lights */}
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-brand-purple/10 via-brand-bg to-brand-bg pointer-events-none z-0"></div>
 
             <div className="max-w-6xl mx-auto pb-12 relative z-10">
                 {/* Back Button / Header (Frosted Glass) */}
@@ -254,7 +253,7 @@ export default async function KidsVideoPlayerPage({ params }: { params: Promise<
                 </div>
 
                 {/* Video Details */}
-                <div className="bg-[#0A0A0E] border border-white/5 rounded-3xl p-6 md:p-10 relative overflow-hidden group">
+                <div className="bg-[#100b1a] border border-white/10 rounded-3xl p-6 md:p-10 relative overflow-hidden shadow-[0_20px_50px_-15px_rgba(0,0,0,0.5)] group">
                     {/* Inner subtle glow */}
                     <div className="absolute top-0 right-0 w-64 h-64 bg-brand-purple/5 blur-[80px] rounded-full group-hover:bg-brand-purple/10 transition-colors duration-700 pointer-events-none"></div>
 
