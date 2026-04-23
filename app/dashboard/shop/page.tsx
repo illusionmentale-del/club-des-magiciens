@@ -36,9 +36,7 @@ export default async function AdultShopPage() {
     const unlockedItemIds = new Set(purchases?.map(p => p.library_item_id) || []);
 
     return (
-        <div className="min-h-screen bg-[#050507] text-white p-4 md:p-8 pb-32 font-sans relative selection:bg-magic-royal/30">
-            {/* Ambient Background Lights */}
-            <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-magic-royal/5 blur-[150px] rounded-full pointer-events-none mix-blend-screen"></div>
+        <div className="min-h-screen bg-black text-white p-4 md:p-8 pb-32 font-sans relative selection:bg-magic-royal/30">
 
             <div className="max-w-6xl mx-auto relative z-10">
                 <BackButton />
@@ -49,7 +47,7 @@ export default async function AdultShopPage() {
                             <Sparkles className="w-5 h-5" />
                             <span className="text-xs font-bold uppercase tracking-widest">Nouveautés & Exclusivités</span>
                         </div>
-                        <h1 className="text-3xl md:text-5xl font-black text-white tracking-tight font-serif mb-2">
+                        <h1 className="text-3xl md:text-5xl font-serif text-white tracking-tight mb-2">
                             La <span className="text-magic-gold">Boutique</span>
                         </h1>
                         <p className="text-slate-400 mt-2 text-lg font-light max-w-2xl">
@@ -66,8 +64,7 @@ export default async function AdultShopPage() {
 
                             return (
                                 <div key={item.id} className="relative group h-full flex flex-col hover:-translate-y-2 transition-transform duration-500">
-                                    <div className="absolute -inset-1 bg-gradient-to-r from-magic-royal to-blue-500 rounded-3xl opacity-0 blur-lg group-hover:opacity-40 transition duration-1000 pointer-events-none"></div>
-                                    <div className="relative bg-black/40 border border-white/10 rounded-3xl overflow-hidden shadow-[0_10px_40px_rgba(0,0,0,0.5)] flex flex-col h-full backdrop-blur-xl">
+                                    <div className="relative bg-black border border-white/10 rounded-none overflow-hidden shadow-2xl flex flex-col h-full hover:border-magic-royal transition-colors">
                                         {/* Thumbnail */}
                                         <div className="relative aspect-video bg-black/80 overflow-hidden">
                                             {item.thumbnail_url ? (
@@ -91,7 +88,7 @@ export default async function AdultShopPage() {
                                                         Possédé
                                                     </div>
                                                 ) : (
-                                                    <div className="bg-black/60 backdrop-blur-md text-white px-3 py-1.5 rounded-full text-xs font-bold flex items-center gap-1.5 shadow-lg border border-white/10">
+                                                    <div className="bg-black text-white px-3 py-1.5 rounded-none text-xs font-serif uppercase tracking-widest flex items-center gap-1.5 shadow-lg border border-white/10">
                                                         <Lock className="w-3.5 h-3.5 text-magic-gold" />
                                                         Verrouillé
                                                     </div>
@@ -100,7 +97,7 @@ export default async function AdultShopPage() {
 
                                             {/* Price Tag (if locked) */}
                                             {!isUnlocked && item.price_label && (
-                                                <div className="absolute bottom-4 left-4 bg-magic-gold text-black font-black px-4 py-2 rounded-xl shadow-xl transform -rotate-2">
+                                                <div className="absolute bottom-4 left-4 bg-magic-royal text-black font-serif px-4 py-2 rounded-none shadow-xl border border-magic-royal/50">
                                                     {item.price_label}
                                                 </div>
                                             )}
@@ -117,12 +114,12 @@ export default async function AdultShopPage() {
 
                                             {/* Action Button */}
                                             {isUnlocked ? (
-                                                <Link href={`/watch/${item.id}`} className="w-full bg-magic-royal/20 hover:bg-magic-royal text-white font-bold py-3 px-4 rounded-xl flex items-center justify-center gap-2 transition-colors border border-magic-royal/30">
+                                                <Link href={`/watch/${item.id}`} className="w-full bg-black hover:bg-magic-royal/10 text-magic-royal font-serif uppercase tracking-widest text-sm py-3 px-4 rounded-none flex items-center justify-center gap-2 transition-colors border border-magic-royal/30">
                                                     <Play className="w-5 h-5" />
                                                     Accéder au contenu
                                                 </Link>
                                             ) : (
-                                                <CheckoutButton itemId={item.id} space="adults" className="w-full bg-gradient-to-r from-magic-gold to-yellow-600 text-black font-black py-3 px-4 rounded-xl flex items-center justify-center gap-2 hover:scale-[1.02] transition-transform shadow-[0_10px_30px_rgba(251,191,36,0.2)]">
+                                                <CheckoutButton itemId={item.id} space="adults" className="w-full bg-magic-royal text-black font-serif uppercase tracking-widest text-sm py-3 px-4 rounded-none flex items-center justify-center gap-2 transition-colors">
                                                     <ShoppingBag className="w-5 h-5" />
                                                     Obtenir ce contenu
                                                 </CheckoutButton>

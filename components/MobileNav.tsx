@@ -52,7 +52,7 @@ export default function MobileNav({ isAdmin, hasKidsAccess, toggles, xpBalance =
 
 
     return (
-        <div className="md:hidden bg-magic-card border-b border-white/10 sticky top-0 z-50">
+        <div className="md:hidden bg-black border-b border-white/10 sticky top-0 z-50">
             <div className="flex items-center justify-between p-4">
                 <Link href="/dashboard">
                     <div className="relative w-32 h-10">
@@ -88,7 +88,7 @@ export default function MobileNav({ isAdmin, hasKidsAccess, toggles, xpBalance =
                     />
 
                     {/* Menu Content */}
-                    <div className="relative w-64 h-full bg-magic-card border-r border-white/10 flex flex-col p-4 animate-in slide-in-from-left duration-200">
+                    <div className="relative w-64 h-full bg-black border-r border-white/10 flex flex-col p-4 animate-in slide-in-from-left duration-200">
                         <div className="flex justify-end mb-2">
                             <button onClick={close} className="p-2 text-gray-400 hover:text-white">
                                 <X className="w-6 h-6" />
@@ -97,7 +97,7 @@ export default function MobileNav({ isAdmin, hasKidsAccess, toggles, xpBalance =
                         
                         {/* Profile Area */}
                         <div className="pb-4 border-b border-white/10 flex flex-col items-center gap-2 text-center mb-4">
-                            <Link href="/dashboard/account" onClick={close} className="flex flex-col items-center gap-2 group w-full rounded-2xl hover:bg-white/5 transition-colors p-2">
+                            <Link href="/dashboard/account" onClick={close} className="flex flex-col items-center gap-2 group w-full rounded-sm hover:bg-magic-royal/5 transition-colors p-2">
                                 <div className="relative w-16 h-16">
                                     {avatarUrl ? (
                                         <Image
@@ -113,7 +113,7 @@ export default function MobileNav({ isAdmin, hasKidsAccess, toggles, xpBalance =
                                     )}
                                 </div>
                                 <div className="w-full text-center px-1">
-                                    <h2 className="font-bold text-white text-xs leading-tight group-hover:text-magic-gold transition-colors truncate">{userName || "Illusionniste"}</h2>
+                                    <h2 className="font-serif font-bold text-white text-base leading-tight group-hover:text-magic-royal transition-colors truncate">{userName || "Illusionniste"}</h2>
                                     <div className="flex items-center justify-center gap-1.5 mt-1">
                                         <p className="text-[9px] text-gray-500 font-mono truncate">Paramètres</p>
                                     </div>
@@ -125,7 +125,7 @@ export default function MobileNav({ isAdmin, hasKidsAccess, toggles, xpBalance =
                             <Link
                                 href="/dashboard"
                                 onClick={close}
-                                className={`flex items-center gap-3 px-4 py-3 font-medium transition-all ${isActive('/dashboard') ? 'bg-gradient-to-r from-magic-royal/20 to-transparent text-magic-royal border-l-2 border-magic-royal' : 'text-gray-400 hover:bg-white/5 hover:text-white border-l-2 border-transparent'}`}
+                                className={`flex items-center gap-3 px-4 py-3 font-medium transition-all ${isActive('/dashboard') ? 'bg-gradient-to-r from-magic-royal/20 to-transparent text-magic-royal border-l-2 border-magic-royal' : 'text-gray-400 hover:bg-magic-royal/5 hover:text-magic-royal border-l-2 border-transparent'}`}
                             >
                                 <Star className="w-5 h-5" />
                                 {uiLabels?.nav_actu || "L'Actu du Club"}
@@ -135,7 +135,7 @@ export default function MobileNav({ isAdmin, hasKidsAccess, toggles, xpBalance =
                                 <Link
                                     href="/dashboard/library"
                                     onClick={close}
-                                    className={`flex items-center gap-3 px-4 py-3 font-medium transition-all ${isActive('/dashboard/library') ? 'bg-gradient-to-r from-magic-royal/20 to-transparent text-magic-royal border-l-2 border-magic-royal' : 'text-gray-400 hover:bg-white/5 hover:text-white border-l-2 border-transparent'}`}
+                                    className={`flex items-center gap-3 px-4 py-3 font-medium transition-all ${isActive('/dashboard/library') ? 'bg-gradient-to-r from-magic-royal/20 to-transparent text-magic-royal border-l-2 border-magic-royal' : 'text-gray-400 hover:bg-magic-royal/5 hover:text-magic-royal border-l-2 border-transparent'}`}
                                 >
                                     <BookOpen className="w-5 h-5" />
                                     {uiLabels?.nav_videos || "Mes Vidéos"}
@@ -146,7 +146,7 @@ export default function MobileNav({ isAdmin, hasKidsAccess, toggles, xpBalance =
                                 <Link
                                     href="/dashboard/masterclass"
                                     onClick={close}
-                                    className={`flex items-center gap-3 px-4 py-3 font-medium transition-all ${isActive('/dashboard/masterclass') ? 'bg-gradient-to-r from-magic-royal/20 to-transparent text-magic-royal border-l-2 border-magic-royal' : 'text-gray-400 hover:bg-white/5 hover:text-white border-l-2 border-transparent'}`}
+                                    className={`flex items-center gap-3 px-4 py-3 font-medium transition-all ${isActive('/dashboard/masterclass') ? 'bg-gradient-to-r from-magic-royal/20 to-transparent text-magic-royal border-l-2 border-magic-royal' : 'text-gray-400 hover:bg-magic-royal/5 hover:text-magic-royal border-l-2 border-transparent'}`}
                                 >
                                     <Video className="w-5 h-5" />
                                     {uiLabels?.nav_formations || "Mes Formations"}
@@ -156,7 +156,7 @@ export default function MobileNav({ isAdmin, hasKidsAccess, toggles, xpBalance =
                             <Link
                                 href="/dashboard/shop"
                                 onClick={close}
-                                className={`flex items-center gap-3 px-4 py-3 font-medium transition-all ${isActive('/dashboard/shop') ? 'bg-gradient-to-r from-magic-royal/20 to-transparent text-magic-royal border-l-2 border-magic-royal' : 'text-gray-400 hover:bg-white/5 hover:text-white border-l-2 border-transparent'}`}
+                                className={`flex items-center gap-3 px-4 py-3 font-medium transition-all ${isActive('/dashboard/shop') ? 'bg-gradient-to-r from-magic-royal/20 to-transparent text-magic-royal border-l-2 border-magic-royal' : 'text-gray-400 hover:bg-magic-royal/5 hover:text-magic-royal border-l-2 border-transparent'}`}
                             >
                                 <Sparkles className="w-5 h-5" />
                                 {uiLabels?.nav_boutique || "La Boutique"}
@@ -166,7 +166,7 @@ export default function MobileNav({ isAdmin, hasKidsAccess, toggles, xpBalance =
                                 <Link
                                     href="/dashboard/account?view=settings"
                                     onClick={close}
-                                    className={`flex items-center gap-3 px-4 py-3 font-medium transition-all ${(isActive('/dashboard/account') || searchParams?.get('view') === 'settings') ? 'bg-gradient-to-r from-magic-royal/20 to-transparent text-magic-royal border-l-2 border-magic-royal' : 'text-gray-400 hover:bg-white/5 hover:text-white border-l-2 border-transparent'}`}
+                                    className={`flex items-center gap-3 px-4 py-3 font-medium transition-all ${(isActive('/dashboard/account') || searchParams?.get('view') === 'settings') ? 'bg-gradient-to-r from-magic-royal/20 to-transparent text-magic-royal border-l-2 border-magic-royal' : 'text-gray-400 hover:bg-magic-royal/5 hover:text-magic-royal border-l-2 border-transparent'}`}
                                 >
                                     <Settings className="w-5 h-5" />
                                     {uiLabels?.nav_settings || "Mes Paramètres"}
@@ -180,7 +180,7 @@ export default function MobileNav({ isAdmin, hasKidsAccess, toggles, xpBalance =
                                     <Link
                                         href="/kids"
                                         onClick={close}
-                                        className={`flex items-center gap-3 px-4 py-3 font-medium transition-all text-gray-400 hover:bg-white/5 hover:text-white border-l-2 border-transparent`}
+                                        className={`flex items-center gap-3 px-4 py-3 font-medium transition-all text-gray-400 hover:bg-magic-royal/5 hover:text-magic-royal border-l-2 border-transparent`}
                                     >
                                         <div className="w-5 h-5 flex items-center justify-center">👶</div>
                                         Espace Kids
@@ -195,7 +195,7 @@ export default function MobileNav({ isAdmin, hasKidsAccess, toggles, xpBalance =
                                     <Link
                                         href="/admin"
                                         onClick={close}
-                                        className={`flex items-center gap-3 px-4 py-3 font-medium transition-all ${isActive('/admin') ? 'bg-red-500/20 text-red-400 border-l-2 border-red-500' : 'text-gray-400 hover:bg-white/5 hover:text-white border-l-2 border-transparent'}`}
+                                        className={`flex items-center gap-3 px-4 py-3 font-medium transition-all ${isActive('/admin') ? 'bg-red-500/20 text-red-400 border-l-2 border-red-500' : 'text-gray-400 hover:bg-magic-royal/5 hover:text-magic-royal border-l-2 border-transparent'}`}
                                     >
                                         <Shield className="w-5 h-5" />
                                         Accès Admin

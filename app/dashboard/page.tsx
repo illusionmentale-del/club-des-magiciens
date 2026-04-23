@@ -156,10 +156,7 @@ export default async function DashboardPage() {
     }
 
     return (
-        <div className="min-h-screen bg-[#050507] text-white p-4 md:p-8 pb-32 font-sans selection:bg-magic-royal/30 overflow-hidden relative">
-
-            {/* Ambient Premium Lighting */}
-            <div className="absolute top-[-20%] left-1/2 -translate-x-1/2 w-[80%] h-[60%] bg-magic-royal/5 blur-[120px] rounded-full pointer-events-none mix-blend-screen"></div>
+        <div className="min-h-screen bg-black text-white p-4 md:p-8 pb-32 font-sans selection:bg-magic-royal/30 overflow-hidden relative">
 
             {/* Premium Header / Hero */}
             {/* Premium Header / Hero */}
@@ -169,8 +166,8 @@ export default async function DashboardPage() {
                         <Sparkles className="w-5 h-5 animate-pulse" />
                         <span className="text-xs font-bold uppercase tracking-widest">{uiLabelsMap.page_dashboard_title || "Le QG de la Magie"}</span>
                     </div>
-                    <h1 className="text-3xl md:text-5xl font-black text-white tracking-tight">
-                        Bienvenue, <span className="text-magic-royal">{userName}</span> ! ✨
+                    <h1 className="text-3xl md:text-5xl font-serif text-white tracking-tight">
+                        Bienvenue, <span className="text-magic-royal italic">{userName}</span>
                     </h1>
                     <p className="text-slate-400 mt-2 text-lg">
                         Prêt à découvrir de nouveaux secrets ?
@@ -208,7 +205,7 @@ export default async function DashboardPage() {
                                     <Star className="w-5 h-5 text-magic-royal" />
                                     Le Catalogue Premium
                                 </h3>
-                                <div className="bg-gradient-to-r from-magic-royal/10 to-transparent border border-magic-royal/20 rounded-2xl p-6 flex flex-col sm:flex-row items-center gap-6">
+                                <div className="bg-black border border-magic-royal/20 rounded-none p-6 flex flex-col sm:flex-row items-center gap-6">
                                     <div className="w-16 h-16 bg-magic-royal/20 rounded-full flex items-center justify-center shrink-0">
                                         <ShoppingBag className="w-8 h-8 text-magic-royal" />
                                     </div>
@@ -222,7 +219,7 @@ export default async function DashboardPage() {
                                     </div>
                                     <Link
                                         href={promoConfig.link}
-                                        className="bg-magic-royal hover:bg-amber-400 text-black font-bold py-3 px-6 rounded-xl transition-colors whitespace-nowrap shadow-lg shadow-magic-royal/20"
+                                        className="border border-magic-royal text-magic-royal hover:bg-magic-royal hover:text-black font-serif uppercase text-sm py-3 px-6 rounded-none transition-colors whitespace-nowrap"
                                     >
                                         {promoConfig.buttonText}
                                     </Link>

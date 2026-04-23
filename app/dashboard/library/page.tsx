@@ -78,11 +78,7 @@ export default async function AdultLibraryPage() {
     }
 
     return (
-        <div className="min-h-screen bg-[#050507] text-white p-4 md:p-8 pb-32 font-sans overflow-hidden relative selection:bg-magic-royal/30">
-
-            {/* Ambient Background Lights */}
-            <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] bg-magic-royal/10 blur-[150px] rounded-full pointer-events-none mix-blend-screen"></div>
-            <div className="absolute top-[20%] right-[-10%] w-[40%] h-[40%] bg-blue-900/10 blur-[120px] rounded-full pointer-events-none mix-blend-screen"></div>
+        <div className="min-h-screen bg-black text-white p-4 md:p-8 pb-32 font-sans overflow-hidden relative selection:bg-magic-royal/30">
 
             {/* Main Wrapper Container */}
             <div className="max-w-5xl mx-auto relative z-10">
@@ -94,7 +90,7 @@ export default async function AdultLibraryPage() {
                             <Star className="w-5 h-5 fill-current animate-pulse text-magic-royal" />
                             <span className="text-xs font-bold uppercase tracking-widest">Le QG de la Magie</span>
                         </div>
-                        <h1 className="text-3xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-magic-royal to-blue-500 tracking-tight">
+                        <h1 className="text-3xl md:text-5xl font-serif text-white tracking-tight mt-4">
                             {uiLabelsMap.page_videos_title || "Les Vidéos"}
                         </h1>
                         <p className="text-slate-400 mt-2 text-lg">
@@ -106,7 +102,7 @@ export default async function AdultLibraryPage() {
                     {(weeksData[currentWeek] && weeksData[currentWeek].length > 0) && (
                         <Link 
                             href={`/watch/${weeksData[currentWeek][0].id}`}
-                            className="bg-magic-royal text-black hover:bg-blue-400 px-8 py-4 rounded-xl font-bold uppercase tracking-widest text-sm shadow-[0_0_20px_rgba(238,195,67,0.3)] hover:shadow-[0_0_30px_rgba(238,195,67,0.5)] transition-all flex items-center gap-3 w-full md:w-auto mt-6 md:mt-0 justify-center group"
+                            className="border border-magic-royal text-magic-royal hover:bg-magic-royal hover:text-black px-8 py-4 rounded-none font-serif uppercase tracking-widest text-sm transition-all flex items-center gap-3 w-full md:w-auto mt-6 md:mt-0 justify-center group"
                         >
                             <Play className="w-5 h-5 group-hover:scale-110 transition-transform" />
                             Reprendre ma formation
@@ -126,17 +122,15 @@ export default async function AdultLibraryPage() {
 
                         return (
                             <div key={week} className="relative group">
-                                {!isLocked && (
-                                    <div className={`absolute -inset-1 bg-gradient-to-r from-magic-royal to-blue-500 rounded-3xl blur-lg transition duration-1000 pointer-events-none ${isCurrent ? 'opacity-30 group-hover:opacity-50' : 'opacity-0 group-hover:opacity-30'}`}></div>
-                                )}
+
                                 <div
                                     className={`
-                                    relative p-6 rounded-2xl border transition-all duration-300
+                                    relative p-6 rounded-none border transition-all duration-300
                                     ${isLocked
-                                            ? 'bg-brand-bg/50 border-white/5 opacity-60'
+                                            ? 'bg-black border-white/5 opacity-60'
                                             : isCurrent
-                                                ? 'bg-[#111] border-magic-royal shadow-[0_0_30px_rgba(238,195,67,0.15)] scale-[1.02] z-10'
-                                                : 'bg-[#1a1a1f] border border-emerald-500/20 hover:bg-[#222]'
+                                                ? 'bg-black border-magic-royal shadow-2xl z-10'
+                                                : 'bg-black border border-white/10 hover:border-magic-royal/50'
                                         }
                                 `}
                                 >
@@ -144,21 +138,21 @@ export default async function AdultLibraryPage() {
                                     <div className="flex items-center justify-between mb-4">
                                         <div className="flex items-center gap-3">
                                             <div className={`
-                                        w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm
-                                        ${isLocked ? 'bg-[#111] border border-white/10 text-slate-400' : ''}
-                                        ${isCurrent ? 'bg-magic-royal text-black shadow-lg' : ''}
-                                        ${isCompleted ? 'bg-green-500/20 text-green-400 border border-green-500/30' : ''}
+                                        w-10 h-10 flex items-center justify-center font-bold text-sm border
+                                        ${isLocked ? 'bg-black border-white/10 text-slate-400' : ''}
+                                        ${isCurrent ? 'bg-magic-royal/10 border-magic-royal text-magic-royal shadow-lg' : ''}
+                                        ${isCompleted ? 'bg-black text-white border-white/20' : ''}
                                     `}>
                                                 {isLocked && <Lock className="w-4 h-4" />}
                                                 {isCurrent && <Star className="w-5 h-5 fill-current animate-pulse" />}
                                                 {isCompleted && <CheckCircle className="w-5 h-5" />}
                                             </div>
                                             <div>
-                                                <h2 className={`font-bold uppercase tracking-tight text-lg ${isLocked ? 'text-slate-400' : 'text-white'}`}>
+                                                <h2 className={`font-serif tracking-tight text-xl ${isLocked ? 'text-slate-500' : 'text-white'}`}>
                                                     Semaine {week}
                                                 </h2>
                                                 {isCurrent && <span className="text-[10px] text-magic-royal font-bold uppercase tracking-widest">En cours</span>}
-                                                {isCompleted && <span className="text-[10px] text-brand-green font-bold uppercase tracking-widest">Terminée</span>}
+                                                {isCompleted && <span className="text-[10px] text-white/50 font-bold uppercase tracking-widest">Terminée</span>}
                                                 {isLocked && <span className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">À venir</span>}
                                             </div>
                                         </div>
@@ -168,7 +162,7 @@ export default async function AdultLibraryPage() {
                                     {!isLocked ? (
                                         <div className="flex flex-col sm:flex-row gap-4">
                                             {/* Thumbnail */}
-                                            <div className="sm:w-1/3 aspect-video relative rounded-lg overflow-hidden bg-black border border-white/10">
+                                            <div className="sm:w-1/3 aspect-video relative overflow-hidden bg-black border border-white/10">
                                                 {mainItem?.thumbnail_url ? (
                                                     <Image src={mainItem.thumbnail_url} alt="" fill className="object-cover opacity-80" />
                                                 ) : (
@@ -178,7 +172,7 @@ export default async function AdultLibraryPage() {
 
                                             {/* Info */}
                                             <div className="flex-1 flex flex-col justify-center">
-                                                <h3 className="text-xl font-bold text-white mb-2">{mainItem?.title || "Mission Mystère"}</h3>
+                                                <h3 className="text-xl font-serif text-white mb-2">{mainItem?.title || "Mission Mystère"}</h3>
                                                 <p className="text-sm text-slate-400 line-clamp-2 mb-4">
                                                     {mainItem?.description || "Le secret n'a pas encore été révélé..."}
                                                 </p>
@@ -187,15 +181,15 @@ export default async function AdultLibraryPage() {
                                                     <Link
                                                         href={mainItem ? `/watch/${mainItem.id}` : '#'}
                                                         className={`
-                                                    flex-1 items-center justify-center gap-2 px-4 py-2 rounded-lg text-sm font-bold uppercase tracking-wide transition-colors flex
-                                                    ${isCurrent ? 'bg-magic-royal text-black hover:bg-blue-400' : 'bg-[#111] border border-white/10 hover:bg-white/10 text-white'}
+                                                    flex-1 items-center justify-center gap-2 px-4 py-2 text-xs font-serif uppercase tracking-widest transition-colors flex border
+                                                    ${isCurrent ? 'border-magic-royal text-magic-royal hover:bg-magic-royal hover:text-black' : 'bg-black border-white/10 hover:border-white/30 text-white'}
                                                 `}
                                                     >
                                                         <Play className="w-4 h-4" />
                                                         Voir
                                                     </Link>
                                                     {isCurrent && (
-                                                        <div className="px-3 py-2 rounded-lg bg-magic-royal/10 border border-magic-royal/20 text-magic-royal">
+                                                        <div className="px-3 py-2 border border-magic-royal/20 text-magic-royal">
                                                             <Trophy className="w-4 h-4" />
                                                         </div>
                                                     )}

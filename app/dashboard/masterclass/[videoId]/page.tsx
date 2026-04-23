@@ -134,10 +134,7 @@ export default async function KidsVideoPlayerPage({ params }: { params: { videoI
     const iframeUrl = await getSecureBunnyIframeUrl(video.videoLibraryId, video.guid, false); // false = not isKid
 
     return (
-        <div className="min-h-screen bg-[#050507] text-white p-4 md:p-8 relative font-sans selection:bg-brand-purple/30">
-            {/* Ambient Ambient Particles (Kids Theme) */}
-            <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] bg-brand-purple/5 blur-[150px] rounded-full pointer-events-none mix-blend-screen z-0"></div>
-            <div className="absolute top-[30%] right-[-10%] w-[40%] h-[40%] bg-brand-blue/5 blur-[120px] rounded-full pointer-events-none mix-blend-screen z-0"></div>
+        <div className="min-h-screen bg-black text-white p-4 md:p-8 relative font-sans selection:bg-magic-royal/30">
 
             <div className="max-w-6xl mx-auto pb-12 relative z-10">
                 {/* Back Button */}
@@ -146,7 +143,7 @@ export default async function KidsVideoPlayerPage({ params }: { params: { videoI
                 </div>
 
                 {/* Video Player Container */}
-                <div className="bg-[#0A0A0E] border border-white/5 rounded-[2rem] overflow-hidden shadow-[0_0_50px_rgba(124,58,237,0.1)] mb-8 relative ring-1 ring-white/5">
+                <div className="bg-black border border-white/10 rounded-none overflow-hidden shadow-2xl mb-8 relative">
                     {isLockedPremium ? (
                         <div className="relative pt-[56.25%] w-full bg-black/80 flex flex-col items-center justify-center p-8 text-center border-y border-brand-royal/30">
                             <div className="absolute inset-0 flex flex-col items-center justify-center">
@@ -158,7 +155,7 @@ export default async function KidsVideoPlayerPage({ params }: { params: { videoI
                                     Pour regarder <strong className="text-white">{video.title}</strong>, tu dois posséder ce secret dans ta collection.
                                 </p>
 
-                                <CheckoutButton itemId={libraryItem?.id} space="adults" className="bg-gradient-to-r from-brand-royal to-yellow-500 text-black font-black py-4 px-8 rounded-xl flex items-center gap-3 hover:scale-105 transition-transform shadow-[0_10px_30px_rgba(250,204,21,0.4)]">
+                                <CheckoutButton itemId={libraryItem?.id} space="adults" className="bg-magic-royal hover:bg-amber-400 text-black font-serif uppercase tracking-widest text-sm py-4 px-8 rounded-none flex items-center gap-3 transition-colors">
                                     <ShoppingBag className="w-5 h-5" />
                                     Acheter pour débloquer {libraryItem?.price_label ? `(${libraryItem.price_label})` : ''}
                                 </CheckoutButton>
@@ -177,31 +174,29 @@ export default async function KidsVideoPlayerPage({ params }: { params: { videoI
                 </div>
 
                 {/* Video Details */}
-                <div className="bg-[#0A0A0E] border border-white/5 rounded-3xl p-6 md:p-10 relative overflow-hidden group">
-                    {/* Inner subtle glow */}
-                    <div className="absolute top-0 right-0 w-64 h-64 bg-brand-purple/5 blur-[80px] rounded-full group-hover:bg-brand-purple/10 transition-colors duration-700 pointer-events-none"></div>
+                <div className="bg-black border border-white/10 rounded-none p-6 md:p-10 relative overflow-hidden group">
 
-                    <h1 className="text-2xl md:text-3xl lg:text-4xl font-black text-white mb-6 flex items-start gap-4">
-                        <span className="text-brand-purple drop-shadow-[0_0_15px_rgba(124,58,237,0.5)] bg-white/5 p-2 rounded-xl">
+                    <h1 className="text-2xl md:text-3xl lg:text-4xl font-serif text-white mb-6 flex items-start gap-4">
+                        <span className="text-magic-royal bg-white/5 p-2 rounded-sm border border-magic-royal/20">
                             <PlayCircle className="w-8 h-8" />
                         </span>
                         <span className="mt-1 flex-1 leading-tight tracking-tight">{video.title}</span>
                     </h1>
 
                     <div className="flex flex-wrap gap-4 text-sm font-bold tracking-wide">
-                        <div className="flex items-center gap-3 bg-white/5 text-gray-300 py-2.5 px-5 rounded-xl border border-white/5 shadow-inner">
-                            <Calendar className="w-4 h-4 text-brand-blue" />
+                        <div className="flex items-center gap-3 bg-white/5 text-gray-300 py-2.5 px-5 rounded-sm border border-white/10">
+                            <Calendar className="w-4 h-4 text-magic-royal" />
                             <span>{formatDate(video.dateUploaded)}</span>
                         </div>
 
-                        <div className="flex items-center gap-3 bg-white/5 text-gray-300 py-2.5 px-5 rounded-xl border border-white/5 shadow-inner">
-                            <Clock className="w-4 h-4 text-brand-purple" />
+                        <div className="flex items-center gap-3 bg-white/5 text-gray-300 py-2.5 px-5 rounded-sm border border-white/10">
+                            <Clock className="w-4 h-4 text-magic-royal" />
                             <span>{formatDuration(video.length)}</span>
                         </div>
 
                         {/* Vues (Optionnel) */}
-                        <div className="flex items-center gap-3 bg-white/5 text-gray-300 py-2.5 px-5 rounded-xl border border-white/5 shadow-inner">
-                            <Eye className="w-4 h-4 text-brand-pink" />
+                        <div className="flex items-center gap-3 bg-white/5 text-gray-300 py-2.5 px-5 rounded-sm border border-white/10">
+                            <Eye className="w-4 h-4 text-magic-royal" />
                             <span>{video.views} vue{video.views !== 1 ? 's' : ''}</span>
                         </div>
                     </div>

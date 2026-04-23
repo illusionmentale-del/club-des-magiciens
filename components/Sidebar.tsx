@@ -40,10 +40,10 @@ export default function Sidebar({ isAdmin, socialLinks, logoUrl, hasKidsAccess, 
 
 
     return (
-        <aside className="w-64 bg-magic-card border-r border-white/10 hidden md:flex flex-col flex-shrink-0 h-full">
+        <aside className="w-64 bg-black border-r border-white/10 hidden md:flex flex-col flex-shrink-0 h-full">
             {/* Profile Area */}
             <div className="p-6 border-b border-white/10 flex flex-col items-center gap-4 text-center">
-                <Link href="/dashboard/account" className="flex flex-col items-center gap-2 group relative w-full rounded-2xl p-2 hover:bg-white/5 transition-colors">
+                <Link href="/dashboard/account" className="flex flex-col items-center gap-2 group relative w-full rounded-sm p-2 hover:bg-magic-royal/5 transition-colors">
                     <div className="relative w-24 h-24 mb-2">
                         {avatarUrl ? (
                             <Image
@@ -60,7 +60,7 @@ export default function Sidebar({ isAdmin, socialLinks, logoUrl, hasKidsAccess, 
                     </div>
                     
                     <div className="w-full text-center px-2">
-                        <h2 className="font-bold text-white text-sm leading-tight group-hover:text-magic-gold transition-colors truncate">{userName || "Illusionniste"}</h2>
+                        <h2 className="font-serif font-bold text-white text-base leading-tight group-hover:text-magic-royal transition-colors truncate">{userName || "Illusionniste"}</h2>
                         <div className="flex items-center justify-center gap-1.5 mt-1">
                             <p className="text-[10px] text-gray-500 font-mono truncate">Cliquez pour configurer</p>
                         </div>
@@ -78,7 +78,7 @@ export default function Sidebar({ isAdmin, socialLinks, logoUrl, hasKidsAccess, 
             <nav className="flex-1 p-4 space-y-2 overflow-y-auto">
                 <Link
                     href="/dashboard"
-                    className={`flex items-center gap-3 px-4 py-3 font-medium transition-all ${isActive('/dashboard') ? 'bg-gradient-to-r from-magic-royal/20 to-transparent text-magic-royal border-l-2 border-magic-royal' : 'text-gray-400 hover:bg-white/5 hover:text-white border-l-2 border-transparent'}`}
+                    className={`flex items-center gap-3 px-4 py-3 font-medium transition-all ${isActive('/dashboard') ? 'bg-gradient-to-r from-magic-royal/20 to-transparent text-magic-royal border-l-2 border-magic-royal' : 'text-gray-400 hover:bg-magic-royal/5 hover:text-magic-royal border-l-2 border-transparent'}`}
                 >
                     <Star className="w-5 h-5" />
                     {uiLabels?.nav_actu || "L'Actu du Club"}
@@ -87,7 +87,7 @@ export default function Sidebar({ isAdmin, socialLinks, logoUrl, hasKidsAccess, 
                 {toggles?.enable_adults_program !== false && (
                     <Link
                         href="/dashboard/library"
-                        className={`flex items-center gap-3 px-4 py-3 font-medium transition-all ${isActive('/dashboard/library') ? 'bg-gradient-to-r from-magic-royal/20 to-transparent text-magic-royal border-l-2 border-magic-royal' : 'text-gray-400 hover:bg-white/5 hover:text-white border-l-2 border-transparent'}`}
+                        className={`flex items-center gap-3 px-4 py-3 font-medium transition-all ${isActive('/dashboard/library') ? 'bg-gradient-to-r from-magic-royal/20 to-transparent text-magic-royal border-l-2 border-magic-royal' : 'text-gray-400 hover:bg-magic-royal/5 hover:text-magic-royal border-l-2 border-transparent'}`}
                     >
                         <BookOpen className="w-5 h-5" />
                         {uiLabels?.nav_videos || "Mes Vidéos"}
@@ -97,7 +97,7 @@ export default function Sidebar({ isAdmin, socialLinks, logoUrl, hasKidsAccess, 
                 {toggles?.enable_adults_masterclass !== false && (
                     <Link
                         href="/dashboard/masterclass"
-                        className={`flex items-center gap-3 px-4 py-3 font-medium transition-all ${isActive('/dashboard/masterclass') ? 'bg-gradient-to-r from-magic-royal/20 to-transparent text-magic-royal border-l-2 border-magic-royal' : 'text-gray-400 hover:bg-white/5 hover:text-white border-l-2 border-transparent'}`}
+                        className={`flex items-center gap-3 px-4 py-3 font-medium transition-all ${isActive('/dashboard/masterclass') ? 'bg-gradient-to-r from-magic-royal/20 to-transparent text-magic-royal border-l-2 border-magic-royal' : 'text-gray-400 hover:bg-magic-royal/5 hover:text-magic-royal border-l-2 border-transparent'}`}
                     >
                         <Video className="w-5 h-5" />
                         {uiLabels?.nav_formations || "Mes Formations"}
@@ -106,7 +106,7 @@ export default function Sidebar({ isAdmin, socialLinks, logoUrl, hasKidsAccess, 
 
                 <Link
                     href="/dashboard/shop"
-                    className={`flex items-center gap-3 px-4 py-3 font-medium transition-all ${isActive('/dashboard/shop') ? 'bg-gradient-to-r from-magic-royal/20 to-transparent text-magic-royal border-l-2 border-magic-royal' : 'text-gray-400 hover:bg-white/5 hover:text-white border-l-2 border-transparent'}`}
+                    className={`flex items-center gap-3 px-4 py-3 font-medium transition-all ${isActive('/dashboard/shop') ? 'bg-gradient-to-r from-magic-royal/20 to-transparent text-magic-royal border-l-2 border-magic-royal' : 'text-gray-400 hover:bg-magic-royal/5 hover:text-magic-royal border-l-2 border-transparent'}`}
                 >
                     <Sparkles className="w-5 h-5" />
                     {uiLabels?.nav_boutique || "La Boutique"}
@@ -115,7 +115,7 @@ export default function Sidebar({ isAdmin, socialLinks, logoUrl, hasKidsAccess, 
                 {toggles?.enable_adults_account !== false && (
                     <Link
                         href="/dashboard/account?view=settings"
-                        className={`flex items-center gap-3 px-4 py-3 font-medium transition-all ${(isActive('/dashboard/account') || searchParams?.get('view') === 'settings') ? 'bg-gradient-to-r from-magic-royal/20 to-transparent text-magic-royal border-l-2 border-magic-royal' : 'text-gray-400 hover:bg-white/5 hover:text-white border-l-2 border-transparent'}`}
+                        className={`flex items-center gap-3 px-4 py-3 font-medium transition-all ${(isActive('/dashboard/account') || searchParams?.get('view') === 'settings') ? 'bg-gradient-to-r from-magic-royal/20 to-transparent text-magic-royal border-l-2 border-magic-royal' : 'text-gray-400 hover:bg-magic-royal/5 hover:text-magic-royal border-l-2 border-transparent'}`}
                     >
                         <Settings className="w-5 h-5" />
                         {uiLabels?.nav_settings || "Mes Paramètres"}
@@ -128,7 +128,7 @@ export default function Sidebar({ isAdmin, socialLinks, logoUrl, hasKidsAccess, 
                         <p className="px-4 text-xs font-bold text-gray-400 uppercase tracking-widest mb-1">Passerelle</p>
                         <Link
                             href="/kids"
-                            className={`flex items-center gap-3 px-4 py-3 font-medium transition-all text-gray-400 hover:bg-white/5 hover:text-white border-l-2 border-transparent`}
+                            className={`flex items-center gap-3 px-4 py-3 font-medium transition-all text-gray-400 hover:bg-magic-royal/5 hover:text-magic-royal border-l-2 border-transparent`}
                         >
                             <div className="w-5 h-5 flex items-center justify-center">👶</div>
                             Espace Kids
@@ -142,7 +142,7 @@ export default function Sidebar({ isAdmin, socialLinks, logoUrl, hasKidsAccess, 
                         <p className="px-4 text-xs font-bold text-gray-400 uppercase tracking-widest mb-1">Admin</p>
                         <Link
                             href="/admin"
-                            className={`flex items-center gap-3 px-4 py-3 font-medium transition-all ${isActive('/admin') ? 'bg-red-500/20 text-red-400 border-l-2 border-red-500' : 'text-gray-400 hover:bg-white/5 hover:text-white border-l-2 border-transparent'}`}
+                            className={`flex items-center gap-3 px-4 py-3 font-medium transition-all ${isActive('/admin') ? 'bg-red-500/20 text-red-400 border-l-2 border-red-500' : 'text-gray-400 hover:bg-magic-royal/5 hover:text-magic-royal border-l-2 border-transparent'}`}
                         >
                             <Shield className="w-5 h-5" />
                             Accès Admin

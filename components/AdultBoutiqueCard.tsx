@@ -56,10 +56,7 @@ export default function AdultBoutiqueCard({ product, isPurchased }: AdultBoutiqu
 
     return (
         <div className="relative group h-full flex flex-col hover:-translate-y-2 transition-transform duration-500">
-            {/* Adult Theme Glow effect (Magic Gold / Amber instead of Purple / Blue) */}
-            <div className="absolute -inset-1 bg-gradient-to-r from-magic-royal/80 to-amber-600/50 rounded-3xl opacity-0 blur-lg group-hover:opacity-40 transition duration-1000 pointer-events-none"></div>
-
-            <div className="relative bg-[#0a0a0f] border border-white/5 rounded-3xl overflow-hidden shadow-[0_10px_40px_rgba(0,0,0,0.5)] flex flex-col h-full">
+            <div className="relative bg-black border border-white/10 rounded-none overflow-hidden shadow-2xl flex flex-col h-full hover:border-magic-royal transition-colors">
                 {/* Thumbnail */}
                 <div className="relative aspect-video bg-[#111] overflow-hidden">
                     {product.image_url ? (
@@ -81,12 +78,12 @@ export default function AdultBoutiqueCard({ product, isPurchased }: AdultBoutiqu
                     {/* Status Badge */}
                     <div className="absolute top-4 right-4 z-10">
                         {isPurchased ? (
-                            <div className="bg-green-500/90 backdrop-blur-md text-white px-3 py-1.5 rounded-full text-xs font-bold flex items-center gap-1.5 shadow-lg border border-green-400/30">
+                            <div className="bg-green-500 text-black px-3 py-1.5 rounded-none text-xs font-serif uppercase tracking-widest flex items-center gap-1.5 shadow-lg border border-green-400">
                                 <CheckCircle2 className="w-3.5 h-3.5" />
                                 Débloqué
                             </div>
                         ) : (
-                            <div className="bg-black/60 backdrop-blur-md text-white px-3 py-1.5 rounded-full text-xs font-bold flex items-center gap-1.5 shadow-lg border border-white/10">
+                            <div className="bg-black text-white px-3 py-1.5 rounded-none text-xs font-serif uppercase tracking-widest flex items-center gap-1.5 shadow-lg border border-white/10">
                                 <Lock className="w-3.5 h-3.5 text-magic-royal" />
                                 Premium
                             </div>
@@ -95,15 +92,15 @@ export default function AdultBoutiqueCard({ product, isPurchased }: AdultBoutiqu
 
                     {/* Price Tag (if locked) */}
                     {!isPurchased && (
-                        <div className="absolute bottom-4 left-4 bg-magic-royal text-black font-black px-4 py-1.5 rounded-xl shadow-xl transform -rotate-2 z-10">
+                        <div className="absolute bottom-4 left-4 bg-magic-royal text-black font-serif px-4 py-2 rounded-none shadow-xl border border-magic-royal/50 z-10">
                             {priceString}
                         </div>
                     )}
                 </div>
 
                 {/* Content */}
-                <div className="p-6 flex flex-col flex-1 relative z-20 bg-[#0a0a0f]">
-                    <h3 className="text-xl font-bold text-white mb-2 leading-tight group-hover:text-magic-royal transition-colors">
+                <div className="p-6 flex flex-col flex-1 relative z-20 bg-black">
+                    <h3 className="text-xl font-serif text-white mb-2 leading-tight group-hover:text-magic-royal transition-colors">
                         {product.title}
                     </h3>
                     <p className="text-sm text-slate-400 mb-6 flex-1 line-clamp-3 font-light">
@@ -112,7 +109,7 @@ export default function AdultBoutiqueCard({ product, isPurchased }: AdultBoutiqu
 
                     {/* Action Button */}
                     {isPurchased ? (
-                        <Link href={`/dashboard/program`} className="w-full bg-white/5 hover:bg-white/10 text-white font-bold py-3 px-4 rounded-xl flex items-center justify-center gap-2 transition-colors border border-white/10 hover:border-magic-royal/50">
+                        <Link href={`/dashboard/program`} className="w-full bg-black hover:bg-magic-royal/10 text-magic-royal font-serif uppercase tracking-widest text-sm py-3 px-4 rounded-none flex items-center justify-center gap-2 transition-colors border border-magic-royal/30">
                             <Play className="w-5 h-5 text-magic-royal" />
                             Accéder au contenu
                         </Link>
@@ -120,7 +117,7 @@ export default function AdultBoutiqueCard({ product, isPurchased }: AdultBoutiqu
                         <button
                             onClick={handlePurchase}
                             disabled={loading || !product.stripe_price_id}
-                            className="w-full bg-gradient-to-r from-magic-royal to-yellow-500 text-black font-black py-3 px-4 rounded-xl flex items-center justify-center gap-2 hover:scale-[1.02] transition-transform shadow-[0_10px_30px_rgba(238,195,67,0.2)] disabled:opacity-50 disabled:hover:scale-100"
+                            className="w-full bg-magic-royal hover:bg-amber-400 text-black font-serif uppercase tracking-widest text-sm py-3 px-4 rounded-none flex items-center justify-center gap-2 transition-colors disabled:opacity-50"
                         >
                             {loading ? (
                                 <Loader2 className="w-5 h-5 animate-spin" />

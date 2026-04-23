@@ -62,10 +62,7 @@ export default async function AdultAchievementsPage() {
     }
 
     return (
-        <div className="min-h-screen bg-[#050507] text-white p-4 md:p-8 pb-32 font-sans relative selection:bg-magic-royal/30">
-            {/* Ambient Background Lights */}
-            <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] bg-magic-royal/10 blur-[150px] rounded-full pointer-events-none mix-blend-screen"></div>
-            <div className="absolute top-[20%] right-[-10%] w-[40%] h-[40%] bg-amber-600/5 blur-[120px] rounded-full pointer-events-none mix-blend-screen"></div>
+        <div className="min-h-screen bg-black text-white p-4 md:p-8 pb-32 font-sans relative selection:bg-magic-royal/30">
 
             <div className="max-w-6xl mx-auto relative z-10">
                 <BackButton />
@@ -76,7 +73,7 @@ export default async function AdultAchievementsPage() {
                             <Star className="w-5 h-5 fill-current animate-pulse" />
                             <span className="text-xs font-bold uppercase tracking-widest text-magic-gold">Votre Parcours</span>
                         </div>
-                        <h1 className="text-3xl md:text-5xl font-black text-white tracking-tight font-serif mb-2">
+                        <h1 className="text-3xl md:text-5xl font-serif text-white tracking-tight mb-2">
                             Journal <span className="text-magic-royal">d'Apprentissage</span>
                         </h1>
                         <p className="text-slate-400 mt-2 text-lg font-light max-w-2xl">
@@ -87,13 +84,13 @@ export default async function AdultAchievementsPage() {
 
                 {/* Milestones Stats */}
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <div className="bg-black/30 border border-white/5 p-4 rounded-2xl flex flex-col items-center justify-center text-center shadow-xl">
+                    <div className="bg-black border border-white/10 p-4 rounded-none flex flex-col items-center justify-center text-center shadow-2xl">
                         <Trophy className="w-8 h-8 text-magic-gold mb-2" />
                         <div className="text-2xl font-black text-white">{completedQuestIds.size} / {quests.length}</div>
                         <div className="text-xs text-slate-400 uppercase tracking-widest font-bold mt-1">Succès Accompli(s)</div>
                     </div>
                     {/* Visual Progress Bar taking remaining space */}
-                    <div className="col-span-2 md:col-span-3 bg-black/30 border border-white/5 p-6 rounded-2xl flex flex-col justify-center shadow-xl relative overflow-hidden">
+                    <div className="col-span-2 md:col-span-3 bg-black border border-white/10 p-6 rounded-none flex flex-col justify-center shadow-2xl relative overflow-hidden">
                         <div className="absolute top-0 right-0 p-4 opacity-5 pointer-events-none">
                             <Star className="w-32 h-32" />
                         </div>
@@ -109,7 +106,7 @@ export default async function AdultAchievementsPage() {
 
                 {/* SECTION 1 : Objectifs Principaux (Active Quests) */}
                 <div className="pt-8">
-                    <h2 className="text-2xl md:text-3xl font-black text-white mb-6 flex items-center gap-3 font-serif">
+                    <h2 className="text-2xl md:text-3xl font-serif text-white mb-6 flex items-center gap-3">
                         <Target className="text-magic-royal" /> Les Objectifs de l'Atelier
                     </h2>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -125,16 +122,16 @@ export default async function AdultAchievementsPage() {
                             const progressPercent = Math.min((currentValue / quest.trigger_value) * 100, 100);
 
                             return (
-                                <div 
-                                    key={quest.id} 
-                                    className={`relative group h-full flex flex-col rounded-3xl overflow-hidden shadow-xl cursor-default border-2
-                                        ${isUnlocked ? 'bg-gradient-to-br from-slate-900 to-[#050507] border-magic-royal/50 hover:-translate-y-1 transition-all duration-300' 
-                                                     : 'bg-black/60 border-magic-royal/10 hover:border-magic-royal/30 hover:-translate-y-1 transition-all duration-500'}`}
-                                >
+                                    <div 
+                                        key={quest.id} 
+                                        className={`relative group h-full flex flex-col rounded-none overflow-hidden shadow-2xl cursor-default border
+                                            ${isUnlocked ? 'bg-black border-magic-royal/50 hover:border-magic-royal transition-all duration-300' 
+                                                         : 'bg-black border-white/10 hover:border-white/30 transition-all duration-500'}`}
+                                    >
                                     <div className="p-6 flex flex-col h-full">
                                         <div className="flex justify-between items-start mb-4">
-                                            <div className={`w-16 h-16 rounded-2xl flex items-center justify-center p-2 shadow-inner 
-                                                ${isUnlocked ? 'bg-magic-royal/20 border border-magic-royal/30' : 'bg-white/5 border border-white/10'}`}>
+                                            <div className={`w-16 h-16 rounded-none flex items-center justify-center p-2 shadow-inner 
+                                                ${isUnlocked ? 'bg-magic-royal/10 border border-magic-royal/30' : 'bg-black border border-white/10'}`}>
                                                 {quest.reward_type === 'video' ? (
                                                     <Image src="/achievements/reward_video.png" alt="Contenu Secret" width={48} height={48} className="drop-shadow-[0_0_8px_rgba(0,102,255,0.8)]" />
                                                 ) : (
@@ -143,7 +140,7 @@ export default async function AdultAchievementsPage() {
                                             </div>
                                             {!isUnlocked && <Lock className="w-6 h-6 text-gray-500" />}
                                         </div>
-                                        <h3 className={`text-xl font-bold mb-2 leading-tight ${isUnlocked ? 'text-white' : 'text-gray-300'}`}>
+                                        <h3 className={`text-xl font-serif mb-2 leading-tight ${isUnlocked ? 'text-white' : 'text-gray-300'}`}>
                                             {quest.title}
                                         </h3>
                                         <p className={`text-sm flex-1 mb-6 ${isUnlocked ? 'text-slate-400' : 'text-gray-500'}`}>
@@ -165,8 +162,8 @@ export default async function AdultAchievementsPage() {
                                             </div>
                                         )}
 
-                                        <div className={`mt-auto px-4 py-2 rounded-xl text-sm font-bold flex items-center justify-center gap-2 border transition-colors duration-500
-                                            ${isUnlocked ? 'bg-magic-royal/20 text-magic-royal border-magic-royal/30' 
+                                        <div className={`mt-auto px-4 py-2 rounded-none text-sm font-serif uppercase tracking-widest flex items-center justify-center gap-2 border transition-colors duration-500
+                                            ${isUnlocked ? 'bg-magic-royal/10 text-magic-royal border-magic-royal/30' 
                                                          : 'bg-black border-white/10 text-gray-400'}`}
                                         >
                                             {isUnlocked ? "Accompli !" : (quest.reward_type === 'video' ? "Contenu à débloquer" : "Objet Premium à la clef")}
@@ -176,7 +173,7 @@ export default async function AdultAchievementsPage() {
                             );
                         })}
                         {quests.filter(q => q.reward_type && q.reward_type !== 'badge').length === 0 && (
-                            <div className="col-span-full py-12 text-center flex flex-col items-center border border-dashed border-white/10 rounded-2xl bg-white/5">
+                            <div className="col-span-full py-12 text-center flex flex-col items-center border border-dashed border-white/10 rounded-none bg-black">
                                 <Target className="w-12 h-12 text-gray-600 mb-3" />
                                 <h3 className="text-lg font-bold text-gray-400">Aucun objectif défini</h3>
                                 <p className="text-gray-500 text-sm">Les missions s'afficheront ici.</p>
@@ -187,7 +184,7 @@ export default async function AdultAchievementsPage() {
 
                 {/* SECTION 2 : Les Titres et Trophées (Passive Badges) */}
                 <div className="pt-8">
-                    <h2 className="text-2xl md:text-3xl font-black text-white mb-6 flex items-center gap-3 font-serif">
+                    <h2 className="text-2xl md:text-3xl font-serif text-white mb-6 flex items-center gap-3">
                         <Medal className="text-magic-gold" /> Les Titres et Trophées
                     </h2>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -205,14 +202,14 @@ export default async function AdultAchievementsPage() {
                             return (
                                 <div 
                                     key={quest.id} 
-                                    className={`relative group h-full flex flex-col rounded-3xl overflow-hidden shadow-xl cursor-default border
-                                        ${isUnlocked ? 'bg-gradient-to-br from-slate-900 to-[#050507] border-magic-gold/20 hover:-translate-y-1 transition-all duration-300' 
-                                                     : 'bg-black/50 border-white/5 opacity-80 hover:opacity-100 hover:scale-[1.02] transition-all duration-500'}`}
+                                    className={`relative group h-full flex flex-col rounded-none overflow-hidden shadow-2xl cursor-default border
+                                        ${isUnlocked ? 'bg-black border-magic-gold/30 hover:border-magic-gold transition-all duration-300' 
+                                                     : 'bg-black border-white/10 hover:border-white/30 transition-all duration-500'}`}
                                 >
                                     <div className="p-6 flex flex-col items-center text-center h-full">
-                                        <div className={`w-28 h-28 rounded-full flex items-center justify-center mb-4 relative overflow-hidden shadow-inner transition-all duration-500
-                                            ${isUnlocked ? 'bg-gradient-to-br from-slate-800 to-magic-royal/20 border-2 border-magic-gold/30' 
-                                                         : 'bg-white/5 border border-white/10 group-hover:bg-gradient-to-br group-hover:from-slate-800 group-hover:to-slate-900 group-hover:border-white/20'}`}
+                                        <div className={`w-28 h-28 rounded-none flex items-center justify-center mb-4 relative overflow-hidden shadow-inner transition-all duration-500
+                                            ${isUnlocked ? 'bg-black border border-magic-gold/30' 
+                                                         : 'bg-black border border-white/10'}`}
                                         >
                                             {!isUnlocked && (
                                                 <div className="absolute inset-0 bg-black/60 group-hover:bg-black/0 z-10 flex items-center justify-center backdrop-blur-[2px] group-hover:backdrop-blur-none transition-all duration-500">
@@ -235,7 +232,7 @@ export default async function AdultAchievementsPage() {
                                             })()}
                                         </div>
 
-                                        <h3 className={`text-lg font-bold mb-2 leading-tight transition-colors duration-500 ${isUnlocked ? 'text-white' : 'text-gray-500 group-hover:text-white'}`}>
+                                        <h3 className={`text-lg font-serif mb-2 leading-tight transition-colors duration-500 ${isUnlocked ? 'text-white' : 'text-gray-500 group-hover:text-white'}`}>
                                             {quest.title}
                                         </h3>
                                         
@@ -256,8 +253,8 @@ export default async function AdultAchievementsPage() {
                                         )}
 
                                         {quest.reward_xp > 0 && (
-                                            <div className={`mt-auto px-4 py-1.5 rounded-full text-xs font-bold flex items-center gap-2 shadow-lg border transition-colors duration-500
-                                                ${isUnlocked ? 'bg-magic-gold/10 text-magic-gold border-magic-gold/20' 
+                                            <div className={`mt-auto px-4 py-1.5 rounded-none text-xs font-serif uppercase tracking-widest flex items-center gap-2 shadow-lg border transition-colors duration-500
+                                                ${isUnlocked ? 'bg-magic-gold/10 text-magic-gold border-magic-gold/30' 
                                                             : 'bg-black border-white/10 text-gray-700 group-hover:text-magic-gold group-hover:border-magic-gold/20'}`}
                                             >
                                                 <Star className={`w-3.5 h-3.5 ${isUnlocked ? '' : 'grayscale opacity-50 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500'}`} />
@@ -269,7 +266,7 @@ export default async function AdultAchievementsPage() {
                             );
                         })}
                         {quests.filter(q => !q.reward_type || q.reward_type === 'badge').length === 0 && (
-                            <div className="col-span-full py-12 text-center flex flex-col items-center border border-dashed border-white/10 rounded-2xl bg-white/5">
+                            <div className="col-span-full py-12 text-center flex flex-col items-center border border-dashed border-white/10 rounded-none bg-black">
                                 <Trophy className="w-12 h-12 text-gray-600 mb-3" />
                                 <h3 className="text-lg font-bold text-gray-400">Aucun accomplissement</h3>
                             </div>

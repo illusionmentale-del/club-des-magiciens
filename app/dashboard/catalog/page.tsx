@@ -51,10 +51,7 @@ export default async function CatalogPage() {
     const purchasedIds = new Set(purchases?.map(p => p.product_id) || []);
 
     return (
-        <div className="min-h-screen bg-[#050507] text-white p-4 md:p-8 pb-32 font-sans relative selection:bg-magic-royal/30">
-            {/* Ambient Background Lights */}
-            <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] bg-amber-600/10 blur-[150px] rounded-full pointer-events-none mix-blend-screen"></div>
-            <div className="absolute top-[20%] right-[-10%] w-[40%] h-[40%] bg-magic-royal/5 blur-[120px] rounded-full pointer-events-none mix-blend-screen"></div>
+        <div className="min-h-screen bg-black text-white p-4 md:p-8 pb-32 font-sans relative selection:bg-magic-royal/30">
 
             <div className="max-w-6xl mx-auto relative z-10">
                 <BackButton />
@@ -65,7 +62,7 @@ export default async function CatalogPage() {
                             <Star className="w-5 h-5 fill-current animate-pulse text-magic-royal" />
                             <span className="text-xs font-bold uppercase tracking-widest text-magic-royal">Accès Premium Seulement</span>
                         </div>
-                        <h1 className="text-3xl md:text-5xl font-black text-white tracking-tight font-serif">
+                        <h1 className="text-3xl md:text-5xl font-serif text-white tracking-tight">
                             La <span className="text-magic-royal">Boutique</span>
                         </h1>
                         <p className="text-slate-400 mt-2 text-lg font-light max-w-2xl">
