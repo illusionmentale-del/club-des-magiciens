@@ -222,7 +222,7 @@ export default async function DashboardPage() {
                                     </div>
                                     <Link
                                         href={promoConfig.link}
-                                        className="bg-magic-royal hover:bg-blue-400 text-black font-bold py-3 px-6 rounded-xl transition-colors whitespace-nowrap shadow-lg shadow-magic-royal/20"
+                                        className="bg-magic-royal hover:bg-amber-400 text-black font-bold py-3 px-6 rounded-xl transition-colors whitespace-nowrap shadow-lg shadow-magic-royal/20"
                                     >
                                         {promoConfig.buttonText}
                                     </Link>

@@ -57,6 +57,19 @@ export default function LivePage() {
                             allow="autoplay; fullscreen; picture-in-picture"
                             allowFullScreen
                         ></iframe>
+                    ) : live.platform === 'zoom' ? (
+                        <div className="w-full h-full relative">
+                            {/* Zoom Web Client Iframe */}
+                            <iframe
+                                src={`https://zoom.us/wc/${live.platform_id}/join?prefer=1&un=TWVtYnJl`}
+                                sandbox="allow-forms allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-top-navigation"
+                                allow="camera; microphone; fullscreen; display-capture; autoplay"
+                                className="w-full h-full border-0 absolute inset-0"
+                            ></iframe>
+                            <div className="absolute bottom-4 left-4 bg-black/60 p-3 rounded-xl backdrop-blur-md text-xs text-gray-300 max-w-xs">
+                                💡 Si l'écran reste gris ou bloque la connexion, <a href={`https://zoom.us/j/${live.platform_id}`} target="_blank" rel="noopener noreferrer" className="text-amber-500 font-bold hover:underline">cliquez ici pour ouvrir Zoom directement</a>.
+                            </div>
+                        </div>
                     ) : (
                         <iframe
                             src={`https://meet.jit.si/${live.platform_id}#config.prejoinPageEnabled=false&userInfo.displayName=Membre`}

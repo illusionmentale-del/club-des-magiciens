@@ -293,16 +293,23 @@ export async function createLive(formData: FormData) {
 
     const title = formData.get("title") as string;
     const start_date = formData.get("start_date") as string;
-    const platform_id = formData.get("platform_id") as string; // Jitsi room name
+    let final_platform_id = formData.get("platform_id") as string; // Jitsi room name or Zoom link
     const vimeo_id = formData.get("vimeo_id") as string; // Optional replay ID
     const platform = formData.get("platform") as string || 'jitsi';
     const audience = formData.get("audience_override") as string || formData.get("audience") as string || 'adults';
     const event_type = formData.get("event_type") as string || 'live';
 
+    if (platform === 'zoom') {
+        const match = final_platform_id.match(/\/j\/(\d+)/) || final_platform_id.match(/\/wc\/(\d+)\//) || final_platform_id.match(/zoom\.us\/\w+\/(\d+)/);
+        if (match) final_platform_id = match[1];
+        // Remove spaces and non-digits just in case
+        final_platform_id = final_platform_id.replace(/\D/g, '');
+    }
+
     await supabase.from("lives").insert({
         title,
         start_date,
-        platform_id,
+        platform_id: final_platform_id,
         platform,
         status: 'programmé',
         audience,
@@ -351,7 +358,17 @@ export async function updateLiveRoom(id: string, newPlatformId: string, newTitle
     const { data: profileCheck } = await supabase.from('profiles').select('role').eq('id', user.id).single();
     if (profileCheck?.role !== 'admin') throw new Error("Forbidden");
 
-    const updates: any = { platform_id: newPlatformId };
+    // Fetch the live to check platform
+    const { data: live } = await supabase.from("lives").select("platform").eq("id", id).single();
+    
+    let final_platform_id = newPlatformId;
+    if (live?.platform === 'zoom') {
+        const match = final_platform_id.match(/\/j\/(\d+)/) || final_platform_id.match(/\/wc\/(\d+)\//) || final_platform_id.match(/zoom\.us\/\w+\/(\d+)/);
+        if (match) final_platform_id = match[1];
+        final_platform_id = final_platform_id.replace(/\D/g, '');
+    }
+
+    const updates: any = { platform_id: final_platform_id };
     if (newTitle) updates.title = newTitle;
     await supabase.from("lives").update(updates).eq("id", id);
     revalidatePath("/admin/lives");

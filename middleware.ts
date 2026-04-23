@@ -15,6 +15,11 @@ export async function middleware(request: NextRequest) {
         if (requestUrl.pathname === '/login') {
             return NextResponse.rewrite(new URL('/login/kids', request.url));
         }
+    } else {
+        // Adult domain
+        if (requestUrl.pathname === '/login') {
+            return NextResponse.rewrite(new URL('/login/adults', request.url));
+        }
     }
 
     return await updateSession(request)
