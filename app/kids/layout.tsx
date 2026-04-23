@@ -73,12 +73,30 @@ export default async function KidsLayout({
         const { data: profile } = await supabase.from('profiles').select('role, has_adults_access, magic_level, full_name, username, avatar_skins(image_url)').eq('id', user.id).single();
         isAdmin = profile?.role === 'admin';
         hasAdultsAccess = profile?.has_adults_access || false;
-        const isLegendary = (lifetimeXP || 0) >= 150;
-        const isHolo = (lifetimeXP || 0) >= 50 && (lifetimeXP || 0) < 150;
-        
-        if (isLegendary) magicLevel = "Magicien Légendaire";
-        else if (isHolo) magicLevel = "Holo-Magicien";
-        else magicLevel = "Apprenti Magicien";
+        // Fetch XP Balance first!
+        try {
+            const { data: xpLogs } = await supabase.from('user_xp_logs').select('xp_awarded').eq('user_id', user.id);
+            if (xpLogs) {
+                currentXP = xpLogs.reduce((acc, log) => acc + log.xp_awarded, 0);
+                lifetimeXP = xpLogs.reduce((acc, log) => acc + (log.xp_awarded > 0 ? log.xp_awarded : 0), 0);
+            }
+        } catch (e) {
+            console.error("Layout could not fetch XP", e);
+        }
+
+        // Fetch Gamification Levels to determine grade accurately
+        const { data: levels } = await supabase.from('gamification_levels').select('*').order('xp_threshold', { ascending: false });
+        if (levels && levels.length > 0) {
+            const currentLevelObj = levels.find(l => lifetimeXP >= l.xp_threshold);
+            magicLevel = currentLevelObj ? currentLevelObj.name : levels[levels.length - 1].name;
+        } else {
+            // Fallback
+            const isLegendary = (lifetimeXP || 0) >= 150;
+            const isHolo = (lifetimeXP || 0) >= 50 && (lifetimeXP || 0) < 150;
+            if (isLegendary) magicLevel = "Magicien Légendaire";
+            else if (isHolo) magicLevel = "Holo-Magicien";
+            else magicLevel = "Apprenti Magicien";
+        }
         
         // Priority to pseudo (username), then full name, then fallback
         userName = profile?.username || profile?.full_name || "Jeune Magicien";
@@ -144,16 +162,6 @@ export default async function KidsLayout({
             }
         }
 
-        // Fetch XP Balance
-        try {
-            const { data: xpLogs } = await supabase.from('user_xp_logs').select('xp_awarded').eq('user_id', user.id);
-            if (xpLogs) {
-                currentXP = xpLogs.reduce((acc, log) => acc + log.xp_awarded, 0);
-                lifetimeXP = xpLogs.reduce((acc, log) => acc + (log.xp_awarded > 0 ? log.xp_awarded : 0), 0);
-            }
-        } catch (e) {
-            console.error("Layout could not fetch XP", e);
-        }
     }
 
     // Check if user has active purchases to show the "Mes Achats" link
