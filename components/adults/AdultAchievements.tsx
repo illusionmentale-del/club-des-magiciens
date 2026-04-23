@@ -12,23 +12,23 @@ export default function AdultAchievements({ recentValids }: { recentValids: any[
     if (!recentValids || recentValids.length === 0) return null;
 
     return (
-        <section className="bg-[#0a0a0f] border border-white/5 rounded-2xl p-6 mt-8">
-            <h3 className="text-sm font-bold text-white uppercase tracking-widest mb-4 flex items-center gap-2 opacity-80">
-                <Trophy className="w-4 h-4 text-slate-400" />
+        <section className="bg-transparent border-t border-white/10 p-6 mt-8 relative overflow-hidden group">
+            <h3 className="text-sm font-serif font-bold text-white uppercase tracking-[0.15em] mb-6 flex items-center gap-3 opacity-90 relative z-10">
+                <Trophy className="w-5 h-5 text-magic-royal" />
                 Visionnés Récemment
             </h3>
 
-            <div className="space-y-3 mb-6">
+            <div className="space-y-4 mb-8 relative z-10">
                 {recentValids.slice(0, 3).map((progress) => (
-                    <div key={progress.course_id} className="flex items-start gap-3 bg-[#111] p-3 rounded-xl border border-white/5 group hover:border-magic-royal/20 transition-colors">
-                        <div className="mt-0.5">
-                            <CheckCircle2 className="w-4 h-4 text-magic-royal/70 group-hover:text-magic-royal transition-colors" />
+                    <div key={progress.course_id} className="flex items-start gap-4 bg-transparent p-4 border-b border-white/5 hover:bg-white/[0.02] hover:border-magic-royal/30 transition-all duration-300 group/item">
+                        <div className="mt-1">
+                            <CheckCircle2 className="w-5 h-5 text-magic-royal/50 group-hover/item:text-magic-royal transition-all duration-300" />
                         </div>
                         <div>
-                            <p className="text-sm font-medium text-slate-200 line-clamp-1 group-hover:text-white transition-colors">
+                            <p className="text-sm font-serif font-bold text-slate-300 line-clamp-1 group-hover/item:text-white transition-colors duration-300">
                                 {progress.courses?.title || "Formation terminée"}
                             </p>
-                            <p className="text-[10px] text-slate-500 uppercase tracking-widest mt-1">
+                            <p className="text-[10px] text-slate-500 uppercase tracking-[0.2em] mt-1.5 font-light">
                                 Le {new Date(progress.completed_at).toLocaleDateString('fr-FR')}
                             </p>
                         </div>
@@ -36,8 +36,8 @@ export default function AdultAchievements({ recentValids }: { recentValids: any[
                 ))}
             </div>
 
-            <a href="/dashboard/achievements" className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl border border-white/10 hover:border-magic-royal/30 bg-white/5 hover:bg-magic-royal/10 transition-colors text-xs font-bold text-slate-300 hover:text-white uppercase tracking-widest">
-                <Trophy className="w-3.5 h-3.5 text-magic-gold" />
+            <a href="/dashboard/achievements" className="w-full relative z-10 flex items-center justify-center gap-2 py-3.5 px-4 rounded-sm border border-white/10 hover:border-magic-royal hover:text-magic-royal bg-transparent transition-all duration-300 text-xs font-bold text-slate-300 uppercase tracking-[0.15em]">
+                <Trophy className="w-4 h-4 text-magic-royal" />
                 Mon Journal Magique
             </a>
         </section>

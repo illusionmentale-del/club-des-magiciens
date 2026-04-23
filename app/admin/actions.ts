@@ -1176,7 +1176,6 @@ export async function getAdminAdultUserDetails(userId: string) {
         try {
             const guidMatch = lastVideo.video_id.match(/_([a-zA-Z0-9-]+)$/);
             const guid = guidMatch ? guidMatch[1] : lastVideo.video_id;
-            const { getAdultsVideoById } = await import("@/lib/bunny"); // Using adult fetch theoretically, or just generic getKidsVideoById if there's no distinction. Wait! bunny has getKidsVideoById. Does it have getAdultVideoById? I will just use getKidsVideoById because bunny stream logic is identical. Wait, let me check `lib/bunny.ts` if getAdultVideoById exists
             // Let's assume getAdultsVideoById exists or fallback. I'll just use the supabase library_items since we use that for titles? No, bunny is used to fetch the title from Bunny API.
             const { getKidsVideoById } = await import("@/lib/bunny");
             const btv = await getKidsVideoById(guid);

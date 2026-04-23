@@ -59,7 +59,7 @@ export default async function KidsVideoPlayerPage({ params }: { params: Promise<
         // It could be missing entirely OR hidden by the Time-Drip RLS!
         let adminQuery = supabaseAdmin
             .from('library_items')
-            .select('id, title, week_number, created_at, published_at, video_url');
+            .select('id, title, week_number, created_at, published_at, video_url, sales_page_url, price_label');
             
         if (isUuid) {
             adminQuery = adminQuery.or(`video_url.eq.${rawVideoId},id.eq.${rawVideoId}`);
@@ -73,7 +73,7 @@ export default async function KidsVideoPlayerPage({ params }: { params: Promise<
             adminItem = fetchedAdminItem;
             // Video exists in DB but user RLS blocked it! This means it's a future week's content.
             isTimeLocked = true;
-            fallbackTitle = adminItem.title || "Secret inconnu";
+            fallbackTitle = adminItem?.title || "Secret inconnu";
         }
     }
 
@@ -232,7 +232,7 @@ export default async function KidsVideoPlayerPage({ params }: { params: Promise<
                                 </div>
                                 <h2 className="text-2xl md:text-3xl font-black uppercase text-white mb-2">Secret Verrouillé</h2>
                                 <p className="text-brand-text-muted mb-8 max-w-md">
-                                    Pour regarder <strong className="text-white">{libraryItem?.title || video.title}</strong>, tu dois posséder ce secret dans ta collection.
+                                    Pour regarder <strong className="text-white">{libraryItem?.title || video?.title}</strong>, tu dois posséder ce secret dans ta collection.
                                 </p>
 
                                 <CheckoutButton itemId={libraryItem?.id} space="kids" className="bg-gradient-to-r from-brand-gold to-yellow-500 text-black font-black py-4 px-8 rounded-xl flex items-center gap-3 hover:scale-105 transition-transform shadow-[0_10px_30px_rgba(250,204,21,0.4)]">

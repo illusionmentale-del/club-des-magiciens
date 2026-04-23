@@ -14,39 +14,34 @@ export default function AdultProgression({
     const progressPercentage = totalCourses > 0 ? Math.min((validatedCount / totalCourses) * 100, 100) : 0;
 
     return (
-        <section className="bg-gradient-to-br from-[#111] to-black border border-white/10 hover:border-magic-royal/20 transition-colors rounded-2xl p-6 sticky top-8 shadow-2xl relative overflow-hidden group">
-            {/* Ambient Glow */}
-            <div className="absolute top-0 right-0 w-32 h-32 bg-magic-royal/5 blur-[50px] rounded-full pointer-events-none group-hover:bg-magic-royal/10 transition-colors"></div>
-
-            <h3 className="text-lg font-bold text-white uppercase tracking-wider mb-6 flex items-center gap-3 relative z-10">
-                <Award className="w-5 h-5 text-magic-royal" />
+        <section className="bg-transparent border border-white/10 hover:border-magic-royal/30 transition-colors duration-500 rounded-sm p-6 md:p-8 sticky top-8 relative overflow-hidden group">
+            <h3 className="text-lg font-serif font-bold text-white uppercase tracking-wider mb-8 flex items-center gap-3 relative z-10">
+                <Award className="w-6 h-6 text-magic-royal drop-shadow-[0_0_10px_rgba(255,215,0,0.5)]" />
                 Progression Globale
             </h3>
 
-            <div className="text-center mb-6 relative z-10">
-                <div className="text-4xl font-black text-white mb-2 font-serif group-hover:text-magic-royal transition-colors duration-500">
-                    {validatedCount} <span className="text-lg text-slate-500 font-sans font-medium">/ {totalCourses}</span>
+            <div className="text-center mb-8 relative z-10">
+                <div className="text-5xl font-serif font-bold text-white mb-2 transition-all duration-500 group-hover:text-magic-royal drop-shadow-sm">
+                    {validatedCount} <span className="text-xl text-slate-500 font-sans font-medium">/ {totalCourses}</span>
                 </div>
-                <div className="text-xs font-bold text-slate-400 uppercase tracking-widest">Vidéos Visionnées</div>
+                <div className="text-xs font-black text-slate-400 uppercase tracking-[0.2em]">Vidéos Visionnées</div>
             </div>
 
-            <div className="relative h-2.5 w-full bg-black/50 border border-white/5 rounded-full overflow-hidden mb-6 shadow-inner z-10">
+            <div className="relative h-1 w-full bg-white/10 rounded-none overflow-hidden mb-8 z-10">
                 <div
-                    className="absolute top-0 left-0 h-full bg-gradient-to-r from-yellow-600 to-magic-royal rounded-full transition-all duration-1000 ease-out"
+                    className="absolute top-0 left-0 h-full bg-magic-royal transition-all duration-1000 ease-out shadow-[0_0_10px_rgba(255,215,0,0.5)]"
                     style={{ width: `${progressPercentage}%` }}
                 >
-                    <div className="absolute top-0 right-0 bottom-0 w-full bg-gradient-to-l from-white/30 to-transparent animate-pulse"></div>
                 </div>
             </div>
 
-            <div className="bg-magic-royal/5 border border-magic-royal/10 rounded-xl p-4 flex gap-3 items-start mb-6 relative z-10">
-                <Zap className="w-4 h-4 text-magic-royal shrink-0 mt-0.5" />
-                <p className="text-sm text-slate-300 font-light leading-relaxed">
+            <div className="border-l border-magic-royal/50 pl-4 py-2 flex gap-3 items-start mb-8 relative z-10 transition-colors duration-500">
+                <p className="text-sm text-slate-400 font-light leading-relaxed">
                     Votre parcours s'enrichit. Continuez à visionner les modules pour débloquer de nouveaux secrets.
                 </p>
             </div>
 
-            <Link href="/dashboard/library" className="block w-full text-center py-3 text-xs font-bold text-black uppercase tracking-widest bg-magic-royal hover:bg-blue-400 rounded-xl transition-all hover:-translate-y-0.5 relative z-10 shadow-lg shadow-white/5">
+            <Link href="/dashboard/library" className="block w-full text-center py-4 text-xs font-bold text-black uppercase tracking-widest bg-magic-royal hover:bg-yellow-500 rounded-sm transition-all relative z-10 shadow-[0_0_15px_rgba(255,215,0,0.2)] hover:shadow-[0_0_25px_rgba(255,215,0,0.4)]">
                 Reprendre ma session
             </Link>
         </section>

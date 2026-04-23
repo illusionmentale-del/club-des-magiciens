@@ -1,0 +1,29 @@
+.next/dev/types/validator.ts(548,39): error TS2307: Cannot find module '../../../app/kids/courses/page.js' or its corresponding type declarations.
+.next/dev/types/validator.ts(602,39): error TS2307: Cannot find module '../../../app/kids/videos/[videoId]/page.js' or its corresponding type declarations.
+app/admin/actions.ts(1179,21): error TS2339: Property 'getAdultsVideoById' does not exist on type 'typeof import("/Users/jeremymarouani/Downloads/Club des Magiciens/club-des-magiciens/lib/bunny")'.
+app/admin/adults/settings/SettingsForm.tsx(41,46): error TS2322: Type '{ currentLogo: string | undefined; }' is not assignable to type 'IntrinsicAttributes & { currentLogoUrl?: string | null | undefined; onUpload: (url: string) => void; label?: string | undefined; }'.
+  Property 'currentLogo' does not exist on type 'IntrinsicAttributes & { currentLogoUrl?: string | null | undefined; onUpload: (url: string) => void; label?: string | undefined; }'. Did you mean 'currentLogoUrl'?
+app/admin/adults/users/[id]/page.tsx(94,26): error TS2345: Argument of type '{ id: any; title: any; }[]' is not assignable to parameter of type 'SetStateAction<LibraryItem[]>'.
+  Type '{ id: any; title: any; }[]' is not assignable to type 'LibraryItem[]'.
+    Property 'week_number' is missing in type '{ id: any; title: any; }' but required in type 'LibraryItem'.
+app/admin/kids/users/[id]/page.tsx(117,26): error TS2345: Argument of type '{ id: any; title: any; }[]' is not assignable to parameter of type 'SetStateAction<LibraryItem[]>'.
+  Type '{ id: any; title: any; }[]' is not assignable to type 'LibraryItem[]'.
+    Property 'week_number' is missing in type '{ id: any; title: any; }' but required in type 'LibraryItem'.
+app/dashboard/masterclass/[videoId]/page.tsx(63,43): error TS2339: Property 'week_number' does not exist on type '{ id: any; sales_page_url: any; title: any; price_label: any; }'.
+app/dashboard/masterclass/[videoId]/page.tsx(69,29): error TS2339: Property 'week_number' does not exist on type '{ id: any; sales_page_url: any; title: any; price_label: any; }'.
+app/kids/videos/[...videoId]/page.tsx(73,13): error TS2739: Type '{ id: any; title: any; week_number: any; created_at: any; published_at: any; video_url: any; }' is missing the following properties from type '{ id: any; sales_page_url: any; title: any; price_label: any; week_number: any; created_at: any; published_at: any; video_url: any; }': sales_page_url, price_label
+app/kids/videos/[...videoId]/page.tsx(76,29): error TS18047: 'adminItem' is possibly 'null'.
+app/kids/videos/[...videoId]/page.tsx(235,105): error TS18047: 'video' is possibly 'null'.
+app/manifest.ts(18,13): error TS2353: Object literal may only specify known properties, and 'gcm_sender_id' does not exist in type 'Manifest'.
+app/manifest.ts(53,17): error TS2820: Type '"any maskable"' is not assignable to type '"any" | "maskable" | "monochrome" | undefined'. Did you mean '"maskable"'?
+app/manifest.ts(59,17): error TS2820: Type '"any maskable"' is not assignable to type '"any" | "maskable" | "monochrome" | undefined'. Did you mean '"maskable"'?
+check_rls.ts(5,36): error TS2345: Argument of type 'string | undefined' is not assignable to parameter of type 'string'.
+  Type 'undefined' is not assignable to type 'string'.
+check_rls.ts(12,10): error TS2551: Property 'catch' does not exist on type 'PostgrestFilterBuilder<any, any, any, any, "exec_sql", null, "RPC">'. Did you mean 'match'?
+components/Comments.tsx(5,35): error TS2307: Cannot find module '@/app/kids/videos/[videoId]/actions' or its corresponding type declarations.
+components/kids/ShopBuyWithXP.tsx(28,38): error TS2339: Property 'newQuestsData' does not exist on type '{ success: boolean; error: string; } | { success: boolean; error?: undefined; }'.
+  Property 'newQuestsData' does not exist on type '{ success: boolean; error: string; }'.
+components/kids/ShopBuyWithXP.tsx(28,62): error TS2339: Property 'newQuestsData' does not exist on type '{ success: boolean; error: string; } | { success: boolean; error?: undefined; }'.
+  Property 'newQuestsData' does not exist on type '{ success: boolean; error: string; }'.
+components/kids/ShopBuyWithXP.tsx(29,46): error TS2339: Property 'newQuestsData' does not exist on type '{ success: boolean; error: string; } | { success: boolean; error?: undefined; }'.
+  Property 'newQuestsData' does not exist on type '{ success: boolean; error: string; }'.

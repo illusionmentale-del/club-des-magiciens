@@ -33,7 +33,7 @@ export default async function KidsVideoPlayerPage({ params }: { params: { videoI
     // Check if this video exists in our library_items database as a premium item
     const { data: libraryItem } = await supabase
         .from('library_items')
-        .select('id, sales_page_url, title, price_label')
+        .select('id, sales_page_url, title, price_label, week_number')
         .eq('video_url', params.videoId) // Assuming video_url stores the Bunny GUID
         .single();
 

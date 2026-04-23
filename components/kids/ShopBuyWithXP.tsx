@@ -22,7 +22,7 @@ export default function ShopBuyWithXP({ itemId, xpPrice, trueXP, adultMode = fal
         if (!confirm) return;
 
         setLoading(true);
-        const result = await purchaseWithXP(itemId);
+        const result: any = await purchaseWithXP(itemId);
         setLoading(false);
         
         if (result.success && result.newQuestsData && result.newQuestsData.length > 0) {

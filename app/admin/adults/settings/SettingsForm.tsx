@@ -38,7 +38,7 @@ export default function SettingsForm({ settings }: SettingsFormProps) {
 
                             <section className="space-y-4">
                                 <h3 className="font-bold text-gray-400 uppercase tracking-wider text-xs">Logo du Site (Adulte)</h3>
-                                <LogoCropper currentLogo={getValue("site_logo") || undefined} />
+                                <LogoCropper currentLogoUrl={getValue("site_logo") || undefined} onUpload={() => {}} />
                             </section>
 
                             <section className="space-y-4">

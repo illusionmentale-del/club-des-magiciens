@@ -58,7 +58,7 @@ type UserPurchase = {
 type LibraryItem = {
     id: string;
     title: string;
-    week_number: number;
+    week_number?: number;
 };
 
 export default function AdminAdultUserDetailPage() {

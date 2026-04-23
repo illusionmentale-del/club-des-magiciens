@@ -2,7 +2,7 @@
 
 @theme {
   --font-sans: var(--font-poppins);
-  --font-serif: var(--font-poppins);
+  --font-serif: var(--font-playfair);
 
   /* Premium Brand Palette - Jeremy Marouani Style */
   --color-brand-bg: #050507;

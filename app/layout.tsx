@@ -1,11 +1,17 @@
 import type { Metadata } from "next";
-import { Poppins } from "next/font/google";
+import { Poppins, Playfair_Display } from "next/font/google";
 import "./globals.css";
 
 const poppins = Poppins({
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
+  weight: ["300", "400", "500", "600", "700", "900"],
   variable: "--font-poppins"
+});
+
+const playfair = Playfair_Display({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800", "900"],
+  variable: "--font-playfair"
 });
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -68,7 +74,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="fr" suppressHydrationWarning>
-      <body className={`${poppins.variable} font-sans bg-brand-bg text-brand-text antialiased flex flex-col min-h-screen`}>
+      <body className={`${poppins.variable} ${playfair.variable} font-sans bg-brand-bg text-brand-text antialiased flex flex-col min-h-screen`}>
         <NextTopLoader color="#EAB308" showSpinner={false} />
         {children}
         <CookieBanner />
