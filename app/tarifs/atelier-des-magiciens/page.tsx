@@ -7,8 +7,8 @@ import AnimatedLink from "@/components/AnimatedLink";
 import { redirect } from "next/navigation";
 
 export const metadata = {
-    title: "L'Atelier des Magiciens | Rejoindre le Cercle",
-    description: "Passez à la vitesse supérieure. Rejoignez le cercle des maîtres avec nos abonnements exclusifs."
+    title: "L'Atelier des Magiciens | Rejoindre l'Atelier",
+    description: "Passez à la vitesse supérieure. Rejoignez l'élite des magiciens avec notre abonnement exclusif."
 }
 
 export default async function AdultsPricingPage() {
@@ -100,7 +100,7 @@ export default async function AdultsPricingPage() {
                         <div className="relative text-sm md:text-base font-serif font-bold text-gray-200 text-center bg-black border-y border-magic-royal/30 px-12 py-4 shadow-lg flex items-center justify-center gap-4">
                             <Star className="w-5 h-5 text-magic-royal fill-magic-royal animate-pulse" />
                             <span>
-                                Rejoignez déjà le Cercle de <span className="text-transparent bg-clip-text bg-gradient-to-r from-magic-royal to-yellow-500 text-2xl font-bold mx-1">300</span> maîtres
+                                Rejoignez déjà l'élite de <span className="text-transparent bg-clip-text bg-gradient-to-r from-magic-royal to-yellow-500 text-2xl font-bold mx-1">300</span> maîtres
                             </span>
                             <Star className="w-5 h-5 text-magic-royal fill-magic-royal animate-pulse" />
                         </div>
@@ -108,7 +108,7 @@ export default async function AdultsPricingPage() {
                 </div>
 
                 {/* Subscriptions Grid */}
-                <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 items-stretch max-w-5xl mx-auto pt-4">
+                <div className="relative z-10 max-w-lg mx-auto pt-4">
 
                     {/* MONTHLY PLAN */}
                     <div className="bg-[#050505] border border-white/5 rounded-sm p-8 md:p-10 flex flex-col relative overflow-hidden transition-all hover:bg-[#080808] hover:border-magic-royal/20 mt-8 md:mt-12 group">
@@ -165,92 +165,9 @@ export default async function AdultsPricingPage() {
                             space="adults"
                             userLoggedIn={!!user}
                             buttonText="Rejoindre l'Atelier"
-                            className="bg-transparent hover:bg-white/5 text-white border border-white/20 uppercase tracking-widest text-sm font-bold py-4 rounded-sm"
+                            className="bg-transparent hover:bg-white/5 text-white border border-white/20 uppercase tracking-widest text-sm font-bold py-4 rounded-sm w-full"
                         />
                     </div>
-
-                    {/* YEARLY PLAN (HIGHLIGHTED) */}
-                    <div className="bg-[#0A0A0A] border border-magic-royal/40 rounded-sm p-8 flex flex-col relative overflow-hidden shadow-2xl transform md:-translate-y-4">
-                        {/* Badge */}
-                        <div className="absolute top-0 right-0 bg-magic-royal text-black font-bold text-xs uppercase tracking-[0.2em] py-2 px-6">
-                            Le Choix des Maîtres
-                        </div>
-
-                        <div className="mb-6 relative z-10 flex flex-col pt-6">
-                            <h2 className="text-2xl font-serif font-bold text-magic-royal mb-2 uppercase tracking-wide">Le Cercle (Annuel)</h2>
-                            <p className="text-white/60 font-medium flex items-center gap-2 text-sm uppercase tracking-widest">
-                                <Sparkles className="w-4 h-4 text-magic-royal" />
-                                +2 mois offerts vs Mensuel
-                            </p>
-                        </div>
-
-                        <div className="mb-8 relative z-10 flex flex-col border-b border-white/10 pb-6">
-                            <div className="flex items-baseline gap-2">
-                                <span className="text-5xl font-serif font-bold text-white">{yearlyProduct?.price_label || "49,99€"}</span>
-                                <span className="text-gray-400 font-bold">/an</span>
-                            </div>
-                            <span className="text-sm font-bold text-amber-400 mt-1 bg-amber-500/10 w-fit px-2 py-0.5 rounded border border-amber-500/20">
-                                Paiement en une fois
-                            </span>
-                        </div>
-
-                        <ul className="space-y-6 mb-8 flex-1 relative z-10">
-                            <li className="flex items-start gap-4">
-                                <div className="mt-0.5 w-6 flex justify-center">
-                                    <PlayCircle className="w-5 h-5 text-magic-royal" />
-                                </div>
-                                <div className="mt-0.5 border-l border-white/10 pl-4">
-                                    <strong className="block text-white mb-1 uppercase text-sm tracking-widest">Accès Intégral :</strong>
-                                    <span className="text-gray-400 text-sm leading-relaxed">Profitez de toute la bibliothèque de l'Atelier sans aucune limite.</span>
-                                </div>
-                            </li>
-                            <li className="flex items-start gap-4">
-                                <div className="mt-0.5 w-6 flex justify-center">
-                                    <ShoppingBag className="w-5 h-5 text-magic-royal" />
-                                </div>
-                                <div className="mt-0.5 border-l border-white/10 pl-4">
-                                    <strong className="block text-white mb-1 uppercase text-sm tracking-widest">La Boutique Privée :</strong>
-                                    <span className="text-gray-400 text-sm leading-relaxed">Accédez à des routines exclusives et du matériel professionnel à un tarif préférentiel.</span>
-                                </div>
-                            </li>
-                            <li className="flex items-start gap-4">
-                                <div className="mt-0.5 w-6 flex justify-center">
-                                    <Crown className="w-5 h-5 text-magic-royal" />
-                                </div>
-                                <div className="mt-0.5 border-l border-white/10 pl-4">
-                                    <strong className="block text-white mb-1 uppercase text-sm tracking-widest">Statut VIP :</strong>
-                                    <span className="text-gray-400 text-sm leading-relaxed">Participez aux Lives privés pour interagir en direct avec l'équipe.</span>
-                                </div>
-                            </li>
-
-                            {/* Premium Bonus Callout */}
-                            <li className="flex items-start gap-4 text-magic-royal font-bold mt-8 border-y border-magic-royal/20 py-6 relative">
-                                <div className="mt-0.5 w-6 flex justify-center">
-                                    <Gift className="w-5 h-5 text-magic-royal" />
-                                </div>
-                                <div className="z-10">
-                                    <span className="block text-white mb-1 text-sm tracking-widest uppercase">Cadeau Exclusif :</span>
-                                    Une formation premium offerte (valeur 19,99€) dans la boutique !
-                                    <div className="flex items-center gap-3 mt-3">
-                                        <span className="text-xs font-bold text-white/50 line-through">Valeur : 19,99€</span>
-                                        <span className="text-sm font-black text-amber-400 uppercase tracking-widest bg-amber-500/10 px-2 py-1 rounded border border-amber-500/20">INCLUS</span>
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
-
-                        <div className="relative z-10 mt-4">
-                            <SubscribeButton
-                                priceId={yearlyProduct?.stripe_price_id}
-                                productId={yearlyProduct?.id}
-                                space="adults"
-                                userLoggedIn={!!user}
-                                buttonText="Rejoindre pour 1 an"
-                                className="bg-magic-royal hover:bg-yellow-500 text-black border-none font-bold text-sm uppercase tracking-widest w-full py-4 rounded-sm"
-                            />
-                        </div>
-                    </div>
-
                 </div>
 
                 <div className="mt-16 text-center">
