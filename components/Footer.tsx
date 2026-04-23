@@ -1,18 +1,27 @@
 "use client";
 
 import Link from "next/link";
-import { Sparkles, ShieldCheck } from "lucide-react";
+import { Sparkles, ShieldCheck, Crown } from "lucide-react";
 
-export default function Footer() {
+export default function Footer({ space = "kids" }: { space?: "adults" | "kids" }) {
     return (
         <footer className="mt-20 border-t border-white/5 bg-black/40 py-12 px-4 md:px-8">
             <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
 
                 {/* Brand */}
                 <div className="flex flex-col items-center md:items-start gap-2">
-                    <div className="flex items-center gap-2 text-brand-purple font-serif font-bold text-xl">
-                        <Sparkles className="w-5 h-5 text-brand-gold" />
-                        Club des Magiciens
+                    <div className={`flex items-center gap-2 font-serif font-bold text-xl ${space === 'adults' ? 'text-magic-royal' : 'text-brand-purple'}`}>
+                        {space === 'adults' ? (
+                            <>
+                                <Crown className="w-5 h-5 text-magic-royal" />
+                                L'Atelier des Magiciens
+                            </>
+                        ) : (
+                            <>
+                                <Sparkles className="w-5 h-5 text-brand-gold" />
+                                Club des Magiciens
+                            </>
+                        )}
                     </div>
                     <p className="text-sm border-brand-text-muted text-gray-400">
                         Apprenez la magie et le mentalisme.

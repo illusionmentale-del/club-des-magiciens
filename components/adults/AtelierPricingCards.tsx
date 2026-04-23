@@ -79,7 +79,7 @@ export default function AtelierPricingCards({
                             space="adults"
                             userLoggedIn={userLoggedIn}
                             buttonText="Rejoindre l'Atelier"
-                            className="w-full py-4 text-lg bg-gradient-to-r from-magic-royal to-yellow-600 hover:from-blue-400 hover:to-yellow-500 text-black shadow-[0_0_40px_rgba(255,215,0,0.3)] border-none font-bold transition-all transform hover:scale-[1.02]"
+                            className="w-full py-4 text-lg bg-gradient-to-r from-magic-royal to-yellow-600 hover:from-amber-400 hover:to-yellow-500 text-black shadow-[0_0_40px_rgba(255,215,0,0.3)] border-none font-bold transition-all transform hover:scale-[1.02]"
                         />
                     </div>
                 </div>

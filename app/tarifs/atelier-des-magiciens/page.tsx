@@ -1,5 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
-import { Star } from "lucide-react";
+import { Star, Crown } from "lucide-react";
 import Footer from "@/components/Footer";
 import Link from "next/link";
 import Image from "next/image";
@@ -37,9 +37,7 @@ export default async function AdultsPricingPage() {
             {/* Simple Header */}
             <header className="absolute top-0 w-full p-6 flex justify-between items-center z-20">
                 <Link href="/" className="flex items-center gap-3 group">
-                    <div className="relative w-8 h-8 md:w-10 md:h-10 transform group-hover:scale-110 transition-all">
-                        <Image src="/logo.png" alt="Logo" fill className="object-contain" />
-                    </div>
+                    <Crown className="w-8 h-8 md:w-10 md:h-10 text-magic-royal transform group-hover:scale-110 transition-all drop-shadow-[0_0_10px_rgba(255,215,0,0.5)]" />
                     <span className="font-black text-lg md:text-xl tracking-tight uppercase">L'Atelier des <span className="text-magic-royal">Magiciens</span></span>
                 </Link>
                 {user ? (
@@ -92,7 +90,7 @@ export default async function AdultsPricingPage() {
                 </div>
 
                 {/* Author Block */}
-                <div className="max-w-4xl mx-auto mt-24 mb-16 bg-[#1a1525] rounded-3xl overflow-hidden shadow-2xl border border-white/5 relative">
+                <div className="max-w-4xl mx-auto mt-24 mb-16 bg-[#0F1014] rounded-3xl overflow-hidden shadow-2xl border border-white/5 relative">
                     <div className="absolute top-0 right-0 w-64 h-64 bg-magic-royal/10 blur-[80px] rounded-full pointer-events-none"></div>
                     <div className="p-8 md:p-12 flex flex-col items-center text-center relative z-10">
                         <h2 className="text-3xl md:text-4xl font-black text-white mb-8 tracking-tight">
@@ -151,7 +149,7 @@ export default async function AdultsPricingPage() {
                 </div>
 
             </div>
-            <Footer />
+            <Footer space="adults" />
         </div>
     );
 }
