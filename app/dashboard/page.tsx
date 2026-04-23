@@ -9,6 +9,7 @@ import AdultProgression from "@/components/adults/AdultProgression";
 import AdultAchievements from "@/components/adults/AdultAchievements";
 import GlobalAlertBanner from "@/components/kids/GlobalAlertBanner"; // Reusable component for both spaces
 import { LiveStatusCard } from "@/components/LiveStatusCard"; // Reusable generic live card
+import { FadeInUp, FadeIn } from "@/components/adults/MotionWrapper";
 
 export default async function DashboardPage() {
     const supabase = await createClient();
@@ -156,98 +157,103 @@ export default async function DashboardPage() {
     }
 
     return (
-        <div className="min-h-screen bg-black text-white p-4 md:p-8 pb-32 font-sans selection:bg-magic-royal/30 overflow-hidden relative">
+        <div className="min-h-screen bg-[#000000] text-[#f5f5f7] p-4 md:p-8 pb-32 font-sans selection:bg-magic-royal/30 overflow-hidden relative">
 
-            {/* Premium Header / Hero */}
-            {/* Premium Header / Hero */}
-            <header className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 pt-4 max-w-5xl mx-auto relative z-10">
-                <div className="flex-1">
-                    <div className="flex items-center gap-2 text-magic-royal mb-2">
-                        <Sparkles className="w-5 h-5 animate-pulse" />
-                        <span className="text-xs font-bold uppercase tracking-widest">{uiLabelsMap.page_dashboard_title || "Le QG de la Magie"}</span>
+            {/* Premium Glass Header */}
+            <FadeIn>
+                <header className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 pt-8 pb-4 max-w-5xl mx-auto relative z-10">
+                    <div className="flex-1">
+                        <div className="flex items-center gap-2 text-[#86868b] mb-3">
+                            <Sparkles className="w-5 h-5 text-[#f5f5f7]" />
+                            <span className="text-xs font-bold uppercase tracking-[0.2em]">{uiLabelsMap.page_dashboard_title || "Le QG de la Magie"}</span>
+                        </div>
+                        <h1 className="text-4xl md:text-6xl font-semibold tracking-tight text-[#f5f5f7]">
+                            Bienvenue, <span className="text-white font-serif italic">{userName}</span>.
+                        </h1>
+                        <p className="text-[#86868b] mt-3 text-xl font-light tracking-wide">
+                            Prêt à découvrir de nouveaux secrets ?
+                        </p>
                     </div>
-                    <h1 className="text-3xl md:text-5xl font-serif text-white tracking-tight">
-                        Bienvenue, <span className="text-magic-royal italic">{userName}</span>
-                    </h1>
-                    <p className="text-slate-400 mt-2 text-lg">
-                        Prêt à découvrir de nouveaux secrets ?
-                    </p>
-                </div>
-            </header>
+                </header>
+            </FadeIn>
 
-            <div className="max-w-5xl mx-auto relative z-10 space-y-12 mt-12">
+            <div className="max-w-5xl mx-auto relative z-10 space-y-8 mt-12">
 
                 {/* BLOC: GLOBAL ALERTS */}
-                <GlobalAlertBanner alerts={unreadAlerts} />
+                <FadeInUp delay={0.1}>
+                    <GlobalAlertBanner alerts={unreadAlerts} />
+                </FadeInUp>
 
                 {/* BLOC: LIVE STREAM BANNER OR HERO SECTION */}
-                {/* Rule: If there is a Live, it takes the main spot. If not, the Hero takes it. */}
-                {activeLive ? (
-                    <div className="mb-0">
-                        <LiveStatusCard live={activeLive} isReminded={isReminded} />
-                    </div>
-                ) : (
-                    <AdultHomeHero config={featuredConfig || { title: "", description: "", image: "", link: "", buttonText: "", tag: "" }} />
-                )}
+                <FadeInUp delay={0.2}>
+                    {activeLive ? (
+                        <div className="mb-0">
+                            <LiveStatusCard live={activeLive} isReminded={isReminded} />
+                        </div>
+                    ) : (
+                        <AdultHomeHero config={featuredConfig || { title: "", description: "", image: "", link: "", buttonText: "", tag: "" }} />
+                    )}
+                </FadeInUp>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     {/* COLONNE GAUCHE (2/3) */}
-                    <div className="lg:col-span-2 space-y-12">
+                    <div className="lg:col-span-2 space-y-6">
                         {/* NOUVEAUTÉS */}
                         {settingsMap?.show_adults_news !== 'false' && (
-                            <AdultNewsFeed items={newsItems as any} />
+                            <FadeInUp delay={0.3}>
+                                <AdultNewsFeed items={newsItems as any} />
+                            </FadeInUp>
                         )}
 
-                        {/* SECTION PROMO BOUTIQUE (Optional, replacing the grid to keep it balanced) */}
+                        {/* SECTION PROMO BOUTIQUE */}
                         {settingsMap?.enable_adults_catalog !== 'false' && settingsMap?.show_adults_catalog_promo !== 'false' && (
-                            <section>
-                                <h3 className="text-lg font-bold text-white uppercase tracking-wider mb-6 flex items-center gap-2">
-                                    <Star className="w-5 h-5 text-magic-royal" />
-                                    Le Catalogue Premium
-                                </h3>
-                                <div className="bg-black border border-magic-royal/20 rounded-none p-6 flex flex-col sm:flex-row items-center gap-6">
-                                    <div className="w-16 h-16 bg-magic-royal/20 rounded-full flex items-center justify-center shrink-0">
-                                        <ShoppingBag className="w-8 h-8 text-magic-royal" />
+                            <FadeInUp delay={0.4}>
+                                <section className="bg-[#1c1c1e] rounded-[32px] p-8 md:p-10 flex flex-col sm:flex-row items-center gap-8 relative overflow-hidden group">
+                                    <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent pointer-events-none"></div>
+                                    <div className="w-20 h-20 bg-black/50 backdrop-blur-xl rounded-full flex items-center justify-center shrink-0 border border-white/5 shadow-2xl group-hover:scale-105 transition-transform duration-500">
+                                        <ShoppingBag className="w-8 h-8 text-[#f5f5f7]" />
                                     </div>
-                                    <div className="flex-1 text-center sm:text-left">
-                                        <h4 className="text-xl font-bold text-magic-royal mb-1">
+                                    <div className="flex-1 text-center sm:text-left relative z-10">
+                                        <h4 className="text-2xl font-semibold text-white mb-2 tracking-tight">
                                             {promoConfig.title}
                                         </h4>
-                                        <p className="text-slate-400 text-sm font-light">
+                                        <p className="text-[#86868b] text-base font-light leading-relaxed">
                                             {promoConfig.subtitle}
                                         </p>
                                     </div>
                                     <Link
                                         href={promoConfig.link}
-                                        className="border border-magic-royal text-magic-royal hover:bg-magic-royal hover:text-black font-serif uppercase text-sm py-3 px-6 rounded-none transition-colors whitespace-nowrap"
+                                        className="bg-[#f5f5f7] text-black hover:bg-white font-medium py-3 px-6 rounded-full transition-all whitespace-nowrap shadow-lg hover:shadow-xl hover:scale-105 relative z-10"
                                     >
                                         {promoConfig.buttonText}
                                     </Link>
-                                </div>
-                            </section>
+                                </section>
+                            </FadeInUp>
                         )}
                     </div>
 
                     {/* COLONNE DROITE (1/3) */}
-                    <div className="space-y-8">
+                    <div className="space-y-6">
                         {/* PROGRESSION */}
                         {settingsMap?.show_adults_progression !== 'false' && (
-                            <AdultProgression
-                                validatedCount={validatedCount}
-                                totalCourses={libraryItems.filter(i => !i.sales_page_url).length}
-                            />
+                            <FadeInUp delay={0.4}>
+                                <AdultProgression
+                                    validatedCount={validatedCount}
+                                    totalCourses={libraryItems.filter(i => !i.sales_page_url).length}
+                                />
+                            </FadeInUp>
                         )}
 
                         {/* SUCCESS */}
                         {settingsMap?.show_adults_achievements !== 'false' && (
-                            <AdultAchievements
-                                recentValids={recentValids}
-                            />
+                            <FadeInUp delay={0.5}>
+                                <AdultAchievements
+                                    recentValids={recentValids}
+                                />
+                            </FadeInUp>
                         )}
                     </div>
                 </div>
-
-
 
             </div>
         </div>

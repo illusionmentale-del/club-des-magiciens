@@ -1,5 +1,8 @@
+"use client";
+
 import Link from "next/link";
-import { Award, Zap } from "lucide-react";
+import { Award } from "lucide-react";
+import { BentoHoverEffect } from "./MotionWrapper";
 
 type AdultProgressionProps = {
     validatedCount: number;
@@ -14,36 +17,33 @@ export default function AdultProgression({
     const progressPercentage = totalCourses > 0 ? Math.min((validatedCount / totalCourses) * 100, 100) : 0;
 
     return (
-        <section className="bg-transparent border border-white/10 hover:border-magic-royal/30 transition-colors duration-500 rounded-sm p-6 md:p-8 sticky top-8 relative overflow-hidden group">
-            <h3 className="text-lg font-serif font-bold text-white uppercase tracking-wider mb-8 flex items-center gap-3 relative z-10">
-                <Award className="w-6 h-6 text-magic-royal drop-shadow-[0_0_10px_rgba(255,215,0,0.5)]" />
-                Progression Globale
-            </h3>
+        <BentoHoverEffect>
+            <section className="bg-[#1c1c1e] rounded-[32px] p-8 border border-white/5 shadow-xl sticky top-8 flex flex-col justify-between min-h-[300px]">
+                <h3 className="text-xl font-semibold flex items-center gap-3 text-white tracking-tight mb-8">
+                    <Award className="w-5 h-5 text-[#86868b]" />
+                    Progression Globale
+                </h3>
 
-            <div className="text-center mb-8 relative z-10">
-                <div className="text-5xl font-serif font-bold text-white mb-2 transition-all duration-500 group-hover:text-magic-royal drop-shadow-sm">
-                    {validatedCount} <span className="text-xl text-slate-500 font-sans font-medium">/ {totalCourses}</span>
+                <div className="flex-1 flex flex-col justify-center">
+                    <div className="mb-8">
+                        <div className="text-6xl font-semibold tracking-tighter text-[#f5f5f7] mb-1">
+                            {validatedCount} <span className="text-2xl text-[#86868b] font-light">/ {totalCourses}</span>
+                        </div>
+                        <div className="text-sm font-medium text-[#86868b] uppercase tracking-widest">Modules Validés</div>
+                    </div>
+
+                    <div className="relative h-1.5 w-full bg-black rounded-full overflow-hidden mb-6">
+                        <div
+                            className="absolute top-0 left-0 h-full bg-[#f5f5f7] transition-all duration-1000 ease-[0.16,1,0.3,1]"
+                            style={{ width: `${progressPercentage}%` }}
+                        ></div>
+                    </div>
                 </div>
-                <div className="text-xs font-black text-slate-400 uppercase tracking-[0.2em]">Vidéos Visionnées</div>
-            </div>
 
-            <div className="relative h-1 w-full bg-white/10 rounded-none overflow-hidden mb-8 z-10">
-                <div
-                    className="absolute top-0 left-0 h-full bg-magic-royal transition-all duration-1000 ease-out shadow-[0_0_10px_rgba(255,215,0,0.5)]"
-                    style={{ width: `${progressPercentage}%` }}
-                >
-                </div>
-            </div>
-
-            <div className="border-l border-magic-royal/50 pl-4 py-2 flex gap-3 items-start mb-8 relative z-10 transition-colors duration-500">
-                <p className="text-sm text-slate-400 font-light leading-relaxed">
-                    Votre parcours s'enrichit. Continuez à visionner les modules pour débloquer de nouveaux secrets.
-                </p>
-            </div>
-
-            <Link href="/dashboard/library" className="block w-full text-center py-4 text-xs font-bold text-black uppercase tracking-widest bg-magic-royal hover:bg-yellow-500 rounded-sm transition-all relative z-10 shadow-[0_0_15px_rgba(255,215,0,0.2)] hover:shadow-[0_0_25px_rgba(255,215,0,0.4)]">
-                Reprendre ma session
-            </Link>
-        </section>
+                <Link href="/dashboard/library" className="block w-full text-center py-4 text-sm font-medium text-black bg-[#f5f5f7] hover:bg-white rounded-full transition-all shadow-md hover:shadow-lg">
+                    Reprendre ma session
+                </Link>
+            </section>
+        </BentoHoverEffect>
     );
 }
