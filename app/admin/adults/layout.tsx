@@ -17,18 +17,18 @@ export default function AdultsAdminLayout({
     children: React.ReactNode
 }) {
     return (
-        <div className="flex min-h-screen w-full bg-brand-bg text-brand-text font-sans selection:bg-brand-royal/30">
+        <div className="flex min-h-screen w-full bg-[#000000] text-[#f5f5f7] font-sans selection:bg-brand-royal/30">
             {/* Mobile Nav */}
             <AdminAdultsMobileNav />
 
             {/* Custom Sidebar for Adults */}
-            <aside className="fixed inset-y-0 left-0 z-50 w-64 bg-[#0a0a0a] border-r border-white/10 hidden md:flex flex-col shadow-2xl">
-                <div className="flex items-center h-20 px-6 border-b border-white/10 bg-[#0a0a0a]">
-                    <div className="w-10 h-10 bg-brand-royal/10 rounded-xl flex items-center justify-center mr-3 border border-brand-royal/30">
-                        <Users className="w-6 h-6 text-brand-royal" />
+            <aside className="fixed inset-y-0 left-0 z-50 w-64 bg-[#000000] border-r border-white/5 hidden md:flex flex-col">
+                <div className="flex items-center h-20 px-6 border-b border-white/5 bg-[#000000]">
+                    <div className="w-10 h-10 bg-[#1c1c1e] rounded-xl flex items-center justify-center mr-3 border border-white/5">
+                        <Users className="w-6 h-6 text-[#f5f5f7]" />
                     </div>
-                    <span className="font-black text-xl tracking-tighter uppercase whitespace-nowrap">
-                        Club <span className="text-brand-royal">Adultes</span>
+                    <span className="font-semibold text-lg tracking-tight whitespace-nowrap text-white">
+                        L'Atelier <span className="text-[#86868b] font-light">Admin</span>
                     </span>
                 </div>
 
@@ -117,17 +117,17 @@ export default function AdultsAdminLayout({
                 {/* Page Background Glow */}
                 <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-brand-royal/5 blur-[150px] rounded-full pointer-events-none"></div>
 
-                <header className="h-16 md:h-20 border-b border-white/5 bg-brand-bg/80 backdrop-blur-xl sticky top-0 z-40 px-4 md:px-8">
+                <header className="h-16 md:h-20 border-b border-white/5 bg-black/60 backdrop-blur-2xl sticky top-0 z-40 px-4 md:px-8">
                     <div className="flex items-center justify-between w-full max-w-7xl mx-auto h-full">
                         <Breadcrumb>
                             <BreadcrumbList>
                                 <BreadcrumbItem>
-                                    <BreadcrumbLink href="/admin" className="text-brand-text-muted hover:text-white">Admin</BreadcrumbLink>
+                                    <BreadcrumbLink href="/admin" className="text-[#86868b] hover:text-white transition-colors">Admin</BreadcrumbLink>
                                 </BreadcrumbItem>
                                 <BreadcrumbSeparator className="text-white/10" />
                                 <BreadcrumbItem>
-                                    <BreadcrumbPage className="text-brand-royal font-bold uppercase tracking-widest text-xs hidden md:block">Business</BreadcrumbPage>
-                                    <BreadcrumbPage className="text-brand-royal font-bold uppercase tracking-widest text-xs md:hidden">Business</BreadcrumbPage>
+                                    <BreadcrumbPage className="text-[#f5f5f7] font-medium tracking-wide text-sm hidden md:block">Atelier</BreadcrumbPage>
+                                    <BreadcrumbPage className="text-[#f5f5f7] font-medium tracking-wide text-sm md:hidden">Atelier</BreadcrumbPage>
                                 </BreadcrumbItem>
                             </BreadcrumbList>
                         </Breadcrumb>

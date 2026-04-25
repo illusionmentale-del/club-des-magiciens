@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { Star, ShieldAlert } from "lucide-react";
 import RequestItemAdult from "./RequestItemAdult";
+import { FadeInUp } from "@/components/adults/MotionWrapper";
 
 export const dynamic = 'force-dynamic';
 
@@ -21,38 +22,46 @@ export default async function AdultVIPRequestsPage() {
 
     return (
         <div className="space-y-8">
-            <header className="flex flex-col gap-2">
-                <h1 className="text-3xl font-black text-white uppercase tracking-tighter flex items-center gap-3">
-                    <Star className="w-8 h-8 text-magic-royal" />
-                    Demandes Accès Privilège (Atelier)
-                </h1>
-                <p className="text-slate-400 text-lg max-w-2xl">
-                    Voici la liste des adultes ayant rempli le formulaire d'accès privé.
-                    Vérifiez le contexte pour vous assurer que vous avez bien rencontré cette personne avant de valider.
-                </p>
-                <div className="flex items-center gap-2 mt-2 bg-yellow-500/10 border border-yellow-500/20 text-yellow-500/80 px-4 py-2 rounded-none text-sm w-fit">
-                    <ShieldAlert className="w-4 h-4" />
-                    Cliquez sur 'Approuver' pour générer un accès à l'Atelier et envoyer un email d'invitation automatiquement.
-                </div>
-            </header>
+            <FadeInUp delay={0.1}>
+                <header className="flex flex-col gap-4">
+                    <h1 className="text-4xl font-semibold text-[#f5f5f7] tracking-tight flex items-center gap-3">
+                        <Star className="w-8 h-8 text-[#86868b]" />
+                        Demandes Accès Privilège
+                    </h1>
+                    <p className="text-[#86868b] text-lg max-w-2xl font-light leading-relaxed">
+                        Voici la liste des adultes ayant rempli le formulaire d'accès privé à l'Atelier.
+                        Vérifiez le contexte pour vous assurer de la légitimité de la demande avant de valider.
+                    </p>
+                    <div className="flex items-center gap-3 mt-2 bg-[#2c2c2e] border border-white/5 text-[#f5f5f7] px-5 py-4 rounded-[24px] text-sm w-fit shadow-md">
+                        <ShieldAlert className="w-5 h-5 text-yellow-500" />
+                        Cliquez sur 'Approuver' pour générer automatiquement un accès complet et envoyer l'email d'invitation.
+                    </div>
+                </header>
+            </FadeInUp>
 
             <div className="space-y-4">
                 {error && (
-                    <div className="p-4 bg-red-500/10 text-red-500 border border-red-500/30 rounded-none">
-                        Erreur lors du chargement des demandes : {error.message}
-                    </div>
+                    <FadeInUp delay={0.2}>
+                        <div className="p-6 bg-red-500/10 text-red-500 border border-red-500/20 rounded-[24px]">
+                            Erreur lors du chargement des demandes : {error.message}
+                        </div>
+                    </FadeInUp>
                 )}
 
                 {requests && requests.length === 0 && (
-                    <div className="text-center p-12 border border-white/5 bg-[#100b1a] rounded-none shadow-[0_20px_50px_-15px_rgba(0,0,0,0.5)]">
-                        <Star className="w-12 h-12 text-slate-600 mx-auto mb-4" />
-                        <h3 className="text-xl font-bold text-white mb-2 font-serif">Aucune demande en attente</h3>
-                        <p className="text-slate-400">Toutes les demandes ont été traitées.</p>
-                    </div>
+                    <FadeInUp delay={0.2}>
+                        <div className="text-center p-16 border border-white/5 bg-[#1c1c1e] rounded-[32px] shadow-2xl">
+                            <Star className="w-12 h-12 text-[#86868b] mx-auto mb-4 opacity-50" />
+                            <h3 className="text-2xl font-semibold text-[#f5f5f7] mb-2 tracking-tight">Aucune demande en attente</h3>
+                            <p className="text-[#86868b] font-light">Toutes les demandes d'accès ont été traitées.</p>
+                        </div>
+                    </FadeInUp>
                 )}
 
-                {requests && requests.map(req => (
-                    <RequestItemAdult key={req.id} request={req} />
+                {requests && requests.map((req, index) => (
+                    <FadeInUp key={req.id} delay={0.2 + (index * 0.1)}>
+                        <RequestItemAdult request={req} />
+                    </FadeInUp>
                 ))}
             </div>
         </div>
