@@ -4,9 +4,10 @@ import AdultBoutiqueCard from "@/components/AdultBoutiqueCard";
 import BientotDispo from "@/components/dashboard/BientotDispo";
 import { ShoppingBag, Star } from "lucide-react";
 import BackButton from "@/components/BackButton";
+import { FadeInUp } from "@/components/adults/MotionWrapper";
 
 export const metadata = {
-    title: 'La Boutique | Club des Magiciens',
+    title: 'La Boutique | L\'Atelier des Magiciens',
     description: 'Découvrez nos formations spécialisées et masterclasses en magie.',
 };
 
@@ -51,42 +52,47 @@ export default async function CatalogPage() {
     const purchasedIds = new Set(purchases?.map(p => p.product_id) || []);
 
     return (
-        <div className="min-h-screen bg-black text-white p-4 md:p-8 pb-32 font-sans relative selection:bg-magic-royal/30">
+        <div className="min-h-screen bg-[#000000] text-[#f5f5f7] p-4 md:p-8 pb-32 font-sans relative selection:bg-white/30">
 
             <div className="max-w-6xl mx-auto relative z-10">
                 <BackButton />
                 {/* Header */}
-                <header className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 pt-4 mb-12">
-                    <div className="flex-1">
-                        <div className="flex items-center gap-2 text-magic-royal mb-2">
-                            <Star className="w-5 h-5 fill-current animate-pulse text-magic-royal" />
-                            <span className="text-xs font-bold uppercase tracking-widest text-magic-royal">Accès Premium Seulement</span>
+                <FadeInUp delay={0.1}>
+                    <header className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 pt-4 mb-12">
+                        <div className="flex-1">
+                            <div className="flex items-center gap-2 text-[#86868b] mb-2">
+                                <Star className="w-5 h-5 fill-current text-[#f5f5f7]" />
+                                <span className="text-xs font-semibold uppercase tracking-[0.2em]">Accès Premium Seulement</span>
+                            </div>
+                            <h1 className="text-4xl md:text-6xl font-semibold text-[#f5f5f7] tracking-tight mt-2">
+                                La Boutique
+                            </h1>
+                            <p className="text-[#86868b] mt-3 text-xl font-light max-w-2xl">
+                                Découvrez des formations spécialisées, masterclasses et techniques secrètes pour faire passer votre magie au niveau supérieur.
+                            </p>
                         </div>
-                        <h1 className="text-3xl md:text-5xl font-serif text-white tracking-tight">
-                            La <span className="text-magic-royal">Boutique</span>
-                        </h1>
-                        <p className="text-slate-400 mt-2 text-lg font-light max-w-2xl">
-                            Découvrez des formations spécialisées, masterclasses et techniques secrètes pour faire passer votre magie au niveau supérieur.
-                        </p>
-                    </div>
-                </header>
+                    </header>
+                </FadeInUp>
 
                 {/* Shop Grid */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {products?.map((product) => (
-                        <AdultBoutiqueCard
-                            key={product.id}
-                            product={product}
-                            isPurchased={purchasedIds.has(product.id)}
-                        />
+                    {products?.map((product, index) => (
+                        <FadeInUp key={product.id} delay={0.2 + (index * 0.1)}>
+                            <AdultBoutiqueCard
+                                product={product}
+                                isPurchased={purchasedIds.has(product.id)}
+                            />
+                        </FadeInUp>
                     ))}
 
                     {(!products || products.length === 0) && (
-                        <div className="col-span-full bg-white/5 border border-white/5 p-12 rounded-3xl text-center flex flex-col items-center">
-                            <ShoppingBag className="w-16 h-16 text-white/20 mb-4" />
-                            <h3 className="text-xl font-bold text-white mb-2">Le Catalogue est vide pour le moment</h3>
-                            <p className="text-slate-400">Revenez plus tard pour découvrir de nouvelles formations exclusives.</p>
-                        </div>
+                        <FadeInUp delay={0.2}>
+                            <div className="col-span-full bg-[#1c1c1e] border border-white/5 p-16 rounded-[32px] text-center flex flex-col items-center shadow-xl">
+                                <ShoppingBag className="w-16 h-16 text-[#86868b] mb-4 opacity-50" />
+                                <h3 className="text-2xl font-semibold text-[#f5f5f7] mb-2 tracking-tight">Le Catalogue est vide pour le moment</h3>
+                                <p className="text-[#86868b] font-light">Revenez plus tard pour découvrir de nouvelles formations exclusives.</p>
+                            </div>
+                        </FadeInUp>
                     )}
                 </div>
             </div>

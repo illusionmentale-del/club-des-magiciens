@@ -5,7 +5,7 @@ import { useFormStatus } from "react-dom";
 import Link from "next/link";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
-import { Loader2, Lock, Mail, ArrowRight, AlertCircle, Sparkles } from "lucide-react";
+import { Loader2, Lock, Mail, AlertCircle } from "lucide-react";
 import { loginWithPassword } from "../actions";
 
 // Submit Button Component
@@ -15,7 +15,7 @@ function SubmitButton() {
         <button
             type="submit"
             disabled={pending}
-            className="w-full py-4 bg-gradient-to-r from-amber-500 to-yellow-600 hover:scale-[1.02] text-black font-black uppercase tracking-widest rounded-2xl transition-all shadow-lg hover:shadow-amber-500/50 disabled:opacity-50 disabled:cursor-not-allowed flex justify-center items-center"
+            className="w-full py-4 bg-[#f5f5f7] hover:bg-white text-black font-semibold rounded-full transition-all shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex justify-center items-center"
         >
             {pending ? <Loader2 className="w-6 h-6 animate-spin text-black" /> : <span className="text-lg">Accéder à l'Atelier</span>}
         </button>
@@ -38,31 +38,29 @@ function LoginFormContent() {
                         src="/logo.png"
                         alt="L'Atelier des Magiciens"
                         fill
-                        className="object-contain drop-shadow-[0_0_15px_rgba(245,158,11,0.3)]"
+                        className="object-contain"
                         priority
                     />
                 </div>
-                <h1 className="text-3xl font-serif text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-yellow-600 tracking-wider">
+                <h1 className="text-3xl font-semibold text-[#f5f5f7] tracking-tight">
                     L'Atelier des Magiciens
                 </h1>
-                <p className="text-gray-400 mt-2">Connectez-vous à votre espace membre</p>
+                <p className="text-[#86868b] mt-3 font-light">Connectez-vous à votre espace membre</p>
             </div>
 
-            <div className="bg-[#0f0f13] border border-white/5 rounded-2xl p-8 shadow-2xl relative overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 to-transparent pointer-events-none"></div>
-                
+            <div className="bg-[#1c1c1e] border border-white/5 rounded-[32px] p-8 md:p-10 shadow-2xl relative overflow-hidden">
                 <form action={formAction} className="space-y-6 relative">
                     <input type="hidden" name="audience" value="adults" />
                     <input type="hidden" name="redirect" value={redirectUrl} />
                     
                     <div>
-                        <label className="block text-xs uppercase tracking-widest text-amber-500/80 mb-2 font-semibold">Identifiant ou Email</label>
+                        <label className="block text-sm text-[#86868b] mb-2 font-medium">Identifiant ou Email</label>
                         <div className="relative group/input">
-                            <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500 transition-colors group-focus-within/input:text-amber-500" />
+                            <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#86868b] transition-colors group-focus-within/input:text-[#f5f5f7]" />
                             <input
                                 name="identifier"
                                 type="text"
-                                className="w-full pl-10 pr-4 py-3 bg-black/40 border border-white/10 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-amber-500 focus:outline-none transition-all placeholder:text-gray-600 text-white"
+                                className="w-full pl-12 pr-4 py-4 bg-black/50 border border-white/5 rounded-[16px] focus:ring-1 focus:ring-white/20 focus:border-white/20 focus:outline-none transition-all placeholder:text-[#86868b]/50 text-[#f5f5f7]"
                                 placeholder="votre@email.com"
                                 required
                             />
@@ -71,43 +69,45 @@ function LoginFormContent() {
 
                     <div>
                         <div className="flex justify-between mb-2">
-                            <label className="block text-xs uppercase tracking-widest text-amber-500/80 font-semibold">Mot de passe</label>
-                            <Link href="/login/forgot-password" className="text-xs text-amber-500 hover:text-amber-400 transition-colors">
-                                Mot de passe oublié ?
+                            <label className="block text-sm text-[#86868b] font-medium">Mot de passe</label>
+                            <Link href="/login/forgot-password" className="text-sm text-[#86868b] hover:text-[#f5f5f7] transition-colors font-light">
+                                Oublié ?
                             </Link>
                         </div>
                         <div className="relative group/input">
-                            <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500 transition-colors group-focus-within/input:text-amber-500" />
+                            <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#86868b] transition-colors group-focus-within/input:text-[#f5f5f7]" />
                             <input
                                 name="password"
                                 type="password"
-                                className="w-full pl-10 pr-4 py-3 bg-black/40 border border-white/10 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-amber-500 focus:outline-none transition-all placeholder:text-gray-600 text-white"
+                                className="w-full pl-12 pr-4 py-4 bg-black/50 border border-white/5 rounded-[16px] focus:ring-1 focus:ring-white/20 focus:border-white/20 focus:outline-none transition-all placeholder:text-[#86868b]/50 text-[#f5f5f7]"
                                 placeholder="••••••••"
                                 required
                             />
                         </div>
                     </div>
 
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-3 mt-4">
                         <input
                             type="checkbox"
                             id="remember"
                             name="remember"
-                            className="w-4 h-4 rounded border-white/20 bg-black/40 text-amber-500 focus:ring-amber-500"
+                            className="w-5 h-5 rounded-[6px] border-white/10 bg-black/50 text-[#f5f5f7] focus:ring-0 focus:ring-offset-0"
                         />
-                        <label htmlFor="remember" className="text-sm text-gray-400 select-none cursor-pointer">
+                        <label htmlFor="remember" className="text-sm text-[#86868b] select-none cursor-pointer font-light">
                             Rester connecté
                         </label>
                     </div>
 
                     {state?.error && (
-                        <div className="p-3 bg-red-500/10 text-red-400 rounded-lg text-sm border border-red-500/20 flex items-center gap-2">
-                            <AlertCircle className="w-4 h-4 shrink-0" />
+                        <div className="p-4 bg-red-500/10 text-red-400 rounded-[16px] text-sm border border-red-500/20 flex items-center gap-3">
+                            <AlertCircle className="w-5 h-5 shrink-0" />
                             {state.error}
                         </div>
                     )}
 
-                    <SubmitButton />
+                    <div className="pt-4">
+                        <SubmitButton />
+                    </div>
                 </form>
             </div>
         </div>
@@ -116,12 +116,9 @@ function LoginFormContent() {
 
 export default function AdultLoginPage() {
     return (
-        <div className="min-h-[100dvh] bg-[#050507] text-white flex flex-col p-4 relative overflow-y-auto">
-            {/* Ambient Background */}
-            <div className="absolute top-[-20%] left-1/2 -translate-x-1/2 w-[60%] h-[60%] bg-amber-500/5 blur-[120px] rounded-full pointer-events-none mix-blend-screen"></div>
-            
+        <div className="min-h-[100dvh] bg-[#000000] text-white flex flex-col p-4 relative overflow-y-auto">
             <div className="flex-1 flex flex-col justify-center items-center w-full max-w-md mx-auto py-8">
-                <Suspense fallback={<Loader2 className="w-8 h-8 animate-spin text-amber-500" />}>
+                <Suspense fallback={<Loader2 className="w-8 h-8 animate-spin text-[#86868b]" />}>
                     <LoginFormContent />
                 </Suspense>
             </div>

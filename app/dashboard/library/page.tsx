@@ -2,8 +2,9 @@ import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { Lock, Play, Star, CheckCircle, Trophy, BookOpen } from "lucide-react";
+import { Lock, Play, Star, CheckCircle, Trophy } from "lucide-react";
 import BackButton from "@/components/BackButton";
+import { FadeInUp, BentoHoverEffect } from "@/components/adults/MotionWrapper";
 
 export default async function AdultLibraryPage() {
     const supabase = await createClient();
@@ -71,48 +72,49 @@ export default async function AdultLibraryPage() {
     const displayWeeks = [];
     const SHOW_FUTURE_WEEKS = 4;
 
-    // Affiche les semaines dans l'ordre chronologique (1..N)
     const targetWeek = currentWeek + SHOW_FUTURE_WEEKS;
     for (let i = 1; i <= targetWeek; i++) {
         displayWeeks.push(i);
     }
 
     return (
-        <div className="min-h-screen bg-black text-white p-4 md:p-8 pb-32 font-sans overflow-hidden relative selection:bg-magic-royal/30">
+        <div className="min-h-screen bg-[#000000] text-[#f5f5f7] p-4 md:p-8 pb-32 font-sans overflow-hidden relative selection:bg-white/30">
 
             {/* Main Wrapper Container */}
             <div className="max-w-5xl mx-auto relative z-10">
                 <BackButton />
-                {/* Header (Homogenized with Home) */}
-                <header className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 pt-4 mb-12">
-                    <div className="flex-1">
-                        <div className="flex items-center gap-2 text-magic-royal mb-2">
-                            <Star className="w-5 h-5 fill-current animate-pulse text-magic-royal" />
-                            <span className="text-xs font-bold uppercase tracking-widest">Le QG de la Magie</span>
+                {/* Header */}
+                <FadeInUp delay={0.1}>
+                    <header className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 pt-4 mb-12">
+                        <div className="flex-1">
+                            <div className="flex items-center gap-2 text-[#86868b] mb-2">
+                                <Star className="w-5 h-5 text-[#f5f5f7]" />
+                                <span className="text-xs font-bold uppercase tracking-[0.2em]">Le QG de la Magie</span>
+                            </div>
+                            <h1 className="text-4xl md:text-6xl font-semibold tracking-tight text-[#f5f5f7] mt-4">
+                                {uiLabelsMap.page_videos_title || "Les Vidéos"}
+                            </h1>
+                            <p className="text-[#86868b] mt-3 text-xl font-light">
+                                Retrouvez ici votre parcours d'apprentissage de la magie.
+                            </p>
                         </div>
-                        <h1 className="text-3xl md:text-5xl font-serif text-white tracking-tight mt-4">
-                            {uiLabelsMap.page_videos_title || "Les Vidéos"}
-                        </h1>
-                        <p className="text-slate-400 mt-2 text-lg">
-                            Retrouvez ici votre parcours d'apprentissage de la magie.
-                        </p>
-                    </div>
 
-                    {/* Resume Button */}
-                    {(weeksData[currentWeek] && weeksData[currentWeek].length > 0) && (
-                        <Link 
-                            href={`/watch/${weeksData[currentWeek][0].id}`}
-                            className="border border-magic-royal text-magic-royal hover:bg-magic-royal hover:text-black px-8 py-4 rounded-none font-serif uppercase tracking-widest text-sm transition-all flex items-center gap-3 w-full md:w-auto mt-6 md:mt-0 justify-center group"
-                        >
-                            <Play className="w-5 h-5 group-hover:scale-110 transition-transform" />
-                            Reprendre ma formation
-                        </Link>
-                    )}
-                </header>
+                        {/* Resume Button */}
+                        {(weeksData[currentWeek] && weeksData[currentWeek].length > 0) && (
+                            <Link 
+                                href={`/watch/${weeksData[currentWeek][0].id}`}
+                                className="bg-[#f5f5f7] text-black hover:bg-white px-8 py-4 rounded-full font-medium transition-all shadow-md hover:shadow-lg hover:scale-105 flex items-center gap-3 w-full md:w-auto mt-6 md:mt-0 justify-center group"
+                            >
+                                <Play className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                                Reprendre ma formation
+                            </Link>
+                        )}
+                    </header>
+                </FadeInUp>
 
                 {/* Missions List */}
                 <div className="space-y-6">
-                    {displayWeeks.map(week => {
+                    {displayWeeks.map((week, index) => {
                         const isLocked = week > currentWeek;
                         const isCurrent = week === currentWeek;
                         const isCompleted = week < currentWeek;
@@ -121,90 +123,94 @@ export default async function AdultLibraryPage() {
                         const mainItem = items.find(i => i.is_main) || items[0];
 
                         return (
-                            <div key={week} className="relative group">
+                            <FadeInUp delay={0.2 + (index * 0.05)} key={week}>
+                                <div className="relative group">
 
-                                <div
-                                    className={`
-                                    relative p-6 rounded-none border transition-all duration-300
-                                    ${isLocked
-                                            ? 'bg-black border-white/5 opacity-60'
-                                            : isCurrent
-                                                ? 'bg-black border-magic-royal shadow-2xl z-10'
-                                                : 'bg-black border border-white/10 hover:border-magic-royal/50'
-                                        }
-                                `}
-                                >
-                                    {/* Status Indicator */}
-                                    <div className="flex items-center justify-between mb-4">
-                                        <div className="flex items-center gap-3">
-                                            <div className={`
-                                        w-10 h-10 flex items-center justify-center font-bold text-sm border
-                                        ${isLocked ? 'bg-black border-white/10 text-slate-400' : ''}
-                                        ${isCurrent ? 'bg-magic-royal/10 border-magic-royal text-magic-royal shadow-lg' : ''}
-                                        ${isCompleted ? 'bg-black text-white border-white/20' : ''}
-                                    `}>
-                                                {isLocked && <Lock className="w-4 h-4" />}
-                                                {isCurrent && <Star className="w-5 h-5 fill-current animate-pulse" />}
-                                                {isCompleted && <CheckCircle className="w-5 h-5" />}
-                                            </div>
-                                            <div>
-                                                <h2 className={`font-serif tracking-tight text-xl ${isLocked ? 'text-slate-500' : 'text-white'}`}>
-                                                    Semaine {week}
-                                                </h2>
-                                                {isCurrent && <span className="text-[10px] text-magic-royal font-bold uppercase tracking-widest">En cours</span>}
-                                                {isCompleted && <span className="text-[10px] text-white/50 font-bold uppercase tracking-widest">Terminée</span>}
-                                                {isLocked && <span className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">À venir</span>}
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    {/* Content Preview */}
-                                    {!isLocked ? (
-                                        <div className="flex flex-col sm:flex-row gap-4">
-                                            {/* Thumbnail */}
-                                            <div className="sm:w-1/3 aspect-video relative overflow-hidden bg-black border border-white/10">
-                                                {mainItem?.thumbnail_url ? (
-                                                    <Image src={mainItem.thumbnail_url} alt="" fill className="object-cover opacity-80" />
-                                                ) : (
-                                                    <div className="w-full h-full flex items-center justify-center bg-brand-surface"><Play className="w-8 h-8 text-white/20" /></div>
-                                                )}
-                                            </div>
-
-                                            {/* Info */}
-                                            <div className="flex-1 flex flex-col justify-center">
-                                                <h3 className="text-xl font-serif text-white mb-2">{mainItem?.title || "Mission Mystère"}</h3>
-                                                <p className="text-sm text-slate-400 line-clamp-2 mb-4">
-                                                    {mainItem?.description || "Le secret n'a pas encore été révélé..."}
-                                                </p>
-
-                                                <div className="flex gap-2 mt-auto">
-                                                    <Link
-                                                        href={mainItem ? `/watch/${mainItem.id}` : '#'}
-                                                        className={`
-                                                    flex-1 items-center justify-center gap-2 px-4 py-2 text-xs font-serif uppercase tracking-widest transition-colors flex border
-                                                    ${isCurrent ? 'border-magic-royal text-magic-royal hover:bg-magic-royal hover:text-black' : 'bg-black border-white/10 hover:border-white/30 text-white'}
-                                                `}
-                                                    >
-                                                        <Play className="w-4 h-4" />
-                                                        Voir
-                                                    </Link>
-                                                    {isCurrent && (
-                                                        <div className="px-3 py-2 border border-magic-royal/20 text-magic-royal">
-                                                            <Trophy className="w-4 h-4" />
-                                                        </div>
-                                                    )}
+                                    <div
+                                        className={`
+                                        relative p-6 md:p-8 rounded-[32px] border transition-all duration-300
+                                        ${isLocked
+                                                ? 'bg-[#000000] border-white/5 opacity-60'
+                                                : isCurrent
+                                                    ? 'bg-[#1c1c1e] border-white/20 shadow-2xl z-10'
+                                                    : 'bg-[#1c1c1e] border-transparent hover:border-white/10'
+                                            }
+                                    `}
+                                    >
+                                        {/* Status Indicator */}
+                                        <div className="flex items-center justify-between mb-6">
+                                            <div className="flex items-center gap-4">
+                                                <div className={`
+                                            w-12 h-12 flex items-center justify-center font-bold text-lg rounded-full border
+                                            ${isLocked ? 'bg-[#1c1c1e] border-white/5 text-[#86868b]' : ''}
+                                            ${isCurrent ? 'bg-white text-black border-transparent shadow-lg' : ''}
+                                            ${isCompleted ? 'bg-[#2c2c2e] text-[#f5f5f7] border-white/10' : ''}
+                                        `}>
+                                                    {isLocked && <Lock className="w-5 h-5" />}
+                                                    {isCurrent && <Star className="w-6 h-6 fill-current animate-pulse" />}
+                                                    {isCompleted && <CheckCircle className="w-6 h-6" />}
+                                                </div>
+                                                <div>
+                                                    <h2 className={`font-semibold tracking-tight text-2xl ${isLocked ? 'text-[#86868b]' : 'text-[#f5f5f7]'}`}>
+                                                        Semaine {week}
+                                                    </h2>
+                                                    {isCurrent && <span className="text-[10px] text-black bg-white px-2 py-0.5 rounded-full font-bold uppercase tracking-widest mt-1 inline-block">En cours</span>}
+                                                    {isCompleted && <span className="text-[10px] text-[#86868b] font-bold uppercase tracking-widest mt-1 inline-block">Terminée</span>}
+                                                    {isLocked && <span className="text-[10px] text-[#86868b] font-bold uppercase tracking-widest mt-1 inline-block">À venir</span>}
                                                 </div>
                                             </div>
                                         </div>
-                                    ) : (
-                                        <div className="p-4 bg-brand-bg/30 rounded-lg border border-dashed border-white/10 flex items-center justify-center gap-2 text-slate-400">
-                                            <Lock className="w-4 h-4" />
-                                            <span className="text-sm font-mono uppercase">Contenu Classifié</span>
-                                        </div>
-                                    )}
 
+                                        {/* Content Preview */}
+                                        {!isLocked ? (
+                                            <div className="flex flex-col md:flex-row gap-6">
+                                                {/* Thumbnail */}
+                                                <BentoHoverEffect className="md:w-1/3">
+                                                    <div className="w-full aspect-video relative overflow-hidden rounded-[24px] bg-black border border-white/5 shadow-md">
+                                                        {mainItem?.thumbnail_url ? (
+                                                            <Image src={mainItem.thumbnail_url} alt="" fill className="object-cover opacity-90 hover:opacity-100 hover:scale-105 transition-all duration-700 ease-[0.16,1,0.3,1]" />
+                                                        ) : (
+                                                            <div className="w-full h-full flex items-center justify-center bg-[#2c2c2e]"><Play className="w-10 h-10 text-[#86868b]" /></div>
+                                                        )}
+                                                    </div>
+                                                </BentoHoverEffect>
+
+                                                {/* Info */}
+                                                <div className="flex-1 flex flex-col justify-center">
+                                                    <h3 className="text-2xl font-semibold text-white tracking-tight mb-2">{mainItem?.title || "Mission Mystère"}</h3>
+                                                    <p className="text-base text-[#86868b] font-light leading-relaxed line-clamp-2 mb-6">
+                                                        {mainItem?.description || "Le secret n'a pas encore été révélé..."}
+                                                    </p>
+
+                                                    <div className="flex gap-3 mt-auto">
+                                                        <Link
+                                                            href={mainItem ? `/watch/${mainItem.id}` : '#'}
+                                                            className={`
+                                                        flex-1 items-center justify-center gap-2 px-6 py-3 rounded-full font-medium transition-all flex border
+                                                        ${isCurrent ? 'bg-[#f5f5f7] text-black hover:bg-white shadow-md' : 'bg-transparent border-white/10 hover:border-white/30 text-[#f5f5f7] hover:bg-white/5'}
+                                                    `}
+                                                        >
+                                                            <Play className="w-4 h-4 fill-current" />
+                                                            Voir le contenu
+                                                        </Link>
+                                                        {isCurrent && (
+                                                            <div className="px-4 py-3 rounded-full border border-white/20 text-[#f5f5f7] bg-white/5 flex items-center justify-center">
+                                                                <Trophy className="w-5 h-5" />
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        ) : (
+                                            <div className="p-6 bg-[#1c1c1e] rounded-[24px] border border-dashed border-white/10 flex items-center justify-center gap-3 text-[#86868b]">
+                                                <Lock className="w-5 h-5" />
+                                                <span className="text-sm font-medium tracking-wide uppercase">Contenu Classifié</span>
+                                            </div>
+                                        )}
+
+                                    </div>
                                 </div>
-                            </div>
+                            </FadeInUp>
                         );
                     })}
                 </div>
