@@ -101,7 +101,11 @@ export default function AdminProductsPage() {
                                     </div>
                                 )}
                                 <div className="absolute top-3 right-3 flex gap-2">
-                                    <span className={`px-2 py-1 rounded text-xs font-bold uppercase ${product.is_active ? 'bg-green-500 text-white' : 'bg-red-500 text-white'}`}>
+                                    <span className={`px-2 py-1 rounded text-xs font-bold uppercase ${
+                                        product.is_active 
+                                            ? (audience === 'adults' ? 'bg-[#f5f5f7] text-black' : 'bg-green-500 text-white') 
+                                            : (audience === 'adults' ? 'bg-[#1c1c1e] text-[#86868b] border border-white/10' : 'bg-red-500 text-white')
+                                    }`}>
                                         {product.is_active ? 'Actif' : 'Inactif'}
                                     </span>
                                 </div>
@@ -110,27 +114,31 @@ export default function AdminProductsPage() {
                             <div className="p-6 flex-1 flex flex-col">
                                 <div className="flex justify-between items-start mb-2">
                                     <h3 className="text-xl font-bold line-clamp-1" title={product.title}>{product.title}</h3>
-                                    <span className="font-mono text-lg font-bold text-green-400">
+                                    <span className={`font-mono text-lg font-bold ${audience === 'adults' ? 'text-[#f5f5f7]' : 'text-green-400'}`}>
                                         {(product.price / 100).toFixed(2)}€
                                     </span>
                                 </div>
 
-                                <p className="text-gray-400 text-sm line-clamp-2 mb-4 flex-1">{product.description}</p>
+                                <p className={`${audience === 'adults' ? 'text-[#86868b]' : 'text-gray-400'} text-sm line-clamp-2 mb-4 flex-1`}>{product.description}</p>
 
-                                <div className="space-y-2 text-xs text-gray-500 font-mono bg-black/20 p-3 rounded-lg border border-white/5 mb-4">
+                                <div className={`space-y-2 text-xs font-mono p-3 rounded-lg mb-4 ${audience === 'adults' ? 'text-[#86868b] bg-[#000000] border border-white/5' : 'text-gray-500 bg-black/20 border border-white/5'}`}>
                                     <div className="flex items-center gap-2">
                                         <Tag className="w-3 h-3" />
                                         Type: <span className="text-white uppercase">{product.type}</span>
                                     </div>
                                     <div className="flex items-center gap-2 truncate" title={product.stripe_price_id}>
                                         <Euro className="w-3 h-3" />
-                                        ID: <span className="text-blue-400 select-all">{product.stripe_price_id || 'N/A'}</span>
+                                        ID: <span className={`${audience === 'adults' ? 'text-[#f5f5f7]' : 'text-blue-400'} select-all`}>{product.stripe_price_id || 'N/A'}</span>
                                     </div>
                                 </div>
 
                                 <div className="flex items-center gap-2 mt-auto pt-4 border-t border-white/5">
                                     <form action={toggleProductStatus.bind(null, product.id, product.is_active)} className="flex-1">
-                                        <button className={`w-full py-2 rounded-lg font-bold text-xs flex items-center justify-center gap-2 ${product.is_active ? 'bg-red-500/10 text-red-400 hover:bg-red-500/20' : 'bg-green-500/10 text-green-400 hover:bg-green-500/20'}`}>
+                                        <button className={`w-full py-2 rounded-lg font-bold text-xs flex items-center justify-center gap-2 ${
+                                            product.is_active 
+                                                ? (audience === 'adults' ? 'bg-[#1c1c1e] text-[#86868b] hover:text-[#f5f5f7] border border-white/5' : 'bg-red-500/10 text-red-400 hover:bg-red-500/20') 
+                                                : (audience === 'adults' ? 'bg-[#f5f5f7] text-[#1c1c1e] hover:bg-white' : 'bg-green-500/10 text-green-400 hover:bg-green-500/20')
+                                        }`}>
                                             {product.is_active ? <XCircle className="w-4 h-4" /> : <CheckCircle className="w-4 h-4" />}
                                             {product.is_active ? 'Désactiver' : 'Activer'}
                                         </button>
@@ -138,7 +146,7 @@ export default function AdminProductsPage() {
 
                                     <form action={deleteProduct.bind(null, product.id)}>
                                         <button
-                                            className="p-2 bg-white/5 text-gray-500 hover:text-red-500 hover:bg-red-500/10 rounded-lg transition-colors"
+                                            className={`p-2 rounded-lg transition-colors ${audience === 'adults' ? 'bg-[#1c1c1e] text-[#86868b] hover:text-[#f5f5f7] border border-white/5 hover:border-white/20' : 'bg-white/5 text-gray-500 hover:text-red-500 hover:bg-red-500/10'}`}
                                             onClick={(e) => {
                                                 if (!confirm("Voulez-vous vraiment supprimer ce produit ? Cela ne remboursera pas les clients existants.")) {
                                                     e.preventDefault();
