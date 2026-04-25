@@ -11,6 +11,7 @@ import KidsAchievements from "@/components/kids/KidsAchievements";
 import { LiveStatusCard } from "@/components/LiveStatusCard";
 import GlobalAlertBanner from "@/components/kids/GlobalAlertBanner";
 import WelcomeModal from "@/components/kids/WelcomeModal";
+import { FadeInUp, BentoHoverEffect } from "@/components/adults/MotionWrapper";
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -63,14 +64,12 @@ export default async function KidsHomePage({ searchParams }: { searchParams: Pro
 
     } catch (err: any) {
         console.error("Data fetch error:", err);
-        // Continue to allow error handling below if strictly needed, 
-        // or let the next check capture the missing profile.
     }
 
     // CRITICAL ERROR: If still no profile after self-healing, show error
     if (!profile) {
         return (
-            <div className="min-h-screen flex items-center justify-center bg-black text-red-500 font-mono p-10 space-y-4">
+            <div className="min-h-screen flex items-center justify-center bg-[#000000] text-red-500 font-mono p-10 space-y-4">
                 <h1 className="text-2xl font-bold">⚠️ ERREUR FATALE PROFIL</h1>
                 <p>Impossible de récupérer ou créer le profil.</p>
                 <div className="p-4 bg-red-900/20 border border-red-500 rounded text-xs whitespace-pre-wrap">
@@ -163,7 +162,6 @@ export default async function KidsHomePage({ searchParams }: { searchParams: Pro
     const featuredConfig = getJsonSetting("featured_config", { id: "", image: "", text: "" });
     let mainItem = allItems?.find(i => i.id === featuredConfig.id);
 
-    // If not found in allItems (e.g. from a future week), fetch it explicitly
     if (featuredConfig.id && !mainItem) {
         const { data: specificItem } = await supabase
             .from("library_items")
@@ -173,48 +171,41 @@ export default async function KidsHomePage({ searchParams }: { searchParams: Pro
         if (specificItem) mainItem = specificItem;
     }
 
-    // Fallback hero logic
     if (!mainItem) {
         const currentItems = allItems?.filter(i => i.week_number === currentWeek) || [];
         mainItem = currentItems.find(i => i.is_main) || currentItems[0] || allItems?.[0];
     }
 
     // NEWS (CURATION)
-    // Supports both old format (string[]) and new format ({id, type, data?}[])
     const newsConfigRaw = getJsonSetting("news_config", []);
     let recentItems: any[] = [];
 
     if (Array.isArray(newsConfigRaw) && newsConfigRaw.length > 0) {
-        // Normalize config to array of objects
         const configItems = newsConfigRaw.map(item => {
             if (typeof item === 'string') return { id: item, type: 'course' };
             return item;
         });
 
-        // 1. Fetch real course data for items of type 'course'
         const courseIds = configItems.filter((i: any) => i.type === 'course').map((i: any) => i.id);
         const courses = allItems?.filter(i => courseIds.includes(i.id)) || [];
 
-        // 2. Merge and preserve order from config
         recentItems = configItems.map((configItem: any) => {
             if (configItem.type === 'course') {
                 const realCourse = courses.find(c => c.id === configItem.id);
-                if (!realCourse) return null; // Course not found or not available yet
+                if (!realCourse) return null;
                 return { ...realCourse, type: 'course' };
             }
-            // Custom items (tips, products, links)
             return {
                 id: configItem.id,
                 type: configItem.type,
                 title: configItem.data?.title || "Sans titre",
                 thumbnail_url: configItem.data?.image,
                 url: configItem.data?.url,
-                week_number: null // Custom items don't have a week number usually
+                week_number: null
             };
-        }).filter(Boolean); // Remove nulls
+        }).filter(Boolean);
 
     } else {
-        // Fallback news logic
         recentItems = allItems?.filter(i => i.id !== mainItem?.id).slice(0, 3).map(i => ({ ...i, type: 'course' })) || [];
     }
 
@@ -281,8 +272,6 @@ export default async function KidsHomePage({ searchParams }: { searchParams: Pro
         .eq("status", "active");
     const hasPurchases = (purchaseCount || 0) > 0;
 
-
-
     const userName = profile.username || profile.full_name || profile.display_name || profile.first_name || user.user_metadata?.full_name || "Jeune Magicien";
 
     let avatarUrl = "";
@@ -293,10 +282,10 @@ export default async function KidsHomePage({ searchParams }: { searchParams: Pro
     const isShopEnabled = settingsMap.enable_kids_shop !== 'false';
 
     return (
-        <div className="min-h-screen bg-brand-bg text-brand-text p-4 md:p-8 pb-32 font-sans overflow-hidden relative selection:bg-brand-purple/30">
+        <div className="min-h-screen bg-[#000000] text-[#f5f5f7] p-4 md:p-8 pb-32 font-sans overflow-hidden relative selection:bg-brand-purple/30">
             <WelcomeModal />
-            {/* Ambient Background */}
-            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-brand-purple/10 via-brand-bg to-brand-bg pointer-events-none"></div>
+            {/* Ambient Background - Subtle Purple Glow on Top Left */}
+            <div className="absolute top-0 left-0 w-full md:w-1/2 h-[50vh] bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] from-brand-purple/10 via-[#000000]/0 to-[#000000]/0 pointer-events-none z-0"></div>
 
             <div className="max-w-5xl mx-auto relative z-10 space-y-12">
 
@@ -311,89 +300,106 @@ export default async function KidsHomePage({ searchParams }: { searchParams: Pro
                 )}
 
                 {/* BLOC 1: BIENVENUE */}
-                <header className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 pt-4">
-                    <div className="flex-1">
-                        <div className="flex items-center gap-2 text-brand-gold mb-2">
-                            <Sparkles className="w-5 h-5 animate-pulse" />
-                            <span className="text-xs font-bold uppercase tracking-widest">Le Club des Petits Magiciens</span>
+                <FadeInUp delay={0.1}>
+                    <header className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 pt-4">
+                        <div className="flex-1">
+                            <div className="flex items-center gap-2 text-brand-gold mb-2">
+                                <Sparkles className="w-5 h-5 animate-pulse" />
+                                <span className="text-xs font-bold uppercase tracking-widest">Le Club des Petits Magiciens</span>
+                            </div>
+                            <h1 className="text-4xl md:text-6xl font-semibold tracking-tight text-white">
+                                Bienvenue au <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-purple to-pink-500">Club</span> ✨
+                            </h1>
+                            <p className="text-[#86868b] mt-3 text-lg md:text-xl font-light">
+                                {customWelcome || (mainItem ? "Prêt à découvrir les secrets de la semaine ?" : "Prêt pour ton aventure magique ?")}
+                            </p>
                         </div>
-                        <h1 className="text-3xl md:text-5xl font-black text-white tracking-tight">
-                            Bienvenue au <span className="text-brand-purple">Club</span> ! ✨
-                        </h1>
-                        <p className="text-brand-text-muted mt-2 text-lg">
-                            {customWelcome || (mainItem ? "Prêt à découvrir les secrets de la semaine ?" : "Prêt pour ton aventure magique ?")}
-                        </p>
-                    </div>
-                </header>
+                    </header>
+                </FadeInUp>
 
                 {/* BLOC: GLOBAL ALERTS */}
                 <GlobalAlertBanner alerts={unreadAlerts} />
 
                 {/* BLOC: LIVE STREAM BANNER */}
                 {activeLive && (
-                    <div className="mb-8">
-                        <LiveStatusCard live={activeLive} isReminded={isReminded} />
-                    </div>
+                    <FadeInUp delay={0.15}>
+                        <div className="mb-8">
+                            <LiveStatusCard live={activeLive} isReminded={isReminded} />
+                        </div>
+                    </FadeInUp>
                 )}
 
                 {/* BLOC 2: HERO (ATELIER VEDETTE) */}
-                <KidsHomeHero
-                    item={mainItem}
-                    overrideImage={featuredConfig.image}
-                    overrideHook={featuredConfig.text}
-                />
+                <FadeInUp delay={0.2}>
+                    <KidsHomeHero
+                        item={mainItem}
+                        overrideImage={featuredConfig.image}
+                        overrideHook={featuredConfig.text}
+                    />
+                </FadeInUp>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                     {/* COLONNE GAUCHE (2/3) */}
-                    <div className="md:col-span-2 lg:col-span-2 space-y-12">
+                    <div className="md:col-span-2 lg:col-span-2 space-y-8">
 
                         {/* BLOC 3: NOUVEAUTÉS */}
-                        <KidsNewsFeed items={recentItems} />
+                        <FadeInUp delay={0.3}>
+                            <KidsNewsFeed items={recentItems} />
+                        </FadeInUp>
 
                         {/* BLOC 6: MES COFFRES (Always Visible or Logic based) */}
                         {isShopEnabled && (
-                            <section>
-                                <h3 className="text-lg font-bold text-white uppercase tracking-wider mb-6 flex items-center gap-2">
-                                    <Package className="w-5 h-5 text-brand-gold" />
-                                    La Boutique Magique
-                                </h3>
-                                <div className="bg-[#151025] border border-brand-gold/20 rounded-2xl p-6 flex flex-col sm:flex-row items-center gap-6 shadow-[0_10px_30px_-10px_rgba(255,215,0,0.1)]">
-                                    <div className="w-16 h-16 bg-brand-gold/20 rounded-full flex items-center justify-center shrink-0">
-                                        <ShoppingBag className="w-8 h-8 text-brand-gold" />
+                            <FadeInUp delay={0.4}>
+                                <section>
+                                    <h3 className="text-sm font-semibold text-[#86868b] uppercase tracking-widest mb-6 flex items-center gap-2">
+                                        <Package className="w-4 h-4 text-brand-gold" />
+                                        La Boutique Magique
+                                    </h3>
+                                    <div className="group bg-[#1c1c1e] border border-white/5 rounded-[32px] p-8 flex flex-col sm:flex-row items-center gap-8 shadow-xl hover:shadow-2xl hover:border-white/10 transition-all duration-500 ease-[0.16,1,0.3,1] relative overflow-hidden">
+                                        {/* Glow effect */}
+                                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-brand-gold/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"></div>
+
+                                        <div className="w-20 h-20 bg-brand-gold/10 rounded-[24px] flex items-center justify-center shrink-0 border border-brand-gold/20 relative z-10 group-hover:scale-110 transition-transform duration-500 ease-[0.16,1,0.3,1]">
+                                            <ShoppingBag className="w-10 h-10 text-brand-gold" />
+                                        </div>
+                                        <div className="flex-1 text-center sm:text-left relative z-10">
+                                            <h4 className="text-2xl font-semibold text-[#f5f5f7] mb-2 tracking-tight group-hover:text-brand-gold transition-colors">
+                                                {hasPurchases ? `Tu as déjà ${purchaseCount} vidéos !` : "Découvre les secrets du Club !"}
+                                            </h4>
+                                            <p className="text-[#86868b] font-light text-sm">Équipe-toi avec le meilleur matériel de magicien pro.</p>
+                                        </div>
+                                        <Link
+                                            href="/kids/shop"
+                                            className="bg-brand-gold hover:bg-yellow-400 text-black font-semibold text-sm py-4 px-8 rounded-full transition-all shadow-lg hover:shadow-brand-gold/20 hover:scale-105 whitespace-nowrap relative z-10"
+                                        >
+                                            Faire un tour à la boutique
+                                        </Link>
                                     </div>
-                                    <div className="flex-1 text-center sm:text-left">
-                                        <h4 className="text-xl font-bold text-brand-gold mb-1">
-                                            {hasPurchases ? `Tu as déjà ${purchaseCount} vidéos !` : "Découvre les secrets du Club !"}
-                                        </h4>
-                                        <p className="text-brand-text-muted text-sm">Équipe-toi avec le meilleur matériel de magicien pro.</p>
-                                    </div>
-                                    <Link
-                                        href="/kids/shop"
-                                        className="bg-brand-gold hover:bg-brand-gold/80 text-black font-bold py-3 px-6 rounded-xl transition-colors whitespace-nowrap"
-                                    >
-                                        Faire un tour à la boutique
-                                    </Link>
-                                </div>
-                            </section>
+                                </section>
+                            </FadeInUp>
                         )}
                     </div>
 
                     {/* COLONNE DROITE (1/3) */}
                     <div className="space-y-8">
                         {/* BLOC 4: PROGRESSION */}
-                        <KidsProgression
-                            validatedCount={validatedItems}
-                            totalItemsToMax={TOTAL_ITEMS_TO_MAX}
-                            userGrade={currentGrade}
-                            currentLevel={currentLevelNumber}
-                            totalXP={totalXP}
-                            nextGrade={nextGrade}
-                            nextThreshold={nextThreshold}
-                            avatarUrl={avatarUrl}
-                        />
+                        <FadeInUp delay={0.4}>
+                            <KidsProgression
+                                validatedCount={validatedItems}
+                                totalItemsToMax={TOTAL_ITEMS_TO_MAX}
+                                userGrade={currentGrade}
+                                currentLevel={currentLevelNumber}
+                                totalXP={totalXP}
+                                nextGrade={nextGrade}
+                                nextThreshold={nextThreshold}
+                                avatarUrl={avatarUrl}
+                            />
+                        </FadeInUp>
 
                         {/* BLOC 5: SUCCESS (WINS) */}
-                        <KidsAchievements recentValids={recentValids || []} completedQuests={completedQuests || []} />
+                        <FadeInUp delay={0.5}>
+                            <KidsAchievements recentValids={recentValids || []} completedQuests={completedQuests || []} />
+                        </FadeInUp>
                     </div>
                 </div>
             </div>

@@ -7,6 +7,7 @@ import BackButton from "@/components/BackButton";
 import { NotificationPreferences } from "@/components/NotificationPreferences";
 import KidsIdentityForm from "@/components/kids/KidsIdentityForm";
 import QuickSkinSelector from "@/components/kids/QuickSkinSelector";
+import { FadeInUp } from "@/components/adults/MotionWrapper";
 
 export default async function KidsAccountPage({
     searchParams,
@@ -58,105 +59,112 @@ export default async function KidsAccountPage({
     const availableSkins = skins?.filter(s => s.is_default || unlockedSkinIds.includes(s.id)) || [];
 
     return (
-        <div className="min-h-screen bg-brand-bg text-brand-text p-4 md:p-8 pb-32 font-sans selection:bg-brand-purple/30 overflow-hidden relative">
+        <div className="min-h-screen bg-[#000000] text-[#f5f5f7] p-4 md:p-8 pb-32 font-sans selection:bg-brand-purple/30 overflow-hidden relative">
 
             {/* Ambient Background Lights (Homogenized with Home) */}
-            <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] bg-brand-purple/20 blur-[150px] rounded-full pointer-events-none mix-blend-screen"></div>
-            <div className="absolute top-[20%] right-[-10%] w-[40%] h-[40%] bg-brand-blue/10 blur-[120px] rounded-full pointer-events-none mix-blend-screen"></div>
+            <div className="absolute top-0 left-0 w-full md:w-1/2 h-[50vh] bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] from-brand-purple/10 via-[#000000]/0 to-[#000000]/0 pointer-events-none z-0"></div>
 
             {/* Main Wrapper Container */}
             <div className="max-w-5xl mx-auto relative z-10 space-y-12">
 
                 {/* Header (Homogenized with Home) */}
-                <header className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 pt-4">
-                    <div className="flex-1">
-                        <div className="mb-4">
-                            <BackButton className="md:hidden" />
+                <FadeInUp delay={0.1}>
+                    <header className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 pt-4">
+                        <div className="flex-1">
+                            <div className="mb-6">
+                                <BackButton className="md:hidden" />
+                            </div>
+                            <div className="flex items-center gap-2 text-brand-gold mb-2">
+                                <Star className="w-5 h-5 fill-current animate-pulse text-brand-gold" />
+                                <span className="text-xs font-bold uppercase tracking-widest">Le Club des Petits Magiciens</span>
+                            </div>
+                            <h1 className="text-4xl md:text-6xl font-semibold tracking-tight text-white">
+                                {isSettingsView ? "Mes " : "Ma "}
+                                <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-purple to-pink-500">
+                                    {isSettingsView ? "Paramètres" : "Carte d'Apprenti"}
+                                </span>
+                            </h1>
+                            <p className="text-[#86868b] mt-3 text-lg md:text-xl font-light">
+                                {isSettingsView
+                                    ? "Gère tes informations personnelles et tes préférences."
+                                    : "Voici ta carte de magicien officiel. Montre tes progrès !"}
+                            </p>
                         </div>
-                        <div className="flex items-center gap-2 text-brand-gold mb-2">
-                            <Star className="w-5 h-5 fill-current animate-pulse text-brand-gold" />
-                            <span className="text-xs font-bold uppercase tracking-widest">Le Club des Petits Magiciens</span>
-                        </div>
-                        <h1 className="text-3xl md:text-5xl font-black text-white tracking-tight">
-                            {isSettingsView ? "Mes " : "Ma "}
-                            <span className="text-brand-purple">
-                                {isSettingsView ? "Paramètres" : "Carte d'Apprenti"}
-                            </span>
-                        </h1>
-                        <p className="text-brand-text-muted mt-2 text-lg">
-                            {isSettingsView
-                                ? "Gère tes informations personnelles et tes préférences."
-                                : "Voici ta carte de magicien officiel. Montre tes progrès !"}
-                        </p>
-                    </div>
 
-                    {!isSettingsView && (
-                        <div className="mt-4 md:mt-0 w-full md:w-auto">
-                            <a 
-                                href="/kids/achievements" 
-                                className="flex items-center justify-center md:justify-start gap-2 px-6 py-3 bg-brand-purple/20 border border-brand-purple/50 text-brand-purple font-bold shadow-[0_0_15px_rgba(168,85,247,0.3)] hover:shadow-[0_0_25px_rgba(168,85,247,0.5)] rounded-xl hover:bg-brand-purple hover:text-white transition-all duration-300 text-sm uppercase tracking-widest hover:scale-105 active:scale-95"
-                            >
-                                <Trophy className="w-5 h-5" />
-                                Salle des Trophées
-                            </a>
-                        </div>
-                    )}
-                </header>
+                        {!isSettingsView && (
+                            <div className="mt-6 md:mt-0 w-full md:w-auto">
+                                <a 
+                                    href="/kids/achievements" 
+                                    className="flex items-center justify-center md:justify-start gap-3 px-8 py-4 bg-[#1c1c1e] border border-brand-purple/50 text-white font-semibold shadow-[0_0_15px_rgba(168,85,247,0.3)] hover:shadow-[0_0_25px_rgba(168,85,247,0.5)] rounded-full hover:bg-brand-purple transition-all duration-300 text-sm uppercase tracking-widest hover:scale-105 active:scale-95"
+                                >
+                                    <Trophy className="w-5 h-5 text-brand-gold" />
+                                    Salle des Trophées
+                                </a>
+                            </div>
+                        )}
+                    </header>
+                </FadeInUp>
 
-                <div className="relative z-10 w-full">
-                    {isSettingsView ? (
-                        <div className="relative group">
-                            <div className="absolute -inset-1 bg-gradient-to-r from-brand-purple to-brand-blue rounded-3xl opacity-0 blur-lg group-hover:opacity-40 transition duration-1000 pointer-events-none"></div>
-                            <div className="relative bg-brand-card border border-brand-border rounded-3xl p-6 md:p-8 shadow-2xl">
-                                <div className="max-w-xl mx-auto">
-                                    <h2 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
-                                        <Shield className="w-5 h-5 text-brand-blue" />
-                                        Informations Personnelles
-                                    </h2>
-                                    <AccountForm user={user} profile={profile} theme="dark" isKidProfile={true} />
-
-                                    {/* Section Notifications */}
-                                    <div className="mt-12 space-y-6">
-                                        <h2 className="text-xl font-bold text-white mb-2 flex items-center gap-2">
-                                            <Bell className="w-5 h-5 text-brand-blue" />
-                                            Préférences de Communication
+                <FadeInUp delay={0.2}>
+                    <div className="relative z-10 w-full">
+                        {isSettingsView ? (
+                            <div className="relative group">
+                                <div className="absolute -inset-1 bg-gradient-to-r from-brand-purple to-brand-blue rounded-[32px] opacity-0 blur-xl group-hover:opacity-20 transition duration-1000 pointer-events-none"></div>
+                                <div className="relative bg-[#1c1c1e] border border-white/5 rounded-[32px] p-8 md:p-12 shadow-xl">
+                                    <div className="max-w-xl mx-auto">
+                                        <h2 className="text-xl font-semibold text-[#f5f5f7] mb-8 flex items-center gap-3">
+                                            <Shield className="w-6 h-6 text-brand-blue" />
+                                            Informations Personnelles
                                         </h2>
-                                        <NotificationPreferences profile={profile} space="kids" />
-                                    </div>
+                                        <AccountForm user={user} profile={profile} theme="dark" isKidProfile={true} />
 
-                                    {/* Additional settings could go here (e.g. Subscription status) */}
-                                    <div className="mt-8 pt-8 border-t border-white/10 text-center">
-                                        <p className="text-xs text-brand-text-muted">
-                                            Membre du Club depuis le {new Date(user.created_at).toLocaleDateString('fr-FR')}
-                                        </p>
+                                        {/* Section Notifications */}
+                                        <div className="mt-16 space-y-8">
+                                            <h2 className="text-xl font-semibold text-[#f5f5f7] mb-4 flex items-center gap-3">
+                                                <Bell className="w-6 h-6 text-brand-blue" />
+                                                Préférences de Communication
+                                            </h2>
+                                            <NotificationPreferences profile={profile} space="kids" />
+                                        </div>
+
+                                        {/* Additional settings could go here (e.g. Subscription status) */}
+                                        <div className="mt-12 pt-12 border-t border-white/5 text-center">
+                                            <p className="text-xs font-light text-[#86868b] uppercase tracking-widest">
+                                                Membre du Club depuis le {new Date(user.created_at).toLocaleDateString('fr-FR')}
+                                            </p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    ) : (
-                        <div className="flex flex-col items-center">
-                            <MagicCard user={user} profile={profile} isKid={true} lifetimeXP={lifetimeXP} avatarUrl={computedAvatarUrl} />
-                            
-                            <QuickSkinSelector skins={availableSkins} equippedSkinId={profile?.equipped_skin_id} />
+                        ) : (
+                            <div className="flex flex-col items-center">
+                                <MagicCard user={user} profile={profile} isKid={true} lifetimeXP={lifetimeXP} avatarUrl={computedAvatarUrl} />
+                                
+                                <div className="mt-12 w-full max-w-[600px]">
+                                    <QuickSkinSelector skins={availableSkins} equippedSkinId={profile?.equipped_skin_id} />
+                                </div>
 
-                            {/* Solde et Bouton pour dépenser */}
-                            <div className="mt-8 mb-4 w-full max-w-[400px] flex flex-col items-center">
-                                <p className="mb-3 text-sm font-bold text-brand-gold animate-in fade-in zoom-in duration-500">
-                                    Solde actuel : <span className="text-lg text-white">{profile?.xp || 0}</span> Poussières d'étoiles 🌟
-                                </p>
-                                <a 
-                                    href="/kids/shop"
-                                    className="w-full px-4 py-4 bg-gradient-to-r from-brand-gold to-yellow-500 hover:scale-[1.02] text-black font-black uppercase tracking-widest rounded-2xl transition-all shadow-[0_10px_30px_rgba(250,204,21,0.4)] flex justify-center items-center gap-3 text-center"
-                                >
-                                    <ShoppingBag className="w-5 h-5 shrink-0" />
-                                    <span>Dépenser mes Poussières d'étoiles</span>
-                                </a>
+                                {/* Solde et Bouton pour dépenser */}
+                                <div className="mt-12 mb-8 w-full max-w-[400px] flex flex-col items-center">
+                                    <p className="mb-4 text-sm font-bold text-brand-gold uppercase tracking-widest">
+                                        Solde actuel : <span className="text-2xl text-white font-black mx-2">{profile?.xp || 0}</span> Poussières d'étoiles 🌟
+                                    </p>
+                                    <a 
+                                        href="/kids/shop"
+                                        className="w-full px-6 py-5 bg-brand-gold hover:bg-yellow-400 text-black font-semibold uppercase tracking-widest rounded-full transition-all shadow-xl hover:shadow-brand-gold/30 hover:scale-105 flex justify-center items-center gap-3 text-sm"
+                                    >
+                                        <ShoppingBag className="w-5 h-5 shrink-0" />
+                                        <span>Dépenser mes Poussières</span>
+                                    </a>
+                                </div>
+
+                                <div className="w-full max-w-[600px]">
+                                    <KidsIdentityForm profile={profile} />
+                                </div>
                             </div>
-
-                            <KidsIdentityForm profile={profile} />
-                        </div>
-                    )}
-                </div>
+                        )}
+                    </div>
+                </FadeInUp>
             </div>
         </div>
     );
