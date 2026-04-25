@@ -65,12 +65,12 @@ export default async function AdminAdultsInbox({
             <header className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-white/10 pb-6">
                 <div>
                     <h1 className="text-3xl font-black text-white flex items-center gap-3">
-                        <MessageCircle className="w-8 h-8 text-magic-royal" />
+                        <MessageCircle className="w-8 h-8 text-white" />
                         Inbox Adultes
                     </h1>
                     <p className="text-gray-400 mt-2">Gérez les questions et commentaires des étudiants premium.</p>
                 </div>
-                <div className="bg-magic-card border border-white/10 px-6 py-3 rounded-2xl flex items-center gap-3 shadow-[0_0_30px_rgba(238,195,67,0.1)]">
+                <div className="bg-[#1c1c1e] border border-white/5 px-6 py-3 rounded-[24px] flex items-center gap-3 shadow-md">
                     <div className="w-3 h-3 rounded-full bg-red-500 animate-pulse"></div>
                     <span className="font-bold text-white tracking-widest uppercase">{currentTab === 'unread' ? comments.length : 'Archives'} Messages</span>
                 </div>
@@ -88,7 +88,7 @@ export default async function AdminAdultsInbox({
                         className={cn(
                             "flex items-center gap-2 px-6 py-2.5 rounded-lg text-sm font-bold uppercase tracking-widest transition-all",
                             currentTab === 'unread'
-                                ? "bg-magic-royal text-black shadow-lg"
+                                ? "bg-[#f5f5f7] text-[#1c1c1e] shadow-lg"
                                 : "text-gray-400 hover:text-white hover:bg-white/5"
                         )}
                     >
@@ -100,7 +100,7 @@ export default async function AdminAdultsInbox({
                         className={cn(
                             "flex items-center gap-2 px-6 py-2.5 rounded-lg text-sm font-bold uppercase tracking-widest transition-all",
                             currentTab === 'read'
-                                ? "bg-magic-royal text-black shadow-lg"
+                                ? "bg-[#f5f5f7] text-[#1c1c1e] shadow-lg"
                                 : "text-gray-400 hover:text-white hover:bg-white/5"
                         )}
                     >
@@ -112,7 +112,7 @@ export default async function AdminAdultsInbox({
 
             <div className="grid grid-cols-1 gap-6">
                 {comments.length === 0 ? (
-                    <div className="bg-magic-card border border-white/10 rounded-3xl p-12 text-center text-gray-500 flex flex-col items-center">
+                    <div className="bg-[#1c1c1e] border border-white/5 rounded-[32px] p-12 text-center text-gray-500 flex flex-col items-center">
                         <MessageCircle className="w-16 h-16 text-white/5 mb-4" />
                         <p className="text-xl font-medium text-white mb-2">Inbox Vide</p>
                         <p>Aucun nouveau message d'adulte pour le moment. Beau travail !</p>
@@ -123,8 +123,8 @@ export default async function AdminAdultsInbox({
                         const course = sourceCourses.find(c => c.id === comment.course_id);
 
                         return (
-                            <div key={comment.id} className="bg-magic-card border border-white/10 rounded-2xl p-6 relative overflow-hidden group hover:border-magic-royal/30 transition-colors">
-                                <div className="absolute top-0 left-0 w-1 h-full bg-magic-royal"></div>
+                            <div key={comment.id} className="bg-[#1c1c1e] border border-white/5 rounded-[24px] p-6 relative overflow-hidden group hover:border-white/10 transition-colors">
+                                <div className="absolute top-0 left-0 w-1 h-full bg-[#f5f5f7]"></div>
 
                                 <div className="flex flex-col lg:flex-row gap-6">
                                     {/* Left: Comment Info */}
@@ -140,7 +140,7 @@ export default async function AdminAdultsInbox({
                                                 <div className="flex items-center gap-4 text-xs text-gray-400 mt-2 font-mono uppercase">
                                                     <span className="flex items-center gap-1"><Calendar className="w-3 h-3" /> {new Date(comment.created_at).toLocaleString('fr-FR')}</span>
                                                     {course && (
-                                                        <a href={`/watch/${course.id}`} target="_blank" rel="noreferrer" className="flex items-center gap-1 hover:text-magic-royal transition-colors truncate max-w-[200px]" title={course.title}>
+                                                        <a href={`/watch/${course.id}`} target="_blank" rel="noreferrer" className="flex items-center gap-1 hover:text-white transition-colors truncate max-w-[200px]" title={course.title}>
                                                             <Video className="w-3 h-3" /> {course.title}
                                                         </a>
                                                     )}

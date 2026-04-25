@@ -53,9 +53,9 @@ export default function AdminLivesPage() {
         return true;
     });
 
-    const themeColor = audience === 'adults' ? 'bg-brand-gold text-black hover:bg-brand-gold/90' : 'bg-brand-purple text-white hover:bg-brand-purple/90';
-    const badgeColor = audience === 'adults' ? 'bg-brand-gold/20 text-brand-gold' : 'bg-brand-purple/20 text-brand-purple';
-    const iconColor = audience === 'adults' ? 'text-brand-gold' : 'text-brand-purple';
+    const themeColor = audience === 'adults' ? 'bg-[#f5f5f7] text-[#1c1c1e] hover:bg-white rounded-[16px]' : 'bg-brand-purple text-white hover:bg-brand-purple/90 rounded-xl shadow-lg';
+    const badgeColor = audience === 'adults' ? 'bg-[#1c1c1e] text-[#86868b] border border-white/5' : 'bg-brand-purple/20 text-brand-purple';
+    const iconColor = audience === 'adults' ? 'text-[#f5f5f7]' : 'text-brand-purple';
 
     return (
         <div className={`w-full transition-colors duration-500`}>
@@ -80,7 +80,7 @@ export default function AdminLivesPage() {
             <div className="space-y-8">
                 {/* Actions */}
                 <div className="flex justify-end">
-                    <Link href={`${basePath}/lives/new?audience=${audience}`} className={`px-6 py-3 ${themeColor} rounded-xl font-bold flex items-center gap-2 transition-colors shadow-lg`}>
+                    <Link href={`${basePath}/lives/new?audience=${audience}`} className={`px-6 py-3 ${themeColor} font-bold flex items-center gap-2 transition-colors`}>
                         <Calendar className="w-5 h-5" />
                         Programmer un Nouvel Événement
                     </Link>
@@ -89,7 +89,7 @@ export default function AdminLivesPage() {
                 {/* List */}
                 <div className="grid gap-4">
                     {filteredLives.map((live) => (
-                        <div key={live.id} className={`bg-white/5 border ${audience === 'adults' ? 'border-white/10' : 'border-purple-500/20'} p-6 rounded-2xl flex items-center justify-between group hover:bg-white/10 transition-colors`}>
+                        <div key={live.id} className={`${audience === 'adults' ? 'bg-[#1c1c1e] border-white/5 rounded-[24px]' : 'bg-white/5 border-purple-500/20 rounded-2xl'} border p-6 flex items-center justify-between group hover:bg-white/10 transition-colors`}>
                             <div>
                                 <div className="flex items-center gap-3 mb-2">
                                     <h3 className="text-xl font-bold">{live.title}</h3>

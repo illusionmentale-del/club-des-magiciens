@@ -86,8 +86,8 @@ export default function NewsletterAdminPage() {
     return (
         <div className="space-y-8">
             <div className="mb-10 text-center flex flex-col items-center">
-                <div className="w-16 h-16 bg-brand-royal/10 rounded-2xl flex items-center justify-center mb-6 border border-brand-royal/20 shadow-[0_0_30px_rgba(234,179,8,0.1)]">
-                    <Mail className="w-8 h-8 text-brand-royal relative z-10" />
+                <div className="w-16 h-16 bg-[#1c1c1e] rounded-[24px] flex items-center justify-center mb-6 border border-white/5 shadow-md">
+                    <Mail className="w-8 h-8 text-white relative z-10" />
                 </div>
                 <h1 className="text-4xl font-black uppercase tracking-widest text-white mb-3">Le Newsletter Builder</h1>
                 <p className="text-brand-text-muted font-light max-w-xl mx-auto">
@@ -96,8 +96,7 @@ export default function NewsletterAdminPage() {
             </div>
 
             <div className="bg-brand-card border border-white/5 rounded-3xl p-8 relative overflow-hidden group max-w-4xl mx-auto shadow-2xl">
-                {/* Glow ambiant */}
-                <div className="absolute inset-x-0 -top-px h-px w-full bg-gradient-to-r from-transparent via-brand-royal/30 to-transparent"></div>
+                <div className="absolute inset-x-0 -top-px h-px w-full bg-gradient-to-r from-transparent via-[#f5f5f7]/30 to-transparent"></div>
 
                 <div className="space-y-8 relative z-10">
 
@@ -168,14 +167,14 @@ export default function NewsletterAdminPage() {
                         <button
                             onClick={() => handleSendAction(true)}
                             disabled={isTesting || isSending}
-                            className="px-6 py-3 rounded-xl font-bold uppercase tracking-widest text-xs border border-white/10 hover:bg-white/5 text-white flex items-center justify-center transition-all min-w-[150px] disabled:opacity-50"
+                            className="px-6 py-3 rounded-[16px] font-bold uppercase tracking-widest text-xs bg-[#1c1c1e] border border-white/5 text-[#86868b] hover:text-[#f5f5f7] flex items-center justify-center transition-all min-w-[150px] disabled:opacity-50"
                         >
                             {isTesting ? <Loader2 className="w-5 h-5 animate-spin mx-auto" /> : "S'envoyer un Test"}
                         </button>
                         <button
                             onClick={() => handleSendAction(false)}
                             disabled={isTesting || isSending}
-                            className="px-8 py-3 rounded-xl font-bold uppercase tracking-widest text-sm bg-gradient-to-r from-brand-royal to-blue-700 hover:from-brand-royal/90 hover:to-blue-700/90 text-black flex items-center justify-center transition-all min-w-[200px] shadow-[0_0_20px_rgba(234,179,8,0.2)] disabled:opacity-50"
+                            className="px-8 py-3 rounded-[16px] font-bold uppercase tracking-widest text-sm bg-[#f5f5f7] hover:bg-white text-[#1c1c1e] flex items-center justify-center transition-all min-w-[200px] shadow-lg disabled:opacity-50"
                         >
                             {isSending ? <Loader2 className="w-5 h-5 animate-spin mx-auto" /> : (
                                 <>

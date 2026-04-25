@@ -33,7 +33,7 @@ export default function AdminUsersClient({ profiles }: AdminUsersClientProps) {
     const activeProfiles = filteredProfiles.filter(p => !p.deleted_at);
     const deletedProfiles = filteredProfiles.filter(p => p.deleted_at);
 
-    const btnColor = 'bg-brand-royal text-black hover:bg-brand-royal/90';
+    const btnColor = 'bg-[#f5f5f7] text-[#1c1c1e] hover:bg-white rounded-[16px]';
 
     return (
         <div className={`w-full text-white transition-colors duration-500`}>
@@ -42,12 +42,12 @@ export default function AdminUsersClient({ profiles }: AdminUsersClientProps) {
                     <div className="flex items-center gap-4">
                         <div>
                             <h1 className="text-3xl font-bold">Gestion des Élèves (Adultes)</h1>
-                            <div className={`text-sm px-2 py-0.5 rounded inline-block mt-1 uppercase font-bold tracking-wider bg-brand-royal/20 text-brand-royal`}>
+                            <div className={`text-sm px-2 py-0.5 rounded inline-block mt-1 uppercase font-bold tracking-wider bg-[#1c1c1e] text-[#86868b] border border-white/5`}>
                                 Vue Business
                             </div>
                         </div>
                     </div>
-                    <Link href="/admin/adults/users/new" className={`${btnColor} px-4 py-2 rounded-xl font-bold flex items-center gap-2 transition-colors`}>
+                    <Link href="/admin/adults/users/new" className={`${btnColor} px-6 py-3 font-bold flex items-center gap-2 transition-colors`}>
                         <UserPlus className="w-4 h-4" />
                         Ajouter
                     </Link>

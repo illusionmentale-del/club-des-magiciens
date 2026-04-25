@@ -1,6 +1,7 @@
 "use client";
 
 import { LayoutTemplate, PlaySquare, ShoppingCart, Check } from "lucide-react";
+import { usePathname } from "next/navigation";
 
 export type NewsletterTemplate = 'classic' | 'course_focus' | 'product_focus';
 
@@ -10,6 +11,9 @@ interface Props {
 }
 
 export function TemplateSelector({ selected, onSelect }: Props) {
+    const pathname = usePathname();
+    const isAdults = pathname?.includes('/adults/');
+
     const templates = [
         {
             id: 'classic' as const,
@@ -44,23 +48,23 @@ export function TemplateSelector({ selected, onSelect }: Props) {
                             key={t.id}
                             onClick={() => onSelect(t.id)}
                             type="button"
-                            className={`p-4 rounded-2xl border text-left flex flex-col items-start gap-4 transition-all relative overflow-hidden group ${isSelected
-                                    ? 'bg-brand-royal/10 border-brand-royal shadow-[0_0_20px_rgba(234,179,8,0.15)]'
+                            className={`p-4 rounded-[24px] border text-left flex flex-col items-start gap-4 transition-all relative overflow-hidden group ${isSelected
+                                    ? (isAdults ? 'bg-[#1c1c1e] border-[#f5f5f7] shadow-lg' : 'bg-brand-royal/10 border-brand-royal shadow-[0_0_20px_rgba(234,179,8,0.15)]')
                                     : 'bg-black/20 border-white/5 hover:border-white/10 hover:bg-black/40'
                                 }`}
                         >
                             {isSelected && (
-                                <div className="absolute top-3 right-3 w-5 h-5 rounded-full bg-brand-royal flex items-center justify-center">
+                                <div className={`absolute top-3 right-3 w-5 h-5 rounded-full flex items-center justify-center ${isAdults ? 'bg-[#f5f5f7]' : 'bg-brand-royal'}`}>
                                     <Check className="w-3 h-3 text-black" />
                                 </div>
                             )}
 
-                            <div className={`p-3 rounded-xl ${isSelected ? 'bg-brand-royal/20' : 'bg-white/5 group-hover:bg-white/10'}`}>
-                                <Icon className={`w-6 h-6 ${isSelected ? 'text-brand-royal' : 'text-brand-text-muted'}`} />
+                            <div className={`p-3 rounded-[16px] ${isSelected ? (isAdults ? 'bg-white/10' : 'bg-brand-royal/20') : 'bg-white/5 group-hover:bg-white/10'}`}>
+                                <Icon className={`w-6 h-6 ${isSelected ? (isAdults ? 'text-[#f5f5f7]' : 'text-brand-royal') : 'text-brand-text-muted'}`} />
                             </div>
 
                             <div>
-                                <h3 className={`font-bold text-sm mb-1 ${isSelected ? 'text-brand-royal' : 'text-white'}`}>{t.name}</h3>
+                                <h3 className={`font-bold text-sm mb-1 ${isSelected ? (isAdults ? 'text-[#f5f5f7]' : 'text-brand-royal') : 'text-white'}`}>{t.name}</h3>
                                 <p className="text-xs text-brand-text-muted/80">{t.description}</p>
                             </div>
                         </button>
