@@ -15,10 +15,10 @@ function SubmitButton({ theme, isKidProfile }: { theme: 'light' | 'dark', isKidP
         <button
             type="submit"
             disabled={pending}
-            className={`w-full py-4 font-bold rounded-xl transition-all disabled:opacity-50 flex justify-center items-center shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 ${
+            className={`w-full py-4 font-semibold rounded-full transition-all disabled:opacity-50 flex justify-center items-center shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 ${
                 isKidProfile
                     ? 'bg-gradient-to-r from-purple-600 to-pink-500 text-white shadow-purple-500/20'
-                    : 'bg-magic-royal hover:bg-magic-royal/80 text-black shadow-[0_0_20px_rgba(203,213,225,0.1)]'
+                    : 'bg-[#f5f5f7] hover:bg-white text-black'
             }`}
         >
             {pending ? "Enregistrement..." : "Enregistrer les modifications"}
@@ -40,19 +40,19 @@ export default function AccountForm({ user, profile, theme = 'dark', isKidProfil
 
     // Theme variations
     const cardClass = theme === 'light'
-        ? "bg-white border text-gray-800 shadow-sm border-gray-100"
-        : "bg-black/20 border border-white/10 text-white";
+        ? "bg-white border text-gray-800 shadow-sm border-gray-100 rounded-2xl"
+        : "bg-[#1c1c1e] border border-white/5 text-[#f5f5f7] rounded-[32px] shadow-xl";
 
     const labelClass = theme === 'light'
         ? "text-gray-600 font-semibold"
-        : "text-gray-400 font-medium";
+        : "text-[#86868b] font-medium";
 
     const inputClass = theme === 'light'
         ? "w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-purple-500 focus:border-transparent focus:outline-none transition-all text-gray-900 placeholder-gray-400"
-        : "w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 focus:ring-1 focus:ring-white/50 focus:outline-none transition-all text-white placeholder-gray-500";
+        : "w-full bg-[#000000]/50 border border-white/5 rounded-[16px] px-4 py-4 focus:ring-1 focus:ring-white/20 focus:outline-none transition-all text-[#f5f5f7] placeholder-[#86868b]/50";
 
-    const titleClass = theme === 'light' ? "text-gray-900" : "text-white";
-    const iconClass = theme === 'light' ? "text-purple-600" : "text-gray-400";
+    const titleClass = theme === 'light' ? "text-gray-900" : "text-[#f5f5f7]";
+    const iconClass = theme === 'light' ? "text-purple-600" : "text-[#86868b]";
 
     return (
         <form action={formAction} className="space-y-8">
@@ -61,8 +61,8 @@ export default function AccountForm({ user, profile, theme = 'dark', isKidProfil
 
             {/* Identity Section */}
             {!isKidProfile && (
-                <section className={`${cardClass} rounded-2xl p-8`}>
-                    <h2 className={`text-xl font-bold mb-6 flex items-center gap-2 ${titleClass}`}>
+                <section className={`${cardClass} p-8 md:p-10`}>
+                    <h2 className={`text-xl font-semibold mb-6 flex items-center gap-3 ${titleClass} tracking-tight`}>
                     <User className={`w-5 h-5 ${iconClass}`} />
                     Identité
                 </h2>
@@ -86,8 +86,8 @@ export default function AccountForm({ user, profile, theme = 'dark', isKidProfil
                         <div>
                             <label className={`block text-sm mb-2 ${labelClass}`}>Ville / QG</label>
                             <div className="relative">
-                                <MapPin className={`absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 ${theme === 'light' ? 'text-gray-400' : 'text-gray-600'}`} />
-                                <input name="city" defaultValue={profile?.city || ""} placeholder="Paris, France" className={`${inputClass} pl-10`} />
+                                <MapPin className={`absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 ${theme === 'light' ? 'text-gray-400' : 'text-[#86868b]'}`} />
+                                <input name="city" defaultValue={profile?.city || ""} placeholder="Paris, France" className={`${inputClass} pl-12`} />
                             </div>
                         </div>
                         <div className="col-span-full">
@@ -99,11 +99,9 @@ export default function AccountForm({ user, profile, theme = 'dark', isKidProfil
             </section>
             )}
 
-
-
             {/* Security Section */}
-            <section className={`${cardClass} rounded-2xl p-8 ${theme === 'dark' ? 'opacity-80 hover:opacity-100' : ''} transition-opacity`}>
-                <h2 className={`text-xl font-bold mb-6 flex items-center gap-2 ${titleClass}`}>
+            <section className={`${cardClass} p-8 md:p-10 ${theme === 'dark' ? 'hover:border-white/10' : ''} transition-all`}>
+                <h2 className={`text-xl font-semibold mb-6 flex items-center gap-3 ${titleClass} tracking-tight`}>
                     <Lock className={`w-5 h-5 ${iconClass}`} />
                     Sécurité & Connexion
                 </h2>
@@ -117,20 +115,20 @@ export default function AccountForm({ user, profile, theme = 'dark', isKidProfil
                         <input type="password" name="confirmPassword" placeholder="••••••••" className={inputClass} />
                     </div>
                     <div className="col-span-full">
-                        <p className={`text-sm ${theme === 'light' ? 'text-gray-500' : 'text-gray-500'}`}>Votre email : {user.email}</p>
+                        <p className={`text-sm mt-2 ${theme === 'light' ? 'text-gray-500' : 'text-[#86868b] font-light'}`}>Votre email : {user.email}</p>
                     </div>
                 </div>
             </section>
 
             {state?.error && (
-                <div className="p-4 bg-red-500/10 border border-red-500/20 rounded-xl text-red-500 flex items-center gap-3 font-medium">
+                <div className="p-4 bg-red-500/10 border border-red-500/20 rounded-[16px] text-red-400 flex items-center gap-3 font-medium">
                     <AlertCircle className="w-5 h-5" />
                     {state.error}
                 </div>
             )}
 
             {state?.success && (
-                <div className="p-4 bg-emerald-500/10 border border-emerald-500/20 rounded-xl text-emerald-600 flex items-center gap-3 font-medium">
+                <div className="p-4 bg-green-500/10 border border-green-500/20 rounded-[16px] text-green-400 flex items-center gap-3 font-medium">
                     <Check className="w-5 h-5" />
                     {state.success}
                 </div>

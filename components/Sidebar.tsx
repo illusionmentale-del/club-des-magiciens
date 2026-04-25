@@ -40,45 +40,45 @@ export default function Sidebar({ isAdmin, socialLinks, logoUrl, hasKidsAccess, 
 
 
     return (
-        <aside className="w-64 bg-black border-r border-white/10 hidden md:flex flex-col flex-shrink-0 h-full">
+        <aside className="w-64 bg-[#000000] border-r border-white/5 hidden md:flex flex-col flex-shrink-0 h-full">
             {/* Profile Area */}
-            <div className="p-6 border-b border-white/10 flex flex-col items-center gap-4 text-center">
-                <Link href="/dashboard/account" className="flex flex-col items-center gap-2 group relative w-full rounded-sm p-2 hover:bg-magic-royal/5 transition-colors">
+            <div className="p-6 border-b border-white/5 flex flex-col items-center gap-4 text-center">
+                <Link href="/dashboard/account" className="flex flex-col items-center gap-2 group relative w-full rounded-[16px] p-2 hover:bg-white/5 transition-colors">
                     <div className="relative w-24 h-24 mb-2">
                         {avatarUrl ? (
                             <Image
                                 src={avatarUrl}
                                 alt="Avatar"
                                 fill
-                                className="object-cover rounded-full border-2 border-magic-royal group-hover:border-magic-gold transition-colors shadow-lg"
+                                className="object-cover rounded-full border border-white/10 group-hover:border-white/30 transition-colors shadow-lg"
                             />
                         ) : (
-                            <div className="w-full h-full rounded-full bg-slate-800 flex items-center justify-center border-2 border-magic-royal group-hover:border-magic-gold transition-colors shadow-lg">
-                                <User className="w-10 h-10 text-gray-400" />
+                            <div className="w-full h-full rounded-full bg-[#1c1c1e] flex items-center justify-center border border-white/10 group-hover:border-white/30 transition-colors shadow-lg">
+                                <User className="w-10 h-10 text-[#86868b]" />
                             </div>
                         )}
                     </div>
                     
                     <div className="w-full text-center px-2">
-                        <h2 className="font-serif font-bold text-white text-base leading-tight group-hover:text-magic-royal transition-colors truncate">{userName || "Illusionniste"}</h2>
+                        <h2 className="font-semibold text-[#f5f5f7] text-base leading-tight group-hover:text-white transition-colors truncate">{userName || "Illusionniste"}</h2>
                         <div className="flex items-center justify-center gap-1.5 mt-1">
-                            <p className="text-[10px] text-gray-500 font-mono truncate">Cliquez pour configurer</p>
+                            <p className="text-[10px] text-[#86868b] uppercase tracking-widest truncate">Cliquez pour configurer</p>
                         </div>
                     </div>
                 </Link>
 
-                <div className="flex items-center gap-3 text-gray-500 mt-2">
-                    <a href={socialLinks?.youtube || "#"} target="_blank" className="hover:text-red-500 transition-colors"><Youtube className="w-4 h-4" /></a>
-                    <a href={socialLinks?.instagram || "#"} target="_blank" className="hover:text-pink-500 transition-colors"><Instagram className="w-4 h-4" /></a>
-                    <a href={socialLinks?.facebook || "#"} target="_blank" className="hover:text-blue-500 transition-colors"><Facebook className="w-4 h-4" /></a>
+                <div className="flex items-center gap-4 text-[#86868b] mt-2">
+                    <a href={socialLinks?.youtube || "#"} target="_blank" className="hover:text-white transition-colors"><Youtube className="w-4 h-4" /></a>
+                    <a href={socialLinks?.instagram || "#"} target="_blank" className="hover:text-white transition-colors"><Instagram className="w-4 h-4" /></a>
+                    <a href={socialLinks?.facebook || "#"} target="_blank" className="hover:text-white transition-colors"><Facebook className="w-4 h-4" /></a>
                 </div>
             </div>
 
             {/* Navigation */}
-            <nav className="flex-1 p-4 space-y-2 overflow-y-auto">
+            <nav className="flex-1 p-4 space-y-2 overflow-y-auto font-medium">
                 <Link
                     href="/dashboard"
-                    className={`flex items-center gap-3 px-4 py-3 font-medium transition-all ${isActive('/dashboard') ? 'bg-gradient-to-r from-magic-royal/20 to-transparent text-magic-royal border-l-2 border-magic-royal' : 'text-gray-400 hover:bg-magic-royal/5 hover:text-magic-royal border-l-2 border-transparent'}`}
+                    className={`flex items-center gap-3 px-4 py-3 rounded-[12px] transition-all ${isActive('/dashboard') ? 'bg-white/10 text-[#f5f5f7]' : 'text-[#86868b] hover:bg-white/5 hover:text-[#f5f5f7]'}`}
                 >
                     <Star className="w-5 h-5" />
                     {uiLabels?.nav_actu || "L'Actu du Club"}
@@ -87,7 +87,7 @@ export default function Sidebar({ isAdmin, socialLinks, logoUrl, hasKidsAccess, 
                 {toggles?.enable_adults_program !== false && (
                     <Link
                         href="/dashboard/library"
-                        className={`flex items-center gap-3 px-4 py-3 font-medium transition-all ${isActive('/dashboard/library') ? 'bg-gradient-to-r from-magic-royal/20 to-transparent text-magic-royal border-l-2 border-magic-royal' : 'text-gray-400 hover:bg-magic-royal/5 hover:text-magic-royal border-l-2 border-transparent'}`}
+                        className={`flex items-center gap-3 px-4 py-3 rounded-[12px] transition-all ${isActive('/dashboard/library') ? 'bg-white/10 text-[#f5f5f7]' : 'text-[#86868b] hover:bg-white/5 hover:text-[#f5f5f7]'}`}
                     >
                         <BookOpen className="w-5 h-5" />
                         {uiLabels?.nav_videos || "Mes Vidéos"}
@@ -97,7 +97,7 @@ export default function Sidebar({ isAdmin, socialLinks, logoUrl, hasKidsAccess, 
                 {toggles?.enable_adults_masterclass !== false && (
                     <Link
                         href="/dashboard/masterclass"
-                        className={`flex items-center gap-3 px-4 py-3 font-medium transition-all ${isActive('/dashboard/masterclass') ? 'bg-gradient-to-r from-magic-royal/20 to-transparent text-magic-royal border-l-2 border-magic-royal' : 'text-gray-400 hover:bg-magic-royal/5 hover:text-magic-royal border-l-2 border-transparent'}`}
+                        className={`flex items-center gap-3 px-4 py-3 rounded-[12px] transition-all ${isActive('/dashboard/masterclass') ? 'bg-white/10 text-[#f5f5f7]' : 'text-[#86868b] hover:bg-white/5 hover:text-[#f5f5f7]'}`}
                     >
                         <Video className="w-5 h-5" />
                         {uiLabels?.nav_formations || "Mes Formations"}
@@ -106,7 +106,7 @@ export default function Sidebar({ isAdmin, socialLinks, logoUrl, hasKidsAccess, 
 
                 <Link
                     href="/dashboard/shop"
-                    className={`flex items-center gap-3 px-4 py-3 font-medium transition-all ${isActive('/dashboard/shop') ? 'bg-gradient-to-r from-magic-royal/20 to-transparent text-magic-royal border-l-2 border-magic-royal' : 'text-gray-400 hover:bg-magic-royal/5 hover:text-magic-royal border-l-2 border-transparent'}`}
+                    className={`flex items-center gap-3 px-4 py-3 rounded-[12px] transition-all ${isActive('/dashboard/shop') ? 'bg-white/10 text-[#f5f5f7]' : 'text-[#86868b] hover:bg-white/5 hover:text-[#f5f5f7]'}`}
                 >
                     <Sparkles className="w-5 h-5" />
                     {uiLabels?.nav_boutique || "La Boutique"}
@@ -115,7 +115,7 @@ export default function Sidebar({ isAdmin, socialLinks, logoUrl, hasKidsAccess, 
                 {toggles?.enable_adults_account !== false && (
                     <Link
                         href="/dashboard/account?view=settings"
-                        className={`flex items-center gap-3 px-4 py-3 font-medium transition-all ${(isActive('/dashboard/account') || searchParams?.get('view') === 'settings') ? 'bg-gradient-to-r from-magic-royal/20 to-transparent text-magic-royal border-l-2 border-magic-royal' : 'text-gray-400 hover:bg-magic-royal/5 hover:text-magic-royal border-l-2 border-transparent'}`}
+                        className={`flex items-center gap-3 px-4 py-3 rounded-[12px] transition-all ${(isActive('/dashboard/account') || searchParams?.get('view') === 'settings') ? 'bg-white/10 text-[#f5f5f7]' : 'text-[#86868b] hover:bg-white/5 hover:text-[#f5f5f7]'}`}
                     >
                         <Settings className="w-5 h-5" />
                         {uiLabels?.nav_settings || "Mes Paramètres"}
@@ -124,11 +124,11 @@ export default function Sidebar({ isAdmin, socialLinks, logoUrl, hasKidsAccess, 
 
                 {(isAdmin || hasKidsAccess) && (
                     <>
-                        <div className="my-2 border-t border-white/10"></div>
-                        <p className="px-4 text-xs font-bold text-gray-400 uppercase tracking-widest mb-1">Passerelle</p>
+                        <div className="my-4 border-t border-white/5"></div>
+                        <p className="px-4 text-[10px] font-bold text-[#86868b] uppercase tracking-widest mb-2">Passerelle</p>
                         <Link
                             href="/kids"
-                            className={`flex items-center gap-3 px-4 py-3 font-medium transition-all text-gray-400 hover:bg-magic-royal/5 hover:text-magic-royal border-l-2 border-transparent`}
+                            className={`flex items-center gap-3 px-4 py-3 rounded-[12px] transition-all text-[#86868b] hover:bg-white/5 hover:text-[#f5f5f7]`}
                         >
                             <div className="w-5 h-5 flex items-center justify-center">👶</div>
                             Espace Kids
@@ -138,11 +138,11 @@ export default function Sidebar({ isAdmin, socialLinks, logoUrl, hasKidsAccess, 
 
                 {isAdmin && (
                     <>
-                        <div className="my-2 border-t border-white/10"></div>
-                        <p className="px-4 text-xs font-bold text-gray-400 uppercase tracking-widest mb-1">Admin</p>
+                        <div className="my-4 border-t border-white/5"></div>
+                        <p className="px-4 text-[10px] font-bold text-[#86868b] uppercase tracking-widest mb-2">Admin</p>
                         <Link
                             href="/admin"
-                            className={`flex items-center gap-3 px-4 py-3 font-medium transition-all ${isActive('/admin') ? 'bg-red-500/20 text-red-400 border-l-2 border-red-500' : 'text-gray-400 hover:bg-magic-royal/5 hover:text-magic-royal border-l-2 border-transparent'}`}
+                            className={`flex items-center gap-3 px-4 py-3 rounded-[12px] transition-all ${isActive('/admin') ? 'bg-white/10 text-[#f5f5f7]' : 'text-[#86868b] hover:bg-white/5 hover:text-[#f5f5f7]'}`}
                         >
                             <Shield className="w-5 h-5" />
                             Accès Admin
@@ -152,10 +152,10 @@ export default function Sidebar({ isAdmin, socialLinks, logoUrl, hasKidsAccess, 
             </nav>
 
             {/* User Footer */}
-            <div className="p-4 border-t border-white/10 bg-black/20">
+            <div className="p-4 border-t border-white/5 bg-[#000000]">
                 <button
                     onClick={handleLogout}
-                    className="w-full flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-red-500/10 hover:bg-red-500/20 text-red-400 transition-colors border border-red-500/20 text-sm font-medium"
+                    className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-full bg-[#1c1c1e] hover:bg-white/10 text-[#86868b] hover:text-[#f5f5f7] transition-all text-sm font-medium"
                 >
                     <LogOut className="w-4 h-4" />
                     Déconnexion

@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname, useSearchParams } from "next/navigation";
-import { Menu, X, BookOpen, Settings, Video, LogOut, Shield, Star, GraduationCap, ShoppingBag, Sparkles } from "lucide-react";
+import { Menu, X, BookOpen, Settings, Video, LogOut, Shield, Star, GraduationCap, ShoppingBag, Sparkles, User } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 
@@ -52,7 +52,7 @@ export default function MobileNav({ isAdmin, hasKidsAccess, toggles, xpBalance =
 
 
     return (
-        <div className="md:hidden bg-black border-b border-white/10 sticky top-0 z-50">
+        <div className="md:hidden bg-[#000000] border-b border-white/5 sticky top-0 z-50">
             <div className="flex items-center justify-between p-4">
                 <Link href="/dashboard">
                     <div className="relative w-32 h-10">
@@ -68,7 +68,7 @@ export default function MobileNav({ isAdmin, hasKidsAccess, toggles, xpBalance =
                 <button
                     onClick={handleOpen}
                     disabled={isOpening}
-                    className="p-2 text-white hover:bg-white/10 active:scale-95 transition-transform rounded-lg"
+                    className="p-2 text-[#f5f5f7] hover:bg-white/10 active:scale-95 transition-transform rounded-lg"
                 >
                     {isOpening ? (
                         <div className="w-6 h-6 rounded-full border-2 border-white/20 border-t-white animate-spin"></div>
@@ -83,49 +83,49 @@ export default function MobileNav({ isAdmin, hasKidsAccess, toggles, xpBalance =
                 <div className="fixed inset-0 z-50 flex">
                     {/* Backdrop */}
                     <div
-                        className="fixed inset-0 bg-black/95 transition-opacity"
+                        className="fixed inset-0 bg-black/90 backdrop-blur-sm transition-opacity"
                         onClick={close}
                     />
 
                     {/* Menu Content */}
-                    <div className="relative w-64 h-full bg-black border-r border-white/10 flex flex-col p-4 animate-in slide-in-from-left duration-200">
+                    <div className="relative w-72 h-full bg-[#1c1c1e] border-r border-white/5 flex flex-col p-4 animate-in slide-in-from-left duration-300 ease-[0.16,1,0.3,1]">
                         <div className="flex justify-end mb-2">
-                            <button onClick={close} className="p-2 text-gray-400 hover:text-white">
+                            <button onClick={close} className="p-2 text-[#86868b] hover:text-[#f5f5f7]">
                                 <X className="w-6 h-6" />
                             </button>
                         </div>
                         
                         {/* Profile Area */}
-                        <div className="pb-4 border-b border-white/10 flex flex-col items-center gap-2 text-center mb-4">
-                            <Link href="/dashboard/account" onClick={close} className="flex flex-col items-center gap-2 group w-full rounded-sm hover:bg-magic-royal/5 transition-colors p-2">
-                                <div className="relative w-16 h-16">
+                        <div className="pb-4 border-b border-white/5 flex flex-col items-center gap-2 text-center mb-6">
+                            <Link href="/dashboard/account" onClick={close} className="flex flex-col items-center gap-3 group w-full rounded-[16px] hover:bg-white/5 transition-colors p-3">
+                                <div className="relative w-20 h-20">
                                     {avatarUrl ? (
                                         <Image
                                             src={avatarUrl}
                                             alt="Avatar"
                                             fill
-                                            className="object-cover rounded-full border border-magic-royal group-hover:border-magic-gold transition-colors"
+                                            className="object-cover rounded-full border border-white/10 group-hover:border-white/30 transition-colors shadow-lg"
                                         />
                                     ) : (
-                                        <div className="w-full h-full rounded-full bg-slate-800 flex items-center justify-center border border-magic-royal group-hover:border-magic-gold transition-colors">
-                                            <LogOut className="w-6 h-6 text-gray-400" />
+                                        <div className="w-full h-full rounded-full bg-black flex items-center justify-center border border-white/10 group-hover:border-white/30 transition-colors shadow-lg">
+                                            <User className="w-8 h-8 text-[#86868b]" />
                                         </div>
                                     )}
                                 </div>
                                 <div className="w-full text-center px-1">
-                                    <h2 className="font-serif font-bold text-white text-base leading-tight group-hover:text-magic-royal transition-colors truncate">{userName || "Illusionniste"}</h2>
+                                    <h2 className="font-semibold text-[#f5f5f7] text-base leading-tight group-hover:text-white transition-colors truncate">{userName || "Illusionniste"}</h2>
                                     <div className="flex items-center justify-center gap-1.5 mt-1">
-                                        <p className="text-[9px] text-gray-500 font-mono truncate">Paramètres</p>
+                                        <p className="text-[10px] text-[#86868b] uppercase tracking-widest truncate">Paramètres</p>
                                     </div>
                                 </div>
                             </Link>
                         </div>
 
-                        <nav className="space-y-2 flex-1">
+                        <nav className="space-y-2 flex-1 overflow-y-auto font-medium px-2">
                             <Link
                                 href="/dashboard"
                                 onClick={close}
-                                className={`flex items-center gap-3 px-4 py-3 font-medium transition-all ${isActive('/dashboard') ? 'bg-gradient-to-r from-magic-royal/20 to-transparent text-magic-royal border-l-2 border-magic-royal' : 'text-gray-400 hover:bg-magic-royal/5 hover:text-magic-royal border-l-2 border-transparent'}`}
+                                className={`flex items-center gap-3 px-4 py-3 rounded-[12px] transition-all ${isActive('/dashboard') ? 'bg-white/10 text-[#f5f5f7]' : 'text-[#86868b] hover:bg-white/5 hover:text-[#f5f5f7]'}`}
                             >
                                 <Star className="w-5 h-5" />
                                 {uiLabels?.nav_actu || "L'Actu du Club"}
@@ -135,7 +135,7 @@ export default function MobileNav({ isAdmin, hasKidsAccess, toggles, xpBalance =
                                 <Link
                                     href="/dashboard/library"
                                     onClick={close}
-                                    className={`flex items-center gap-3 px-4 py-3 font-medium transition-all ${isActive('/dashboard/library') ? 'bg-gradient-to-r from-magic-royal/20 to-transparent text-magic-royal border-l-2 border-magic-royal' : 'text-gray-400 hover:bg-magic-royal/5 hover:text-magic-royal border-l-2 border-transparent'}`}
+                                    className={`flex items-center gap-3 px-4 py-3 rounded-[12px] transition-all ${isActive('/dashboard/library') ? 'bg-white/10 text-[#f5f5f7]' : 'text-[#86868b] hover:bg-white/5 hover:text-[#f5f5f7]'}`}
                                 >
                                     <BookOpen className="w-5 h-5" />
                                     {uiLabels?.nav_videos || "Mes Vidéos"}
@@ -146,7 +146,7 @@ export default function MobileNav({ isAdmin, hasKidsAccess, toggles, xpBalance =
                                 <Link
                                     href="/dashboard/masterclass"
                                     onClick={close}
-                                    className={`flex items-center gap-3 px-4 py-3 font-medium transition-all ${isActive('/dashboard/masterclass') ? 'bg-gradient-to-r from-magic-royal/20 to-transparent text-magic-royal border-l-2 border-magic-royal' : 'text-gray-400 hover:bg-magic-royal/5 hover:text-magic-royal border-l-2 border-transparent'}`}
+                                    className={`flex items-center gap-3 px-4 py-3 rounded-[12px] transition-all ${isActive('/dashboard/masterclass') ? 'bg-white/10 text-[#f5f5f7]' : 'text-[#86868b] hover:bg-white/5 hover:text-[#f5f5f7]'}`}
                                 >
                                     <Video className="w-5 h-5" />
                                     {uiLabels?.nav_formations || "Mes Formations"}
@@ -156,7 +156,7 @@ export default function MobileNav({ isAdmin, hasKidsAccess, toggles, xpBalance =
                             <Link
                                 href="/dashboard/shop"
                                 onClick={close}
-                                className={`flex items-center gap-3 px-4 py-3 font-medium transition-all ${isActive('/dashboard/shop') ? 'bg-gradient-to-r from-magic-royal/20 to-transparent text-magic-royal border-l-2 border-magic-royal' : 'text-gray-400 hover:bg-magic-royal/5 hover:text-magic-royal border-l-2 border-transparent'}`}
+                                className={`flex items-center gap-3 px-4 py-3 rounded-[12px] transition-all ${isActive('/dashboard/shop') ? 'bg-white/10 text-[#f5f5f7]' : 'text-[#86868b] hover:bg-white/5 hover:text-[#f5f5f7]'}`}
                             >
                                 <Sparkles className="w-5 h-5" />
                                 {uiLabels?.nav_boutique || "La Boutique"}
@@ -166,7 +166,7 @@ export default function MobileNav({ isAdmin, hasKidsAccess, toggles, xpBalance =
                                 <Link
                                     href="/dashboard/account?view=settings"
                                     onClick={close}
-                                    className={`flex items-center gap-3 px-4 py-3 font-medium transition-all ${(isActive('/dashboard/account') || searchParams?.get('view') === 'settings') ? 'bg-gradient-to-r from-magic-royal/20 to-transparent text-magic-royal border-l-2 border-magic-royal' : 'text-gray-400 hover:bg-magic-royal/5 hover:text-magic-royal border-l-2 border-transparent'}`}
+                                    className={`flex items-center gap-3 px-4 py-3 rounded-[12px] transition-all ${(isActive('/dashboard/account') || searchParams?.get('view') === 'settings') ? 'bg-white/10 text-[#f5f5f7]' : 'text-[#86868b] hover:bg-white/5 hover:text-[#f5f5f7]'}`}
                                 >
                                     <Settings className="w-5 h-5" />
                                     {uiLabels?.nav_settings || "Mes Paramètres"}
@@ -175,12 +175,12 @@ export default function MobileNav({ isAdmin, hasKidsAccess, toggles, xpBalance =
 
                             {(isAdmin || hasKidsAccess) && (
                                 <>
-                                    <div className="my-2 border-t border-white/10"></div>
-                                    <p className="px-4 text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Passerelle</p>
+                                    <div className="my-4 border-t border-white/5"></div>
+                                    <p className="px-4 text-[10px] font-bold text-[#86868b] uppercase tracking-widest mb-2">Passerelle</p>
                                     <Link
                                         href="/kids"
                                         onClick={close}
-                                        className={`flex items-center gap-3 px-4 py-3 font-medium transition-all text-gray-400 hover:bg-magic-royal/5 hover:text-magic-royal border-l-2 border-transparent`}
+                                        className={`flex items-center gap-3 px-4 py-3 rounded-[12px] transition-all text-[#86868b] hover:bg-white/5 hover:text-[#f5f5f7]`}
                                     >
                                         <div className="w-5 h-5 flex items-center justify-center">👶</div>
                                         Espace Kids
@@ -190,12 +190,12 @@ export default function MobileNav({ isAdmin, hasKidsAccess, toggles, xpBalance =
 
                             {isAdmin && (
                                 <>
-                                    <div className="my-2 border-t border-white/10"></div>
-                                    <p className="px-4 text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Admin</p>
+                                    <div className="my-4 border-t border-white/5"></div>
+                                    <p className="px-4 text-[10px] font-bold text-[#86868b] uppercase tracking-widest mb-2">Admin</p>
                                     <Link
                                         href="/admin"
                                         onClick={close}
-                                        className={`flex items-center gap-3 px-4 py-3 font-medium transition-all ${isActive('/admin') ? 'bg-red-500/20 text-red-400 border-l-2 border-red-500' : 'text-gray-400 hover:bg-magic-royal/5 hover:text-magic-royal border-l-2 border-transparent'}`}
+                                        className={`flex items-center gap-3 px-4 py-3 rounded-[12px] transition-all ${isActive('/admin') ? 'bg-white/10 text-[#f5f5f7]' : 'text-[#86868b] hover:bg-white/5 hover:text-[#f5f5f7]'}`}
                                     >
                                         <Shield className="w-5 h-5" />
                                         Accès Admin
@@ -204,10 +204,10 @@ export default function MobileNav({ isAdmin, hasKidsAccess, toggles, xpBalance =
                             )}
                         </nav>
 
-                        <div className="pt-4 border-t border-white/10">
+                        <div className="pt-4 border-t border-white/5 mt-auto px-2">
                             <button
                                 onClick={handleLogout}
-                                className="w-full flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-red-500/10 hover:bg-red-500/20 text-red-400 transition-colors border border-red-500/20 text-sm font-medium"
+                                className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-full bg-black hover:bg-white/10 text-[#86868b] hover:text-[#f5f5f7] transition-all text-sm font-medium"
                             >
                                 <LogOut className="w-4 h-4" />
                                 Déconnexion
