@@ -24,8 +24,8 @@ export default async function AdminSettingsPage() {
         <div className="space-y-12">
             <div>
                 <div className="flex items-center gap-3 mb-2">
-                    <div className="w-10 h-10 bg-magic-royal/10 rounded-xl flex items-center justify-center border border-magic-royal/30">
-                        <Sparkles className="w-6 h-6 text-magic-royal" />
+                    <div className="w-10 h-10 bg-[#1c1c1e] rounded-[16px] flex items-center justify-center border border-white/5 shadow-md">
+                        <Sparkles className="w-6 h-6 text-[#f5f5f7]" />
                     </div>
                     <div>
                         <h1 className="text-3xl font-black text-white uppercase tracking-tighter">Réglages du Dashboard</h1>

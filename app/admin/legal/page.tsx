@@ -65,7 +65,7 @@ export default function LegalPagesAdmin() {
 
     if (isLoading) {
         return <div className="flex items-center justify-center min-h-[400px]">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-brand-purple"></div>
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white"></div>
         </div>;
     }
 
@@ -86,7 +86,7 @@ export default function LegalPagesAdmin() {
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
                 <div>
                     <h1 className="text-3xl font-black uppercase tracking-tight text-white flex items-center gap-3">
-                        <BookOpen className="w-8 h-8 text-brand-purple" />
+                        <BookOpen className="w-8 h-8 text-white" />
                         Textes Légaux
                     </h1>
                     <p className="text-brand-text-muted mt-2">
@@ -101,7 +101,7 @@ export default function LegalPagesAdmin() {
                             key={page.id}
                             onClick={() => handleSelectPage(page.id)}
                             className={`px-4 py-2 text-sm font-bold rounded-lg whitespace-nowrap transition-all ${selectedPageId === page.id
-                                ? "bg-brand-purple text-white shadow-lg"
+                                ? "bg-[#f5f5f7] text-[#1c1c1e] shadow-lg"
                                 : "text-brand-text-muted hover:text-white hover:bg-white/5"
                                 }`}
                         >
@@ -116,14 +116,14 @@ export default function LegalPagesAdmin() {
                 <div className="flex flex-col gap-4 bg-brand-card border border-white/5 rounded-2xl p-6 shadow-xl">
                     <div className="flex items-center justify-between mb-2">
                         <h2 className="font-bold text-white flex items-center gap-2">
-                            <FileText className="w-4 h-4 text-brand-purple" />
+                            <FileText className="w-4 h-4 text-white" />
                             Éditeur HTML
                         </h2>
                         <button
                             onClick={handleSave}
                             disabled={isSaving}
-                            className={`flex items-center gap-2 px-4 py-2 text-sm font-bold rounded-xl transition-all ${saveStatus === 'success' ? 'bg-green-500/20 text-green-400 border border-green-500/30' :
-                                'bg-brand-purple text-white hover:bg-brand-purple/90 shadow-lg shadow-brand-purple/30'
+                            className={`flex items-center gap-2 px-4 py-2 text-sm font-bold rounded-[16px] transition-all ${saveStatus === 'success' ? 'bg-green-500/20 text-green-400 border border-green-500/30' :
+                                'bg-[#f5f5f7] text-[#1c1c1e] hover:bg-white shadow-lg'
                                 }`}
                         >
                             {isSaving ? (
@@ -138,13 +138,13 @@ export default function LegalPagesAdmin() {
                     </div>
 
                     <p className="text-xs text-brand-text-muted mb-2">
-                        Le texte est interprété en HTML. Vous pouvez utiliser les balises classiques : <code className="bg-black/30 px-1 py-0.5 rounded text-brand-purple">&lt;h2&gt;</code>, <code className="bg-black/30 px-1 py-0.5 rounded text-brand-purple">&lt;p&gt;</code>, <code className="bg-black/30 px-1 py-0.5 rounded text-brand-purple">&lt;strong&gt;</code>... ou coller directement un texte brut.
+                        Le texte est interprété en HTML. Vous pouvez utiliser les balises classiques : <code className="bg-black/30 px-1 py-0.5 rounded text-[#86868b]">&lt;h2&gt;</code>, <code className="bg-black/30 px-1 py-0.5 rounded text-[#86868b]">&lt;p&gt;</code>, <code className="bg-black/30 px-1 py-0.5 rounded text-[#86868b]">&lt;strong&gt;</code>... ou coller directement un texte brut.
                     </p>
 
                     <textarea
                         value={content}
                         onChange={(e) => setContent(e.target.value)}
-                        className="w-full h-[500px] bg-black/20 border border-white/10 rounded-xl p-4 text-sm text-gray-300 font-mono focus:border-brand-purple focus:ring-1 focus:ring-brand-purple outline-none resize-y"
+                        className="w-full h-[500px] bg-black/20 border border-white/10 rounded-xl p-4 text-sm text-gray-300 font-mono focus:border-white focus:ring-1 focus:ring-white outline-none resize-y"
                         placeholder="Insérez le texte HTML de vos mentions légales ici..."
                     />
                 </div>
@@ -152,13 +152,13 @@ export default function LegalPagesAdmin() {
                 {/* Aperçu en direct */}
                 <div className="flex flex-col bg-white rounded-2xl p-8 shadow-xl border border-gray-200 overflow-hidden text-gray-900">
                     <div className="border-b border-gray-200 pb-4 mb-6">
-                        <span className="text-[10px] font-black uppercase tracking-widest text-brand-purple mb-1 block">Aperçu en direct</span>
+                        <span className="text-[10px] font-black uppercase tracking-widest text-[#86868b] mb-1 block">Aperçu en direct</span>
                         <h2 className="text-2xl font-black">{selectedPage?.title}</h2>
                     </div>
 
                     {/* Conteneur stylisé pour que l'HTML s'affiche proprement */}
                     <div
-                        className="prose prose-sm md:prose-base max-w-none prose-headings:font-black prose-headings:text-gray-900 prose-a:text-brand-purple overflow-y-auto h-[450px]"
+                        className="prose prose-sm md:prose-base max-w-none prose-headings:font-black prose-headings:text-gray-900 prose-a:text-[#1c1c1e] overflow-y-auto h-[450px]"
                         dangerouslySetInnerHTML={{ __html: content || "<p class='text-gray-400 italic'>L'aperçu apparaîtra ici...</p>" }}
                     />
                 </div>

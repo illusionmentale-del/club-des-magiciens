@@ -86,10 +86,7 @@ export default function AdultsAdminLayout({
                     <Separator className="my-6 bg-white/5" />
                     <p className="px-4 text-[10px] font-black text-[#86868b] uppercase tracking-widest mb-4">Pilotage & Système</p>
 
-                    <Link href="/admin/adults/gamification" className="flex items-center gap-3 px-4 py-3 text-sm font-bold uppercase tracking-widest text-brand-text-muted hover:text-white hover:bg-white/5 rounded-xl transition-all group">
-                        <Trophy className="w-5 h-5 group-hover:text-white transition-colors" />
-                        Badges & Évolution
-                    </Link>
+
                     <Link href="/admin/adults/analytics" className="flex items-center gap-3 px-4 py-3 text-sm font-bold uppercase tracking-widest text-brand-text-muted hover:text-white hover:bg-white/5 rounded-xl transition-all group">
                         <BarChart className="w-5 h-5 group-hover:text-white transition-colors" />
                         Analytics
