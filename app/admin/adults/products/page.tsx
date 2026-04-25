@@ -46,8 +46,9 @@ export default function AdminProductsPage() {
         return true;
     });
 
-    const themeColor = audience === 'adults' ? 'bg-blue-900' : 'bg-purple-600';
-    const borderColor = audience === 'adults' ? 'border-blue-700/30' : 'border-purple-500/30';
+    const themeColor = audience === 'adults' ? 'bg-[#f5f5f7] text-[#1c1c1e]' : 'bg-purple-600 text-white';
+    const borderColor = audience === 'adults' ? 'border-white/5' : 'border-purple-500/30';
+    const cardBgColor = audience === 'adults' ? 'bg-[#1c1c1e]' : 'bg-white/5';
 
     return (
         <div className={`min-h-screen ${audience === 'adults' ? 'bg-black' : 'bg-[#0F1014]'} text-white p-8 transition-colors duration-500`}>
@@ -57,12 +58,12 @@ export default function AdminProductsPage() {
                     Retour au QG Admin
                 </Link>
                 <div className="flex items-center gap-3">
-                    <div className={`p-2 rounded-lg ${audience === 'adults' ? 'bg-blue-700/20 text-blue-700' : 'bg-purple-500/20 text-purple-500'}`}>
+                    <div className={`p-2 rounded-lg ${audience === 'adults' ? 'bg-[#1c1c1e] text-[#f5f5f7] border border-white/5 shadow-md' : 'bg-purple-500/20 text-purple-500'}`}>
                         <ShoppingBag className="w-6 h-6" />
                     </div>
                     <div>
                         <h1 className="text-3xl font-bold">Boutique ({audience === 'adults' ? 'Adulte' : 'Enfant'})</h1>
-                        <div className={`text-sm px-2 py-0.5 rounded inline-block mt-1 uppercase font-bold tracking-wider ${audience === 'adults' ? 'bg-blue-700/20 text-blue-700' : 'bg-purple-600/20 text-purple-400'}`}>
+                        <div className={`text-sm px-2 py-0.5 rounded inline-block mt-1 uppercase font-bold tracking-wider ${audience === 'adults' ? 'bg-[#1c1c1e] text-[#86868b] border border-white/5' : 'bg-purple-600/20 text-purple-400'}`}>
                             Mode {audience === 'adults' ? 'Adulte' : 'Enfant'}
                         </div>
                     </div>
@@ -74,7 +75,7 @@ export default function AdminProductsPage() {
                 <div className="flex justify-end">
                     <Link
                         href={`/admin/adults/products/new?space=${audience}`}
-                        className={`px-6 py-3 ${themeColor} hover:opacity-90 rounded-xl font-bold flex items-center gap-2 transition-colors shadow-lg shadow-black/40`}
+                        className={`px-6 py-3 ${themeColor} hover:opacity-90 rounded-[16px] font-bold flex items-center gap-2 transition-colors shadow-lg`}
                     >
                         <Plus className="w-5 h-5" />
                         Ajouter un Produit {audience === 'kids' ? '(Kids)' : '(Adulte)'}
@@ -84,7 +85,7 @@ export default function AdminProductsPage() {
                 {/* List */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {filteredProducts.map((product) => (
-                        <div key={product.id} className={`bg-white/5 border ${borderColor} rounded-2xl overflow-hidden group hover:bg-white/10 transition-colors flex flex-col`}>
+                        <div key={product.id} className={`${cardBgColor} border ${borderColor} rounded-[24px] overflow-hidden group hover:border-white/10 transition-colors flex flex-col`}>
                             {/* Image Header */}
                             <div className="h-40 bg-black/50 relative">
                                 {product.image_url ? (

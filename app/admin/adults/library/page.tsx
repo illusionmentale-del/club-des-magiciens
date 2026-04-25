@@ -85,22 +85,22 @@ export default function AdminLibraryPage() {
             <div className="max-w-6xl mx-auto">
                 <header className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
                     <div>
-                        <h1 className="text-3xl font-bold flex items-center gap-2">
-                            <span className="text-brand-royal">📚</span> L'Atelier des Magiciens
+                        <h1 className="text-3xl font-bold flex items-center gap-2 text-[#f5f5f7]">
+                            <span className="text-[#86868b]">📚</span> L'Atelier des Magiciens
                         </h1>
-                        <p className="text-gray-400">Gestion de la Bibliothèque Adulte</p>
+                        <p className="text-[#86868b]">Gestion de la Bibliothèque Adulte</p>
                     </div>
                     <div className="flex items-center gap-4">
                         <button
                             onClick={() => setIsBroadcastOpen(true)}
-                            className="bg-brand-royal/10 text-brand-royal border border-brand-royal/20 hover:bg-brand-royal/20 hover:text-white px-6 py-3 rounded-xl font-bold flex items-center gap-2 transition-all shadow-lg"
+                            className="bg-[#1c1c1e] text-white border border-white/5 hover:bg-white/10 px-6 py-3 rounded-xl font-bold flex items-center gap-2 transition-all shadow-lg"
                         >
                             <Megaphone className="w-5 h-5" />
                             Alerte Nouveauté
                         </button>
                         <Link
                             href={`/admin/adults/library/new?audience=adults&week=${maxWeek + 1}`}
-                            className="bg-brand-royal hover:bg-yellow-500 text-black px-6 py-3 rounded-xl font-bold flex items-center gap-2 transition-all shadow-lg shadow-brand-royal/20"
+                            className="bg-[#f5f5f7] hover:bg-white text-[#1c1c1e] px-6 py-3 rounded-xl font-bold flex items-center gap-2 transition-all shadow-lg"
                         >
                             <Calendar className="w-5 h-5" />
                             Nouvelle Semaine
@@ -132,15 +132,15 @@ export default function AdminLibraryPage() {
                         {groupedItems.map(([week, weekItems]) => (
                             <div key={week} className="space-y-4">
                                 <div className="flex items-center justify-between border-b border-white/10 pb-2">
-                                    <h2 className="text-xl font-bold flex items-center gap-3">
-                                        <span className="bg-brand-royal/10 text-brand-royal w-8 h-8 rounded-lg flex items-center justify-center text-sm border border-brand-royal/20">
+                                    <h2 className="text-xl font-bold flex items-center gap-3 text-[#f5f5f7]">
+                                        <span className="bg-[#1c1c1e] text-white w-8 h-8 rounded-lg flex items-center justify-center text-sm border border-white/5 shadow-md">
                                             {week}
                                         </span>
                                         Catégorie {week === '0' ? 'Intro / Général' : week}
                                     </h2>
                                     <Link
                                         href={`/admin/adults/library/new?audience=adults&week=${week}`}
-                                        className="text-xs font-bold text-gray-400 hover:text-brand-royal transition-colors flex items-center gap-1 uppercase tracking-wider"
+                                        className="text-xs font-bold text-[#86868b] hover:text-[#f5f5f7] transition-colors flex items-center gap-1 uppercase tracking-wider"
                                     >
                                         <Plus className="w-3 h-3" />
                                         Ajouter du contenu
@@ -149,7 +149,7 @@ export default function AdminLibraryPage() {
 
                                 <div className="grid grid-cols-1 gap-3">
                                     {weekItems.map((item) => (
-                                        <div key={item.id} className="bg-magic-card border border-white/5 rounded-xl p-3 flex items-center gap-4 hover:border-white/20 transition-colors group">
+                                        <div key={item.id} className="bg-[#1c1c1e] border border-white/5 rounded-[24px] p-3 flex items-center gap-4 hover:border-white/10 transition-colors group">
                                             {/* Thumbnail */}
                                             <div className="w-24 aspect-video bg-black/50 rounded-lg overflow-hidden relative shrink-0 border border-white/5">
                                                 {item.thumbnail_url ? (
@@ -165,7 +165,7 @@ export default function AdminLibraryPage() {
                                             {/* Info */}
                                             <div className="flex-1 min-w-0">
                                                 <div className="flex items-center gap-2 mb-0.5">
-                                                    <h3 className="font-bold text-sm text-white truncate group-hover:text-brand-royal transition-colors">{item.title}</h3>
+                                                    <h3 className="font-bold text-sm text-[#f5f5f7] truncate group-hover:text-white transition-colors">{item.title}</h3>
                                                     <span className="text-[9px] px-1.5 py-0.5 rounded border border-white/10 text-gray-400 uppercase tracking-widest bg-black/20">
                                                         {item.type}
                                                     </span>
@@ -202,13 +202,13 @@ export default function AdminLibraryPage() {
                         ))}
 
                         {groupedItems.length === 0 && (
-                            <div className="text-center py-20 text-gray-500 bg-white/5 rounded-2xl border border-dashed border-white/10">
-                                <Plus className="w-12 h-12 mx-auto mb-4 text-gray-700" />
-                                <p className="text-lg font-medium">Aucun contenu dans la Bibliothèque</p>
-                                <p className="text-sm mt-1">Commencez par ajouter une vidéo !</p>
+                            <div className="text-center py-20 text-[#86868b] bg-[#1c1c1e] rounded-[32px] border border-white/5 shadow-xl">
+                                <Plus className="w-12 h-12 mx-auto mb-4 text-[#86868b]/50" />
+                                <p className="text-lg font-medium text-[#f5f5f7]">Aucun contenu dans la Bibliothèque</p>
+                                <p className="text-sm mt-1 font-light">Commencez par ajouter une vidéo !</p>
                                 <Link
                                     href="/admin/adults/library/new?audience=adults&week=1"
-                                    className="inline-flex items-center gap-2 mt-6 bg-brand-royal hover:bg-yellow-500 text-black px-6 py-2 rounded-xl font-bold transition-all"
+                                    className="inline-flex items-center gap-2 mt-6 bg-[#f5f5f7] hover:bg-white text-[#1c1c1e] px-6 py-3 rounded-xl font-bold transition-all shadow-lg"
                                 >
                                     <Plus className="w-5 h-5" />
                                     Ajouter une Vidéo
