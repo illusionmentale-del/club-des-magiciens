@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { BookOpen, AlertCircle, Save, FileText, CheckCircle2 } from "lucide-react";
-import { fetchLegalPages, updateLegalPage } from "./actions";
+import { fetchLegalPages, updateLegalPage } from "@/app/admin/actions_legal";
 
 interface LegalPage {
     id: string;
