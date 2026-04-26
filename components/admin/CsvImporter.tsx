@@ -134,9 +134,9 @@ export default function CsvImporter() {
     };
 
     return (
-        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 md:p-8">
+        <div className="bg-white rounded-[24px] border border-gray-100 shadow-sm p-6 md:p-8">
             {!file && (
-                <div className="border-2 border-dashed border-gray-200 rounded-xl p-12 text-center hover:bg-gray-50 transition-colors">
+                <div className="border-2 border-dashed border-gray-200 rounded-[16px] p-12 text-center hover:bg-gray-50 transition-colors">
                     <input
                         type="file"
                         accept=".csv"
@@ -160,7 +160,7 @@ export default function CsvImporter() {
             {file && !isImporting && !results && (
                 <div className="space-y-8">
                     {/* File info */}
-                    <div className="flex items-center justify-between bg-gray-50 p-4 rounded-lg border border-gray-100">
+                    <div className="flex items-center justify-between bg-gray-50 p-4 rounded-[12px] border border-gray-100">
                         <div className="flex items-center gap-4">
                             <FileText className="w-8 h-8 text-brand-purple" />
                             <div>
@@ -182,7 +182,7 @@ export default function CsvImporter() {
                             <div>
                                 <label className="block text-sm font-bold text-gray-700 mb-2">Colonne E-mail *</label>
                                 <select
-                                    className="w-full p-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-brand-purple outline-none"
+                                    className="w-full p-3 bg-gray-50 border border-gray-200 rounded-[12px] focus:ring-2 focus:ring-brand-purple outline-none"
                                     value={mapping.email}
                                     onChange={e => setMapping({ ...mapping, email: e.target.value })}
                                 >
@@ -193,7 +193,7 @@ export default function CsvImporter() {
                             <div>
                                 <label className="block text-sm font-bold text-gray-700 mb-2">Colonne Prénom *</label>
                                 <select
-                                    className="w-full p-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-brand-purple outline-none"
+                                    className="w-full p-3 bg-gray-50 border border-gray-200 rounded-[12px] focus:ring-2 focus:ring-brand-purple outline-none"
                                     value={mapping.firstName}
                                     onChange={e => setMapping({ ...mapping, firstName: e.target.value })}
                                 >
@@ -204,7 +204,7 @@ export default function CsvImporter() {
                             <div>
                                 <label className="block text-sm font-bold text-gray-700 mb-2">Colonne Nom (Optionnel)</label>
                                 <select
-                                    className="w-full p-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-brand-purple outline-none"
+                                    className="w-full p-3 bg-gray-50 border border-gray-200 rounded-[12px] focus:ring-2 focus:ring-brand-purple outline-none"
                                     value={mapping.lastName}
                                     onChange={e => setMapping({ ...mapping, lastName: e.target.value })}
                                 >
@@ -218,7 +218,7 @@ export default function CsvImporter() {
                     {/* Preview */}
                     <div>
                         <h3 className="text-lg font-bold text-gray-900 mb-4">Aperçu des données</h3>
-                        <div className="overflow-x-auto rounded-lg border border-gray-200">
+                        <div className="overflow-x-auto rounded-[12px] border border-gray-200">
                             <table className="w-full text-sm text-left text-gray-500">
                                 <thead className="text-xs text-gray-700 uppercase bg-gray-50">
                                     <tr>
@@ -272,7 +272,7 @@ export default function CsvImporter() {
 
             {results && !isImporting && (
                 <div className="space-y-6">
-                    <div className="text-center p-8 bg-green-50 rounded-2xl border border-green-100">
+                    <div className="text-center p-8 bg-green-50 rounded-[24px] border border-green-100">
                         <CheckCircle2 className="w-16 h-16 text-green-500 mx-auto mb-4" />
                         <h3 className="text-2xl font-bold text-gray-900 mb-2">Importation terminée !</h3>
                         <p className="text-green-800 text-lg">
@@ -281,12 +281,12 @@ export default function CsvImporter() {
                     </div>
 
                     {results.errors > 0 && (
-                        <div className="bg-red-50 p-6 rounded-xl border border-red-100">
+                        <div className="bg-red-50 p-6 rounded-[16px] border border-red-100">
                             <div className="flex items-center gap-3 text-red-700 font-bold mb-4">
                                 <AlertCircle className="w-6 h-6" />
                                 <h4>{results.errors} contacts n'ont pas pu être importés</h4>
                             </div>
-                            <div className="max-h-48 overflow-y-auto text-sm text-red-600 space-y-2 bg-white/50 p-4 rounded-lg border border-red-100">
+                            <div className="max-h-48 overflow-y-auto text-sm text-red-600 space-y-2 bg-white/50 p-4 rounded-[12px] border border-red-100">
                                 {results.details.map((err, i) => (
                                     <div key={i}>{err}</div>
                                 ))}

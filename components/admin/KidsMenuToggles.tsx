@@ -66,7 +66,7 @@ export default function KidsMenuToggles({ initialSettings }: KidsMenuTogglesProp
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {menus.map((menu) => (
-                        <div key={menu.key} className="flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-white/5 rounded-xl border border-white/5 gap-4">
+                        <div key={menu.key} className="flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-white/5 rounded-[16px] border border-white/5 gap-4">
                             <div>
                                 <p className="font-bold text-white uppercase tracking-widest text-xs mb-1">{menu.label}</p>
                                 <p className="text-[10px] text-brand-text-muted">{menu.desc}</p>

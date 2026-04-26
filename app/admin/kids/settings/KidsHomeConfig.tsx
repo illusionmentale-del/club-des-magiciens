@@ -96,7 +96,7 @@ export default function KidsHomeConfig({ initialSettings, libraryItems }: KidsHo
                     <button
                         key={tab.id}
                         onClick={() => setActiveTab(tab.id)}
-                        className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold uppercase tracking-widest text-xs transition-all ${activeTab === tab.id
+                        className={`w-full flex items-center gap-3 px-4 py-3 rounded-[16px] font-bold uppercase tracking-widest text-xs transition-all ${activeTab === tab.id
                             ? "bg-brand-purple text-white shadow-lg shadow-brand-purple/20"
                             : "text-brand-text-muted hover:bg-white/5"
                             }`}
@@ -142,7 +142,7 @@ export default function KidsHomeConfig({ initialSettings, libraryItems }: KidsHo
                         {/* TAB: WELCOME */}
                         {activeTab === "welcome" && (
                             <div className="space-y-8">
-                                <div className="flex items-center justify-between p-4 bg-white/5 rounded-xl border border-white/5">
+                                <div className="flex items-center justify-between p-4 bg-white/5 rounded-[16px] border border-white/5">
                                     <div>
                                         <p className="font-bold text-white uppercase tracking-widest text-[10px] mb-1">Status global</p>
                                         <p className="text-sm text-brand-text-muted">Activer l'affichage du message d'accueil sur la Home.</p>
@@ -160,14 +160,14 @@ export default function KidsHomeConfig({ initialSettings, libraryItems }: KidsHo
                                         <label className="text-xs font-black uppercase tracking-widest text-brand-text-muted">Configuration par semaine (1-52)</label>
                                         <div className="flex items-center gap-2">
                                             <button onClick={() => setCurrentWeek(Math.max(1, currentWeek - 1))} className="p-1 hover:text-white">←</button>
-                                            <span className="bg-brand-purple/20 text-brand-purple px-3 py-1 rounded-lg font-bold">Semaine {currentWeek}</span>
+                                            <span className="bg-brand-purple/20 text-brand-purple px-3 py-1 rounded-[12px] font-bold">Semaine {currentWeek}</span>
                                             <button onClick={() => setCurrentWeek(Math.min(52, currentWeek + 1))} className="p-1 hover:text-white">→</button>
                                         </div>
                                     </div>
                                     <textarea
                                         value={weeklyMessages[currentWeek] || ""}
                                         onChange={(e) => setWeeklyMessages({ ...weeklyMessages, [currentWeek]: e.target.value })}
-                                        className="w-full h-32 bg-brand-bg border border-white/10 rounded-xl p-4 text-white placeholder:text-white/20 focus:outline-none focus:border-brand-purple/50 transition-all"
+                                        className="w-full h-32 bg-brand-bg border border-white/10 rounded-[16px] p-4 text-white placeholder:text-white/20 focus:outline-none focus:border-brand-purple/50 transition-all"
                                         placeholder={`Entrez le message pour la semaine ${currentWeek}...`}
                                     />
                                     <p className="text-[10px] text-brand-text-muted italic">
@@ -185,7 +185,7 @@ export default function KidsHomeConfig({ initialSettings, libraryItems }: KidsHo
                                     <select
                                         value={featuredConfig.id}
                                         onChange={(e) => setFeaturedConfig({ ...featuredConfig, id: e.target.value })}
-                                        className="w-full bg-brand-bg border border-white/10 rounded-xl p-4 text-white focus:outline-none focus:border-brand-purple/50 appearance-none"
+                                        className="w-full bg-brand-bg border border-white/10 rounded-[16px] p-4 text-white focus:outline-none focus:border-brand-purple/50 appearance-none"
                                     >
                                         <option value="">-- Choisir un atelier --</option>
                                         {libraryItems.map(item => (
@@ -200,7 +200,7 @@ export default function KidsHomeConfig({ initialSettings, libraryItems }: KidsHo
                                         type="text"
                                         value={featuredConfig.text}
                                         onChange={(e) => setFeaturedConfig({ ...featuredConfig, text: e.target.value })}
-                                        className="w-full bg-brand-bg border border-white/10 rounded-xl p-4 text-white focus:outline-none focus:border-brand-purple/50"
+                                        className="w-full bg-brand-bg border border-white/10 rounded-[16px] p-4 text-white focus:outline-none focus:border-brand-purple/50"
                                         placeholder="Ex: Le secret le mieux gardé de la semaine..."
                                     />
                                 </div>
@@ -226,7 +226,7 @@ export default function KidsHomeConfig({ initialSettings, libraryItems }: KidsHo
                                 </p>
 
                                 <div className="space-y-4">
-                                    <h3 className="text-sm font-bold text-white uppercase tracking-widest bg-brand-purple/10 p-2 rounded-lg border border-brand-purple/20">
+                                    <h3 className="text-sm font-bold text-white uppercase tracking-widest bg-brand-purple/10 p-2 rounded-[12px] border border-brand-purple/20">
                                         Ateliers du Club
                                     </h3>
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-h-[300px] overflow-y-auto pr-2 custom-scrollbar">
@@ -242,7 +242,7 @@ export default function KidsHomeConfig({ initialSettings, libraryItems }: KidsHo
                                                             setNewsConfig([...newsConfig, { id: item.id, type: 'course' }]);
                                                         }
                                                     }}
-                                                    className={`p-4 rounded-xl border transition-all cursor-pointer flex items-center gap-3 ${isSelected ? 'bg-brand-purple/10 border-brand-purple/50' : 'bg-white/5 border-white/10 hover:border-white/20'
+                                                    className={`p-4 rounded-[16px] border transition-all cursor-pointer flex items-center gap-3 ${isSelected ? 'bg-brand-purple/10 border-brand-purple/50' : 'bg-white/5 border-white/10 hover:border-white/20'
                                                         }`}
                                                 >
                                                     <div className={`w-5 h-5 rounded border flex items-center justify-center transition-all ${isSelected ? 'bg-brand-purple border-brand-purple' : 'bg-transparent border-white/20'
@@ -259,18 +259,18 @@ export default function KidsHomeConfig({ initialSettings, libraryItems }: KidsHo
                                 <Separator className="my-6 bg-white/5" />
 
                                 <div className="space-y-4">
-                                    <h3 className="text-sm font-bold text-black uppercase tracking-widest bg-brand-gold p-2 rounded-lg border border-brand-gold shadow-[0_0_15px_rgba(255,215,0,0.3)]">
+                                    <h3 className="text-sm font-bold text-black uppercase tracking-widest bg-brand-gold p-2 rounded-[12px] border border-brand-gold shadow-[0_0_15px_rgba(255,215,0,0.3)]">
                                         Contenu Personnalisé
                                     </h3>
 
-                                    <div className="p-6 border border-white/10 bg-white/5 rounded-xl space-y-4">
+                                    <div className="p-6 border border-white/10 bg-white/5 rounded-[16px] space-y-4">
                                         <div className="grid grid-cols-2 gap-4">
                                             <div className="space-y-2">
                                                 <label className="text-xs font-bold uppercase tracking-widest text-brand-text-muted">Type</label>
                                                 <select
                                                     value={newCustomItem.type}
                                                     onChange={(e) => setNewCustomItem({ ...newCustomItem, type: e.target.value })}
-                                                    className="w-full bg-brand-bg border border-white/10 rounded-lg p-2 text-white text-sm focus:border-brand-purple/50 outline-none"
+                                                    className="w-full bg-brand-bg border border-white/10 rounded-[12px] p-2 text-white text-sm focus:border-brand-purple/50 outline-none"
                                                 >
                                                     <option value="custom_link">Lien Externe</option>
                                                     <option value="tip">Conseil / Astuce</option>
@@ -283,7 +283,7 @@ export default function KidsHomeConfig({ initialSettings, libraryItems }: KidsHo
                                                     type="text"
                                                     value={newCustomItem.title}
                                                     onChange={(e) => setNewCustomItem({ ...newCustomItem, title: e.target.value })}
-                                                    className="w-full bg-brand-bg border border-white/10 rounded-lg p-2 text-white text-sm focus:border-brand-purple/50 outline-none"
+                                                    className="w-full bg-brand-bg border border-white/10 rounded-[12px] p-2 text-white text-sm focus:border-brand-purple/50 outline-none"
                                                     placeholder="Titre de l'élément..."
                                                 />
                                             </div>
@@ -295,7 +295,7 @@ export default function KidsHomeConfig({ initialSettings, libraryItems }: KidsHo
                                                 type="text"
                                                 value={newCustomItem.url}
                                                 onChange={(e) => setNewCustomItem({ ...newCustomItem, url: e.target.value })}
-                                                className="w-full bg-brand-bg border border-white/10 rounded-lg p-2 text-white text-sm focus:border-brand-purple/50 outline-none"
+                                                className="w-full bg-brand-bg border border-white/10 rounded-[12px] p-2 text-white text-sm focus:border-brand-purple/50 outline-none"
                                                 placeholder={newCustomItem.type === 'tip' ? "Texte du conseil..." : "https://..."}
                                             />
                                         </div>
@@ -343,16 +343,16 @@ export default function KidsHomeConfig({ initialSettings, libraryItems }: KidsHo
                                                     const title = isCourse ? (course?.title || 'Cours introuvable') : item.data?.title;
 
                                                     return (
-                                                        <div key={item.id || idx} className="flex items-center justify-between p-3 bg-white/5 border border-white/10 rounded-lg">
+                                                        <div key={item.id || idx} className="flex items-center justify-between p-3 bg-white/5 border border-white/10 rounded-[12px]">
                                                             <div className="flex items-center gap-3">
                                                                 <span className="text-xs text-brand-text-muted uppercase tracking-widest w-6 shrink-0">#{idx + 1}</span>
 
                                                                 {isCourse ? (
                                                                     <div className="flex items-center gap-3">
                                                                         {course?.thumbnail_url ? (
-                                                                            <img src={course.thumbnail_url} className="w-10 h-10 rounded-lg object-cover border border-white/10 shrink-0" alt="" />
+                                                                            <img src={course.thumbnail_url} className="w-10 h-10 rounded-[12px] object-cover border border-white/10 shrink-0" alt="" />
                                                                         ) : (
-                                                                            <div className="w-10 h-10 rounded-lg bg-black border border-white/10 flex items-center justify-center shrink-0">
+                                                                            <div className="w-10 h-10 rounded-[12px] bg-black border border-white/10 flex items-center justify-center shrink-0">
                                                                                 <Video className="w-4 h-4 text-slate-400" />
                                                                             </div>
                                                                         )}
@@ -366,9 +366,9 @@ export default function KidsHomeConfig({ initialSettings, libraryItems }: KidsHo
                                                                 ) : (
                                                                     <div className="flex items-center gap-3">
                                                                         {item.data?.image ? (
-                                                                            <img src={item.data.image} className="w-10 h-10 rounded-lg object-cover border border-white/10 shrink-0" alt="" />
+                                                                            <img src={item.data.image} className="w-10 h-10 rounded-[12px] object-cover border border-white/10 shrink-0" alt="" />
                                                                         ) : (
-                                                                            <div className="w-10 h-10 rounded-lg bg-black border border-white/10 flex items-center justify-center shrink-0">
+                                                                            <div className="w-10 h-10 rounded-[12px] bg-black border border-white/10 flex items-center justify-center shrink-0">
                                                                                 {item.type === 'tip' && <Trophy className="w-4 h-4 text-slate-400" />}
                                                                                 {item.type === 'custom_link' && <ExternalLink className="w-4 h-4 text-slate-400" />}
                                                                                 {item.type === 'product' && <ShoppingBag className="w-4 h-4 text-slate-400" />}
@@ -387,7 +387,7 @@ export default function KidsHomeConfig({ initialSettings, libraryItems }: KidsHo
                                                             </div>
                                                             <button
                                                                 onClick={() => setNewsConfig(newsConfig.filter((_, i) => i !== idx))}
-                                                                className="p-2 hover:bg-red-500/20 text-slate-400 hover:text-red-400 rounded-lg transition-colors shrink-0"
+                                                                className="p-2 hover:bg-red-500/20 text-slate-400 hover:text-red-400 rounded-[12px] transition-colors shrink-0"
                                                                 title="Supprimer"
                                                             >
                                                                 <X className="w-4 h-4" />

@@ -71,7 +71,7 @@ export default function LegalPagesAdmin() {
 
     if (pages.length === 0) {
         return (
-            <div className="bg-brand-card border border-white/5 rounded-2xl p-8 text-center max-w-2xl mx-auto mt-12">
+            <div className="bg-brand-card border border-white/5 rounded-[24px] p-8 text-center max-w-2xl mx-auto mt-12">
                 <AlertCircle className="w-12 h-12 text-yellow-500 mx-auto mb-4" />
                 <h2 className="text-xl font-bold text-white mb-2">Base de données non initialisée</h2>
                 <p className="text-brand-text-muted mb-4">
@@ -95,12 +95,12 @@ export default function LegalPagesAdmin() {
                     </p>
                 </div>
 
-                <div className="flex bg-white/5 p-1 rounded-xl border border-white/10 overflow-x-auto">
+                <div className="flex bg-white/5 p-1 rounded-[16px] border border-white/10 overflow-x-auto">
                     {pages.map((page) => (
                         <button
                             key={page.id}
                             onClick={() => handleSelectPage(page.id)}
-                            className={`px-4 py-2 text-sm font-bold rounded-lg whitespace-nowrap transition-all ${selectedPageId === page.id
+                            className={`px-4 py-2 text-sm font-bold rounded-[12px] whitespace-nowrap transition-all ${selectedPageId === page.id
                                 ? "bg-[#f5f5f7] text-[#1c1c1e] shadow-lg"
                                 : "text-brand-text-muted hover:text-white hover:bg-white/5"
                                 }`}
@@ -113,7 +113,7 @@ export default function LegalPagesAdmin() {
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 h-full">
                 {/* Éditeur */}
-                <div className="flex flex-col gap-4 bg-brand-card border border-white/5 rounded-2xl p-6 shadow-xl">
+                <div className="flex flex-col gap-4 bg-brand-card border border-white/5 rounded-[24px] p-6 shadow-xl">
                     <div className="flex items-center justify-between mb-2">
                         <h2 className="font-bold text-white flex items-center gap-2">
                             <FileText className="w-4 h-4 text-white" />
@@ -144,13 +144,13 @@ export default function LegalPagesAdmin() {
                     <textarea
                         value={content}
                         onChange={(e) => setContent(e.target.value)}
-                        className="w-full h-[500px] bg-black/20 border border-white/10 rounded-xl p-4 text-sm text-gray-300 font-mono focus:border-white focus:ring-1 focus:ring-white outline-none resize-y"
+                        className="w-full h-[500px] bg-black/20 border border-white/10 rounded-[16px] p-4 text-sm text-gray-300 font-mono focus:border-white focus:ring-1 focus:ring-white outline-none resize-y"
                         placeholder="Insérez le texte HTML de vos mentions légales ici..."
                     />
                 </div>
 
                 {/* Aperçu en direct */}
-                <div className="flex flex-col bg-white rounded-2xl p-8 shadow-xl border border-gray-200 overflow-hidden text-gray-900">
+                <div className="flex flex-col bg-white rounded-[24px] p-8 shadow-xl border border-gray-200 overflow-hidden text-gray-900">
                     <div className="border-b border-gray-200 pb-4 mb-6">
                         <span className="text-[10px] font-black uppercase tracking-widest text-[#86868b] mb-1 block">Aperçu en direct</span>
                         <h2 className="text-2xl font-black">{selectedPage?.title}</h2>

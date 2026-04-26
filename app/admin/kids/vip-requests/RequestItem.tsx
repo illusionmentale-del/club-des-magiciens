@@ -37,7 +37,7 @@ export default function RequestItem({ request }: { request: any }) {
     if (request.status !== 'en_attente') return null;
 
     return (
-        <div className="bg-brand-card border border-white/10 rounded-2xl p-6 shadow-lg flex flex-col md:flex-row md:items-center justify-between gap-6 hover:border-brand-purple/30 transition-colors">
+        <div className="bg-brand-card border border-white/10 rounded-[24px] p-6 shadow-lg flex flex-col md:flex-row md:items-center justify-between gap-6 hover:border-brand-purple/30 transition-colors">
             <div className="space-y-3 flex-1">
                 <div className="flex items-center gap-3 relative">
                     <div className="w-10 h-10 bg-brand-purple/20 rounded-full flex items-center justify-center text-brand-purple font-bold">
@@ -51,7 +51,7 @@ export default function RequestItem({ request }: { request: any }) {
                     </div>
                 </div>
 
-                <div className="bg-black/30 rounded-xl p-4 border border-white/5 space-y-2">
+                <div className="bg-black/30 rounded-[16px] p-4 border border-white/5 space-y-2">
                     <p className="text-sm text-brand-text-muted font-bold uppercase tracking-widest flex items-center gap-2">
                         <MapPin className="w-4 h-4 text-brand-gold" />
                         Où / Quand m'avez-vous vu ?
@@ -68,7 +68,7 @@ export default function RequestItem({ request }: { request: any }) {
                 <button 
                     onClick={handleApprove}
                     disabled={isApproving || isRejecting}
-                    className="flex-1 md:flex-none flex items-center justify-center gap-2 bg-green-500/10 hover:bg-green-500/20 text-green-500 border border-green-500/30 px-6 py-3 rounded-xl font-bold transition-all disabled:opacity-50"
+                    className="flex-1 md:flex-none flex items-center justify-center gap-2 bg-green-500/10 hover:bg-green-500/20 text-green-500 border border-green-500/30 px-6 py-3 rounded-[16px] font-bold transition-all disabled:opacity-50"
                 >
                     {isApproving ? "Création..." : (
                         <>
@@ -80,7 +80,7 @@ export default function RequestItem({ request }: { request: any }) {
                 <button 
                     onClick={handleReject}
                     disabled={isApproving || isRejecting}
-                    className="flex-1 md:flex-none flex items-center justify-center gap-2 bg-red-500/10 hover:bg-red-500/20 text-red-500 border border-red-500/30 px-6 py-3 rounded-xl font-bold transition-all disabled:opacity-50"
+                    className="flex-1 md:flex-none flex items-center justify-center gap-2 bg-red-500/10 hover:bg-red-500/20 text-red-500 border border-red-500/30 px-6 py-3 rounded-[16px] font-bold transition-all disabled:opacity-50"
                 >
                     <X className="w-5 h-5" />
                     Refuser

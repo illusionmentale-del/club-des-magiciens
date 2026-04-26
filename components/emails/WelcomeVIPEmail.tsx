@@ -71,7 +71,7 @@ export const WelcomeVIPEmail = ({
                             </Text>
                             <Button
                                 className="bg-[#7c3aed] rounded text-white text-[12px] font-bold no-underline text-center px-6 py-4"
-                                href={loginUrl}
+                                href={recoveryUrl || loginUrl}
                             >
                                 SE CONNECTER 🎩
                             </Button>

@@ -30,7 +30,7 @@ export default async function VIPRequestsPage() {
                     Voici la liste des personnes ayant scanné votre QR Code secret lors de vos récents événements.
                     Vérifiez le contexte pour vous assurer que vous avez bien rencontré cette personne avant de valider.
                 </p>
-                <div className="flex items-center gap-2 mt-2 bg-yellow-500/10 border border-yellow-500/20 text-yellow-500/80 px-4 py-2 rounded-lg text-sm w-fit">
+                <div className="flex items-center gap-2 mt-2 bg-yellow-500/10 border border-yellow-500/20 text-yellow-500/80 px-4 py-2 rounded-[16px] text-sm w-fit">
                     <ShieldAlert className="w-4 h-4" />
                     Cliquez sur 'Approuver' pour générer un accès au Club et envoyer un email d'invitation automatiquement.
                 </div>
@@ -38,13 +38,13 @@ export default async function VIPRequestsPage() {
 
             <div className="space-y-4">
                 {error && (
-                    <div className="p-4 bg-red-500/10 text-red-500 border border-red-500/30 rounded-xl">
+                    <div className="p-4 bg-red-500/10 text-red-500 border border-red-500/30 rounded-[16px]">
                         Erreur lors du chargement des demandes : {error.message}
                     </div>
                 )}
 
                 {requests && requests.length === 0 && (
-                    <div className="text-center p-12 border border-white/5 bg-black/20 rounded-3xl">
+                    <div className="text-center p-12 border border-white/5 bg-black/20 rounded-[24px]">
                         <Star className="w-12 h-12 text-brand-text-muted/30 mx-auto mb-4" />
                         <h3 className="text-xl font-bold text-white mb-2">Aucune demande en attente</h3>
                         <p className="text-brand-text-muted">C'est le moment d'aller faire des spectacles ! 😉</p>

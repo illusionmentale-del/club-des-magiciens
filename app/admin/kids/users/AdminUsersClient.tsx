@@ -42,12 +42,12 @@ export default function AdminUsersClient({ profiles }: AdminUsersClientProps) {
                     <div className="flex items-center gap-4">
                         <div>
                             <h1 className="text-3xl font-bold">Gestion des Élèves (Enfants)</h1>
-                            <div className={`text-sm px-2 py-0.5 rounded inline-block mt-1 uppercase font-bold tracking-wider bg-brand-purple/20 text-brand-purple`}>
+                            <div className={`text-sm px-2 py-0.5 rounded-[8px] inline-block mt-1 uppercase font-bold tracking-wider bg-brand-purple/20 text-brand-purple`}>
                                 Vue Kids
                             </div>
                         </div>
                     </div>
-                    <Link href="/admin/kids/users/new" className={`${btnColor} text-white px-4 py-2 rounded-xl font-bold flex items-center gap-2 transition-colors`}>
+                    <Link href="/admin/kids/users/new" className={`${btnColor} text-white px-4 py-2 rounded-[16px] font-bold flex items-center gap-2 transition-colors`}>
                         <UserPlus className="w-4 h-4" />
                         Ajouter
                     </Link>
@@ -60,7 +60,7 @@ export default function AdminUsersClient({ profiles }: AdminUsersClientProps) {
                             <UserRow key={profile.id} profile={profile} isProtected={false} basePath="/admin/kids/users" />
                         ))}
                         {activeProfiles.length === 0 && (
-                            <div className="text-gray-500 italic p-8 text-center bg-white/5 rounded-2xl">
+                            <div className="text-gray-500 italic p-8 text-center bg-white/5 rounded-[24px]">
                                 Aucun membre {isKidMode ? 'enfant' : 'adulte'} trouvé.
                             </div>
                         )}

@@ -88,11 +88,11 @@ export default async function AdminKidsInbox({
             </div>
 
             {/* Toggle Tabs */}
-            <div className="flex items-center gap-2 p-1 bg-black/40 rounded-xl w-fit border border-white/5 shadow-inner">
+            <div className="flex items-center gap-2 p-1 bg-black/40 rounded-[16px] w-fit border border-white/5 shadow-inner">
                 <Link
                     href="/admin/kids/inbox?tab=unread"
                     className={cn(
-                        "flex items-center gap-2 px-6 py-2.5 rounded-lg text-sm font-bold uppercase tracking-widest transition-all",
+                        "flex items-center gap-2 px-6 py-2.5 rounded-[12px] text-sm font-bold uppercase tracking-widest transition-all",
                         currentTab === 'unread'
                             ? "bg-brand-purple text-white shadow-lg"
                             : "text-gray-400 hover:text-white hover:bg-white/5"
@@ -104,7 +104,7 @@ export default async function AdminKidsInbox({
                 <Link
                     href="/admin/kids/inbox?tab=read"
                     className={cn(
-                        "flex items-center gap-2 px-6 py-2.5 rounded-lg text-sm font-bold uppercase tracking-widest transition-all",
+                        "flex items-center gap-2 px-6 py-2.5 rounded-[12px] text-sm font-bold uppercase tracking-widest transition-all",
                         currentTab === 'read'
                             ? "bg-brand-purple text-white shadow-lg"
                             : "text-gray-400 hover:text-white hover:bg-white/5"
@@ -116,7 +116,7 @@ export default async function AdminKidsInbox({
             </div>
 
             {comments.length === 0 ? (
-                <div className="bg-brand-card/50 border border-white/5 rounded-3xl p-16 text-center shadow-lg">
+                <div className="bg-brand-card/50 border border-white/5 rounded-[24px] p-16 text-center shadow-lg">
                     <div className="w-20 h-20 bg-brand-purple/10 rounded-full flex items-center justify-center mx-auto mb-6">
                         <span className="text-4xl">🕊️</span>
                     </div>
@@ -126,7 +126,7 @@ export default async function AdminKidsInbox({
             ) : (
                 <div className="space-y-6">
                     {comments.map((comment) => (
-                        <div key={comment.id} className="bg-brand-card/80 border border-white/10 rounded-2xl p-6 shadow-xl relative overflow-hidden group">
+                        <div key={comment.id} className="bg-brand-card/80 border border-white/10 rounded-[24px] p-6 shadow-xl relative overflow-hidden group">
                             {/* Decorative Glow */}
                             <div className="absolute top-0 right-0 w-32 h-32 bg-brand-purple/10 blur-3xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
 
@@ -157,7 +157,7 @@ export default async function AdminKidsInbox({
                                         </div>
                                     </div>
 
-                                    <div className="bg-white/5 border border-white/5 rounded-xl p-4 text-gray-200 leading-relaxed text-sm">
+                                    <div className="bg-white/5 border border-white/5 rounded-[16px] p-4 text-gray-200 leading-relaxed text-sm">
                                         <p className="font-medium text-brand-purple/80 text-xs uppercase tracking-widest mb-2 font-mono">"Un Petit Magicien a demandé :"</p>
                                         {comment.content}
                                     </div>
@@ -166,7 +166,7 @@ export default async function AdminKidsInbox({
                                 {/* Right Side: Interaction / Reply */}
                                 <div className="w-full md:w-[500px] shrink-0 space-y-4">
                                     {currentTab === 'read' && (
-                                        <div className="bg-green-500/10 border border-green-500/20 rounded-xl p-3 flex items-center justify-center gap-2 text-green-400 text-sm font-bold">
+                                        <div className="bg-green-500/10 border border-green-500/20 rounded-[16px] p-3 flex items-center justify-center gap-2 text-green-400 text-sm font-bold">
                                             <CheckCircle className="w-4 h-4" />
                                             Message déjà traité
                                         </div>

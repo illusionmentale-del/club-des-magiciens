@@ -57,16 +57,16 @@ export default function InboxReplyForm({
     };
 
     return (
-        <div className="bg-black/20 border border-white/5 rounded-xl p-4 mt-4 relative">
+        <div className="bg-black/20 border border-white/5 rounded-[16px] p-4 mt-4 relative">
             {isPending && (
-                <div className="absolute inset-0 bg-brand-bg/50 backdrop-blur-sm z-10 flex items-center justify-center rounded-xl">
+                <div className="absolute inset-0 bg-brand-bg/50 backdrop-blur-sm z-10 flex items-center justify-center rounded-[16px]">
                     <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-brand-purple"></div>
                 </div>
             )}
 
             <div className="flex items-center justify-between mb-4">
                 <h4 className="text-sm font-bold text-white">Répondre à {kidPseudo}</h4>
-                <div className="flex bg-white/5 rounded-lg p-1">
+                <div className="flex bg-white/5 rounded-[12px] p-1">
                     <button
                         type="button"
                         onClick={() => setMediaType('text')}
@@ -99,14 +99,14 @@ export default function InboxReplyForm({
                         value={content}
                         onChange={(e) => setContent(e.target.value)}
                         placeholder={`Bonjour ${kidPseudo} ! Voici l'explication...`}
-                        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-purple/50 text-white placeholder-gray-600 text-sm min-h-[100px]"
+                        className="w-full bg-white/5 border border-white/10 rounded-[16px] px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-purple/50 text-white placeholder-gray-600 text-sm min-h-[100px]"
                         required={mediaType === 'text'}
                     />
                 </div>
 
                 {/* Video specific fields */}
                 {mediaType === 'video_bunny' && (
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 bg-orange-500/10 border border-orange-500/30 rounded-xl">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 bg-orange-500/10 border border-orange-500/30 rounded-[16px]">
                         <div>
                             <label className="block text-xs font-bold text-orange-400 mb-2 uppercase tracking-widest">Titre de la vidéo</label>
                             <input
@@ -114,7 +114,7 @@ export default function InboxReplyForm({
                                 value={mediaTitle}
                                 onChange={(e) => setMediaTitle(e.target.value)}
                                 placeholder="Ex: Démo du faux dépôt"
-                                className="w-full bg-black/50 border border-white/10 rounded-lg px-3 py-2 text-white text-sm"
+                                className="w-full bg-black/50 border border-white/10 rounded-[12px] px-3 py-2 text-white text-sm"
                                 required
                             />
                         </div>
@@ -125,7 +125,7 @@ export default function InboxReplyForm({
                                 value={mediaUrl}
                                 onChange={(e) => setMediaUrl(e.target.value)}
                                 placeholder="xxx-yyy-zzz"
-                                className="w-full bg-black/50 border border-white/10 rounded-lg px-3 py-2 text-white text-sm font-mono"
+                                className="w-full bg-black/50 border border-white/10 rounded-[12px] px-3 py-2 text-white text-sm font-mono"
                                 required
                             />
                         </div>
@@ -134,7 +134,7 @@ export default function InboxReplyForm({
 
                 {/* PDF specific fields */}
                 {mediaType === 'pdf' && (
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 bg-blue-500/10 border border-blue-500/30 rounded-xl">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 bg-blue-500/10 border border-blue-500/30 rounded-[16px]">
                         <div>
                             <label className="block text-xs font-bold text-blue-400 mb-2 uppercase tracking-widest">Titre du fichier PDF</label>
                             <input
@@ -142,7 +142,7 @@ export default function InboxReplyForm({
                                 value={mediaTitle}
                                 onChange={(e) => setMediaTitle(e.target.value)}
                                 placeholder="Ex: Patron de la boîte magique"
-                                className="w-full bg-black/50 border border-white/10 rounded-lg px-3 py-2 text-white text-sm"
+                                className="w-full bg-black/50 border border-white/10 rounded-[12px] px-3 py-2 text-white text-sm"
                                 required
                             />
                         </div>
@@ -153,20 +153,20 @@ export default function InboxReplyForm({
                                 value={mediaUrl}
                                 onChange={(e) => setMediaUrl(e.target.value)}
                                 placeholder="https://..."
-                                className="w-full bg-black/50 border border-white/10 rounded-lg px-3 py-2 text-white text-sm font-mono"
+                                className="w-full bg-black/50 border border-white/10 rounded-[12px] px-3 py-2 text-white text-sm font-mono"
                                 required
                             />
                         </div>
                     </div>
                 )}
 
-                <div className="flex items-center gap-2 p-3 bg-white/5 border border-white/10 rounded-xl mt-4">
+                <div className="flex items-center gap-2 p-3 bg-white/5 border border-white/10 rounded-[16px] mt-4">
                     <input
                         type="checkbox"
                         id={`broadcast-${commentId}`}
                         checked={isBroadcast}
                         onChange={(e) => setIsBroadcast(e.target.checked)}
-                        className={`w-4 h-4 rounded bg-black/50 border-white/20 focus:ring-offset-gray-900 ${context === 'kids' ? 'text-brand-purple focus:ring-brand-purple' : 'text-magic-gold focus:ring-magic-gold'}`}
+                        className={`w-4 h-4 rounded-[4px] bg-black/50 border-white/20 focus:ring-offset-gray-900 ${context === 'kids' ? 'text-brand-purple focus:ring-brand-purple' : 'text-magic-gold focus:ring-magic-gold'}`}
                     />
                     <label htmlFor={`broadcast-${commentId}`} className="text-sm font-medium text-gray-300 select-none cursor-pointer flex-1">
                         {context === 'kids' ? (
@@ -181,7 +181,7 @@ export default function InboxReplyForm({
                     <button
                         type="button"
                         onClick={handleDelete}
-                        className="px-4 py-2 rounded-xl text-xs font-bold text-red-500 hover:text-white hover:bg-red-500/20 transition-all flex items-center gap-2"
+                        className="px-4 py-2 rounded-[16px] text-xs font-bold text-red-500 hover:text-white hover:bg-red-500/20 transition-all flex items-center gap-2"
                         title="Supprimer définitivement"
                     >
                         <Trash2 className="w-4 h-4" />
@@ -190,14 +190,14 @@ export default function InboxReplyForm({
                         <button
                             type="button"
                             onClick={handleDismiss}
-                            className="px-4 py-2 rounded-xl text-xs font-bold text-gray-400 hover:text-white hover:bg-white/5 transition-all flex items-center gap-2"
+                            className="px-4 py-2 rounded-[16px] text-xs font-bold text-gray-400 hover:text-white hover:bg-white/5 transition-all flex items-center gap-2"
                         >
                             <X className="w-4 h-4" /> Ignorer (Lu)
                         </button>
                         <button
                             type="submit"
                             disabled={isPending}
-                            className="px-6 py-2 rounded-xl text-sm font-bold bg-gradient-to-r from-brand-purple to-brand-blue text-white shadow-lg hover:shadow-brand-purple/20 hover:scale-105 active:scale-95 transition-all flex items-center gap-2"
+                            className="px-6 py-2 rounded-[16px] text-sm font-bold bg-gradient-to-r from-brand-purple to-brand-blue text-white shadow-lg hover:shadow-brand-purple/20 hover:scale-105 active:scale-95 transition-all flex items-center gap-2"
                         >
                             <Send className="w-4 h-4" /> Envoyer la réponse
                         </button>

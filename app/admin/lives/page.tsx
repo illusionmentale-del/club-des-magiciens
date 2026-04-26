@@ -53,7 +53,7 @@ export default function AdminLivesPage() {
         return true;
     });
 
-    const themeColor = audience === 'adults' ? 'bg-[#f5f5f7] text-[#1c1c1e] hover:bg-white rounded-[16px]' : 'bg-brand-purple text-white hover:bg-brand-purple/90 rounded-xl shadow-lg';
+    const themeColor = audience === 'adults' ? 'bg-[#f5f5f7] text-[#1c1c1e] hover:bg-white rounded-[16px]' : 'bg-brand-purple text-white hover:bg-brand-purple/90 rounded-[16px] shadow-lg';
     const badgeColor = audience === 'adults' ? 'bg-[#1c1c1e] text-[#86868b] border border-white/5' : 'bg-brand-purple/20 text-brand-purple';
     const iconColor = audience === 'adults' ? 'text-[#f5f5f7]' : 'text-brand-purple';
 
@@ -89,7 +89,7 @@ export default function AdminLivesPage() {
                 {/* List */}
                 <div className="grid gap-4">
                     {filteredLives.map((live) => (
-                        <div key={live.id} className={`${audience === 'adults' ? 'bg-[#1c1c1e] border-white/5 rounded-[24px]' : 'bg-white/5 border-purple-500/20 rounded-2xl'} border p-6 flex items-center justify-between group hover:bg-white/10 transition-colors`}>
+                        <div key={live.id} className={`${audience === 'adults' ? 'bg-[#1c1c1e] border-white/5 rounded-[24px]' : 'bg-white/5 border-purple-500/20 rounded-[24px]'} border p-6 flex items-center justify-between group hover:bg-white/10 transition-colors`}>
                             <div>
                                 <div className="flex items-center gap-3 mb-2">
                                     <h3 className="text-xl font-bold">{live.title}</h3>
@@ -110,7 +110,7 @@ export default function AdminLivesPage() {
                                     {live.platform === 'bunny' && <span className="text-gray-500">Vidéo: {live.platform_id}</span>}
                                 </div>
                                 <div className="mt-4">
-                                    <Link href={`${basePath}/lives/${live.id}`} className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600/20 text-blue-400 hover:bg-blue-600/30 rounded-lg font-bold text-sm transition-colors border border-blue-500/20">
+                                    <Link href={`${basePath}/lives/${live.id}`} className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600/20 text-blue-400 hover:bg-blue-600/30 rounded-[16px] font-bold text-sm transition-colors border border-blue-500/20">
                                         <Video className="w-4 h-4" />
                                         Ouvrir la Salle de Contrôle
                                     </Link>
@@ -120,7 +120,7 @@ export default function AdminLivesPage() {
                             <div className="flex items-center gap-2">
                                 {live.status === 'programmé' && (
                                     <form action={updateLiveStatus.bind(null, live.id, 'en_cours', undefined)}>
-                                        <button className="px-4 py-2 bg-green-600 hover:bg-green-500 rounded-lg font-bold flex items-center gap-2 text-sm">
+                                        <button className="px-4 py-2 bg-green-600 hover:bg-green-500 rounded-[16px] font-bold flex items-center gap-2 text-sm">
                                             <Play className="w-4 h-4" />
                                             Lancer le Live (Go Live)
                                         </button>
@@ -128,14 +128,14 @@ export default function AdminLivesPage() {
                                 )}
                                 {live.status === 'en_cours' && (
                                     <form action={updateLiveStatus.bind(null, live.id, 'terminé', undefined)}>
-                                        <button className="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg font-bold flex items-center gap-2 text-sm">
+                                        <button className="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-[16px] font-bold flex items-center gap-2 text-sm">
                                             <StopCircle className="w-4 h-4" />
                                             Arrêter
                                         </button>
                                     </form>
                                 )}
                                 {live.status === 'terminé' && (live.platform === 'jitsi' || live.platform === 'zoom') && (
-                                    <Link href={`${basePath}/lives/${live.id}/replay`} className="px-4 py-2 bg-blue-600/20 text-blue-400 hover:bg-blue-600/30 rounded-lg font-bold text-sm">
+                                    <Link href={`${basePath}/lives/${live.id}/replay`} className="px-4 py-2 bg-blue-600/20 text-blue-400 hover:bg-blue-600/30 rounded-[16px] font-bold text-sm">
                                         Ajouter Replay
                                     </Link>
                                 )}
@@ -149,7 +149,7 @@ export default function AdminLivesPage() {
                         </div>
                     ))}
                     {filteredLives.length === 0 && (
-                        <div className="text-center text-gray-500 py-12 bg-white/5 rounded-2xl">
+                        <div className="text-center text-gray-500 py-12 bg-white/5 rounded-[24px]">
                             Aucune session programmée pour l'espace <span className="font-bold">{audience === 'adults' ? 'Adulte' : 'Enfant'}</span>.
                         </div>
                     )}

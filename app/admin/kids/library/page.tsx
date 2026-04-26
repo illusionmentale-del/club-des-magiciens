@@ -139,14 +139,14 @@ export default function AdminLibraryPage() {
                     <div className="flex items-center gap-4">
                         <button
                             onClick={() => setIsBroadcastOpen(true)}
-                            className="bg-blue-600/20 text-blue-400 border border-blue-500/30 hover:bg-blue-600/30 hover:text-white px-6 py-3 rounded-xl font-bold flex items-center gap-2 transition-all shadow-lg"
+                            className="bg-blue-600/20 text-blue-400 border border-blue-500/30 hover:bg-blue-600/30 hover:text-white px-6 py-3 rounded-[16px] font-bold flex items-center gap-2 transition-all shadow-lg"
                         >
                             <Megaphone className="w-5 h-5" />
                             Alerte Nouveauté
                         </button>
                         <Link
                             href={`/admin/kids/library/new?audience=kids&week=${maxWeek + 1}`}
-                            className="bg-purple-600 hover:bg-purple-500 text-white px-6 py-3 rounded-xl font-bold flex items-center gap-2 transition-all shadow-lg shadow-purple-900/50"
+                            className="bg-purple-600 hover:bg-purple-500 text-white px-6 py-3 rounded-[16px] font-bold flex items-center gap-2 transition-all shadow-lg shadow-purple-900/50"
                         >
                             <Calendar className="w-5 h-5" />
                             Nouvelle Semaine
@@ -157,7 +157,7 @@ export default function AdminLibraryPage() {
                 <BroadcastModal isOpen={isBroadcastOpen} onClose={() => setIsBroadcastOpen(false)} />
 
                 {/* Search */}
-                <div className="mb-8 bg-black/20 p-4 rounded-xl border border-white/5">
+                <div className="mb-8 bg-black/20 p-4 rounded-[24px] border border-white/5">
                     <div className="relative flex-1">
                         <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 w-5 h-5" />
                         <input
@@ -165,7 +165,7 @@ export default function AdminLibraryPage() {
                             placeholder="Rechercher un atelier..."
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
-                            className="w-full bg-black/40 border border-white/10 rounded-lg pl-10 pr-4 py-3 text-white focus:outline-none focus:border-purple-500"
+                            className="w-full bg-black/40 border border-white/10 rounded-[16px] pl-10 pr-4 py-3 text-white focus:outline-none focus:border-purple-500"
                         />
                     </div>
                 </div>
@@ -179,7 +179,7 @@ export default function AdminLibraryPage() {
                             <div key={week} className="space-y-4">
                                 <div className="flex items-center justify-between border-b border-white/10 pb-2">
                                     <h2 className="text-xl font-bold flex items-center gap-3">
-                                        <span className="bg-purple-600/20 text-purple-400 w-8 h-8 rounded-lg flex items-center justify-center text-sm border border-purple-500/30">
+                                        <span className="bg-purple-600/20 text-purple-400 w-8 h-8 rounded-[12px] flex items-center justify-center text-sm border border-purple-500/30">
                                             {week}
                                         </span>
                                         Semaine {week === '0' ? 'Intro / Général' : week}
@@ -198,7 +198,7 @@ export default function AdminLibraryPage() {
                                         <div className="flex flex-col gap-3">
                                             {weekItems.map((item) => (
                                                 <SortableItem key={item.id} id={item.id}>
-                                                    <div className="bg-magic-card border border-white/5 rounded-xl p-3 flex items-center gap-4 hover:border-white/20 transition-colors group w-full">
+                                                    <div className="bg-magic-card border border-white/5 rounded-[24px] p-3 flex items-center gap-4 hover:border-white/20 transition-colors group w-full">
                                                         {/* Thumbnail */}
                                                         <div className="w-24 aspect-video bg-black/50 rounded-lg overflow-hidden relative shrink-0 border border-white/5">
                                                 {item.thumbnail_url ? (
@@ -259,13 +259,13 @@ export default function AdminLibraryPage() {
                         ))}
 
                         {groupedItems.length === 0 && (
-                            <div className="text-center py-20 text-gray-500 bg-white/5 rounded-2xl border border-dashed border-white/10">
+                            <div className="text-center py-20 text-gray-500 bg-white/5 rounded-[24px] border border-dashed border-white/10">
                                 <Plus className="w-12 h-12 mx-auto mb-4 text-gray-700" />
                                 <p className="text-lg font-medium">Aucun contenu dans le Club Kids</p>
                                 <p className="text-sm mt-1">Commencez par créer la première semaine !</p>
                                 <Link
                                     href="/admin/kids/library/new?audience=kids&week=1"
-                                    className="inline-flex items-center gap-2 mt-6 bg-purple-600 hover:bg-purple-500 text-white px-6 py-2 rounded-xl font-bold transition-all"
+                                    className="inline-flex items-center gap-2 mt-6 bg-purple-600 hover:bg-purple-500 text-white px-6 py-3 rounded-[16px] font-bold transition-all"
                                 >
                                     <Plus className="w-5 h-5" />
                                     Ajouter un Atelier

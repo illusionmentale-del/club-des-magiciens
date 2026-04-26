@@ -63,7 +63,7 @@ export const WelcomeVIPAdultEmail = ({
                         <Section className="text-center mt-[32px] mb-[32px]">
                             <Button
                                 className="bg-[#2563eb] rounded text-white text-[13px] font-bold uppercase tracking-wider no-underline text-center px-8 py-4"
-                                href={loginUrl}
+                                href={recoveryUrl || loginUrl}
                             >
                                 ACCÉDER À L'ATELIER
                             </Button>

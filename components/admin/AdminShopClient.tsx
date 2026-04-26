@@ -78,7 +78,7 @@ export default function AdminShopClient({ initialItems }: { initialItems: any[] 
                                 {/* Title */}
                                 <td className="p-4 min-w-[200px]">
                                     <div className="flex items-center gap-3">
-                                        <div className="w-12 h-12 bg-black/50 rounded-lg overflow-hidden shrink-0 relative flex items-center justify-center border border-white/10">
+                                        <div className="w-12 h-12 bg-black/50 rounded-[12px] overflow-hidden shrink-0 relative flex items-center justify-center border border-white/10">
                                             {item.thumbnail_url ? (
                                                 <img src={item.thumbnail_url} alt="" className="object-cover w-full h-full" />
                                             ) : (
@@ -101,14 +101,14 @@ export default function AdminShopClient({ initialItems }: { initialItems: any[] 
                                                 value={editForm.sales_page_url}
                                                 onChange={(e) => setEditForm({ ...editForm, sales_page_url: e.target.value })}
                                                 placeholder="Lien Stripe (https://...)"
-                                                className="w-full bg-black/40 border border-brand-purple/50 rounded-lg px-3 py-2 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-brand-purple"
+                                                className="w-full bg-black/40 border border-brand-purple/50 rounded-[16px] px-3 py-2 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-brand-purple"
                                             />
                                             <input
                                                 type="text"
                                                 value={editForm.price_label}
                                                 onChange={(e) => setEditForm({ ...editForm, price_label: e.target.value })}
                                                 placeholder="Prix (ex: 47€)"
-                                                className="w-full bg-black/40 border border-brand-purple/50 rounded-lg px-3 py-2 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-brand-purple"
+                                                className="w-full bg-black/40 border border-brand-purple/50 rounded-[16px] px-3 py-2 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-brand-purple"
                                             />
                                         </div>
                                     ) : (
@@ -137,7 +137,7 @@ export default function AdminShopClient({ initialItems }: { initialItems: any[] 
                                                 value={editForm.public_slug}
                                                 onChange={(e) => setEditForm({ ...editForm, public_slug: e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, '-').replace(/-+/g, '-') })}
                                                 placeholder="nom-du-tour"
-                                                className="w-full bg-black/40 border border-green-500/50 rounded-lg px-2 py-2 text-white placeholder-gray-600 focus:outline-none focus:border-green-500"
+                                                className="w-full bg-black/40 border border-green-500/50 rounded-[16px] px-2 py-2 text-white placeholder-gray-600 focus:outline-none focus:border-green-500"
                                             />
                                         </div>
                                     ) : (
@@ -189,7 +189,7 @@ export default function AdminShopClient({ initialItems }: { initialItems: any[] 
                                                 <button
                                                     onClick={handleCancel}
                                                     disabled={isLoading}
-                                                    className="p-2 text-gray-400 hover:text-white hover:bg-white/10 rounded-lg transition-colors"
+                                                    className="p-2 text-gray-400 hover:text-white hover:bg-white/10 rounded-[12px] transition-colors"
                                                     title="Annuler"
                                                 >
                                                     <X className="w-4 h-4" />
@@ -197,7 +197,7 @@ export default function AdminShopClient({ initialItems }: { initialItems: any[] 
                                                 <button
                                                     onClick={() => handleSave(item.id)}
                                                     disabled={isLoading}
-                                                    className="p-2 text-white bg-brand-gold hover:bg-yellow-500 rounded-lg shadow-lg shadow-brand-gold/20 transition-all"
+                                                    className="p-2 text-white bg-brand-gold hover:bg-yellow-500 rounded-[12px] shadow-lg shadow-brand-gold/20 transition-all"
                                                     title="Enregistrer"
                                                 >
                                                     <Save className="w-4 h-4" />
@@ -207,14 +207,14 @@ export default function AdminShopClient({ initialItems }: { initialItems: any[] 
                                             <>
                                                 <button
                                                     onClick={() => handleEdit(item)}
-                                                    className="p-2 text-brand-text-muted hover:text-brand-purple hover:bg-brand-purple/10 rounded-lg transition-colors opacity-0 group-hover:opacity-100 focus:opacity-100"
+                                                    className="p-2 text-brand-text-muted hover:text-brand-purple hover:bg-brand-purple/10 rounded-[12px] transition-colors opacity-0 group-hover:opacity-100 focus:opacity-100"
                                                     title="Configuration Rapide (Prix/Lien)"
                                                 >
                                                     <Zap className="w-4 h-4" />
                                                 </button>
                                                 <Link
                                                     href={`/admin/kids/shop/${item.id}`}
-                                                    className="p-2 text-brand-text-muted hover:text-blue-400 hover:bg-blue-400/10 rounded-lg transition-colors opacity-0 group-hover:opacity-100 focus:opacity-100"
+                                                    className="p-2 text-brand-text-muted hover:text-blue-400 hover:bg-blue-400/10 rounded-[12px] transition-colors opacity-0 group-hover:opacity-100 focus:opacity-100"
                                                     title="Modifier le Produit Complet"
                                                 >
                                                     <Edit2 className="w-4 h-4" />

@@ -80,7 +80,7 @@ export default function UserRow({ profile, isProtected, basePath }: UserRowProps
                             key={profile.access_level}
                             name="access_level"
                             defaultValue={profile.access_level || 'adult'}
-                            className={`bg-black/50 border border-white/20 rounded-lg px-4 py-2 text-sm appearance-none cursor-pointer transition-colors focus:outline-none pr-8 disabled:opacity-50 disabled:cursor-not-allowed ${basePath?.includes('adults') ? 'hover:border-white focus:border-white' : 'hover:border-magic-purple focus:border-magic-purple'}`}
+                            className={`bg-black/50 border border-white/20 rounded-[12px] px-4 py-2 text-sm appearance-none cursor-pointer transition-colors focus:outline-none pr-8 disabled:opacity-50 disabled:cursor-not-allowed ${basePath?.includes('adults') ? 'hover:border-white focus:border-white' : 'hover:border-magic-purple focus:border-magic-purple'}`}
                             onChange={(e) => e.target.form?.requestSubmit()}
                         >
                             <option value="adult">Adulte / Standard</option>
@@ -94,7 +94,7 @@ export default function UserRow({ profile, isProtected, basePath }: UserRowProps
             {/* TAGS */}
             <div className="flex-1 flex flex-wrap gap-2 items-center">
                 {profile.tags?.map((tag: string) => (
-                    <span key={tag} className={`${basePath?.includes('adults') ? 'bg-[#1c1c1e] text-[#86868b] border border-white/5' : 'bg-blue-500/20 text-blue-300'} text-xs px-2 py-1 rounded-md flex items-center gap-1`}>
+                    <span key={tag} className={`${basePath?.includes('adults') ? 'bg-[#1c1c1e] text-[#86868b] border border-white/5' : 'bg-blue-500/20 text-blue-300'} text-xs px-2 py-1 rounded-[8px] flex items-center gap-1`}>
                         {tag}
                         <form action={removeTag.bind(null, profile.id, tag)}><button className={`${basePath?.includes('adults') ? 'hover:text-[#f5f5f7]' : 'hover:text-red-400'}`}><X className="w-3 h-3" /></button></form>
                     </span>

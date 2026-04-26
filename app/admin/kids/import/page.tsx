@@ -17,7 +17,7 @@ export default function ImportUsersPage() {
                 </p>
             </header>
 
-            <div className="bg-blue-50 border border-blue-100 rounded-2xl p-6 flex gap-4 items-start">
+            <div className="bg-blue-50 border border-blue-100 rounded-[24px] p-6 flex gap-4 items-start">
                 <Info className="w-6 h-6 text-blue-500 flex-shrink-0 mt-1" />
                 <div>
                     <h4 className="font-bold text-blue-900 mb-2">Comment fonctionne cet outil ?</h4>

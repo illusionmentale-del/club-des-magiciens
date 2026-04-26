@@ -44,7 +44,7 @@ export default async function AdminShopPage() {
                 <div className="flex items-center gap-4">
                     <Link
                         href="/admin/kids/shop/new"
-                        className="bg-brand-purple hover:bg-purple-600 text-white px-6 py-3 rounded-xl font-bold uppercase tracking-wider transition-all shadow-[0_0_20px_rgba(168,85,247,0.5)] flex items-center gap-2"
+                        className="bg-brand-purple hover:bg-purple-600 text-white px-6 py-3 rounded-[16px] font-bold uppercase tracking-wider transition-all shadow-[0_0_20px_rgba(168,85,247,0.5)] flex items-center gap-2"
                     >
                         <ShoppingBag className="w-5 h-5" />
                         Nouveau Produit
@@ -52,7 +52,7 @@ export default async function AdminShopPage() {
                 </div>
             </div>
 
-            <div className="bg-brand-card border border-white/5 rounded-2xl overflow-hidden shadow-2xl">
+            <div className="bg-brand-card border border-white/5 rounded-[24px] overflow-hidden shadow-2xl">
                 <div className="p-6 border-b border-white/5 bg-white/5 flex items-center gap-3">
                     <Lock className="w-5 h-5 text-brand-gold" />
                     <h2 className="text-xl font-bold text-white">Gestion des accès payants</h2>

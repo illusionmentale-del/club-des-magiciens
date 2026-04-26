@@ -24,7 +24,7 @@ export default async function KidsSettingsPage() {
         <div className="space-y-10 selection:bg-brand-purple/30">
             <div>
                 <div className="flex items-center gap-3 mb-2">
-                    <div className="w-10 h-10 bg-brand-purple/20 rounded-xl flex items-center justify-center border border-brand-purple/30">
+                    <div className="w-10 h-10 bg-brand-purple/20 rounded-[16px] flex items-center justify-center border border-brand-purple/30">
                         <Sparkles className="w-6 h-6 text-brand-purple" />
                     </div>
                     <div>
