@@ -16,25 +16,33 @@ export default function VIPRequestPage() {
             <div className="absolute top-[40%] right-[10%] w-[400px] h-[400px] bg-brand-purple/10 blur-[120px] rounded-full pointer-events-none fixed mix-blend-screen"></div>
 
             <div className="max-w-md w-full relative z-10 bg-[#0a0a0a] border border-white/10 rounded-[24px] p-8 shadow-2xl">
-                {/* Virtual VIP Card */}
-                <div className="flex justify-center mb-8 relative">
-                    <div className="absolute inset-0 bg-brand-purple/20 blur-xl rounded-full"></div>
-                    <div className="relative w-48 h-28 bg-gradient-to-br from-gray-900 to-black rounded-2xl border border-yellow-500/40 shadow-[0_10px_40px_rgba(234,179,8,0.15)] flex flex-col items-center justify-center overflow-hidden">
-                        <div className="absolute top-0 right-0 w-20 h-20 bg-brand-purple/30 blur-[30px]"></div>
-                        <div className="absolute bottom-0 left-0 w-20 h-20 bg-yellow-500/20 blur-[30px]"></div>
-                        <div className="w-10 h-10 bg-gradient-to-tr from-yellow-600 to-yellow-300 rounded-full flex items-center justify-center mb-1 shadow-lg shadow-yellow-500/30">
-                            <svg className="w-5 h-5 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                            </svg>
+                {/* Virtual VIP Card (Apple Style) */}
+                <div className="flex justify-center mb-10 relative perspective-1000">
+                    <div className="relative w-full max-w-[280px] aspect-[1.586/1] bg-gradient-to-br from-[#f5f5f7] via-[#e5e5ea] to-[#d1d1d6] rounded-2xl border border-white/50 shadow-2xl flex flex-col justify-between p-5 overflow-hidden group">
+                        {/* Reflection sheen */}
+                        <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/40 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-in-out"></div>
+                        
+                        {/* Top header */}
+                        <div className="flex justify-between items-start relative z-10">
+                            <span className="text-[10px] uppercase tracking-[0.25em] text-gray-500 font-semibold">Le Club</span>
+                            <div className="w-6 h-6 rounded-full bg-black/5 flex items-center justify-center backdrop-blur-md shadow-sm border border-black/5">
+                                <svg className="w-3 h-3 text-brand-purple" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                                </svg>
+                            </div>
                         </div>
-                        <span className="text-[10px] uppercase tracking-[0.2em] text-yellow-500/90 font-bold">Pass à vie</span>
-                        <div className="absolute inset-x-0 bottom-0 h-1 bg-gradient-to-r from-transparent via-yellow-500/50 to-transparent"></div>
+                        
+                        {/* Bottom content */}
+                        <div className="relative z-10 flex flex-col text-left">
+                            <span className="text-xl font-bold tracking-tight text-black/80">Pass Magique</span>
+                            <span className="text-[10px] tracking-widest text-gray-500 uppercase mt-1">Accès à vie</span>
+                        </div>
                     </div>
                 </div>
                 
                 <div className="text-center mb-6 relative">
-                    <div className="relative z-10 inline-flex items-center gap-2 px-5 py-2 border border-brand-purple/30 bg-brand-purple/5 rounded-full text-brand-purple text-[11px] font-bold tracking-[0.2em] uppercase backdrop-blur-xl shadow-[0_0_20px_rgba(168,85,247,0.15)] mb-4 cursor-default">
-                        <Sparkles className="w-3.5 h-3.5 text-brand-purple" />
+                    <div className="relative z-10 inline-flex items-center gap-2 px-4 py-1.5 border border-white/10 bg-white/5 rounded-full text-white/80 text-[10px] font-medium tracking-[0.2em] uppercase backdrop-blur-xl shadow-sm mb-4 cursor-default">
+                        <Sparkles className="w-3 h-3 text-white/70" />
                         Pass Magique Offert
                     </div>
                     
