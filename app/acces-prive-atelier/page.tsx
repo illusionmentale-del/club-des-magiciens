@@ -49,7 +49,7 @@ export default function VIPAdultRequestPage() {
                             {/* Bottom content */}
                             <div className="relative z-10 flex flex-col text-left">
                                 <span className="text-xl font-medium tracking-tight text-white/90">Invité Prestige</span>
-                                <span className="text-[10px] tracking-widest text-gray-500 uppercase mt-1">Accès Intégral</span>
+                                <span className="text-[10px] tracking-widest text-gray-500 uppercase mt-1">Accès offert</span>
                             </div>
                         </div>
                     </div>
