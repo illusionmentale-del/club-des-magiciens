@@ -117,7 +117,7 @@ export default function KidsMobileNav({ logoUrl, isAdmin, hasPurchases, hasUnrea
                     />
 
                     {/* Menu Content */}
-                    <div className="relative w-72 h-full bg-[#1c1c1e] border-r border-white/5 flex flex-col p-4 animate-in slide-in-from-left duration-300 ease-[0.16,1,0.3,1]">
+                    <div className="relative w-72 h-full bg-[#000000] border-r border-white/5 flex flex-col p-4 animate-in slide-in-from-left duration-300 ease-[0.16,1,0.3,1]">
                         <div className="flex items-start justify-between mb-6 shrink-0">
                             <Link href="/kids/account" onClick={close} className="flex items-center gap-3 group">
                                 <MagicAvatar imageUrl={avatarUrl} levelName={magicLevel} size="sm" />
@@ -142,10 +142,10 @@ export default function KidsMobileNav({ logoUrl, isAdmin, hasPurchases, hasUnrea
                             <Link
                                 href="/kids"
                                 onClick={close}
-                                className={`group flex items-center gap-3 px-4 py-3 rounded-[16px] transition-all duration-300 ease-[0.16,1,0.3,1] ${isHomeActive ? 'bg-[#000000] border border-white/5 shadow-md' : 'hover:bg-white/5'}`}
+                                className={`group flex items-center gap-3 px-4 py-3 rounded-[16px] transition-all duration-300 ease-[0.16,1,0.3,1] ${isHomeActive ? 'bg-[#1c1c1e] border border-white/5 shadow-md' : 'hover:bg-white/5'}`}
                             >
                                 <div className="flex items-center gap-4">
-                                    <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-colors ${isHomeActive ? 'bg-gradient-to-br from-brand-purple to-indigo-500 text-white shadow-lg shadow-brand-purple/20' : 'bg-[#000000] text-[#86868b] group-hover:text-white border border-white/5'}`}>
+                                    <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-colors ${isHomeActive ? 'bg-gradient-to-br from-brand-purple to-indigo-500 text-white shadow-lg shadow-brand-purple/20' : 'bg-[#1c1c1e] text-[#86868b] group-hover:text-white border border-white/5'}`}>
                                         <Sparkles className="w-5 h-5" />
                                     </div>
                                     <div>
@@ -157,9 +157,9 @@ export default function KidsMobileNav({ logoUrl, isAdmin, hasPurchases, hasUnrea
 
                             {/* 2. 📖 La Formation */}
                             {enableProgram && (
-                                <Link href="/kids/program" onClick={() => setIsOpen(false)} className={`group flex items-center gap-3 px-4 py-3 rounded-[16px] transition-all duration-300 ease-[0.16,1,0.3,1] ${isActive('/kids/program') || pathname?.startsWith('/kids/courses') ? 'bg-[#000000] border border-white/5 shadow-md' : 'hover:bg-white/5'}`}>
+                                <Link href="/kids/program" onClick={() => setIsOpen(false)} className={`group flex items-center gap-3 px-4 py-3 rounded-[16px] transition-all duration-300 ease-[0.16,1,0.3,1] ${isActive('/kids/program') || pathname?.startsWith('/kids/courses') ? 'bg-[#1c1c1e] border border-white/5 shadow-md' : 'hover:bg-white/5'}`}>
                                     <div className="flex items-center gap-4">
-                                        <div className={`relative w-10 h-10 rounded-xl flex items-center justify-center transition-colors ${isActive('/kids/program') || pathname?.startsWith('/kids/courses') ? 'bg-gradient-to-br from-brand-purple to-indigo-500 text-white shadow-lg shadow-brand-purple/20' : 'bg-[#000000] text-[#86868b] group-hover:bg-white/10 group-hover:text-white border border-white/5'}`}>
+                                        <div className={`relative w-10 h-10 rounded-xl flex items-center justify-center transition-colors ${isActive('/kids/program') || pathname?.startsWith('/kids/courses') ? 'bg-gradient-to-br from-brand-purple to-indigo-500 text-white shadow-lg shadow-brand-purple/20' : 'bg-[#1c1c1e] text-[#86868b] group-hover:bg-white/10 group-hover:text-white border border-white/5'}`}>
                                             <BookOpen className="w-5 h-5" />
                                             {hasUnreadFormation && (
                                                 <span className="absolute -top-1 -right-1 flex h-3 w-3">
@@ -181,9 +181,9 @@ export default function KidsMobileNav({ logoUrl, isAdmin, hasPurchases, hasUnrea
 
                             {/* 3. 🎬 Les Ateliers */}
                             {enableMasterclass && (
-                                <Link href="/kids/videos" onClick={() => setIsOpen(false)} className={`group flex items-center gap-3 px-4 py-3 rounded-[16px] transition-all duration-300 ease-[0.16,1,0.3,1] ${isActive('/kids/videos') ? 'bg-[#000000] border border-white/5 shadow-md' : 'hover:bg-white/5'}`}>
+                                <Link href="/kids/videos" onClick={() => setIsOpen(false)} className={`group flex items-center gap-3 px-4 py-3 rounded-[16px] transition-all duration-300 ease-[0.16,1,0.3,1] ${isActive('/kids/videos') ? 'bg-[#1c1c1e] border border-white/5 shadow-md' : 'hover:bg-white/5'}`}>
                                     <div className="flex items-center gap-4">
-                                        <div className={`relative w-10 h-10 rounded-xl flex items-center justify-center transition-colors ${isActive('/kids/videos') ? 'bg-gradient-to-br from-brand-blue to-cyan-500 text-white shadow-lg shadow-brand-blue/20' : 'bg-[#000000] text-[#86868b] group-hover:bg-white/10 group-hover:text-white border border-white/5'}`}>
+                                        <div className={`relative w-10 h-10 rounded-xl flex items-center justify-center transition-colors ${isActive('/kids/videos') ? 'bg-gradient-to-br from-brand-blue to-cyan-500 text-white shadow-lg shadow-brand-blue/20' : 'bg-[#1c1c1e] text-[#86868b] group-hover:bg-white/10 group-hover:text-white border border-white/5'}`}>
                                             <Video className="w-5 h-5" />
                                             {hasUnreadAtelier && (
                                                 <span className="absolute -top-1 -right-1 flex h-3 w-3">
@@ -205,9 +205,9 @@ export default function KidsMobileNav({ logoUrl, isAdmin, hasPurchases, hasUnrea
 
                             {/* 5. 🏪 La Boutique */}
                             {enableShop && (
-                                <Link href="/kids/shop" onClick={close} className={`group flex items-center gap-3 px-4 py-3 rounded-[16px] transition-all duration-300 ease-[0.16,1,0.3,1] ${isActive('/kids/shop') ? 'bg-[#000000] border border-white/5 shadow-md' : 'hover:bg-white/5'}`}>
+                                <Link href="/kids/shop" onClick={close} className={`group flex items-center gap-3 px-4 py-3 rounded-[16px] transition-all duration-300 ease-[0.16,1,0.3,1] ${isActive('/kids/shop') ? 'bg-[#1c1c1e] border border-white/5 shadow-md' : 'hover:bg-white/5'}`}>
                                     <div className="flex items-center gap-4">
-                                        <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-colors ${isActive('/kids/shop') ? 'bg-gradient-to-br from-brand-purple to-indigo-500 text-black shadow-lg shadow-brand-purple/20' : 'bg-[#000000] text-[#86868b] group-hover:bg-white/10 group-hover:text-white border border-white/5'}`}>
+                                        <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-colors ${isActive('/kids/shop') ? 'bg-gradient-to-br from-brand-purple to-indigo-500 text-black shadow-lg shadow-brand-purple/20' : 'bg-[#1c1c1e] text-[#86868b] group-hover:bg-white/10 group-hover:text-white border border-white/5'}`}>
                                             <Store className="w-5 h-5" />
                                         </div>
                                         <div>
@@ -222,9 +222,9 @@ export default function KidsMobileNav({ logoUrl, isAdmin, hasPurchases, hasUnrea
 
                             {/* 📦 Mes Vidéos (Purchases) */}
                             {hasPurchases && (
-                                <Link href="/kids/purchases" onClick={close} className={`group flex items-center gap-3 px-4 py-3 rounded-[16px] transition-all duration-300 ease-[0.16,1,0.3,1] ${isActive('/kids/purchases') ? 'bg-[#000000] border border-white/5 shadow-md' : 'hover:bg-white/5'}`}>
+                                <Link href="/kids/purchases" onClick={close} className={`group flex items-center gap-3 px-4 py-3 rounded-[16px] transition-all duration-300 ease-[0.16,1,0.3,1] ${isActive('/kids/purchases') ? 'bg-[#1c1c1e] border border-white/5 shadow-md' : 'hover:bg-white/5'}`}>
                                     <div className="flex items-center gap-4">
-                                        <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-colors ${isActive('/kids/purchases') ? 'bg-brand-purple text-black shadow-lg' : 'bg-[#000000] text-brand-purple border border-brand-purple/20 group-hover:bg-brand-purple/10'}`}>
+                                        <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-colors ${isActive('/kids/purchases') ? 'bg-brand-purple text-black shadow-lg' : 'bg-[#1c1c1e] text-brand-purple border border-brand-purple/20 group-hover:bg-brand-purple/10'}`}>
                                             <Package className="w-5 h-5" />
                                         </div>
                                         <div>
@@ -237,9 +237,9 @@ export default function KidsMobileNav({ logoUrl, isAdmin, hasPurchases, hasUnrea
 
                             {/* ⚙️ Mes Paramètres */}
                             {enableAccount && (
-                                <Link href="/kids/account?view=settings" onClick={close} className={`group flex items-center gap-3 px-4 py-3 rounded-[16px] transition-all duration-300 ease-[0.16,1,0.3,1] ${isActive('/kids/account') && searchParams.get('view') === 'settings' ? 'bg-[#000000] border border-white/5 shadow-md' : 'hover:bg-white/5'}`}>
+                                <Link href="/kids/account?view=settings" onClick={close} className={`group flex items-center gap-3 px-4 py-3 rounded-[16px] transition-all duration-300 ease-[0.16,1,0.3,1] ${isActive('/kids/account') && searchParams.get('view') === 'settings' ? 'bg-[#1c1c1e] border border-white/5 shadow-md' : 'hover:bg-white/5'}`}>
                                     <div className="flex items-center gap-4">
-                                        <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-colors ${isActive('/kids/account') && searchParams.get('view') === 'settings' ? 'bg-[#2c2c2e] text-white border border-white/10' : 'bg-[#000000] text-[#86868b] group-hover:bg-white/10 group-hover:text-white border border-white/5'}`}>
+                                        <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-colors ${isActive('/kids/account') && searchParams.get('view') === 'settings' ? 'bg-[#2c2c2e] text-white border border-white/10' : 'bg-[#1c1c1e] text-[#86868b] group-hover:bg-white/10 group-hover:text-white border border-white/5'}`}>
                                             <Settings className="w-5 h-5" />
                                         </div>
                                         <div>
@@ -279,7 +279,7 @@ export default function KidsMobileNav({ logoUrl, isAdmin, hasPurchases, hasUnrea
                         <div className="pt-4 border-t border-white/5 mt-auto px-2 shrink-0">
                             <button
                                 onClick={handleLogout}
-                                className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-full bg-[#000000] hover:bg-white/10 text-[#86868b] hover:text-[#f5f5f7] transition-all text-sm font-medium border border-white/5"
+                                className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-[16px] bg-[#1c1c1e] hover:bg-white/10 text-[#86868b] hover:text-[#f5f5f7] transition-all text-sm font-medium border border-white/5"
                             >
                                 <LogOut className="w-4 h-4" />
                                 Déconnexion

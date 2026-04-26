@@ -88,7 +88,7 @@ export default function MobileNav({ isAdmin, hasKidsAccess, toggles, xpBalance =
                     />
 
                     {/* Menu Content */}
-                    <div className="relative w-72 h-full bg-[#1c1c1e] border-r border-white/5 flex flex-col p-4 animate-in slide-in-from-left duration-300 ease-[0.16,1,0.3,1]">
+                    <div className="relative w-72 h-full bg-[#0a0a0a] border-r border-white/5 flex flex-col p-4 animate-in slide-in-from-left duration-300 ease-[0.16,1,0.3,1]">
                         <div className="flex justify-end mb-2">
                             <button onClick={close} className="p-2 text-[#86868b] hover:text-[#f5f5f7]">
                                 <X className="w-6 h-6" />
