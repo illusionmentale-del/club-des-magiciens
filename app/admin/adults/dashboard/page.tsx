@@ -6,7 +6,7 @@ export default function AdultsDashboardPage() {
         <div className="space-y-8">
             <FadeInUp delay={0.1}>
                 <div>
-                    <h1 className="text-4xl font-semibold tracking-tight text-brand-text">Tableau de bord Business</h1>
+                    <h1 className="text-3xl font-black text-brand-text tracking-tighter uppercase">Tableau de bord <span className="text-brand-purple">Business</span></h1>
                     <p className="text-xl text-brand-text-muted font-light mt-2">Vue d'ensemble de l'activité commerciale de l'Atelier.</p>
                 </div>
             </FadeInUp>

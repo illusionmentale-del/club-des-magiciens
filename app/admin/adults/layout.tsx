@@ -11,6 +11,7 @@ import { Users, LayoutDashboard, BookOpen, ShoppingBag, BarChart, Settings, LogO
 import Link from "next/link"
 import AdminAdultsMobileNav from "@/components/admin/AdminAdultsMobileNav"
 import AdminSidebarLink from "@/components/admin/AdminSidebarLink"
+import GlobalPreview from "@/components/admin/GlobalPreview"
 
 export default function AdultsAdminLayout({
     children,
@@ -18,18 +19,18 @@ export default function AdultsAdminLayout({
     children: React.ReactNode
 }) {
     return (
-        <div className="flex min-h-screen w-full bg-[#000000] text-brand-text font-sans selection:bg-brand-purple/30">
+        <div className="flex min-h-screen w-full bg-brand-bg text-brand-text font-sans selection:bg-brand-purple/30">
             {/* Mobile Nav */}
             <AdminAdultsMobileNav />
 
             {/* Custom Sidebar for Adults */}
-            <aside className="fixed inset-y-0 left-0 z-50 w-64 bg-[#000000] border-r border-white/5 hidden md:flex flex-col">
-                <Link href="/dashboard" className="flex items-center h-20 px-6 border-b border-white/5 bg-[#000000] hover:bg-white/5 transition-colors cursor-pointer">
-                    <div className="w-10 h-10 bg-[#100b1a] border border-white/5 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.5)] hover:border-brand-purple/30 transition-all rounded-xl flex items-center justify-center mr-3">
-                        <Users className="w-6 h-6 text-brand-text" />
+            <aside className="fixed inset-y-0 left-0 z-50 w-64 bg-[#0a0a0a] border-r border-white/10 hidden md:flex flex-col shadow-2xl">
+                <Link href="/dashboard" className="flex items-center h-20 px-6 border-b border-white/10 bg-[#0a0a0a] hover:bg-white/5 transition-colors cursor-pointer">
+                    <div className="w-10 h-10 bg-brand-purple/20 rounded-xl flex items-center justify-center mr-3 border border-brand-purple/30">
+                        <Users className="w-6 h-6 text-brand-purple" />
                     </div>
-                    <span className="font-semibold text-lg tracking-tight whitespace-nowrap text-white">
-                        L'Atelier <span className="text-brand-text-muted font-light">Admin</span>
+                    <span className="font-black text-xl tracking-tighter uppercase whitespace-nowrap">
+                        L'Atelier <span className="text-brand-purple">Admin</span>
                     </span>
                 </Link>
 
@@ -113,7 +114,7 @@ export default function AdultsAdminLayout({
                 {/* Page Background Glow */}
                 <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-brand-purple/5 blur-[150px] rounded-full pointer-events-none"></div>
 
-                <header className="h-16 md:h-20 border-b border-white/5 bg-black/60 backdrop-blur-2xl sticky top-0 z-40 px-4 md:px-8">
+                <header className="h-16 md:h-20 border-b border-white/5 bg-brand-bg/80 backdrop-blur-xl sticky top-0 z-40 px-4 md:px-8">
                     <div className="flex items-center justify-between w-full max-w-7xl mx-auto h-full">
                         <Breadcrumb>
                             <BreadcrumbList>
@@ -122,11 +123,15 @@ export default function AdultsAdminLayout({
                                 </BreadcrumbItem>
                                 <BreadcrumbSeparator className="text-white/10" />
                                 <BreadcrumbItem>
-                                    <BreadcrumbPage className="text-brand-text font-medium tracking-wide text-sm hidden md:block">Atelier</BreadcrumbPage>
-                                    <BreadcrumbPage className="text-brand-text font-medium tracking-wide text-sm md:hidden">Atelier</BreadcrumbPage>
+                                    <BreadcrumbPage className="text-white font-bold uppercase tracking-widest text-xs hidden md:block">Espace Atelier</BreadcrumbPage>
+                                    <BreadcrumbPage className="text-white font-bold uppercase tracking-widest text-xs md:hidden">Atelier</BreadcrumbPage>
                                 </BreadcrumbItem>
                             </BreadcrumbList>
                         </Breadcrumb>
+
+                        <div className="flex items-center gap-4">
+                            <GlobalPreview />
+                        </div>
                     </div>
                 </header>
 
