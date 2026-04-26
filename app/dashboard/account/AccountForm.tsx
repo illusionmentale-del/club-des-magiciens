@@ -18,7 +18,7 @@ function SubmitButton({ theme, isKidProfile }: { theme: 'light' | 'dark', isKidP
             className={`w-full py-4 font-semibold rounded-full transition-all disabled:opacity-50 flex justify-center items-center shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 ${
                 isKidProfile
                     ? 'bg-gradient-to-r from-brand-purple to-indigo-500 text-white shadow-brand-purple/20'
-                    : 'bg-brand-purple hover:bg-indigo-500 text-black shadow-lg hover:shadow-brand-purple/30 hover:scale-105'
+                    : 'bg-brand-purple hover:bg-indigo-500 text-white shadow-[0_0_15px_rgba(168,85,247,0.3)] hover:shadow-[0_0_25px_rgba(168,85,247,0.5)] hover:scale-105'
             }`}
         >
             {pending ? "Enregistrement..." : "Enregistrer les modifications"}
@@ -41,7 +41,7 @@ export default function AccountForm({ user, profile, theme = 'dark', isKidProfil
     // Theme variations
     const cardClass = theme === 'light'
         ? "bg-white border text-gray-800 shadow-sm border-gray-100 rounded-2xl"
-        : "bg-[#1c1c1e] border border-white/5 text-[#f5f5f7] rounded-[32px] shadow-xl";
+        : "bg-[#1c1c1e] border border-white/5 text-[#f5f5f7] rounded-[32px] shadow-xl hover:border-brand-purple/30 transition-all duration-500";
 
     const labelClass = theme === 'light'
         ? "text-gray-600 font-semibold"
@@ -49,10 +49,10 @@ export default function AccountForm({ user, profile, theme = 'dark', isKidProfil
 
     const inputClass = theme === 'light'
         ? "w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-purple-500 focus:border-transparent focus:outline-none transition-all text-gray-900 placeholder-gray-400"
-        : "w-full bg-[#000000]/50 border border-white/5 rounded-[16px] px-4 py-4 focus:ring-1 focus:ring-white/20 focus:outline-none transition-all text-[#f5f5f7] placeholder-[#86868b]/50";
+        : "w-full bg-[#000000] border border-white/10 hover:border-white/20 rounded-[16px] px-4 py-4 focus:ring-2 focus:ring-brand-purple/50 focus:border-brand-purple focus:outline-none transition-all text-white placeholder-[#86868b]/50 shadow-inner";
 
     const titleClass = theme === 'light' ? "text-gray-900" : "text-[#f5f5f7]";
-    const iconClass = theme === 'light' ? "text-purple-600" : "text-[#86868b]";
+    const iconClass = theme === 'light' ? "text-purple-600" : "text-brand-purple";
 
     return (
         <form action={formAction} className="space-y-8">
@@ -100,7 +100,7 @@ export default function AccountForm({ user, profile, theme = 'dark', isKidProfil
             )}
 
             {/* Security Section */}
-            <section className={`${cardClass} p-8 md:p-10 ${theme === 'dark' ? 'hover:border-brand-purple/30' : ''} transition-all`}>
+            <section className={`${cardClass} p-8 md:p-10`}>
                 <h2 className={`text-xl font-semibold mb-6 flex items-center gap-3 ${titleClass} tracking-tight`}>
                     <Lock className={`w-5 h-5 ${iconClass}`} />
                     Sécurité & Connexion

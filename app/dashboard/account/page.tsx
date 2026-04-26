@@ -38,10 +38,10 @@ export default async function AccountPage({
                 </div>
                 {isSettingsView ? (
                     <FadeInUp delay={0.1}>
-                        <div className="relative group mt-8">
-                            <div className="relative bg-[#1c1c1e] border border-white/5 rounded-[32px] p-8 md:p-12 shadow-2xl">
-                                <h2 className="text-3xl font-semibold tracking-tight text-[#f5f5f7] mb-12 text-center">Mes Paramètres</h2>
-                                <div className="max-w-2xl mx-auto">
+                        <div className="relative group mt-8 w-full">
+                            <div className="relative p-4 md:p-8">
+                                <h2 className="text-4xl font-semibold tracking-tight text-[#f5f5f7] mb-12 text-center">Mes Paramètres</h2>
+                                <div className="max-w-3xl mx-auto space-y-12">
                                     <AccountForm user={user} profile={profile} theme="dark" isKidProfile={false} />
 
                                     {/* Section Notifications */}
