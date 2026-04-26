@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 export default function VIPRequestPage() {
     return (
-        <div className="min-h-[100dvh] bg-brand-bg flex items-center justify-center relative p-4 mb-20 mt-10">
+        <div className="min-h-[100dvh] bg-brand-bg flex flex-col items-center justify-center relative p-4 pb-20 pt-10">
             {/* Background Ambience */}
             <div className="absolute top-[20%] left-[10%] w-[500px] h-[500px] bg-brand-purple/5 blur-[150px] rounded-full pointer-events-none fixed mix-blend-screen"></div>
             <div className="absolute top-[40%] right-[10%] w-[400px] h-[400px] bg-brand-purple/10 blur-[120px] rounded-full pointer-events-none fixed mix-blend-screen"></div>
@@ -59,12 +59,12 @@ export default function VIPRequestPage() {
             </div>
 
 
-            <div className="w-full text-center pb-12 relative z-10">
+            <div className="w-full text-center mt-12 relative z-10">
                 <a 
-                    href="mailto:contact@clubdespetitsmagiciens.fr?subject=Besoin%20d'aide%20-%20Club%20des%20petits%20magiciens" 
+                    href="mailto:contact@clubdespetitsmagiciens.fr?subject=Question%20-%20Club%20des%20petits%20magiciens" 
                     className="inline-flex items-center justify-center px-6 py-2.5 rounded-full border border-white/10 bg-white/5 text-sm font-medium text-gray-400 hover:text-white hover:bg-white/10 transition-all"
                 >
-                    J'ai besoin d'aide
+                    Poser une question
                 </a>
             </div>
         </div>
