@@ -118,13 +118,13 @@ export default function KidsMobileNav({ logoUrl, isAdmin, hasPurchases, hasUnrea
 
                     {/* Menu Content */}
                     <div className="relative w-72 h-full bg-[#1c1c1e] border-r border-white/5 flex flex-col p-4 animate-in slide-in-from-left duration-300 ease-[0.16,1,0.3,1]">
-                        <div className="flex items-start justify-between mb-6">
+                        <div className="flex items-start justify-between mb-6 shrink-0">
                             <Link href="/kids/account" onClick={close} className="flex items-center gap-3 group">
                                 <MagicAvatar imageUrl={avatarUrl} levelName={magicLevel} size="sm" />
                                 <div className="min-w-0 pr-1">
                                     <h2 className="font-bold text-[#f5f5f7] text-xs leading-tight line-clamp-1 group-hover:text-white transition-colors">{userName}</h2>
                                     <div className="flex items-center gap-1.5 mt-0.5">
-                                        <p className="text-[10px] text-brand-purple uppercase tracking-widest font-bold truncate max-w-[60px]">{magicLevel}</p>
+                                        <p className="text-[10px] text-brand-purple uppercase tracking-widest font-bold truncate max-w-[90px]">{magicLevel}</p>
                                         <div className="flex items-center gap-1 bg-[#000000] rounded-full px-1.5 py-0.5 border border-white/5 shrink-0">
                                             <Sparkles className="w-2.5 h-2.5 text-brand-purple" />
                                             <span className="text-[9px] font-bold text-white leading-none">{xpBalance} XP</span>
@@ -137,7 +137,7 @@ export default function KidsMobileNav({ logoUrl, isAdmin, hasPurchases, hasUnrea
                             </button>
                         </div>
 
-                        <nav className="space-y-2 flex-1 flex flex-col font-medium">
+                        <nav className="space-y-2 flex-1 flex flex-col font-medium overflow-y-auto min-h-0 pr-2 pb-4">
                             {/* 1. 🏰 Le Club (Home) */}
                             <Link
                                 href="/kids"
@@ -276,7 +276,7 @@ export default function KidsMobileNav({ logoUrl, isAdmin, hasPurchases, hasUnrea
                             )}
                         </nav>
 
-                        <div className="pt-4 border-t border-white/5 mt-auto px-2">
+                        <div className="pt-4 border-t border-white/5 mt-auto px-2 shrink-0">
                             <button
                                 onClick={handleLogout}
                                 className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-full bg-[#000000] hover:bg-white/10 text-[#86868b] hover:text-[#f5f5f7] transition-all text-sm font-medium border border-white/5"

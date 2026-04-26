@@ -121,7 +121,7 @@ export default function MobileNav({ isAdmin, hasKidsAccess, toggles, xpBalance =
                             </Link>
                         </div>
 
-                        <nav className="space-y-2 flex-1 overflow-y-auto font-medium px-2">
+                        <nav className="space-y-2 flex-1 overflow-y-auto font-medium px-2 min-h-0 pb-4">
                             <Link
                                 href="/dashboard"
                                 onClick={close}
@@ -204,7 +204,7 @@ export default function MobileNav({ isAdmin, hasKidsAccess, toggles, xpBalance =
                             )}
                         </nav>
 
-                        <div className="pt-4 border-t border-white/5 mt-auto px-2">
+                        <div className="pt-4 border-t border-white/5 mt-auto px-2 shrink-0">
                             <button
                                 onClick={handleLogout}
                                 className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-full bg-black hover:bg-white/10 text-[#86868b] hover:text-[#f5f5f7] transition-all text-sm font-medium"
