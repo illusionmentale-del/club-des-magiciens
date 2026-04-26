@@ -6,7 +6,7 @@ import { cookies } from "next/headers";
 import { Separator } from "@/components/ui/separator";
 import GlobalPreview from "@/components/admin/GlobalPreview";
 import AdminKidsMobileNav from "@/components/admin/AdminKidsMobileNav";
-import AdminSidebarNav from "@/components/admin/AdminSidebarNav";
+import AdminSidebarLink from "@/components/admin/AdminSidebarLink";
 import {
     Breadcrumb,
     BreadcrumbItem,
@@ -50,50 +50,66 @@ export default async function AdminLayout({
                 </Link>
 
                 <nav className="flex-1 p-4 space-y-2 overflow-y-auto">
-                    <AdminSidebarNav 
-                        audience="kids"
-                        items={[
-                            { href: "/admin/kids/dashboard", label: "Tableau de bord", icon: LayoutDashboard }
-                        ]} 
-                    />
+                    <AdminSidebarLink href="/admin/kids/dashboard" audience="kids">
+                        <LayoutDashboard />
+                        Tableau de bord
+                    </AdminSidebarLink>
 
                     <Separator className="my-6 bg-white/5" />
                     <p className="px-4 text-[10px] font-black text-brand-purple uppercase tracking-widest mb-4">Gestion du Contenu</p>
 
-                    <AdminSidebarNav 
-                        audience="kids"
-                        items={[
-                            { href: "/admin/kids/library", label: "Vidéos & Ateliers", icon: Film },
-                            { href: "/admin/kids/settings/masterclass", label: "Page \"Les Ateliers\"", icon: Sparkles },
-                            { href: "/admin/kids/shop", label: "La Boutique", icon: Lock },
-                            { href: "/admin/kids/lives", label: "Diffusions Live", icon: Calendar }
-                        ]} 
-                    />
+                    <AdminSidebarLink href="/admin/kids/library" audience="kids">
+                        <Film />
+                        Vidéos & Ateliers
+                    </AdminSidebarLink>
+                    <AdminSidebarLink href="/admin/kids/settings/masterclass" audience="kids">
+                        <Sparkles />
+                        Page "Les Ateliers"
+                    </AdminSidebarLink>
+                    <AdminSidebarLink href="/admin/kids/shop" audience="kids">
+                        <Lock />
+                        La Boutique
+                    </AdminSidebarLink>
+                    <AdminSidebarLink href="/admin/kids/lives" audience="kids">
+                        <Calendar />
+                        Diffusions Live
+                    </AdminSidebarLink>
 
                     <Separator className="my-6 bg-white/5" />
                     <p className="px-4 text-[10px] font-black text-brand-cyan uppercase tracking-widest mb-4">Suivi & Communauté</p>
 
-                    <AdminSidebarNav 
-                        audience="kids"
-                        items={[
-                            { href: "/admin/kids/inbox", label: "Questions Élèves", icon: MessageCircle },
-                            { href: "/admin/kids/vip-requests", label: "Demandes VIP", icon: Star },
-                            { href: "/admin/kids/users", label: "Liste des Élèves", icon: Users },
-                            { href: "/admin/kids/import", label: "Importation CSV", icon: Users }
-                        ]} 
-                    />
+                    <AdminSidebarLink href="/admin/kids/inbox" audience="kids">
+                        <MessageCircle />
+                        Questions Élèves
+                    </AdminSidebarLink>
+                    <AdminSidebarLink href="/admin/kids/vip-requests" audience="kids">
+                        <Star />
+                        Demandes VIP
+                    </AdminSidebarLink>
+                    <AdminSidebarLink href="/admin/kids/users" audience="kids">
+                        <Users />
+                        Liste des Élèves
+                    </AdminSidebarLink>
+                    <AdminSidebarLink href="/admin/kids/import" audience="kids">
+                        <Users />
+                        Importation CSV
+                    </AdminSidebarLink>
 
                     <Separator className="my-6 bg-white/5" />
                     <p className="px-4 text-[10px] font-black text-brand-text-muted uppercase tracking-widest mb-4">Pilotage & Système</p>
 
-                    <AdminSidebarNav 
-                        audience="kids"
-                        items={[
-                            { href: "/admin/kids/gamification", label: "Badges & Évolution", icon: Trophy },
-                            { href: "/admin/kids/settings", label: "Vitrine & Identité", icon: Settings },
-                            { href: "/admin/kids/legal", label: "Textes Légaux", icon: BookOpen }
-                        ]} 
-                    />
+                    <AdminSidebarLink href="/admin/kids/gamification" audience="kids">
+                        <Trophy />
+                        Badges & Évolution
+                    </AdminSidebarLink>
+                    <AdminSidebarLink href="/admin/kids/settings" audience="kids">
+                        <Settings />
+                        Vitrine & Identité
+                    </AdminSidebarLink>
+                    <AdminSidebarLink href="/admin/kids/legal" audience="kids">
+                        <BookOpen />
+                        Textes Légaux
+                    </AdminSidebarLink>
                 </nav>
 
                 <div className="p-4 border-t border-white/5 bg-black/20">

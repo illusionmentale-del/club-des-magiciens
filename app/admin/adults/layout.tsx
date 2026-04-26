@@ -10,7 +10,7 @@ import {
 import { Users, LayoutDashboard, BookOpen, ShoppingBag, BarChart, Settings, LogOut, Video, MessageCircle, Mail, Sparkles, Trophy } from "lucide-react"
 import Link from "next/link"
 import AdminAdultsMobileNav from "@/components/admin/AdminAdultsMobileNav"
-import AdminSidebarNav from "@/components/admin/AdminSidebarNav"
+import AdminSidebarLink from "@/components/admin/AdminSidebarLink"
 
 export default function AdultsAdminLayout({
     children,
@@ -34,51 +34,70 @@ export default function AdultsAdminLayout({
                 </Link>
 
                 <nav className="flex-1 p-4 space-y-2 overflow-y-auto">
-                    <AdminSidebarNav 
-                        audience="adults"
-                        items={[
-                            { href: "/admin/adults/dashboard", label: "Dashboard", icon: LayoutDashboard }
-                        ]} 
-                    />
+                    <AdminSidebarLink href="/admin/adults/dashboard" audience="adults">
+                        <LayoutDashboard />
+                        Dashboard
+                    </AdminSidebarLink>
 
                     <Separator className="my-6 bg-white/5" />
                     <p className="px-4 text-[10px] font-black text-brand-text-muted uppercase tracking-widest mb-4">Gestion du Contenu</p>
 
-                    <AdminSidebarNav 
-                        audience="adults"
-                        items={[
-                            { href: "/admin/adults/library", label: "Vidéos & Ateliers", icon: Video },
-                            { href: "/admin/adults/settings/masterclass", label: "Page \"Mes Formations\"", icon: Sparkles },
-                            { href: "/admin/adults/products", label: "La Boutique", icon: ShoppingBag },
-                            { href: "/admin/adults/lives", label: "Diffusions Live", icon: Video }
-                        ]} 
-                    />
+                    <AdminSidebarLink href="/admin/adults/library" audience="adults">
+                        <Video />
+                        Vidéos & Ateliers
+                    </AdminSidebarLink>
+                    <AdminSidebarLink href="/admin/adults/settings/masterclass" audience="adults">
+                        <Sparkles />
+                        Page "Mes Formations"
+                    </AdminSidebarLink>
+                    <AdminSidebarLink href="/admin/adults/products" audience="adults">
+                        <ShoppingBag />
+                        La Boutique
+                    </AdminSidebarLink>
+                    <AdminSidebarLink href="/admin/adults/lives" audience="adults">
+                        <Video />
+                        Diffusions Live
+                    </AdminSidebarLink>
 
                     <Separator className="my-6 bg-white/5" />
                     <p className="px-4 text-[10px] font-black text-brand-text-muted uppercase tracking-widest mb-4">Suivi & Communauté</p>
 
-                    <AdminSidebarNav 
-                        audience="adults"
-                        items={[
-                            { href: "/admin/adults/inbox", label: "Questions Élèves", icon: MessageCircle },
-                            { href: "/admin/adults/users", label: "Liste des Élèves", icon: Users },
-                            { href: "/admin/adults/newsletter", label: "Newsletter", icon: Mail },
-                            { href: "/admin/adults/push", label: "Envoi Rapide Push", icon: MessageCircle },
-                            { href: "/admin/adults/vip-requests", label: "Accès Privilège", icon: Sparkles }
-                        ]} 
-                    />
+                    <AdminSidebarLink href="/admin/adults/inbox" audience="adults">
+                        <MessageCircle />
+                        Questions Élèves
+                    </AdminSidebarLink>
+                    <AdminSidebarLink href="/admin/adults/users" audience="adults">
+                        <Users />
+                        Liste des Élèves
+                    </AdminSidebarLink>
+                    <AdminSidebarLink href="/admin/adults/newsletter" audience="adults">
+                        <Mail />
+                        Newsletter
+                    </AdminSidebarLink>
+                    <AdminSidebarLink href="/admin/adults/push" audience="adults">
+                        <MessageCircle />
+                        Envoi Rapide Push
+                    </AdminSidebarLink>
+                    <AdminSidebarLink href="/admin/adults/vip-requests" audience="adults">
+                        <Sparkles />
+                        Accès Privilège
+                    </AdminSidebarLink>
 
                     <Separator className="my-6 bg-white/5" />
                     <p className="px-4 text-[10px] font-black text-brand-text-muted uppercase tracking-widest mb-4">Pilotage & Système</p>
 
-                    <AdminSidebarNav 
-                        audience="adults"
-                        items={[
-                            { href: "/admin/adults/analytics", label: "Analytics", icon: BarChart },
-                            { href: "/admin/adults/settings", label: "Vitrine & Identité", icon: Settings },
-                            { href: "/admin/adults/legal", label: "Textes Légaux", icon: BookOpen }
-                        ]} 
-                    />
+                    <AdminSidebarLink href="/admin/adults/analytics" audience="adults">
+                        <BarChart />
+                        Analytics
+                    </AdminSidebarLink>
+                    <AdminSidebarLink href="/admin/adults/settings" audience="adults">
+                        <Settings />
+                        Vitrine & Identité
+                    </AdminSidebarLink>
+                    <AdminSidebarLink href="/admin/adults/legal" audience="adults">
+                        <BookOpen />
+                        Textes Légaux
+                    </AdminSidebarLink>
                 </nav>
 
                 <div className="p-4 border-t border-white/5 bg-black/20">
