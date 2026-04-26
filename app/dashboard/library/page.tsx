@@ -145,7 +145,7 @@ export default async function AdultLibraryPage() {
                                             w-12 h-12 flex items-center justify-center font-bold text-lg rounded-[16px] border
                                             ${isLocked ? 'bg-[#2c2c2e]/50 border-white/5 text-[#86868b]' : ''}
                                             ${isCurrent ? 'bg-brand-purple text-white border-transparent shadow-lg' : ''}
-                                            ${isCompleted ? 'bg-green-500/10 text-green-400 border-green-500/20' : ''}
+                                            ${isCompleted ? 'bg-[#2c2c2e]/50 text-[#86868b] border-white/5' : ''}
                                         `}>
                                                     {isLocked && <Lock className="w-5 h-5" />}
                                                     {isCurrent && <Star className="w-6 h-6 fill-current animate-pulse" />}
@@ -156,7 +156,7 @@ export default async function AdultLibraryPage() {
                                                         Semaine {week}
                                                     </h2>
                                                     {isCurrent && <span className="text-[10px] text-brand-purple font-bold uppercase tracking-widest mt-1 inline-block">En cours</span>}
-                                                    {isCompleted && <span className="text-[10px] text-green-400 font-bold uppercase tracking-widest mt-1 inline-block">Terminée</span>}
+                                                    {isCompleted && <span className="text-[10px] text-[#86868b] font-bold uppercase tracking-widest mt-1 inline-block">Terminée</span>}
                                                     {isLocked && <span className="text-[10px] text-[#86868b] font-bold uppercase tracking-widest mt-1 inline-block">À venir</span>}
                                                 </div>
                                             </div>
