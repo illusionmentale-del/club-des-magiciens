@@ -32,7 +32,16 @@ export default function VIPRequestPage() {
                     </div>
                 </div>
                 
-                <h1 className="text-3xl font-black text-white text-center mb-4 tracking-tight">Accès Magique Offert</h1>
+                <div className="text-center mb-6 relative">
+                    <div className="relative z-10 inline-flex items-center gap-2 px-5 py-2 border border-brand-purple/30 bg-brand-purple/5 rounded-full text-brand-purple text-[11px] font-bold tracking-[0.2em] uppercase backdrop-blur-xl shadow-[0_0_20px_rgba(168,85,247,0.15)] mb-4 cursor-default">
+                        <Sparkles className="w-3.5 h-3.5 text-brand-purple" />
+                        Pass Magique Offert
+                    </div>
+                    
+                    <h1 className="relative z-10 text-4xl md:text-5xl font-bold tracking-tighter text-white leading-[1.1]">
+                        Accès <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-purple to-purple-400">Privilège</span> 🎁
+                    </h1>
+                </div>
                 
                 <div className="flex flex-wrap justify-center gap-x-4 gap-y-2 mb-8 text-[11px] font-medium text-brand-text-muted">
                     <div className="flex items-center gap-1.5"><span className="text-brand-purple">✓</span> Vidéos en illimité</div>

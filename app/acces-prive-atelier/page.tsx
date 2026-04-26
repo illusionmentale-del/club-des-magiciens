@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import { Star } from "lucide-react";
+import { Star, Sparkles } from "lucide-react";
 import VIPAdultForm from "./VIPAdultForm";
 import Link from "next/link";
 import Image from "next/image";
@@ -50,7 +50,16 @@ export default function VIPAdultRequestPage() {
                         </div>
                     </div>
                     
-                    <h1 className="text-3xl font-black text-white text-center mb-4 tracking-tight">Accès Privilège</h1>
+                    <div className="text-center mb-6 relative">
+                        <div className="relative z-10 inline-flex items-center gap-2 px-5 py-2 border border-brand-blue/30 bg-brand-blue/5 rounded-full text-brand-blue text-[11px] font-bold tracking-[0.2em] uppercase backdrop-blur-xl shadow-[0_0_20px_rgba(59,130,246,0.15)] mb-4 cursor-default">
+                            <Sparkles className="w-3.5 h-3.5 text-brand-blue" />
+                            Accès Privilège
+                        </div>
+                        
+                        <h1 className="relative z-10 text-4xl md:text-5xl font-bold tracking-tighter text-white leading-[1.1]">
+                            Invité de <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-blue to-cyan-400">Prestige</span> 🌟
+                        </h1>
+                    </div>
                     
                     <div className="flex flex-wrap justify-center gap-x-4 gap-y-2 mb-8 text-[11px] font-medium text-gray-400">
                         <div className="flex items-center gap-1.5"><span className="text-brand-blue">✓</span> Masterclass exclusives</div>

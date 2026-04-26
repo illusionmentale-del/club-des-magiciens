@@ -5,7 +5,7 @@ import { useFormStatus } from "react-dom";
 import Link from "next/link";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
-import { Loader2, Lock, Mail, AlertCircle } from "lucide-react";
+import { Loader2, Lock, Mail, AlertCircle, Sparkles } from "lucide-react";
 import { loginWithPassword } from "../actions";
 
 // Submit Button Component
@@ -32,20 +32,17 @@ function LoginFormContent() {
 
     return (
         <div className="w-full max-w-md z-10">
-            <div className="text-center mb-8 relative">
-                <div className="relative w-40 h-20 mx-auto mb-4 drop-shadow-[0_0_15px_rgba(59,130,246,0.5)]">
-                    <Image
-                        src="/logo.png"
-                        alt="L'Atelier des Magiciens"
-                        fill
-                        className="object-contain"
-                        priority
-                    />
-                </div>
-                <h1 className="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-brand-blue to-cyan-400 uppercase tracking-tighter drop-shadow-sm">
+            <div className="text-center mb-10 relative">
+                <div className="relative z-10 inline-flex items-center gap-2 px-5 py-2 border border-brand-blue/30 bg-brand-blue/5 rounded-full text-brand-blue text-[11px] font-bold tracking-[0.2em] uppercase backdrop-blur-xl shadow-[0_0_20px_rgba(59,130,246,0.15)] mb-6 cursor-default">
+                    <Sparkles className="w-3.5 h-3.5 text-brand-blue" />
                     L'Atelier des Magiciens
+                </div>
+                
+                <h1 className="relative z-10 text-5xl md:text-6xl font-bold tracking-tighter text-white leading-[1.1] mb-4">
+                    Bienvenue à <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-blue to-cyan-400">l'Atelier</span> 🎩
                 </h1>
-                <p className="text-brand-text-muted font-bold mt-2">Connectez-vous à votre espace membre</p>
+                
+                <p className="text-xl text-gray-400 font-light">Prêt à perfectionner votre art ?</p>
             </div>
 
             <div className="bg-brand-card border-2 border-brand-blue/30 rounded-3xl p-8 shadow-2xl backdrop-blur-xl relative overflow-hidden group">

@@ -32,21 +32,17 @@ function LoginFormContent() {
 
     return (
         <div className="w-full max-w-md z-10">
-            <div className="text-center mb-8 relative">
-
-                <div className="relative w-48 h-24 mx-auto mb-4 drop-shadow-[0_0_15px_rgba(168,85,247,0.5)]">
-                    <Image
-                        src="/logo.png"
-                        alt="Club des Petits Magiciens"
-                        fill
-                        className="object-contain"
-                        priority
-                    />
+            <div className="text-center mb-10 relative">
+                <div className="relative z-10 inline-flex items-center gap-2 px-5 py-2 border border-brand-purple/30 bg-brand-purple/5 rounded-full text-brand-purple text-[11px] font-bold tracking-[0.2em] uppercase backdrop-blur-xl shadow-[0_0_20px_rgba(168,85,247,0.15)] mb-6 cursor-default">
+                    <Sparkles className="w-3.5 h-3.5 text-brand-purple" />
+                    Le Club des Petits Magiciens
                 </div>
-                <h1 className="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-brand-purple to-brand-blue uppercase tracking-tighter drop-shadow-sm">
-                    Club des Petits Magiciens
+                
+                <h1 className="relative z-10 text-5xl md:text-6xl font-bold tracking-tighter text-white leading-[1.1] mb-4">
+                    Bienvenue au <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-purple to-purple-400">Club</span> ✨
                 </h1>
-                <p className="text-brand-text-muted font-bold mt-2">Connecte-toi pour apprendre la magie !</p>
+                
+                <p className="text-xl text-gray-400 font-light">Prêt à découvrir les secrets de la semaine ?</p>
             </div>
 
             <div className="bg-brand-card border-2 border-brand-purple/30 rounded-3xl p-8 shadow-2xl backdrop-blur-xl relative overflow-hidden group">

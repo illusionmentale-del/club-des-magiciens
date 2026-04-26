@@ -72,18 +72,19 @@ export default async function KidsPricingPage() {
 
             <div className="relative z-10 max-w-5xl mx-auto px-4 pt-32 pb-24">
                 {/* Hero Section */}
-                <div className="text-center space-y-6 mb-16">
-                    <div className="inline-flex items-center gap-2 px-6 py-2 rounded-full border border-brand-purple/30 bg-gradient-to-r from-brand-purple/10 to-transparent text-brand-purple text-sm font-bold uppercase tracking-widest shadow-[0_0_20px_rgba(139,92,246,0.2)] backdrop-blur-md">
-                        <Sparkles className="w-4 h-4 animate-pulse" />
+                <div className="text-center space-y-6 mb-16 relative">
+                    <div className="relative z-10 inline-flex items-center gap-2 px-5 py-2 border border-brand-purple/30 bg-brand-purple/5 rounded-full text-brand-purple text-[11px] font-bold tracking-[0.2em] uppercase backdrop-blur-xl shadow-[0_0_20px_rgba(168,85,247,0.15)] mb-4 cursor-default">
+                        <Sparkles className="w-3.5 h-3.5 text-brand-purple" />
                         Le Club des Petits Magiciens
-                        <Sparkles className="w-4 h-4 animate-pulse" />
                     </div>
-                    <h1 className="text-4xl md:text-6xl font-black tracking-tight text-white leading-tight">
-                        La première académie de magie <br className="hidden md:block" />
-                        en ligne pour les <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-purple to-brand-blue whitespace-nowrap">8-14 ans</span>
+                    
+                    <h1 className="relative z-10 text-5xl md:text-7xl lg:text-[90px] font-bold tracking-tighter text-white leading-[1.05] pb-2 drop-shadow-sm">
+                        Apprends la <br className="hidden md:block" />
+                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-purple to-purple-400 drop-shadow-[0_0_25px_rgba(168,85,247,0.3)]">Magie</span> ✨
                     </h1>
-                    <p className="text-xl text-gray-400 max-w-2xl mx-auto font-medium">
-                        Chaque semaine, découvre de nouveaux tours et apprends de véritables secrets de magiciens dans une école de magie en ligne ludique, sécurisée et 100% adaptée.
+                    
+                    <p className="relative z-10 text-xl md:text-2xl text-gray-400 max-w-2xl mx-auto font-light leading-relaxed mt-6">
+                        Chaque semaine, découvre de nouveaux tours et apprends de véritables secrets de magiciens dans une école en ligne ludique et sécurisée.
                     </p>
                 </div>
 
