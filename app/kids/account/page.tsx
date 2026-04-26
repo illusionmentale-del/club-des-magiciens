@@ -80,7 +80,7 @@ export default async function KidsAccountPage({
                             </div>
                             <h1 className="text-4xl md:text-6xl font-semibold tracking-tight text-white">
                                 {isSettingsView ? "Mes " : "Ma "}
-                                <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-purple to-pink-500">
+                                <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-purple to-indigo-500">
                                     {isSettingsView ? "Paramètres" : "Carte d'Apprenti"}
                                 </span>
                             </h1>

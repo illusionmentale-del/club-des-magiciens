@@ -5,13 +5,13 @@ import { Sparkles, Check } from "lucide-react";
 
 const KID_AVATARS = [
     { id: "hat", icon: "🎩", name: "Chapeau Magique", color: "from-purple-500 to-indigo-600" },
-    { id: "wand", icon: "🪄", name: "Baguette de Fée", color: "from-pink-500 to-rose-500" },
+    { id: "wand", icon: "🪄", name: "Baguette de Fée", color: "from-brand-purple to-indigo-500" },
     { id: "crystal", icon: "🔮", name: "Boule de Cristal", color: "from-blue-500 to-cyan-500" },
-    { id: "owl", icon: "🦉", name: "Chouette Savante", color: "from-amber-600 to-orange-600" },
+    { id: "owl", icon: "🦉", name: "Chouette Savante", color: "from-indigo-600 to-indigo-600" },
     { id: "dragon", icon: "🐉", name: "Jeune Dragon", color: "from-emerald-500 to-teal-600" },
-    { id: "unicorn", icon: "🦄", name: "Licorne Polaire", color: "from-fuchsia-500 to-purple-600" },
+    { id: "unicorn", icon: "🦄", name: "Licorne Polaire", color: "from-brand-purple to-purple-600" },
     { id: "castle", icon: "🏰", name: "Château Secret", color: "from-slate-600 to-slate-800" },
-    { id: "star", icon: "⭐", name: "Étoile Filante", color: "from-yellow-400 to-amber-500" },
+    { id: "star", icon: "⭐", name: "Étoile Filante", color: "from-cyan-400 to-brand-purple" },
 ];
 
 interface KidsAvatarSelectorProps {

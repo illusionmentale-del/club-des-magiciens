@@ -113,8 +113,8 @@ export default function GamificationModal({ event, onClose }: GamificationModalP
                                 ))}
 
                                 {event.leveledUpTo && (
-                                    <div className="bg-amber-500/20 border border-amber-500/50 rounded-xl p-3">
-                                        <p className="text-amber-400 font-bold text-sm mb-1 uppercase">Nouveau Grade atteint</p>
+                                    <div className="bg-brand-purple/20 border border-brand-purple/50 rounded-xl p-3">
+                                        <p className="text-cyan-400 font-bold text-sm mb-1 uppercase">Nouveau Grade atteint</p>
                                         <p className="text-white font-black text-xl">{event.leveledUpTo}</p>
                                     </div>
                                 )}

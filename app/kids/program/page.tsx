@@ -108,7 +108,7 @@ export default async function KidsProgramPage({ searchParams }: { searchParams: 
                                 <span className="text-xs font-bold uppercase tracking-widest">Le Club des Petits Magiciens</span>
                             </div>
                             <h1 className="text-4xl md:text-6xl font-semibold tracking-tight text-white">
-                                La <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-purple to-pink-500">Formation</span>
+                                La <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-purple to-indigo-500">Formation</span>
                             </h1>
                             <p className="text-[#86868b] mt-3 text-lg md:text-xl font-light">
                                 Retrouve ici ton parcours d'apprentissage de la magie.

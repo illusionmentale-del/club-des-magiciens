@@ -80,7 +80,7 @@ export default function KidsCommentsSection({ videoId, comments, isAdmin }: { vi
                 <button
                     type="submit"
                     disabled={isPending}
-                    className="w-full md:w-auto h-14 bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-8 rounded-2xl font-bold hover:shadow-[0_0_20px_rgba(168,85,247,0.5)] transition-all disabled:opacity-50 disabled:grayscale flex items-center justify-center gap-2 shrink-0 group transform hover:scale-105"
+                    className="w-full md:w-auto h-14 bg-gradient-to-r from-brand-purple to-indigo-500 text-white px-8 rounded-2xl font-bold hover:shadow-[0_0_20px_rgba(168,85,247,0.5)] transition-all disabled:opacity-50 disabled:grayscale flex items-center justify-center gap-2 shrink-0 group transform hover:scale-105"
                 >
                     <Send className="w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
                     {isPending ? "..." : "Envoyer"}
@@ -107,14 +107,14 @@ export default function KidsCommentsSection({ videoId, comments, isAdmin }: { vi
 
                             <div className={`flex flex-col max-w-[85%] ${isFromAdmin ? 'items-end' : 'items-start'}`}>
                                 <div className={`px-5 py-4 text-[15px] shadow-lg relative ${isFromAdmin
-                                    ? `bg-gradient-to-br from-amber-500 to-orange-600 border border-orange-400/50 text-white rounded-2xl rounded-tr-sm`
+                                    ? `bg-gradient-to-br from-brand-purple to-indigo-600 border border-cyan-400/50 text-white rounded-2xl rounded-tr-sm`
                                     : 'bg-white/5 border border-white/5 text-gray-200 rounded-2xl rounded-tl-sm backdrop-blur-md'
                                     }`}>
                                     <div className={`flex items-center justify-between mb-2 gap-4 ${isFromAdmin ? 'flex-row-reverse' : ''}`}>
-                                        <span className={`font-black text-xs uppercase tracking-widest flex items-center gap-2 ${isFromAdmin ? 'text-orange-100' : 'text-gray-400'}`}>
+                                        <span className={`font-black text-xs uppercase tracking-widest flex items-center gap-2 ${isFromAdmin ? 'text-indigo-100' : 'text-gray-400'}`}>
                                             {isFromAdmin ? 'Le Magicien !' : 'Un Petit Magicien'}
                                         </span>
-                                        <span className={`text-[10px] ${isFromAdmin ? 'text-orange-200' : 'text-gray-600'}`}>
+                                        <span className={`text-[10px] ${isFromAdmin ? 'text-indigo-200' : 'text-gray-600'}`}>
                                             {new Date(comment.created_at).toLocaleDateString()}
                                         </span>
                                     </div>
@@ -129,8 +129,8 @@ export default function KidsCommentsSection({ videoId, comments, isAdmin }: { vi
                                     {/* Rich Media Attachments */}
                                     {isFromAdmin && comment.media_type === 'video_bunny' && comment.media_url && (
                                         <div className="mt-3 bg-black/40 rounded-xl overflow-hidden shadow-inner border border-white/10 w-full md:w-[400px]">
-                                            <div className="p-2 bg-black/60 text-xs font-bold text-orange-400 capitalize flex items-center gap-2">
-                                                <span className="w-2 h-2 rounded-full bg-orange-500 animate-pulse"></span>
+                                            <div className="p-2 bg-black/60 text-xs font-bold text-cyan-400 capitalize flex items-center gap-2">
+                                                <span className="w-2 h-2 rounded-full bg-brand-purple animate-pulse"></span>
                                                 Réponse Vidéo : {comment.media_title || 'Explication magique'}
                                             </div>
                                             <div className="relative pt-[56.25%] w-full bg-black">

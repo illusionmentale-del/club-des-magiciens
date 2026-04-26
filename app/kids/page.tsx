@@ -308,7 +308,7 @@ export default async function KidsHomePage({ searchParams }: { searchParams: Pro
                                 <span className="text-xs font-bold uppercase tracking-widest">Le Club des Petits Magiciens</span>
                             </div>
                             <h1 className="text-4xl md:text-6xl font-semibold tracking-tight text-white">
-                                Bienvenue au <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-purple to-pink-500">Club</span> ✨
+                                Bienvenue au <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-purple to-indigo-500">Club</span> ✨
                             </h1>
                             <p className="text-[#86868b] mt-3 text-lg md:text-xl font-light">
                                 {customWelcome || (mainItem ? "Prêt à découvrir les secrets de la semaine ?" : "Prêt pour ton aventure magique ?")}

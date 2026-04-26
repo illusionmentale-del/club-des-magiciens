@@ -86,7 +86,7 @@ export default function KidsSidebar({ socialLinks, logoUrl, isAdmin, hasPurchase
                         {/* Mini Progress Bar */}
                         <div className="h-1.5 w-full bg-[#000000] rounded-full overflow-hidden border border-white/5 mt-3 mx-auto max-w-[80%] relative">
                             <div
-                                className={`h-full absolute left-0 top-0 rounded-full ${isLegendary ? "bg-gradient-to-r from-amber-600 to-yellow-400" : isHolo ? "bg-gradient-to-r from-purple-600 to-brand-blue" : "bg-gradient-to-r from-brand-blue to-cyan-400"}`}
+                                className={`h-full absolute left-0 top-0 rounded-full ${isLegendary ? "bg-gradient-to-r from-indigo-600 to-cyan-400" : isHolo ? "bg-gradient-to-r from-purple-600 to-brand-blue" : "bg-gradient-to-r from-brand-blue to-cyan-400"}`}
                                 style={{ width: `${Math.max(progressPercent, 2)}%` }}
                             />
                         </div>
@@ -103,7 +103,7 @@ export default function KidsSidebar({ socialLinks, logoUrl, isAdmin, hasPurchase
                     className={`group flex items-center gap-3 px-4 py-3 rounded-[16px] transition-all duration-300 ease-[0.16,1,0.3,1] ${isHomeActive ? 'bg-[#1c1c1e] border border-white/5 shadow-md' : 'hover:bg-white/5'}`}
                 >
                     <div className="flex items-center gap-4">
-                        <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-colors ${isHomeActive ? 'bg-gradient-to-br from-brand-purple to-pink-500 text-white shadow-lg shadow-brand-purple/20' : 'bg-[#1c1c1e] text-[#86868b] group-hover:bg-white/10 group-hover:text-white border border-white/5'}`}>
+                        <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-colors ${isHomeActive ? 'bg-gradient-to-br from-brand-purple to-indigo-500 text-white shadow-lg shadow-brand-purple/20' : 'bg-[#1c1c1e] text-[#86868b] group-hover:bg-white/10 group-hover:text-white border border-white/5'}`}>
                             <LayoutDashboard className="w-5 h-5" />
                         </div>
                         <div>
@@ -117,7 +117,7 @@ export default function KidsSidebar({ socialLinks, logoUrl, isAdmin, hasPurchase
                 {enableProgram && (
                     <Link href="/kids/program" className={`group flex items-center gap-3 px-4 py-3 rounded-[16px] transition-all duration-300 ease-[0.16,1,0.3,1] ${isActive('/kids/program') ? 'bg-[#1c1c1e] border border-white/5 shadow-md' : 'hover:bg-white/5'}`}>
                         <div className="flex items-center gap-4">
-                            <div className={`relative w-10 h-10 rounded-xl flex items-center justify-center transition-colors ${isActive('/kids/program') ? 'bg-gradient-to-br from-brand-purple to-pink-500 text-white shadow-lg shadow-brand-purple/20' : 'bg-[#1c1c1e] text-[#86868b] group-hover:bg-white/10 group-hover:text-white border border-white/5'}`}>
+                            <div className={`relative w-10 h-10 rounded-xl flex items-center justify-center transition-colors ${isActive('/kids/program') ? 'bg-gradient-to-br from-brand-purple to-indigo-500 text-white shadow-lg shadow-brand-purple/20' : 'bg-[#1c1c1e] text-[#86868b] group-hover:bg-white/10 group-hover:text-white border border-white/5'}`}>
                                 <BookOpen className="w-5 h-5" />
                                 {hasUnreadFormation && (
                                     <span className="absolute -top-1 -right-1 flex h-3 w-3">

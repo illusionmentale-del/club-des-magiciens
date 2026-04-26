@@ -89,7 +89,7 @@ export default async function KidsAchievementsPage() {
                 {/* Milestones Stats */}
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                     <div className="bg-[#100b1a] border border-white/10 p-4 rounded-2xl flex flex-col items-center justify-center text-center shadow-[0_20px_50px_-15px_rgba(0,0,0,0.5)]">
-                        <Trophy className="w-8 h-8 text-yellow-400 mb-2" />
+                        <Trophy className="w-8 h-8 text-cyan-400 mb-2" />
                         <div className="text-2xl font-black text-white">{completedQuestIds.size} / {quests.length}</div>
                         <div className="text-xs text-brand-text-muted uppercase tracking-widest font-bold mt-1">Succès Débloqués</div>
                     </div>
@@ -101,7 +101,7 @@ export default async function KidsAchievementsPage() {
                         <h3 className="text-sm font-bold text-gray-300 uppercase tracking-widest mb-3">Progression Globale</h3>
                         <div className="h-3 w-full bg-white/10 rounded-full overflow-hidden border border-white/5">
                             <div 
-                                className="h-full bg-gradient-to-r from-yellow-600 to-yellow-400" 
+                                className="h-full bg-gradient-to-r from-indigo-600 to-cyan-400" 
                                 style={{ width: `${Math.max((completedQuestIds.size / (quests.length || 1)) * 100, 2)}%` }}
                             ></div>
                         </div>

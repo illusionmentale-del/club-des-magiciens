@@ -74,11 +74,11 @@ export default function SkinLocker({ skins, unlockedSkinIds = [], equippedSkinId
 
     if (!skins || skins.length === 0) return null;
 
-    const accentColor = adultMode ? "text-brand-purple" : "text-pink-400";
+    const accentColor = adultMode ? "text-brand-purple" : "text-brand-purple";
     const previewRing = adultMode ? "border-brand-purple shadow-[0_0_40px_rgba(0,102,255,0.4)]" : "border-brand-purple/50 shadow-[0_0_40px_rgba(168,85,247,0.4)]";
-    const btnEquippedBg = adultMode ? "bg-brand-purple/20 text-brand-purple border border-brand-purple/30" : "bg-pink-500/20 text-pink-400 border border-pink-500/30";
+    const btnEquippedBg = adultMode ? "bg-brand-purple/20 text-brand-purple border border-brand-purple/30" : "bg-brand-purple/20 text-brand-purple border border-brand-purple/30";
     const btnEquipBg = adultMode ? "bg-white/10 hover:bg-white/20 text-white" : "bg-white/10 hover:bg-white/20 text-white";
-    const equippedRing = adultMode ? "border-brand-purple shadow-[0_0_20px_rgba(0,102,255,0.3)]" : "border-pink-500 shadow-[0_0_20px_rgba(236,72,153,0.3)]";
+    const equippedRing = adultMode ? "border-brand-purple shadow-[0_0_20px_rgba(0,102,255,0.3)]" : "border-brand-purple shadow-[0_0_20px_rgba(236,72,153,0.3)]";
     const avatarRing = adultMode ? "hover:border-brand-purple/50 hover:shadow-[0_0_20px_rgba(0,102,255,0.5)]" : "hover:border-brand-purple/50 hover:shadow-[0_0_20px_rgba(168,85,247,0.5)]";
 
     const CATEGORIES = ["Magiciens", "Familiers", "Collection Nox", "Emblèmes"];

@@ -145,7 +145,7 @@ export default function KidsMobileNav({ logoUrl, isAdmin, hasPurchases, hasUnrea
                                 className={`group flex items-center gap-3 px-4 py-3 rounded-[16px] transition-all duration-300 ease-[0.16,1,0.3,1] ${isHomeActive ? 'bg-[#000000] border border-white/5 shadow-md' : 'hover:bg-white/5'}`}
                             >
                                 <div className="flex items-center gap-4">
-                                    <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-colors ${isHomeActive ? 'bg-gradient-to-br from-brand-purple to-pink-500 text-white shadow-lg shadow-brand-purple/20' : 'bg-[#000000] text-[#86868b] group-hover:text-white border border-white/5'}`}>
+                                    <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-colors ${isHomeActive ? 'bg-gradient-to-br from-brand-purple to-indigo-500 text-white shadow-lg shadow-brand-purple/20' : 'bg-[#000000] text-[#86868b] group-hover:text-white border border-white/5'}`}>
                                         <Sparkles className="w-5 h-5" />
                                     </div>
                                     <div>
@@ -159,7 +159,7 @@ export default function KidsMobileNav({ logoUrl, isAdmin, hasPurchases, hasUnrea
                             {enableProgram && (
                                 <Link href="/kids/program" onClick={() => setIsOpen(false)} className={`group flex items-center gap-3 px-4 py-3 rounded-[16px] transition-all duration-300 ease-[0.16,1,0.3,1] ${isActive('/kids/program') || pathname?.startsWith('/kids/courses') ? 'bg-[#000000] border border-white/5 shadow-md' : 'hover:bg-white/5'}`}>
                                     <div className="flex items-center gap-4">
-                                        <div className={`relative w-10 h-10 rounded-xl flex items-center justify-center transition-colors ${isActive('/kids/program') || pathname?.startsWith('/kids/courses') ? 'bg-gradient-to-br from-brand-purple to-pink-500 text-white shadow-lg shadow-brand-purple/20' : 'bg-[#000000] text-[#86868b] group-hover:bg-white/10 group-hover:text-white border border-white/5'}`}>
+                                        <div className={`relative w-10 h-10 rounded-xl flex items-center justify-center transition-colors ${isActive('/kids/program') || pathname?.startsWith('/kids/courses') ? 'bg-gradient-to-br from-brand-purple to-indigo-500 text-white shadow-lg shadow-brand-purple/20' : 'bg-[#000000] text-[#86868b] group-hover:bg-white/10 group-hover:text-white border border-white/5'}`}>
                                             <BookOpen className="w-5 h-5" />
                                             {hasUnreadFormation && (
                                                 <span className="absolute -top-1 -right-1 flex h-3 w-3">

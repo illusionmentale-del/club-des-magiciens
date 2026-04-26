@@ -280,7 +280,7 @@ export default async function KidsVideoPlayerPage({ params }: { params: Promise<
                         {/* Vues (Optionnel) */}
                         {displayViews > 0 && (
                             <div className="flex items-center gap-3 bg-white/5 text-gray-300 py-2.5 px-5 rounded-xl border border-white/5 shadow-inner">
-                                <Eye className="w-4 h-4 text-brand-pink" />
+                                <Eye className="w-4 h-4 text-brand-purple" />
                                 <span>{displayViews} vue{displayViews !== 1 ? 's' : ''}</span>
                             </div>
                         )}
