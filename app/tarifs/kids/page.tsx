@@ -9,7 +9,7 @@ import { redirect } from "next/navigation";
 
 export const metadata = {
     title: "Rejoindre le Club Kids | Tarifs",
-    description: "Deviens un véritable petit magicien avec nos abonnements Mensuel et Annuel."
+    description: "Deviens un véritable petit magicien avec notre abonnement Mensuel."
 }
 
 export default async function KidsPricingPage() {
@@ -117,8 +117,8 @@ export default async function KidsPricingPage() {
                     </div>
                 </div>
 
-                {/* Subscriptions Grid */}
-                <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 items-stretch max-w-5xl mx-auto pt-4">
+                {/* Subscriptions */}
+                <div className="relative z-10 w-full max-w-md mx-auto pt-4">
 
                     {/* MONTHLY PLAN */}
                     <div className="bg-[#0a0a0a] border border-white/10 rounded-2xl p-8 md:p-10 flex flex-col relative overflow-hidden transition-all hover:bg-[#0a0a0a] hover:border-brand-purple/50 hover:shadow-[0_0_30px_rgba(168,85,247,0.15)] mt-8 md:mt-12 group">
@@ -177,88 +177,6 @@ export default async function KidsPricingPage() {
                             buttonText="Commencer l'Aventure"
                             className="bg-transparent hover:bg-white/5 text-white border border-white/20 uppercase tracking-widest text-sm font-bold py-4 rounded-xl"
                         />
-                    </div>
-
-                    {/* YEARLY PLAN (HIGHLIGHTED) */}
-                    <div className="bg-[#0A0A0A] border border-brand-purple/40 rounded-2xl p-8 flex flex-col relative overflow-hidden shadow-2xl transform md:-translate-y-4">
-                        {/* Badge */}
-                        <div className="absolute top-0 right-0 bg-brand-purple text-white font-bold text-xs uppercase tracking-[0.2em] py-2 px-6">
-                            Le Choix des Maîtres
-                        </div>
-
-                        <div className="mb-6 relative z-10 flex flex-col">
-                            <h2 className="text-2xl font-black text-white mb-2">Abonnement Annuel</h2>
-                            <p className="text-brand-purple-light font-medium flex items-center gap-2">
-                                <Sparkles className="w-4 h-4" />
-                                +2 mois offerts vs Mensuel
-                            </p>
-                        </div>
-
-                        <div className="mb-8 relative z-10 flex flex-col">
-                            <div className="flex items-baseline gap-2">
-                                <span className="text-5xl font-black text-white">{yearlyProduct?.price_label || "49,99€"}</span>
-                                <span className="text-gray-300 font-bold">/an</span>
-                            </div>
-                            <span className="text-sm font-bold text-pink-400 mt-1 bg-pink-500/10 w-fit px-2 py-0.5 rounded border border-pink-500/20">
-                                Paiement en une fois
-                            </span>
-                        </div>
-
-                        <ul className="space-y-6 mb-8 flex-1 relative z-10">
-                            <li className="flex items-start gap-4">
-                                <div className="w-10 h-10 rounded-full bg-brand-purple flex items-center justify-center shrink-0 shadow-lg shadow-brand-purple/50">
-                                    <BookOpen className="w-5 h-5 text-white" />
-                                </div>
-                                <div className="mt-0.5">
-                                    <strong className="block text-white mb-1">La Formation :</strong>
-                                    <span className="text-gray-300 text-sm leading-relaxed">Découvre l'apprentissage d'un nouveau tour de magie chaque semaine.</span>
-                                </div>
-                            </li>
-                            <li className="flex items-start gap-4">
-                                <div className="w-10 h-10 rounded-full bg-brand-purple flex items-center justify-center shrink-0 shadow-lg shadow-brand-purple/50">
-                                    <PlayCircle className="w-5 h-5 text-white" />
-                                </div>
-                                <div className="mt-0.5">
-                                    <strong className="block text-white mb-1">Les Ateliers :</strong>
-                                    <span className="text-gray-300 text-sm leading-relaxed">Tous les mois des vidéos sur des sujets approfondis pour t'aider à mieux progresser.</span>
-                                </div>
-                            </li>
-                            <li className="flex items-start gap-4">
-                                <div className="w-10 h-10 rounded-full bg-brand-purple flex items-center justify-center shrink-0 shadow-lg shadow-brand-purple/50">
-                                    <ShoppingBag className="w-5 h-5 text-white" />
-                                </div>
-                                <div className="mt-0.5">
-                                    <strong className="block text-white mb-1">La Boutique Privée :</strong>
-                                    <span className="text-gray-300 text-sm leading-relaxed">Accède à une boutique privée avec des vidéos et des articles sélectionnés à un tarif préférentiel.</span>
-                                </div>
-                            </li>
-
-                            {/* Premium Bonus Callout */}
-                            <li className="flex items-start gap-4 text-brand-purple font-bold mt-8 border-y border-brand-purple/20 py-6 relative">
-                                <div className="mt-0.5 w-6 flex justify-center">
-                                    <Gift className="w-5 h-5 text-brand-purple" />
-                                </div>
-                                <div className="z-10">
-                                    <span className="block text-white mb-1 text-sm tracking-widest uppercase">Cadeau Exclusif :</span>
-                                    Un cadeau d'une valeur de 9,99€ à choisir dans la boutique !
-                                    <div className="flex items-center gap-3 mt-3">
-                                        <span className="text-xs font-bold text-white/50 line-through">Valeur : 9,99€</span>
-                                        <span className="text-sm font-black text-brand-blue-light uppercase tracking-widest bg-brand-blue/10 px-2 py-1 rounded">100% GRATUIT</span>
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
-
-                        <div className="relative z-10 mt-4">
-                            <SubscribeButton
-                                priceId={yearlyProduct?.stripe_price_id}
-                                productId={yearlyProduct?.id}
-                                space="kids"
-                                userLoggedIn={!!user}
-                                buttonText="M'abonner pour 1 an"
-                                className="bg-brand-purple hover:bg-brand-purple/80 text-white border-none font-bold text-sm uppercase tracking-widest w-full py-4 rounded-xl"
-                            />
-                        </div>
                     </div>
 
                 </div>
