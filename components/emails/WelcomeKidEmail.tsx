@@ -36,7 +36,7 @@ export const WelcomeKidEmail = ({
                         extend: {
                             colors: {
                                 magic: {
-                                    purple: "#7c3aed",
+                                    purple: "#5E5CE6",
                                     gold: "#fbbf24",
                                     bg: "#111827",
                                 },
@@ -79,7 +79,7 @@ export const WelcomeKidEmail = ({
                                     </Text>
                                     <Section className="text-center mt-[32px] mb-[16px]">
                                         <Button
-                                            className="bg-[#7c3aed] rounded text-white text-[12px] font-bold no-underline text-center px-5 py-3"
+                                            className="bg-[#5E5CE6] rounded text-white text-[12px] font-bold no-underline text-center px-5 py-3"
                                             href={loginUrl}
                                         >
                                             ENTRER DANS LE CLUB 🎩
@@ -103,7 +103,7 @@ export const WelcomeKidEmail = ({
                                     </Text>
                                     <Section className="text-center mt-[32px] mb-[16px]">
                                         <Button
-                                            className="bg-[#7c3aed] rounded text-white text-[12px] font-bold no-underline text-center px-5 py-3"
+                                            className="bg-[#5E5CE6] rounded text-white text-[12px] font-bold no-underline text-center px-5 py-3"
                                             href={recoveryUrl || loginUrl}
                                         >
                                             CRÉER MON MOT DE PASSE 🔒

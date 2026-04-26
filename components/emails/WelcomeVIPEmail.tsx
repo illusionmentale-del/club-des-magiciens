@@ -38,7 +38,7 @@ export const WelcomeVIPEmail = ({
                         extend: {
                             colors: {
                                 magic: {
-                                    purple: "#7c3aed",
+                                    purple: "#5E5CE6",
                                     gold: "#fbbf24",
                                     bg: "#111827",
                                 },
@@ -70,7 +70,7 @@ export const WelcomeVIPEmail = ({
                                 Tu auras besoin de l'identifiant et du mot de passe ci-dessous pour te connecter sur la plateforme. Clique sur le bouton pour t'y rendre.
                             </Text>
                             <Button
-                                className="bg-[#7c3aed] rounded text-white text-[12px] font-bold no-underline text-center px-6 py-4"
+                                className="bg-[#5E5CE6] rounded text-white text-[12px] font-bold no-underline text-center px-6 py-4"
                                 href={recoveryUrl || loginUrl}
                             >
                                 SE CONNECTER 🎩

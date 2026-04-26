@@ -131,7 +131,7 @@ export function LiveStatusCard({ live, href = "/kids/live", isReminded = false }
                                             boxShadow: '0 8px 32px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.1)'
                                         }}
                                         dividerStyle={{ color: 'rgba(255,255,255,0.05)', height: 1 }}
-                                        separatorStyle={{ color: '#a855f7', size: 5 }}
+                                        separatorStyle={{ color: '#5E5CE6', size: 5 }}
                                         duration={0.5}
                                     />
                                 </div>

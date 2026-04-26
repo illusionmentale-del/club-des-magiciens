@@ -36,7 +36,7 @@ export const NewContentKidEmail = ({
                         extend: {
                             colors: {
                                 magic: {
-                                    purple: "#7c3aed",
+                                    purple: "#5E5CE6",
                                     gold: "#fbbf24",
                                     bg: "#111827",
                                 },
@@ -65,13 +65,13 @@ export const NewContentKidEmail = ({
                             {isPlural ? (
                                 <ul className="text-left m-0 p-0 pl-4">
                                     {contentTitles.map((title, index) => (
-                                        <li key={index} className="text-[#7c3aed] font-bold text-lg mb-2 leading-tight">
+                                        <li key={index} className="text-[#5E5CE6] font-bold text-lg mb-2 leading-tight">
                                             {title}
                                         </li>
                                     ))}
                                 </ul>
                             ) : (
-                                <Text className="text-[#7c3aed] text-center font-black text-xl m-0 uppercase tracking-wide">
+                                <Text className="text-[#5E5CE6] text-center font-black text-xl m-0 uppercase tracking-wide">
                                     {contentTitles[0] || "Contenu Mystère"}
                                 </Text>
                             )}
@@ -83,7 +83,7 @@ export const NewContentKidEmail = ({
 
                         <Section className="text-center mt-[32px] mb-[32px]">
                             <Button
-                                className="bg-[#7c3aed] rounded text-white text-[14px] font-bold no-underline text-center px-6 py-4"
+                                className="bg-[#5E5CE6] rounded text-white text-[14px] font-bold no-underline text-center px-6 py-4"
                                 href={loginUrl}
                             >
                                 {isPlural ? "DÉCOUVRIR LES CONTENUS 🎩" : "DÉCOUVRIR LE CONTENU 🎩"}

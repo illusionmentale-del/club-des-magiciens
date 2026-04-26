@@ -49,7 +49,7 @@ export default function GlobalAlertBanner({ alerts }: { alerts: Alert[] }) {
                                 <Link
                                     href={alert.link_url}
                                     onClick={() => handleDismiss(alert.id)}
-                                    className="inline-flex items-center gap-2 bg-brand-purple hover:bg-[#a855f7] text-white px-5 py-2 rounded-xl font-bold text-sm transition-all shadow-lg shadow-brand-purple/30 uppercase tracking-widest"
+                                    className="inline-flex items-center gap-2 bg-brand-purple hover:bg-[#5E5CE6] text-white px-5 py-2 rounded-xl font-bold text-sm transition-all shadow-lg shadow-brand-purple/30 uppercase tracking-widest"
                                 >
                                     Découvrir la surprise <ArrowRight className="w-4 h-4" />
                                 </Link>

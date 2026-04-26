@@ -120,7 +120,7 @@ export default function BroadcastModal({ isOpen, onClose }: { isOpen: boolean, o
                             <button
                                 type="submit"
                                 disabled={loading}
-                                className="bg-brand-purple hover:bg-[#a855f7] text-white px-6 py-2 rounded-xl font-bold flex items-center gap-2 transition-all shadow-lg shadow-brand-purple/30 disabled:opacity-50"
+                                className="bg-brand-purple hover:bg-[#5E5CE6] text-white px-6 py-2 rounded-xl font-bold flex items-center gap-2 transition-all shadow-lg shadow-brand-purple/30 disabled:opacity-50"
                             >
                                 {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : <Send className="w-5 h-5" />}
                                 Envoyer le Broadcast
