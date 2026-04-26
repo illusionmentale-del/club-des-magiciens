@@ -150,9 +150,9 @@ export default function AdultMasterclassConfig({ initialSettings, libraryItems, 
                     <button
                         key={tab.id}
                         onClick={() => setActiveTab(tab.id)}
-                        className={`w-full flex items-center gap-3 px-4 py-3 rounded-[16px] font-bold uppercase tracking-widest text-xs transition-all ${activeTab === tab.id
-                            ? "bg-[#f5f5f7] text-[#1c1c1e] shadow-lg"
-                            : "text-brand-text-muted hover:bg-white/5"
+                        className={`w-full flex items-center gap-3 px-4 py-3 rounded-2xl font-bold uppercase tracking-widest text-xs transition-all ${activeTab === tab.id
+                            ? "bg-brand-purple text-white shadow-[0_0_15px_rgba(168,85,247,0.4)]"
+                            : "text-brand-text-muted hover:text-white hover:bg-white/5"
                             }`}
                     >
                         <tab.icon className="w-4 h-4" />
@@ -165,19 +165,22 @@ export default function AdultMasterclassConfig({ initialSettings, libraryItems, 
                 <Button
                     onClick={handleSave}
                     disabled={loading}
-                    className="w-full bg-[#f5f5f7] text-[#1c1c1e] hover:bg-white font-bold rounded-[16px]"
+                    className="w-full bg-brand-purple hover:bg-indigo-500 text-white font-bold rounded-2xl shadow-[0_0_15px_rgba(168,85,247,0.3)] hover:shadow-[0_0_25px_rgba(168,85,247,0.5)] transition-all h-12"
                 >
-                    <Save className="w-4 h-4 mr-2" />
+                    <Save className="w-5 h-5 mr-2" />
                     {loading ? "Enregistrement..." : "Enregistrer"}
                 </Button>
             </div>
 
             {/* Content Area */}
             <div className="lg:col-span-3">
-                <Card className="bg-[#100b1a] border border-white/5 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.5)] hover:border-brand-purple/30 transition-all border-white/5 shadow-2xl overflow-hidden rounded-[32px]">
+                <Card className="bg-[#100b1a] border border-white/5 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.5)] hover:border-brand-purple/30 transition-all overflow-hidden rounded-3xl">
                     <CardHeader className="border-b border-white/5 bg-transparent p-8">
-                        <CardTitle className="text-xl font-black uppercase tracking-tighter flex items-center gap-3 text-brand-text">
-                            <Sparkles className="text-white" /> Contenu à la Une
+                        <CardTitle className="text-xl font-black uppercase tracking-tighter flex items-center gap-3 text-white">
+                            <div className="p-2 bg-brand-purple/10 rounded-lg border border-brand-purple/20">
+                                <Sparkles className="text-brand-purple w-5 h-5" />
+                            </div>
+                            Contenu à la Une
                         </CardTitle>
                     </CardHeader>
                     <CardContent className="p-8">
@@ -410,7 +413,7 @@ export default function AdultMasterclassConfig({ initialSettings, libraryItems, 
                                                                     // Navigate to the Course Manager
                                                                     window.location.href = `/admin/adults/courses/${card.courseId}`;
                                                                 }}
-                                                                className="bg-[#f5f5f7] text-[#1c1c1e] hover:bg-white font-bold rounded-[16px]"
+                                                                className="bg-brand-purple/20 text-brand-purple hover:bg-brand-purple hover:text-white font-bold rounded-2xl transition-colors border border-brand-purple/20"
                                                             >
                                                                 <Eye className="w-4 h-4 mr-2" />
                                                                 Gérer les vidéos de cette formation

@@ -53,9 +53,9 @@ export default function AdminLivesPage() {
         return true;
     });
 
-    const themeColor = audience === 'adults' ? 'bg-[#f5f5f7] text-[#1c1c1e] hover:bg-white rounded-[16px]' : 'bg-brand-purple text-white hover:bg-brand-purple/90 rounded-[16px] shadow-lg';
-    const badgeColor = audience === 'adults' ? 'bg-[#1c1c1e] text-[#86868b] border border-white/5' : 'bg-brand-purple/20 text-brand-purple';
-    const iconColor = audience === 'adults' ? 'text-[#f5f5f7]' : 'text-brand-purple';
+    const themeColor = 'bg-brand-purple text-white hover:bg-brand-purple/90 rounded-2xl shadow-[0_0_15px_rgba(168,85,247,0.3)] hover:shadow-[0_0_25px_rgba(168,85,247,0.5)] transition-all';
+    const badgeColor = 'bg-brand-purple/10 text-brand-purple border border-brand-purple/20';
+    const iconColor = 'text-brand-purple';
 
     return (
         <div className={`w-full transition-colors duration-500`}>
@@ -89,7 +89,7 @@ export default function AdminLivesPage() {
                 {/* List */}
                 <div className="grid gap-4">
                     {filteredLives.map((live) => (
-                        <div key={live.id} className={`${audience === 'adults' ? 'bg-[#1c1c1e] border-white/5 rounded-[24px]' : 'bg-white/5 border-purple-500/20 rounded-[24px]'} border p-6 flex items-center justify-between group hover:bg-white/10 transition-colors`}>
+                        <div key={live.id} className="bg-[#100b1a] border border-white/5 hover:border-brand-purple/30 rounded-3xl p-6 flex items-center justify-between group transition-all shadow-[0_20px_50px_-15px_rgba(0,0,0,0.5)]">
                             <div>
                                 <div className="flex items-center gap-3 mb-2">
                                     <h3 className="text-xl font-bold">{live.title}</h3>
@@ -149,8 +149,18 @@ export default function AdminLivesPage() {
                         </div>
                     ))}
                     {filteredLives.length === 0 && (
-                        <div className="text-center text-gray-500 py-12 bg-white/5 rounded-[24px]">
-                            Aucune session programmée pour l'espace <span className="font-bold">{audience === 'adults' ? 'Adulte' : 'Enfant'}</span>.
+                        <div className="flex flex-col items-center justify-center py-16 bg-[#100b1a] rounded-3xl border border-dashed border-brand-purple/30 shadow-[0_0_30px_rgba(168,85,247,0.05)]">
+                            <div className="w-20 h-20 bg-brand-purple/10 rounded-full flex items-center justify-center mb-6 shadow-[0_0_20px_rgba(168,85,247,0.2)]">
+                                <Video className="w-10 h-10 text-brand-purple" />
+                            </div>
+                            <h3 className="text-xl font-bold text-white mb-2">Aucune diffusion prévue</h3>
+                            <p className="text-brand-text-muted mb-6">
+                                Il n'y a aucune session programmée pour l'espace <span className="font-bold text-brand-purple">{audience === 'adults' ? 'Adulte' : 'Enfant'}</span>.
+                            </p>
+                            <Link href={`${basePath}/lives/new?audience=${audience}`} className="px-6 py-3 bg-brand-purple/20 text-brand-purple hover:bg-brand-purple hover:text-white rounded-xl font-bold flex items-center gap-2 transition-all shadow-[0_0_15px_rgba(168,85,247,0.15)]">
+                                <Plus className="w-5 h-5" />
+                                Créer un événement
+                            </Link>
                         </div>
                     )}
                 </div>

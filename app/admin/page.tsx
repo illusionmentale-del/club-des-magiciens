@@ -21,53 +21,59 @@ export default function AdminHubPage() {
                     {/* KIDS ADMIN */}
                     <Link
                         href="/admin/kids/dashboard"
-                        className="group relative bg-[#0a0a0a] border border-white/10 rounded-2xl p-8 hover:border-white/30 transition-all shadow-[0_20px_60px_-15px_rgba(0,0,0,0.8)] overflow-hidden"
+                        className="group relative bg-[#100b1a] border border-white/5 rounded-3xl p-10 hover:border-brand-purple/50 transition-all duration-500 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.8)] hover:shadow-[0_0_50px_rgba(168,85,247,0.2)] overflow-hidden hover:-translate-y-2"
                     >
-                        <div className="absolute top-0 right-0 p-6 opacity-5 group-hover:opacity-10 transition-opacity">
-                            <Sparkles className="w-40 h-40 text-white" />
+                        {/* Background glow on hover */}
+                        <div className="absolute inset-0 bg-gradient-to-br from-brand-purple/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+
+                        <div className="absolute top-0 right-0 p-6 opacity-5 group-hover:opacity-10 group-hover:scale-110 transition-all duration-700">
+                            <Sparkles className="w-48 h-48 text-brand-purple" />
                         </div>
                         <div className="relative z-10 flex flex-col h-full">
-                            <div className="w-16 h-16 bg-white/5 rounded-2xl flex items-center justify-center mb-8 text-white border border-white/10 group-hover:scale-110 transition-transform">
-                                <Sparkles className="w-8 h-8" />
+                            <div className="w-20 h-20 bg-brand-purple/10 rounded-2xl flex items-center justify-center mb-8 text-brand-purple border border-brand-purple/20 group-hover:scale-110 transition-transform duration-500 shadow-[0_0_30px_rgba(168,85,247,0.3)]">
+                                <Sparkles className="w-10 h-10" />
                             </div>
-                            <h2 className="text-2xl font-bold text-white mb-4 group-hover:text-gray-300 transition-colors tracking-tight">
+                            <h2 className="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-400 group-hover:to-brand-purple transition-all duration-500 mb-4 tracking-tight">
                                 Espace Kids
                             </h2>
-                            <p className="text-gray-400 mb-10 flex-1 text-sm leading-relaxed">
+                            <p className="text-brand-text-muted mb-10 flex-1 text-base leading-relaxed">
                                 Gérez les ateliers, la gamification, et suivez la progression magique de vos élèves.
                             </p>
-                            <span className="inline-flex items-center text-white font-bold text-sm group-hover:gap-3 transition-all">
+                            <span className="inline-flex items-center text-brand-purple font-bold text-sm uppercase tracking-widest group-hover:gap-4 transition-all">
                                 Entrer dans le Club <span className="ml-2 group-hover:translate-x-2 transition-transform">→</span>
                             </span>
                         </div>
-                        {/* Bottom subtle line */}
-                        <div className="absolute bottom-0 left-0 right-0 h-1 bg-white/10"></div>
+                        {/* Bottom neon line */}
+                        <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-brand-purple to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                     </Link>
 
                     {/* ADULTS ADMIN */}
                     <Link
                         href="/admin/adults/dashboard"
-                        className="group relative bg-[#0a0a0a] border border-white/10 rounded-2xl p-8 hover:border-white/30 transition-all shadow-[0_20px_60px_-15px_rgba(0,0,0,0.8)] overflow-hidden"
+                        className="group relative bg-[#100b1a] border border-white/5 rounded-3xl p-10 hover:border-brand-purple/50 transition-all duration-500 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.8)] hover:shadow-[0_0_50px_rgba(168,85,247,0.2)] overflow-hidden hover:-translate-y-2"
                     >
-                        <div className="absolute top-0 right-0 p-6 opacity-5 group-hover:opacity-10 transition-opacity">
-                            <Users className="w-40 h-40 text-white" />
+                        {/* Background glow on hover */}
+                        <div className="absolute inset-0 bg-gradient-to-br from-brand-purple/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+
+                        <div className="absolute top-0 right-0 p-6 opacity-5 group-hover:opacity-10 group-hover:scale-110 transition-all duration-700">
+                            <Users className="w-48 h-48 text-brand-purple" />
                         </div>
                         <div className="relative z-10 flex flex-col h-full">
-                            <div className="w-16 h-16 bg-white/5 rounded-2xl flex items-center justify-center mb-8 text-white border border-white/10 group-hover:scale-110 transition-transform">
-                                <Users className="w-8 h-8" />
+                            <div className="w-20 h-20 bg-brand-purple/10 rounded-2xl flex items-center justify-center mb-8 text-brand-purple border border-brand-purple/20 group-hover:scale-110 transition-transform duration-500 shadow-[0_0_30px_rgba(168,85,247,0.3)]">
+                                <Users className="w-10 h-10" />
                             </div>
-                            <h2 className="text-2xl font-bold text-white mb-4 group-hover:text-gray-300 transition-colors tracking-tight">
+                            <h2 className="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-400 group-hover:to-brand-purple transition-all duration-500 mb-4 tracking-tight">
                                 Espace Adultes
                             </h2>
-                            <p className="text-gray-400 mb-10 flex-1 text-sm leading-relaxed">
+                            <p className="text-brand-text-muted mb-10 flex-1 text-base leading-relaxed">
                                 Pilotez l'activité business : formations, ventes, analytics et gestion clients.
                             </p>
-                            <span className="inline-flex items-center text-white font-bold text-sm group-hover:gap-3 transition-all">
+                            <span className="inline-flex items-center text-brand-purple font-bold text-sm uppercase tracking-widest group-hover:gap-4 transition-all">
                                 Gérer le Business <span className="ml-2 group-hover:translate-x-2 transition-transform">→</span>
                             </span>
                         </div>
-                        {/* Bottom subtle line */}
-                        <div className="absolute bottom-0 left-0 right-0 h-1 bg-white/10"></div>
+                        {/* Bottom neon line */}
+                        <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-brand-purple to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                     </Link>
                 </div>
 

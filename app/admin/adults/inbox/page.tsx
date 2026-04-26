@@ -70,8 +70,8 @@ export default async function AdminAdultsInbox({
                     </h1>
                     <p className="text-gray-400 mt-2">Gérez les questions et commentaires des étudiants premium.</p>
                 </div>
-                <div className="bg-[#100b1a] bg-[#100b1a] border border-white/5 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.5)] hover:border-brand-purple/30 transition-all px-6 py-3 rounded-[24px] flex items-center gap-3 shadow-md">
-                    <div className="w-3 h-3 rounded-full bg-red-500 animate-pulse"></div>
+                <div className="bg-[#100b1a] border border-white/5 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.5)] hover:border-brand-purple/50 transition-all px-6 py-3 rounded-[24px] flex items-center gap-3 shadow-md hover:shadow-[0_0_20px_rgba(168,85,247,0.2)]">
+                    <div className="w-3 h-3 rounded-full bg-brand-purple animate-pulse shadow-[0_0_10px_rgba(168,85,247,0.8)]"></div>
                     <span className="font-bold text-white tracking-widest uppercase">{currentTab === 'unread' ? comments.length : 'Archives'} Messages</span>
                 </div>
             </header>
@@ -88,7 +88,7 @@ export default async function AdminAdultsInbox({
                         className={cn(
                             "flex items-center gap-2 px-6 py-2.5 rounded-lg text-sm font-bold uppercase tracking-widest transition-all",
                             currentTab === 'unread'
-                                ? "bg-[#f5f5f7] text-[#1c1c1e] shadow-lg"
+                                ? "bg-brand-purple text-white shadow-[0_0_15px_rgba(168,85,247,0.4)]"
                                 : "text-gray-400 hover:text-white hover:bg-white/5"
                         )}
                     >
@@ -100,7 +100,7 @@ export default async function AdminAdultsInbox({
                         className={cn(
                             "flex items-center gap-2 px-6 py-2.5 rounded-lg text-sm font-bold uppercase tracking-widest transition-all",
                             currentTab === 'read'
-                                ? "bg-[#f5f5f7] text-[#1c1c1e] shadow-lg"
+                                ? "bg-brand-purple text-white shadow-[0_0_15px_rgba(168,85,247,0.4)]"
                                 : "text-gray-400 hover:text-white hover:bg-white/5"
                         )}
                     >
@@ -112,10 +112,12 @@ export default async function AdminAdultsInbox({
 
             <div className="grid grid-cols-1 gap-6">
                 {comments.length === 0 ? (
-                    <div className="bg-[#100b1a] bg-[#100b1a] border border-white/5 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.5)] hover:border-brand-purple/30 transition-all rounded-[32px] p-12 text-center text-gray-500 flex flex-col items-center">
-                        <MessageCircle className="w-16 h-16 text-white/5 mb-4" />
-                        <p className="text-xl font-medium text-white mb-2">Inbox Vide</p>
-                        <p>Aucun nouveau message d'adulte pour le moment. Beau travail !</p>
+                    <div className="flex flex-col items-center justify-center py-16 bg-[#100b1a] rounded-3xl border border-dashed border-brand-purple/30 shadow-[0_0_30px_rgba(168,85,247,0.05)]">
+                        <div className="w-24 h-24 bg-brand-purple/10 rounded-full flex items-center justify-center mb-6 shadow-[0_0_20px_rgba(168,85,247,0.2)]">
+                            <MessageCircle className="w-12 h-12 text-brand-purple" />
+                        </div>
+                        <h3 className="text-2xl font-black text-white mb-2">Inbox Vide</h3>
+                        <p className="text-brand-text-muted text-lg">Aucun nouveau message d'adulte pour le moment. Beau travail !</p>
                     </div>
                 ) : (
                     comments.map((comment) => {
@@ -123,8 +125,8 @@ export default async function AdminAdultsInbox({
                         const course = sourceCourses.find(c => c.id === comment.course_id);
 
                         return (
-                            <div key={comment.id} className="bg-[#100b1a] bg-[#100b1a] border border-white/5 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.5)] hover:border-brand-purple/30 transition-all rounded-[24px] p-6 relative overflow-hidden group hover:border-brand-purple/30 transition-colors">
-                                <div className="absolute top-0 left-0 w-1 h-full bg-[#f5f5f7]"></div>
+                            <div key={comment.id} className="bg-[#100b1a] border border-white/5 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.5)] hover:border-brand-purple/50 hover:shadow-[0_0_20px_rgba(168,85,247,0.15)] transition-all duration-300 rounded-[24px] p-6 relative overflow-hidden group">
+                                <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-brand-purple to-blue-500"></div>
 
                                 <div className="flex flex-col lg:flex-row gap-6">
                                     {/* Left: Comment Info */}
