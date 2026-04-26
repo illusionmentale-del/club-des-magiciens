@@ -136,7 +136,7 @@ export default async function KidsPricingPage() {
                                 <span className="text-5xl md:text-6xl font-black text-white">{monthlyProduct?.price_label || "4,99€"}</span>
                                 <span className="text-gray-400 font-bold text-lg">/mois</span>
                             </div>
-                            <span className="text-sm text-gray-500 mt-2 font-medium">Annulable en un clic depuis ton espace.</span>
+                            <span className="text-sm text-gray-500 mt-2 font-medium">Annulable à tout moment sur simple demande par mail.</span>
                         </div>
 
                         <ul className="space-y-6 mb-8 flex-1">
@@ -188,7 +188,7 @@ export default async function KidsPricingPage() {
                             Conformément à l'Article L221-18 du Code de la consommation, vous bénéficiez d'un délai de rétractation de 14 jours.
                             <strong> Cependant</strong>, le Club des Magiciens fournissant un contenu numérique immédiatement accessible après paiement,
                             <strong className="text-white"> vous renoncez expressément à votre droit de rétractation</strong> en validant votre inscription pour accéder sans délai à la plateforme.
-                            L'abonnement mensuel reste bien entendu <em>sans engagement</em> et peut être annulé à tout moment depuis votre espace.
+                            L'abonnement mensuel reste bien entendu <em>sans engagement</em> et peut être annulé à tout moment sur simple demande par mail.
                         </p>
                     </div>
                 </div>
@@ -218,7 +218,7 @@ export default async function KidsPricingPage() {
                                 </span>
                             </summary>
                             <div className="px-6 pb-6 text-gray-400 text-sm leading-relaxed animate-in slide-in-from-top-1 duration-300">
-                                Non, c'est ultra simple. Sur l'abonnement mensuel, tu es 100% libre. Un bouton "Gérer mon abonnement" dans l'espace parent te permet d'annuler en un clic, sans avoir à nous contacter.
+                                Non, c'est ultra simple. Sur l'abonnement mensuel, tu es 100% libre. Tu peux annuler à tout moment sur simple demande par mail, sans aucune justification.
                             </div>
                         </details>
 
@@ -237,7 +237,7 @@ export default async function KidsPricingPage() {
                 </div>
 
                 <p className="text-center text-gray-500 text-sm mt-16 font-medium">
-                    Paiement 100% sécurisé via Stripe. Annulable à tout moment en 1 clic.
+                    Paiement 100% sécurisé via Stripe. Annulable à tout moment sur simple demande par mail.
                 </p>
 
                 <div className="w-full text-center mt-8 md:mt-12 pb-4 md:pb-12 relative z-10">

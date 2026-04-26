@@ -143,7 +143,7 @@ export default async function AdultsPricingPage() {
                                         <span className="text-6xl md:text-7xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-br from-white to-gray-400">{monthlyProduct?.price_label || "4,99€"}</span>
                                         <span className="text-gray-500 font-medium text-xl">/mois</span>
                                     </div>
-                                    <span className="text-sm text-gray-500 mt-4 font-light">Annulable en un clic depuis votre QG.</span>
+                                    <span className="text-sm text-gray-500 mt-4 font-light">Annulable à tout moment sur simple demande par mail.</span>
                                 </div>
 
                                 <ul className="space-y-8 mb-12 flex-1">
@@ -197,7 +197,7 @@ export default async function AdultsPricingPage() {
                                 Conformément à l'Article L221-18 du Code de la consommation, vous bénéficiez d'un délai de rétractation de 14 jours.
                                 <strong className="font-medium text-[#f5f5f7]"> Cependant</strong>, l'Atelier des Magiciens fournissant un contenu numérique immédiatement accessible après paiement,
                                 <strong className="font-medium text-[#f5f5f7]"> vous renoncez expressément à votre droit de rétractation</strong> en validant votre inscription pour accéder sans délai à la plateforme.
-                                L'abonnement mensuel reste bien entendu <em>sans engagement</em> et peut être annulé à tout moment depuis votre QG.
+                                L'abonnement mensuel reste bien entendu <em>sans engagement</em> et peut être annulé à tout moment sur simple demande par mail.
                             </p>
                         </div>
                     </div>
@@ -229,7 +229,7 @@ export default async function AdultsPricingPage() {
                                     </span>
                                 </summary>
                                 <div className="px-6 md:px-8 pb-6 md:pb-8 text-[#86868b] text-base leading-relaxed animate-in slide-in-from-top-2 duration-300 font-light border-t border-white/5 pt-4 mt-2">
-                                    Le Pass Essentiel (Mensuel) est 100% sans engagement. Vous pouvez l'annuler d'un simple clic dans votre espace "Mon QG" à tout moment, sans avoir à nous contacter. Votre accès restera actif jusqu'à la fin de la période facturée.
+                                    Le Pass Essentiel (Mensuel) est 100% sans engagement. Vous pouvez l'annuler sur simple demande par mail à tout moment, sans aucune justification. Votre accès restera actif jusqu'à la fin de la période facturée.
                                 </div>
                             </details>
                             
