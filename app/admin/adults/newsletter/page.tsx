@@ -86,7 +86,7 @@ export default function NewsletterAdminPage() {
     return (
         <div className="space-y-8">
             <div className="mb-10 text-center flex flex-col items-center">
-                <div className="w-16 h-16 bg-[#100b1a] border border-white/5 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.5)] hover:border-brand-purple/30 transition-all rounded-[24px] flex items-center justify-center mb-6 shadow-md">
+                <div className="w-16 h-16 bg-[#100b1a] border border-white/5 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.5)] hover:border-brand-blue/30 transition-all rounded-[24px] flex items-center justify-center mb-6 shadow-md">
                     <Mail className="w-8 h-8 text-white relative z-10" />
                 </div>
                 <h1 className="text-4xl font-black uppercase tracking-widest text-white mb-3">Le Newsletter Builder</h1>
@@ -107,7 +107,7 @@ export default function NewsletterAdminPage() {
                             <select
                                 value={targetAudience}
                                 onChange={(e) => setTargetAudience(e.target.value)}
-                                className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-brand-purple/50 focus:ring-1 focus:ring-brand-purple/50 transition-all font-medium appearance-none"
+                                className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-brand-blue/50 focus:ring-1 focus:ring-brand-blue/50 transition-all font-medium appearance-none"
                             >
                                 <option value="all">Tous (Adultes + Enfants)</option>
                                 <option value="adults">Uniquement les Adultes (L'Atelier)</option>
@@ -122,7 +122,7 @@ export default function NewsletterAdminPage() {
                                 type="text"
                                 value={subject}
                                 onChange={(e) => setSubject(e.target.value)}
-                                className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-brand-text-muted/50 focus:outline-none focus:border-brand-purple/50 focus:ring-1 focus:ring-brand-purple/50 transition-all font-bold"
+                                className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-brand-text-muted/50 focus:outline-none focus:border-brand-blue/50 focus:ring-1 focus:ring-brand-blue/50 transition-all font-bold"
                                 placeholder="La Masterclass de Février est en ligne 🎩"
                             />
                         </div>
@@ -142,7 +142,7 @@ export default function NewsletterAdminPage() {
                                 value={content}
                                 onChange={(e) => setContent(e.target.value)}
                                 rows={template === 'classic' ? 12 : 4}
-                                className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-4 text-white placeholder-brand-text-muted/50 focus:outline-none focus:border-brand-purple/50 focus:ring-1 focus:ring-brand-purple/50 transition-all text-sm leading-relaxed resize-y font-mono"
+                                className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-4 text-white placeholder-brand-text-muted/50 focus:outline-none focus:border-brand-blue/50 focus:ring-1 focus:ring-brand-blue/50 transition-all text-sm leading-relaxed resize-y font-mono"
                                 placeholder={`Bonjour [Prénom],\n\nVoici le texte de votre e-mail...`}
                             />
                         </div>
@@ -167,14 +167,14 @@ export default function NewsletterAdminPage() {
                         <button
                             onClick={() => handleSendAction(true)}
                             disabled={isTesting || isSending}
-                            className="px-6 py-3 rounded-[16px] font-bold uppercase tracking-widest text-xs bg-[#100b1a] border border-white/5 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.5)] hover:border-brand-purple/50 text-brand-text-muted hover:text-white flex items-center justify-center transition-all min-w-[150px] disabled:opacity-50"
+                            className="px-6 py-3 rounded-[16px] font-bold uppercase tracking-widest text-xs bg-[#100b1a] border border-white/5 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.5)] hover:border-brand-blue/50 text-brand-text-muted hover:text-white flex items-center justify-center transition-all min-w-[150px] disabled:opacity-50"
                         >
                             {isTesting ? <Loader2 className="w-5 h-5 animate-spin mx-auto" /> : "S'envoyer un Test"}
                         </button>
                         <button
                             onClick={() => handleSendAction(false)}
                             disabled={isTesting || isSending}
-                            className="px-8 py-3 rounded-[16px] font-bold uppercase tracking-widest text-sm bg-brand-purple hover:bg-indigo-500 text-white shadow-[0_0_15px_rgba(168,85,247,0.3)] hover:shadow-[0_0_25px_rgba(168,85,247,0.5)] border-transparent flex items-center justify-center transition-all min-w-[200px] shadow-lg disabled:opacity-50"
+                            className="px-8 py-3 rounded-[16px] font-bold uppercase tracking-widest text-sm bg-brand-blue hover:bg-indigo-500 text-white shadow-[0_0_15px_rgba(59,130,246,0.3)] hover:shadow-[0_0_25px_rgba(59,130,246,0.5)] border-transparent flex items-center justify-center transition-all min-w-[200px] shadow-lg disabled:opacity-50"
                         >
                             {isSending ? <Loader2 className="w-5 h-5 animate-spin mx-auto" /> : (
                                 <>

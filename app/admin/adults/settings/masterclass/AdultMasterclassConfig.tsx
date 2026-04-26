@@ -74,7 +74,7 @@ export default function AdultMasterclassConfig({ initialSettings, libraryItems, 
             title: "Formation Intermédiaire",
             description: "Techniques avancées et perfectionnement.",
             level: "Pour aller plus loin",
-            color: "from-magic-royal to-brand-purple",
+            color: "from-magic-royal to-brand-blue",
             buttonText: "Découvrir",
             courseId: ""
         },
@@ -151,7 +151,7 @@ export default function AdultMasterclassConfig({ initialSettings, libraryItems, 
                         key={tab.id}
                         onClick={() => setActiveTab(tab.id)}
                         className={`w-full flex items-center gap-3 px-4 py-3 rounded-2xl font-bold uppercase tracking-widest text-xs transition-all ${activeTab === tab.id
-                            ? "bg-brand-purple text-white shadow-[0_0_15px_rgba(168,85,247,0.4)]"
+                            ? "bg-brand-blue text-white shadow-[0_0_15px_rgba(59,130,246,0.4)]"
                             : "text-brand-text-muted hover:text-white hover:bg-white/5"
                             }`}
                     >
@@ -165,7 +165,7 @@ export default function AdultMasterclassConfig({ initialSettings, libraryItems, 
                 <Button
                     onClick={handleSave}
                     disabled={loading}
-                    className="w-full bg-brand-purple hover:bg-indigo-500 text-white font-bold rounded-2xl shadow-[0_0_15px_rgba(168,85,247,0.3)] hover:shadow-[0_0_25px_rgba(168,85,247,0.5)] transition-all h-12"
+                    className="w-full bg-brand-blue hover:bg-indigo-500 text-white font-bold rounded-2xl shadow-[0_0_15px_rgba(59,130,246,0.3)] hover:shadow-[0_0_25px_rgba(59,130,246,0.5)] transition-all h-12"
                 >
                     <Save className="w-5 h-5 mr-2" />
                     {loading ? "Enregistrement..." : "Enregistrer"}
@@ -174,11 +174,11 @@ export default function AdultMasterclassConfig({ initialSettings, libraryItems, 
 
             {/* Content Area */}
             <div className="lg:col-span-3">
-                <Card className="bg-[#100b1a] border border-white/5 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.5)] hover:border-brand-purple/30 transition-all overflow-hidden rounded-3xl">
+                <Card className="bg-[#100b1a] border border-white/5 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.5)] hover:border-brand-blue/30 transition-all overflow-hidden rounded-3xl">
                     <CardHeader className="border-b border-white/5 bg-transparent p-8">
                         <CardTitle className="text-xl font-black uppercase tracking-tighter flex items-center gap-3 text-white">
-                            <div className="p-2 bg-brand-purple/10 rounded-lg border border-brand-purple/20">
-                                <Sparkles className="text-brand-purple w-5 h-5" />
+                            <div className="p-2 bg-brand-blue/10 rounded-lg border border-brand-blue/20">
+                                <Sparkles className="text-brand-blue w-5 h-5" />
                             </div>
                             Contenu à la Une
                         </CardTitle>
@@ -413,7 +413,7 @@ export default function AdultMasterclassConfig({ initialSettings, libraryItems, 
                                                                     // Navigate to the Course Manager
                                                                     window.location.href = `/admin/adults/courses/${card.courseId}`;
                                                                 }}
-                                                                className="bg-brand-purple/20 text-brand-purple hover:bg-brand-purple hover:text-white font-bold rounded-2xl transition-colors border border-brand-purple/20"
+                                                                className="bg-brand-blue/20 text-brand-blue hover:bg-brand-blue hover:text-white font-bold rounded-2xl transition-colors border border-brand-blue/20"
                                                             >
                                                                 <Eye className="w-4 h-4 mr-2" />
                                                                 Gérer les vidéos de cette formation

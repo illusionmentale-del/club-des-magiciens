@@ -115,7 +115,7 @@ export default function AdultHomeConfig({ initialSettings, availableCourses }: A
                         key={tab.id}
                         onClick={() => setActiveTab(tab.id)}
                         className={`w-full flex items-center gap-3 px-4 py-3 rounded-2xl font-bold uppercase tracking-widest text-xs transition-all ${activeTab === tab.id
-                            ? "bg-brand-purple text-white shadow-[0_0_15px_rgba(168,85,247,0.4)]"
+                            ? "bg-brand-blue text-white shadow-[0_0_15px_rgba(59,130,246,0.4)]"
                             : "text-brand-text-muted hover:text-white hover:bg-white/5"
                             }`}
                     >
@@ -129,7 +129,7 @@ export default function AdultHomeConfig({ initialSettings, availableCourses }: A
                 <Button
                     onClick={handleSave}
                     disabled={loading}
-                    className="w-full bg-brand-purple hover:bg-indigo-500 text-white font-bold rounded-2xl shadow-[0_0_15px_rgba(168,85,247,0.3)] hover:shadow-[0_0_25px_rgba(168,85,247,0.5)] transition-all h-12"
+                    className="w-full bg-brand-blue hover:bg-indigo-500 text-white font-bold rounded-2xl shadow-[0_0_15px_rgba(59,130,246,0.3)] hover:shadow-[0_0_25px_rgba(59,130,246,0.5)] transition-all h-12"
                 >
                     <SaveAll className="w-5 h-5 mr-2" />
                     {loading ? "Enregistrement..." : "Tout Enregistrer"}
@@ -138,7 +138,7 @@ export default function AdultHomeConfig({ initialSettings, availableCourses }: A
 
             {/* Content Area */}
             <div className="lg:col-span-3">
-                <Card className="bg-[#100b1a] border border-white/5 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.5)] hover:border-brand-purple/30 transition-all overflow-hidden rounded-3xl">
+                <Card className="bg-[#100b1a] border border-white/5 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.5)] hover:border-brand-blue/30 transition-all overflow-hidden rounded-3xl">
                     <CardHeader className="border-b border-white/5 bg-transparent p-8">
                         <CardTitle className="text-xl font-black uppercase tracking-tighter flex items-center gap-3 text-white">
                             {activeTab === "featured" && <><Sparkles className="text-white" /> L'Annonce à la Une</>}
@@ -159,7 +159,7 @@ export default function AdultHomeConfig({ initialSettings, availableCourses }: A
                                             type="text"
                                             value={featuredConfig.title}
                                             onChange={(e) => setFeaturedConfig({ ...featuredConfig, title: e.target.value })}
-                                            className="w-full bg-black/50 border border-white/10 rounded-xl p-4 text-white focus:outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple transition-all"
+                                            className="w-full bg-black/50 border border-white/10 rounded-xl p-4 text-white focus:outline-none focus:border-brand-blue focus:ring-1 focus:ring-brand-blue transition-all"
                                             placeholder="Ex: La Masterclass Ultime"
                                         />
                                     </div>
@@ -169,7 +169,7 @@ export default function AdultHomeConfig({ initialSettings, availableCourses }: A
                                             type="text"
                                             value={featuredConfig.tag}
                                             onChange={(e) => setFeaturedConfig({ ...featuredConfig, tag: e.target.value })}
-                                            className="w-full bg-black/50 border border-white/10 rounded-xl p-4 text-white focus:outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple transition-all"
+                                            className="w-full bg-black/50 border border-white/10 rounded-xl p-4 text-white focus:outline-none focus:border-brand-blue focus:ring-1 focus:ring-brand-blue transition-all"
                                             placeholder="Ex: Nouveau, Exclusif..."
                                         />
                                     </div>
@@ -180,7 +180,7 @@ export default function AdultHomeConfig({ initialSettings, availableCourses }: A
                                     <textarea
                                         value={featuredConfig.description}
                                         onChange={(e) => setFeaturedConfig({ ...featuredConfig, description: e.target.value })}
-                                        className="w-full h-32 bg-black/50 border border-white/10 rounded-xl p-4 text-white focus:outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple transition-all"
+                                        className="w-full h-32 bg-black/50 border border-white/10 rounded-xl p-4 text-white focus:outline-none focus:border-brand-blue focus:ring-1 focus:ring-brand-blue transition-all"
                                         placeholder="Décrivez en quelques mots ce que les membres vont découvrir..."
                                     />
                                 </div>
@@ -194,7 +194,7 @@ export default function AdultHomeConfig({ initialSettings, availableCourses }: A
                                             type="text"
                                             value={featuredConfig.link}
                                             onChange={(e) => setFeaturedConfig({ ...featuredConfig, link: e.target.value })}
-                                            className="w-full bg-black/50 border border-white/10 rounded-xl p-4 text-white focus:outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple transition-all"
+                                            className="w-full bg-black/50 border border-white/10 rounded-xl p-4 text-white focus:outline-none focus:border-brand-blue focus:ring-1 focus:ring-brand-blue transition-all"
                                             placeholder="Ex: /watch/xxx ou https://..."
                                         />
                                     </div>
@@ -204,7 +204,7 @@ export default function AdultHomeConfig({ initialSettings, availableCourses }: A
                                             type="text"
                                             value={featuredConfig.buttonText}
                                             onChange={(e) => setFeaturedConfig({ ...featuredConfig, buttonText: e.target.value })}
-                                            className="w-full bg-black/50 border border-white/10 rounded-xl p-4 text-white focus:outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple transition-all"
+                                            className="w-full bg-black/50 border border-white/10 rounded-xl p-4 text-white focus:outline-none focus:border-brand-blue focus:ring-1 focus:ring-brand-blue transition-all"
                                             placeholder="Ex: Découvrir, Visionner..."
                                         />
                                     </div>
@@ -276,7 +276,7 @@ export default function AdultHomeConfig({ initialSettings, availableCourses }: A
                                                 placeholder="Rechercher..."
                                                 value={programSearch}
                                                 onChange={e => setProgramSearch(e.target.value)}
-                                                className="w-full bg-black/50 border border-white/10 rounded-lg py-2 pl-9 pr-4 text-sm text-white focus:outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple transition-all"
+                                                className="w-full bg-black/50 border border-white/10 rounded-lg py-2 pl-9 pr-4 text-sm text-white focus:outline-none focus:border-brand-blue focus:ring-1 focus:ring-brand-blue transition-all"
                                             />
                                         </div>
                                         <div className="bg-black/50 border border-white/10 rounded-xl p-2 h-[300px] overflow-y-auto space-y-1 custom-scrollbar">
@@ -329,10 +329,10 @@ export default function AdultHomeConfig({ initialSettings, availableCourses }: A
                                                             setNewsConfig([...newsConfig, { id: course.id, type: 'course' }]);
                                                         }
                                                     }}
-                                                    className={`p-4 rounded-xl border transition-all cursor-pointer flex items-center gap-3 ${isSelected ? 'bg-[#100b1a] border border-white/5 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.5)] hover:border-brand-purple/30 transition-all border-white/50' : 'bg-[#111] border-white/10 hover:border-white/20'
+                                                    className={`p-4 rounded-xl border transition-all cursor-pointer flex items-center gap-3 ${isSelected ? 'bg-[#100b1a] border border-white/5 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.5)] hover:border-brand-blue/30 transition-all border-white/50' : 'bg-[#111] border-white/10 hover:border-white/20'
                                                         }`}
                                                 >
-                                                    <div className={`w-5 h-5 rounded border flex items-center justify-center transition-all ${isSelected ? 'bg-brand-purple border-brand-purple shadow-[0_0_10px_rgba(168,85,247,0.5)]' : 'bg-transparent border-white/20'
+                                                    <div className={`w-5 h-5 rounded border flex items-center justify-center transition-all ${isSelected ? 'bg-brand-blue border-brand-blue shadow-[0_0_10px_rgba(59,130,246,0.5)]' : 'bg-transparent border-white/20'
                                                         }`}>
                                                         {isSelected && <span className="text-[10px] font-bold text-white">✓</span>}
                                                     </div>
@@ -346,7 +346,7 @@ export default function AdultHomeConfig({ initialSettings, availableCourses }: A
                                 <Separator className="my-6 bg-white/5" />
 
                                 <div className="space-y-4">
-                                    <h3 className="text-sm font-bold text-white uppercase tracking-widest bg-brand-purple/20 text-brand-purple p-2 rounded-lg border border-brand-purple/30 shadow-[0_0_15px_rgba(168,85,247,0.2)]">
+                                    <h3 className="text-sm font-bold text-white uppercase tracking-widest bg-brand-blue/20 text-brand-blue p-2 rounded-lg border border-brand-blue/30 shadow-[0_0_15px_rgba(59,130,246,0.2)]">
                                         Contenu Personnalisé
                                     </h3>
 
@@ -357,7 +357,7 @@ export default function AdultHomeConfig({ initialSettings, availableCourses }: A
                                                 <select
                                                     value={newCustomNewsItem.type}
                                                     onChange={(e) => setNewCustomNewsItem({ ...newCustomNewsItem, type: e.target.value })}
-                                                    className="w-full bg-black/50 border border-white/10 rounded-lg p-2 text-white text-sm focus:border-brand-purple focus:ring-1 focus:ring-brand-purple outline-none transition-all"
+                                                    className="w-full bg-black/50 border border-white/10 rounded-lg p-2 text-white text-sm focus:border-brand-blue focus:ring-1 focus:ring-brand-blue outline-none transition-all"
                                                 >
                                                     <option value="custom_link">Lien Externe</option>
                                                     <option value="tip">Conseil / Astuce</option>
@@ -369,7 +369,7 @@ export default function AdultHomeConfig({ initialSettings, availableCourses }: A
                                                     type="text"
                                                     value={newCustomNewsItem.title}
                                                     onChange={(e) => setNewCustomNewsItem({ ...newCustomNewsItem, title: e.target.value })}
-                                                    className="w-full bg-black/50 border border-white/10 rounded-lg p-2 text-white text-sm focus:border-brand-purple focus:ring-1 focus:ring-brand-purple outline-none transition-all"
+                                                    className="w-full bg-black/50 border border-white/10 rounded-lg p-2 text-white text-sm focus:border-brand-blue focus:ring-1 focus:ring-brand-blue outline-none transition-all"
                                                     placeholder="Titre de l'élément..."
                                                 />
                                             </div>
@@ -381,7 +381,7 @@ export default function AdultHomeConfig({ initialSettings, availableCourses }: A
                                                 type="text"
                                                 value={newCustomNewsItem.url}
                                                 onChange={(e) => setNewCustomNewsItem({ ...newCustomNewsItem, url: e.target.value })}
-                                                className="w-full bg-black/50 border border-white/10 rounded-lg p-2 text-white text-sm focus:border-brand-purple focus:ring-1 focus:ring-brand-purple outline-none transition-all"
+                                                className="w-full bg-black/50 border border-white/10 rounded-lg p-2 text-white text-sm focus:border-brand-blue focus:ring-1 focus:ring-brand-blue outline-none transition-all"
                                                 placeholder={newCustomNewsItem.type === 'tip' ? "Texte du conseil..." : "https://..."}
                                             />
                                         </div>
@@ -410,7 +410,7 @@ export default function AdultHomeConfig({ initialSettings, availableCourses }: A
                                                 setNewsConfig([...newsConfig, newItem]);
                                                 setNewCustomNewsItem({ type: 'custom_link', title: '', url: '', image: '' });
                                             }}
-                                            className="w-full bg-brand-purple hover:bg-indigo-500 text-white font-bold rounded-xl shadow-[0_0_15px_rgba(168,85,247,0.3)] transition-all"
+                                            className="w-full bg-brand-blue hover:bg-indigo-500 text-white font-bold rounded-xl shadow-[0_0_15px_rgba(59,130,246,0.3)] transition-all"
                                         >
                                             <PlusCircle className="w-4 h-4 mr-2" />
                                             Ajouter à la liste
@@ -464,7 +464,7 @@ export default function AdultHomeConfig({ initialSettings, availableCourses }: A
                                             type="text"
                                             value={promoConfig.title}
                                             onChange={(e) => setPromoConfig({ ...promoConfig, title: e.target.value })}
-                                            className="w-full bg-black/50 border border-white/10 rounded-xl p-4 text-white focus:outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple transition-all"
+                                            className="w-full bg-black/50 border border-white/10 rounded-xl p-4 text-white focus:outline-none focus:border-brand-blue focus:ring-1 focus:ring-brand-blue transition-all"
                                             placeholder="Ex: Étendez votre magie !"
                                         />
                                     </div>
@@ -474,7 +474,7 @@ export default function AdultHomeConfig({ initialSettings, availableCourses }: A
                                         <textarea
                                             value={promoConfig.subtitle}
                                             onChange={(e) => setPromoConfig({ ...promoConfig, subtitle: e.target.value })}
-                                            className="w-full h-24 bg-black/50 border border-white/10 rounded-xl p-4 text-white focus:outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple transition-all"
+                                            className="w-full h-24 bg-black/50 border border-white/10 rounded-xl p-4 text-white focus:outline-none focus:border-brand-blue focus:ring-1 focus:ring-brand-blue transition-all"
                                             placeholder="Ex: Profitez de nos offres exceptionnelles de folie pour le Black Friday..."
                                         />
                                     </div>
@@ -489,7 +489,7 @@ export default function AdultHomeConfig({ initialSettings, availableCourses }: A
                                             type="text"
                                             value={promoConfig.buttonText}
                                             onChange={(e) => setPromoConfig({ ...promoConfig, buttonText: e.target.value })}
-                                            className="w-full bg-black/50 border border-white/10 rounded-xl p-4 text-white focus:outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple transition-all"
+                                            className="w-full bg-black/50 border border-white/10 rounded-xl p-4 text-white focus:outline-none focus:border-brand-blue focus:ring-1 focus:ring-brand-blue transition-all"
                                             placeholder="Ex: Découvrir"
                                         />
                                     </div>
@@ -499,7 +499,7 @@ export default function AdultHomeConfig({ initialSettings, availableCourses }: A
                                             type="text"
                                             value={promoConfig.link}
                                             onChange={(e) => setPromoConfig({ ...promoConfig, link: e.target.value })}
-                                            className="w-full bg-black/50 border border-white/10 rounded-xl p-4 text-white focus:outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple transition-all"
+                                            className="w-full bg-black/50 border border-white/10 rounded-xl p-4 text-white focus:outline-none focus:border-brand-blue focus:ring-1 focus:ring-brand-blue transition-all"
                                             placeholder="Ex: /dashboard/catalog"
                                         />
                                     </div>

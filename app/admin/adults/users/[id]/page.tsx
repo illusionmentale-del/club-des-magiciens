@@ -208,7 +208,7 @@ export default function AdminAdultUserDetailPage() {
                     {/* LEFT COLUMN: IDENTITY */}
                     <div className="lg:col-span-1 space-y-6">
                         <div className="bg-brand-card/40 border border-white/5 rounded-2xl p-6 flex flex-col items-center text-center">
-                            <div className="w-32 h-32 bg-black rounded-full mb-4 relative overflow-hidden border-4 border-brand-purple/20">
+                            <div className="w-32 h-32 bg-black rounded-full mb-4 relative overflow-hidden border-4 border-brand-blue/20">
                                 {profile.avatar_url_kids ? (
                                     <Image src={profile.avatar_url_kids} alt="" fill className="object-cover" />
                                 ) : (
@@ -216,7 +216,7 @@ export default function AdminAdultUserDetailPage() {
                                 )}
                             </div>
                             <h1 className="text-2xl font-black text-white mb-1">{profile.first_name || "Sans Nom"}</h1>
-                            <p className="text-brand-purple font-bold">@{profile.display_name}</p>
+                            <p className="text-brand-blue font-bold">@{profile.display_name}</p>
                         </div>
 
                         {/* STATISTIQUES */}
@@ -227,7 +227,7 @@ export default function AdminAdultUserDetailPage() {
                                     <div className="text-[10px] text-brand-text-muted uppercase mb-1">Dernière Vidéo Visionnée</div>
                                     {lastVideo ? (
                                         <>
-                                            <div className="font-bold text-brand-purple line-clamp-2 leading-tight">
+                                            <div className="font-bold text-brand-blue line-clamp-2 leading-tight">
                                                 {lastVideo.title || "Vidéo Inconnue"}
                                             </div>
                                             <div className="flex items-center justify-between mt-2">
@@ -254,16 +254,16 @@ export default function AdminAdultUserDetailPage() {
                                     <button 
                                         onClick={handleImpersonate}
                                         disabled={isGeneratingLink}
-                                        className="w-full flex items-center justify-center gap-2 bg-brand-purple/10 hover:bg-brand-purple/20 text-brand-purple hover:text-white border border-brand-purple/30 font-bold text-xs uppercase tracking-wider py-3 px-4 rounded-xl transition-all duration-300"
+                                        className="w-full flex items-center justify-center gap-2 bg-brand-blue/10 hover:bg-brand-blue/20 text-brand-blue hover:text-white border border-brand-blue/30 font-bold text-xs uppercase tracking-wider py-3 px-4 rounded-xl transition-all duration-300"
                                     >
                                         <Eye className="w-4 h-4" />
                                         {isGeneratingLink ? "Génération..." : "Visualiser son espace"}
                                     </button>
                                 </div>
                                 <div className="border-t border-white/5 pt-4 mt-4">
-                                    <label className="text-xs text-brand-purple block mb-1">Valider un Atelier (Manuel)</label>
+                                    <label className="text-xs text-brand-blue block mb-1">Valider un Atelier (Manuel)</label>
                                     <select
-                                        className="w-full bg-black/40 border border-white/10 rounded-lg p-2 text-sm outline-none text-white focus:border-brand-purple transition-colors"
+                                        className="w-full bg-black/40 border border-white/10 rounded-lg p-2 text-sm outline-none text-white focus:border-brand-blue transition-colors"
                                         onChange={(e) => handleValidateItem(e.target.value)}
                                         value=""
                                     >
@@ -292,7 +292,7 @@ export default function AdminAdultUserDetailPage() {
                                     <label className="text-xs text-white block">Abonné Newsletter</label>
                                     <button
                                         onClick={handleToggleNewsletter}
-                                        className={`relative inline-flex h-5 w-9 shrink-0 cursor-pointer items-center justify-center rounded-full transition-colors duration-200 ease-in-out focus:outline-none ${profile.newsletter_opt_in ? 'bg-brand-purple' : 'bg-white/10'}`}
+                                        className={`relative inline-flex h-5 w-9 shrink-0 cursor-pointer items-center justify-center rounded-full transition-colors duration-200 ease-in-out focus:outline-none ${profile.newsletter_opt_in ? 'bg-brand-blue' : 'bg-white/10'}`}
                                         role="switch"
                                         aria-checked={profile.newsletter_opt_in}
                                     >
@@ -313,7 +313,7 @@ export default function AdminAdultUserDetailPage() {
                                     <input
                                         type="text"
                                         placeholder="Min. 6 caractères"
-                                        className="w-full bg-black/40 w-full border border-white/10 rounded-lg p-2 text-sm text-white outline-none focus:border-brand-purple transition-colors"
+                                        className="w-full bg-black/40 w-full border border-white/10 rounded-lg p-2 text-sm text-white outline-none focus:border-brand-blue transition-colors"
                                         value={newPassword}
                                         onChange={(e) => setNewPassword(e.target.value)}
                                         minLength={6}
@@ -322,7 +322,7 @@ export default function AdminAdultUserDetailPage() {
                                 <button
                                     type="submit"
                                     disabled={!newPassword || newPassword.length < 6 || isChangingPassword}
-                                    className="w-full bg-brand-purple hover:bg-brand-purple/80 text-black disabled:opacity-50 disabled:cursor-not-allowed text-xs font-bold uppercase tracking-widest py-2 rounded-lg transition-colors"
+                                    className="w-full bg-brand-blue hover:bg-brand-blue/80 text-black disabled:opacity-50 disabled:cursor-not-allowed text-xs font-bold uppercase tracking-widest py-2 rounded-lg transition-colors"
                                 >
                                     {isChangingPassword ? "Modification..." : "Forcer ce Mot de Passe"}
                                 </button>
@@ -363,7 +363,7 @@ export default function AdminAdultUserDetailPage() {
                                                         Débloqué le : {new Date(p.created_at).toLocaleDateString()}
                                                     </div>
                                                     {p.systeme_io_order_id === 'admin_gift' && (
-                                                        <div className="text-[10px] font-bold text-brand-purple uppercase tracking-wider mt-1">
+                                                        <div className="text-[10px] font-bold text-brand-blue uppercase tracking-wider mt-1">
                                                             Cadeau Admin
                                                         </div>
                                                     )}
@@ -388,7 +388,7 @@ export default function AdminAdultUserDetailPage() {
                         {/* PROGRESSION */}
                         <section>
                             <h2 className="text-xl font-bold mb-4 flex items-center gap-2 text-white">
-                                <History className="text-brand-purple" />
+                                <History className="text-brand-blue" />
                                 Vidéos & Ateliers ({progress.length})
                             </h2>
                             <div className="bg-brand-card/40 border border-white/5 rounded-2xl overflow-x-auto w-full max-w-full">

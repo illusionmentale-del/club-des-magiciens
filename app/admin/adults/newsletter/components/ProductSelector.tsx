@@ -59,12 +59,12 @@ export function ProductSelector({ space, onSelect }: ProductSelectorProps) {
     };
 
     if (loading) {
-        return <div className="flex justify-center p-8 border border-white/5 rounded-2xl bg-black/20"><Loader2 className="w-6 h-6 animate-spin text-brand-purple" /></div>;
+        return <div className="flex justify-center p-8 border border-white/5 rounded-2xl bg-black/20"><Loader2 className="w-6 h-6 animate-spin text-brand-blue" /></div>;
     }
 
     return (
         <div className="space-y-4 bg-black/20 p-6 rounded-2xl border border-white/5 shadow-inner">
-            <h3 className="font-bold text-sm text-brand-purple uppercase tracking-widest flex items-center gap-2">
+            <h3 className="font-bold text-sm text-brand-blue uppercase tracking-widest flex items-center gap-2">
                 <ShoppingCart className="w-4 h-4" /> Sélectionner un Produit Boutique
             </h3>
             
@@ -75,7 +75,7 @@ export function ProductSelector({ space, onSelect }: ProductSelectorProps) {
                     placeholder="Rechercher par titre..."
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
-                    className="w-full bg-black/40 border border-white/10 rounded-xl pl-10 pr-4 py-2 text-sm text-white focus:outline-none focus:border-brand-purple/50"
+                    className="w-full bg-black/40 border border-white/10 rounded-xl pl-10 pr-4 py-2 text-sm text-white focus:outline-none focus:border-brand-blue/50"
                 />
             </div>
 
@@ -87,7 +87,7 @@ export function ProductSelector({ space, onSelect }: ProductSelectorProps) {
                         onClick={() => handleSelect(product.id)}
                         className={`flex items-center gap-4 p-3 rounded-xl border text-left transition-all ${
                             selectedId === product.id
-                                ? 'bg-brand-purple/10 border-brand-purple/50 shadow-[0_0_15px_rgba(234,179,8,0.1)]'
+                                ? 'bg-brand-blue/10 border-brand-blue/50 shadow-[0_0_15px_rgba(234,179,8,0.1)]'
                                 : 'bg-white/5 border-white/5 hover:bg-white/10'
                         }`}
                     >
@@ -100,14 +100,14 @@ export function ProductSelector({ space, onSelect }: ProductSelectorProps) {
                         )}
                         <div className="flex-1 min-w-0">
                             <div className="flex justify-between items-start">
-                                <p className={`text-sm font-bold truncate ${selectedId === product.id ? 'text-brand-purple' : 'text-white'}`}>{product.title}</p>
+                                <p className={`text-sm font-bold truncate ${selectedId === product.id ? 'text-brand-blue' : 'text-white'}`}>{product.title}</p>
                                 <span className="text-xs font-bold text-brand-cyan bg-brand-cyan/10 px-2 py-0.5 rounded-md ml-2 shrink-0 border border-brand-cyan/20 whitespace-nowrap">{product.price} €</span>
                             </div>
                             <p className="text-xs text-brand-text-muted truncate mt-0.5">{product.description || "Aucune description."}</p>
                         </div>
                         {selectedId === product.id && (
-                            <div className="w-6 h-6 rounded-full bg-brand-purple/20 flex items-center justify-center shrink-0">
-                                <div className="w-2.5 h-2.5 rounded-full bg-brand-purple"></div>
+                            <div className="w-6 h-6 rounded-full bg-brand-blue/20 flex items-center justify-center shrink-0">
+                                <div className="w-2.5 h-2.5 rounded-full bg-brand-blue"></div>
                             </div>
                         )}
                     </button>

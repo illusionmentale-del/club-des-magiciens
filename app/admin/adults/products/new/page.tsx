@@ -18,7 +18,7 @@ export default function NewProductPage() {
                     Annuler
                 </Link>
                 <h1 className="text-3xl font-bold flex items-center gap-3">
-                    <ShoppingBag className="w-8 h-8 text-brand-purple" />
+                    <ShoppingBag className="w-8 h-8 text-brand-blue" />
                     Nouveau Produit
                 </h1>
             </header>
@@ -115,7 +115,7 @@ export default function NewProductPage() {
                         </div>
 
                         <div>
-                            <label className="block text-sm font-medium text-brand-purple mb-1 flex items-center gap-2">
+                            <label className="block text-sm font-medium text-brand-blue mb-1 flex items-center gap-2">
                                 <AlertTriangle className="w-4 h-4" />
                                 ID Stripe (Price ID)
                             </label>
@@ -124,7 +124,7 @@ export default function NewProductPage() {
                                 type="text"
                                 required
                                 placeholder="price_..."
-                                className="w-full bg-brand-purple/10 border border-brand-purple/30 text-yellow-200 rounded-lg p-3 focus:border-brand-purple outline-none font-mono"
+                                className="w-full bg-brand-blue/10 border border-brand-blue/30 text-yellow-200 rounded-lg p-3 focus:border-brand-blue outline-none font-mono"
                             />
                             <p className="text-xs text-gray-500 mt-1">Trouvez cet ID dans la section "Produits" de votre dashboard Stripe. Il commence par <code>price_</code>.</p>
                         </div>
@@ -135,7 +135,7 @@ export default function NewProductPage() {
                                 name="is_active"
                                 id="is_active"
                                 defaultChecked
-                                className="w-5 h-5 text-brand-purple rounded border-gray-600 bg-black/40 focus:ring-brand-purple"
+                                className="w-5 h-5 text-brand-blue rounded border-gray-600 bg-black/40 focus:ring-brand-blue"
                             />
                             <label htmlFor="is_active" className="text-white font-medium select-none cursor-pointer">Activer le produit immédiatement</label>
                         </div>
@@ -145,7 +145,7 @@ export default function NewProductPage() {
                     <div className="pt-6 border-t border-white/10 flex justify-end">
                         <button
                             type="submit"
-                            className="bg-brand-purple hover:bg-indigo-500 text-white px-8 py-3 rounded-xl font-bold flex items-center gap-2 transition-all shadow-[0_0_15px_rgba(168,85,247,0.3)] hover:shadow-[0_0_25px_rgba(168,85,247,0.5)] transform hover:-translate-y-1"
+                            className="bg-brand-blue hover:bg-indigo-500 text-white px-8 py-3 rounded-xl font-bold flex items-center gap-2 transition-all shadow-[0_0_15px_rgba(59,130,246,0.3)] hover:shadow-[0_0_25px_rgba(59,130,246,0.5)] transform hover:-translate-y-1"
                         >
                             <Save className="w-5 h-5" />
                             Enregistrer le Produit

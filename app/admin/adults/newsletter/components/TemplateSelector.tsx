@@ -48,22 +48,22 @@ export function TemplateSelector({ selected, onSelect }: Props) {
                             onClick={() => onSelect(t.id)}
                             type="button"
                             className={`p-4 rounded-3xl border text-left flex flex-col items-start gap-4 transition-all relative overflow-hidden group ${isSelected
-                                    ? 'bg-brand-purple/10 border-brand-purple shadow-[0_0_20px_rgba(168,85,247,0.3)]'
-                                    : 'bg-black/20 border-white/5 hover:border-brand-purple/30 hover:bg-black/40 shadow-md hover:shadow-[0_0_15px_rgba(168,85,247,0.15)]'
+                                    ? 'bg-brand-blue/10 border-brand-blue shadow-[0_0_20px_rgba(59,130,246,0.3)]'
+                                    : 'bg-black/20 border-white/5 hover:border-brand-blue/30 hover:bg-black/40 shadow-md hover:shadow-[0_0_15px_rgba(59,130,246,0.15)]'
                                 }`}
                         >
                             {isSelected && (
-                                <div className={`absolute top-3 right-3 w-5 h-5 rounded-full flex items-center justify-center bg-brand-purple shadow-[0_0_10px_rgba(168,85,247,0.5)]`}>
+                                <div className={`absolute top-3 right-3 w-5 h-5 rounded-full flex items-center justify-center bg-brand-blue shadow-[0_0_10px_rgba(59,130,246,0.5)]`}>
                                     <Check className="w-3 h-3 text-white" />
                                 </div>
                             )}
 
-                            <div className={`p-3 rounded-2xl ${isSelected ? 'bg-brand-purple/20' : 'bg-white/5 group-hover:bg-white/10 transition-colors'}`}>
-                                <Icon className={`w-6 h-6 ${isSelected ? 'text-brand-purple drop-shadow-[0_0_8px_rgba(168,85,247,0.8)]' : 'text-brand-text-muted'}`} />
+                            <div className={`p-3 rounded-2xl ${isSelected ? 'bg-brand-blue/20' : 'bg-white/5 group-hover:bg-white/10 transition-colors'}`}>
+                                <Icon className={`w-6 h-6 ${isSelected ? 'text-brand-blue drop-shadow-[0_0_8px_rgba(59,130,246,0.8)]' : 'text-brand-text-muted'}`} />
                             </div>
 
                             <div>
-                                <h3 className={`font-bold text-sm mb-1 ${isSelected ? 'text-brand-purple' : 'text-white'}`}>{t.name}</h3>
+                                <h3 className={`font-bold text-sm mb-1 ${isSelected ? 'text-brand-blue' : 'text-white'}`}>{t.name}</h3>
                                 <p className="text-xs text-brand-text-muted/80">{t.description}</p>
                             </div>
                         </button>

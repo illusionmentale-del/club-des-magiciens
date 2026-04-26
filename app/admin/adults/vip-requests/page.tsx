@@ -33,7 +33,7 @@ export default async function AdultVIPRequestsPage() {
                         Vérifiez le contexte pour vous assurer de la légitimité de la demande avant de valider.
                     </p>
                     <div className="flex items-center gap-3 mt-2 bg-[#2c2c2e] border border-white/5 text-brand-text px-5 py-4 rounded-[24px] text-sm w-fit shadow-md">
-                        <ShieldAlert className="w-5 h-5 text-brand-purple" />
+                        <ShieldAlert className="w-5 h-5 text-brand-blue" />
                         Cliquez sur 'Approuver' pour générer automatiquement un accès complet et envoyer l'email d'invitation.
                     </div>
                 </header>
@@ -50,9 +50,9 @@ export default async function AdultVIPRequestsPage() {
 
                 {requests && requests.length === 0 && (
                     <FadeInUp delay={0.2}>
-                        <div className="flex flex-col items-center justify-center py-16 bg-[#100b1a] rounded-3xl border border-dashed border-brand-purple/30 shadow-[0_0_30px_rgba(168,85,247,0.05)]">
-                            <div className="w-24 h-24 bg-brand-purple/10 rounded-full flex items-center justify-center mb-6 shadow-[0_0_20px_rgba(168,85,247,0.2)]">
-                                <Star className="w-12 h-12 text-brand-purple" />
+                        <div className="flex flex-col items-center justify-center py-16 bg-[#100b1a] rounded-3xl border border-dashed border-brand-blue/30 shadow-[0_0_30px_rgba(59,130,246,0.05)]">
+                            <div className="w-24 h-24 bg-brand-blue/10 rounded-full flex items-center justify-center mb-6 shadow-[0_0_20px_rgba(59,130,246,0.2)]">
+                                <Star className="w-12 h-12 text-brand-blue" />
                             </div>
                             <h3 className="text-2xl font-black text-white mb-2 tracking-tight">Aucune demande en attente</h3>
                             <p className="text-brand-text-muted text-lg">Toutes les demandes d'accès ont été traitées.</p>

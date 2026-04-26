@@ -24,7 +24,7 @@ export default async function AdminSettingsPage() {
         <div className="space-y-12">
             <div>
                 <div className="flex items-center gap-3 mb-2">
-                    <div className="w-10 h-10 bg-[#100b1a] border border-white/5 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.5)] hover:border-brand-purple/30 transition-all rounded-[16px] flex items-center justify-center shadow-md">
+                    <div className="w-10 h-10 bg-[#100b1a] border border-white/5 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.5)] hover:border-brand-blue/30 transition-all rounded-[16px] flex items-center justify-center shadow-md">
                         <Sparkles className="w-6 h-6 text-brand-text" />
                     </div>
                     <div>

@@ -37,9 +37,9 @@ export default async function AdultsPricingPage() {
     };
 
     return (
-        <div className="min-h-screen bg-brand-bg text-[#f5f5f7] font-sans selection:bg-brand-purple/30 relative overflow-hidden">
+        <div className="min-h-screen bg-brand-bg text-[#f5f5f7] font-sans selection:bg-brand-blue/30 relative overflow-hidden">
             {/* Ambient Background - Enhanced Glow */}
-            <div className="absolute top-[-20%] left-1/2 -translate-x-1/2 w-[100%] h-[100%] bg-brand-purple/5 blur-[200px] rounded-full pointer-events-none mix-blend-screen animate-pulse duration-[8000ms]"></div>
+            <div className="absolute top-[-20%] left-1/2 -translate-x-1/2 w-[100%] h-[100%] bg-brand-blue/5 blur-[200px] rounded-full pointer-events-none mix-blend-screen animate-pulse duration-[8000ms]"></div>
             <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-blue-500/5 blur-[150px] rounded-full pointer-events-none mix-blend-screen"></div>
 
             {/* Simple Header */}
@@ -70,14 +70,14 @@ export default async function AdultsPricingPage() {
                 {/* Hero Section */}
                 <FadeInUp delay={0.1}>
                     <div className="text-center space-y-8 mb-24 relative">
-                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] bg-brand-purple/20 blur-[100px] rounded-full z-0 pointer-events-none"></div>
-                        <div className="relative z-10 inline-flex items-center gap-2 px-6 py-2 border border-brand-purple/30 bg-brand-purple/10 rounded-full text-brand-purple text-xs font-bold tracking-widest uppercase backdrop-blur-md shadow-[0_0_20px_rgba(168,85,247,0.15)]">
+                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] bg-brand-blue/20 blur-[100px] rounded-full z-0 pointer-events-none"></div>
+                        <div className="relative z-10 inline-flex items-center gap-2 px-6 py-2 border border-brand-blue/30 bg-brand-blue/10 rounded-full text-brand-blue text-xs font-bold tracking-widest uppercase backdrop-blur-md shadow-[0_0_20px_rgba(59,130,246,0.15)]">
                             <Sparkles className="w-4 h-4" />
                             L'Atelier des Magiciens
                         </div>
                         <h1 className="relative z-10 text-5xl md:text-8xl font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-br from-white via-gray-200 to-gray-500 leading-[1.1] pb-2">
                             Passez à la vitesse <br className="hidden md:block" />
-                            <span className="italic text-transparent bg-clip-text bg-gradient-to-r from-brand-purple to-purple-400 drop-shadow-[0_0_15px_rgba(168,85,247,0.3)]">supérieure.</span>
+                            <span className="italic text-transparent bg-clip-text bg-gradient-to-r from-brand-blue to-blue-400 drop-shadow-[0_0_15px_rgba(59,130,246,0.3)]">supérieure.</span>
                         </h1>
                         <p className="relative z-10 text-xl text-gray-400 max-w-2xl mx-auto font-light leading-relaxed">
                             Des Masterclass exclusives tournées par des professionnels. Des secrets jalousement gardés, enfin dévoilés étape par étape pour perfectionner votre art.
@@ -89,7 +89,7 @@ export default async function AdultsPricingPage() {
                 <FadeInUp delay={0.2}>
                     <section className="relative z-20 mb-24 max-w-4xl mx-auto">
                         <BentoHoverEffect>
-                            <div className="relative bg-[#0a0a0a] border border-white/10 rounded-[32px] overflow-hidden shadow-2xl backdrop-blur-sm aspect-video flex flex-col items-center justify-center group cursor-pointer hover:border-brand-purple/50 hover:shadow-[0_0_30px_rgba(168,85,247,0.15)] transition-all duration-700">
+                            <div className="relative bg-[#0a0a0a] border border-white/10 rounded-[32px] overflow-hidden shadow-2xl backdrop-blur-sm aspect-video flex flex-col items-center justify-center group cursor-pointer hover:border-brand-blue/50 hover:shadow-[0_0_30px_rgba(59,130,246,0.15)] transition-all duration-700">
                                 <div className="absolute inset-0 bg-[url('/bg-noise.png')] opacity-20 mix-blend-overlay"></div>
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent z-10"></div>
                                 
@@ -106,12 +106,12 @@ export default async function AdultsPricingPage() {
                 {/* Social Proof dynamique */}
                 <FadeInUp delay={0.3}>
                     <div className="flex flex-col items-center justify-center mb-24 relative z-10 w-full mx-auto">
-                        <div className="relative text-sm md:text-base font-medium text-gray-300 text-center bg-black/40 backdrop-blur-md border border-white/10 rounded-full px-12 py-5 shadow-[0_0_30px_rgba(168,85,247,0.1)] flex items-center justify-center gap-4 hover:border-brand-purple/50 hover:shadow-[0_0_40px_rgba(168,85,247,0.2)] transition-all cursor-pointer">
-                            <Star className="w-5 h-5 text-brand-purple animate-pulse" />
+                        <div className="relative text-sm md:text-base font-medium text-gray-300 text-center bg-black/40 backdrop-blur-md border border-white/10 rounded-full px-12 py-5 shadow-[0_0_30px_rgba(59,130,246,0.1)] flex items-center justify-center gap-4 hover:border-brand-blue/50 hover:shadow-[0_0_40px_rgba(59,130,246,0.2)] transition-all cursor-pointer">
+                            <Star className="w-5 h-5 text-brand-blue animate-pulse" />
                             <span>
                                 Rejoignez déjà l'élite de <span className="text-white text-2xl font-bold mx-1 drop-shadow-[0_0_10px_rgba(255,255,255,0.5)]">300</span> maîtres
                             </span>
-                            <Star className="w-5 h-5 text-brand-purple animate-pulse" />
+                            <Star className="w-5 h-5 text-brand-blue animate-pulse" />
                         </div>
                     </div>
                 </FadeInUp>
@@ -120,14 +120,14 @@ export default async function AdultsPricingPage() {
                 <FadeInUp delay={0.4}>
                     <div className="relative z-10 max-w-xl mx-auto">
                         <BentoHoverEffect>
-                            <div className="bg-[#0a0a0a] border border-white/10 rounded-[40px] p-10 md:p-14 flex flex-col relative overflow-hidden transition-all duration-700 hover:shadow-[0_0_60px_rgba(168,85,247,0.2)] hover:border-brand-purple/50 group shadow-2xl">
+                            <div className="bg-[#0a0a0a] border border-white/10 rounded-[40px] p-10 md:p-14 flex flex-col relative overflow-hidden transition-all duration-700 hover:shadow-[0_0_60px_rgba(59,130,246,0.2)] hover:border-brand-blue/50 group shadow-2xl">
                                 {/* Inner animated glows */}
-                                <div className="absolute top-0 right-0 w-64 h-64 bg-brand-purple/10 blur-[80px] rounded-full group-hover:bg-brand-purple/20 transition-all duration-700 -z-10"></div>
-                                <div className="absolute bottom-0 left-0 w-64 h-64 bg-blue-500/5 blur-[80px] rounded-full group-hover:bg-brand-purple/10 transition-all duration-700 -z-10"></div>
-                                <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-brand-purple/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+                                <div className="absolute top-0 right-0 w-64 h-64 bg-brand-blue/10 blur-[80px] rounded-full group-hover:bg-brand-blue/20 transition-all duration-700 -z-10"></div>
+                                <div className="absolute bottom-0 left-0 w-64 h-64 bg-blue-500/5 blur-[80px] rounded-full group-hover:bg-brand-blue/10 transition-all duration-700 -z-10"></div>
+                                <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-brand-blue/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
 
                                 <div className="mb-8 text-center relative z-10">
-                                    <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-brand-purple/10 border border-brand-purple/30 text-sm font-semibold text-brand-purple w-fit mb-6 shadow-[0_0_15px_rgba(168,85,247,0.15)]">
+                                    <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-brand-blue/10 border border-brand-blue/30 text-sm font-semibold text-brand-blue w-fit mb-6 shadow-[0_0_15px_rgba(59,130,246,0.15)]">
                                         <ShieldCheck className="w-4 h-4" />
                                         100% Sans Engagement
                                     </div>
@@ -145,7 +145,7 @@ export default async function AdultsPricingPage() {
 
                                 <ul className="space-y-8 mb-12 flex-1">
                                     <li className="flex items-start gap-5">
-                                        <div className="w-12 h-12 rounded-full bg-black flex items-center justify-center shrink-0 border border-white/5 group-hover:border-brand-purple/50 transition-colors">
+                                        <div className="w-12 h-12 rounded-full bg-black flex items-center justify-center shrink-0 border border-white/5 group-hover:border-brand-blue/50 transition-colors">
                                             <PlayCircle className="w-6 h-6 text-[#f5f5f7]" />
                                         </div>
                                         <div className="mt-1">
@@ -154,7 +154,7 @@ export default async function AdultsPricingPage() {
                                         </div>
                                     </li>
                                     <li className="flex items-start gap-5">
-                                        <div className="w-12 h-12 rounded-full bg-black flex items-center justify-center shrink-0 border border-white/5 group-hover:border-brand-purple/50 transition-colors">
+                                        <div className="w-12 h-12 rounded-full bg-black flex items-center justify-center shrink-0 border border-white/5 group-hover:border-brand-blue/50 transition-colors">
                                             <Sparkles className="w-6 h-6 text-[#f5f5f7]" />
                                         </div>
                                         <div className="mt-1">
@@ -163,7 +163,7 @@ export default async function AdultsPricingPage() {
                                         </div>
                                     </li>
                                     <li className="flex items-start gap-5">
-                                        <div className="w-12 h-12 rounded-full bg-black flex items-center justify-center shrink-0 border border-white/5 group-hover:border-brand-purple/50 transition-colors">
+                                        <div className="w-12 h-12 rounded-full bg-black flex items-center justify-center shrink-0 border border-white/5 group-hover:border-brand-blue/50 transition-colors">
                                             <BookOpen className="w-6 h-6 text-[#f5f5f7]" />
                                         </div>
                                         <div className="mt-1">
@@ -179,7 +179,7 @@ export default async function AdultsPricingPage() {
                                     space="adults"
                                     userLoggedIn={!!user}
                                     buttonText="Rejoindre l'Atelier"
-                                    className="bg-white hover:bg-gray-200 text-black font-bold uppercase tracking-widest text-sm py-5 rounded-xl w-full shadow-[0_0_20px_rgba(255,255,255,0.1)] hover:shadow-[0_0_30px_rgba(168,85,247,0.4)] transition-all hover:scale-[1.02] relative z-10"
+                                    className="bg-white hover:bg-gray-200 text-black font-bold uppercase tracking-widest text-sm py-5 rounded-xl w-full shadow-[0_0_20px_rgba(255,255,255,0.1)] hover:shadow-[0_0_30px_rgba(59,130,246,0.4)] transition-all hover:scale-[1.02] relative z-10"
                                 />
                             </div>
                         </BentoHoverEffect>
@@ -206,7 +206,7 @@ export default async function AdultsPricingPage() {
                         <h3 className="text-3xl font-semibold text-center text-[#f5f5f7] mb-12 tracking-tight">Questions Fréquentes</h3>
 
                         <div className="space-y-4">
-                            <details className="group bg-[#0a0a0a] border border-white/10 rounded-[24px] [&_summary::-webkit-details-marker]:hidden transition-all duration-300 open:border-brand-purple/50 hover:border-brand-purple/30">
+                            <details className="group bg-[#0a0a0a] border border-white/10 rounded-[24px] [&_summary::-webkit-details-marker]:hidden transition-all duration-300 open:border-brand-blue/50 hover:border-brand-blue/30">
                                 <summary className="flex items-center justify-between p-6 md:p-8 font-medium cursor-pointer text-[#f5f5f7] text-lg">
                                     Que contient exactement le catalogue des Masterclass ?
                                     <span className="transition duration-300 group-open:rotate-180 text-[#86868b]">
@@ -218,7 +218,7 @@ export default async function AdultsPricingPage() {
                                 </div>
                             </details>
 
-                            <details className="group bg-[#0a0a0a] border border-white/10 rounded-[24px] [&_summary::-webkit-details-marker]:hidden transition-all duration-300 open:border-brand-purple/50 hover:border-brand-purple/30">
+                            <details className="group bg-[#0a0a0a] border border-white/10 rounded-[24px] [&_summary::-webkit-details-marker]:hidden transition-all duration-300 open:border-brand-blue/50 hover:border-brand-blue/30">
                                 <summary className="flex items-center justify-between p-6 md:p-8 font-medium cursor-pointer text-[#f5f5f7] text-lg">
                                     Puis-je résilier facilement ?
                                     <span className="transition duration-300 group-open:rotate-180 text-[#86868b]">
@@ -230,7 +230,7 @@ export default async function AdultsPricingPage() {
                                 </div>
                             </details>
                             
-                            <details className="group bg-[#0a0a0a] border border-white/10 rounded-[24px] [&_summary::-webkit-details-marker]:hidden transition-all duration-300 open:border-brand-purple/50 hover:border-brand-purple/30">
+                            <details className="group bg-[#0a0a0a] border border-white/10 rounded-[24px] [&_summary::-webkit-details-marker]:hidden transition-all duration-300 open:border-brand-blue/50 hover:border-brand-blue/30">
                                 <summary className="flex items-center justify-between p-6 md:p-8 font-medium cursor-pointer text-[#f5f5f7] text-lg">
                                     Est-ce que mon paiement est sécurisé ?
                                     <span className="transition duration-300 group-open:rotate-180 text-[#86868b]">

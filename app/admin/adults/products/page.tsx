@@ -45,9 +45,9 @@ export default function AdminProductsPage() {
         return true;
     });
 
-    const themeColor = 'bg-brand-purple hover:bg-indigo-500 text-white';
+    const themeColor = 'bg-brand-blue hover:bg-indigo-500 text-white';
     const borderColor = 'border-white/5';
-    const cardBgColor = 'bg-[#100b1a] border border-white/5 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.5)] hover:border-brand-purple/30 transition-all';
+    const cardBgColor = 'bg-[#100b1a] border border-white/5 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.5)] hover:border-brand-blue/30 transition-all';
 
     return (
         <div className={`min-h-screen ${audience === 'adults' ? 'bg-black' : 'bg-[#0F1014]'} text-white p-8 transition-colors duration-500`}>
@@ -57,12 +57,12 @@ export default function AdminProductsPage() {
                     Retour au QG Admin
                 </Link>
                 <div className="flex items-center gap-3">
-                    <div className="p-2 rounded-lg bg-[#100b1a] border border-white/5 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.5)] hover:border-brand-purple/30 transition-all text-brand-text shadow-md">
+                    <div className="p-2 rounded-lg bg-[#100b1a] border border-white/5 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.5)] hover:border-brand-blue/30 transition-all text-brand-text shadow-md">
                         <ShoppingBag className="w-6 h-6" />
                     </div>
                     <div>
                         <h1 className="text-3xl font-bold">La Boutique</h1>
-                        <div className="text-sm px-2 py-0.5 rounded inline-block mt-1 uppercase font-bold tracking-wider bg-[#100b1a] border border-white/5 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.5)] hover:border-brand-purple/30 transition-all text-brand-text-muted">
+                        <div className="text-sm px-2 py-0.5 rounded inline-block mt-1 uppercase font-bold tracking-wider bg-[#100b1a] border border-white/5 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.5)] hover:border-brand-blue/30 transition-all text-brand-text-muted">
                             Mode Adulte
                         </div>
                     </div>
@@ -84,7 +84,7 @@ export default function AdminProductsPage() {
                 {/* List */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {filteredProducts.map((product) => (
-                        <div key={product.id} className={`${cardBgColor} border ${borderColor} rounded-[24px] overflow-hidden group hover:border-brand-purple/30 transition-colors flex flex-col`}>
+                        <div key={product.id} className={`${cardBgColor} border ${borderColor} rounded-[24px] overflow-hidden group hover:border-brand-blue/30 transition-colors flex flex-col`}>
                             {/* Image Header */}
                             <div className="h-40 bg-black/50 relative">
                                 {product.image_url ? (
@@ -102,8 +102,8 @@ export default function AdminProductsPage() {
                                 <div className="absolute top-3 right-3 flex gap-2">
                                     <span className={`px-2 py-1 rounded text-xs font-bold uppercase ${
                                         product.is_active 
-                                            ? 'bg-brand-purple text-white shadow-[0_0_15px_rgba(168,85,247,0.3)]' 
-                                            : 'bg-[#100b1a] border border-white/5 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.5)] hover:border-brand-purple/30 transition-all text-brand-text-muted border border-white/10'
+                                            ? 'bg-brand-blue text-white shadow-[0_0_15px_rgba(59,130,246,0.3)]' 
+                                            : 'bg-[#100b1a] border border-white/5 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.5)] hover:border-brand-blue/30 transition-all text-brand-text-muted border border-white/10'
                                     }`}>
                                         {product.is_active ? 'Actif' : 'Inactif'}
                                     </span>
@@ -135,8 +135,8 @@ export default function AdminProductsPage() {
                                     <form action={toggleProductStatus.bind(null, product.id, product.is_active)} className="flex-1">
                                         <button className={`w-full py-2 rounded-lg font-bold text-xs flex items-center justify-center gap-2 ${
                                             product.is_active 
-                                                ? 'bg-[#100b1a] border border-white/5 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.5)] hover:border-brand-purple/30 transition-all text-brand-text-muted hover:text-brand-text' 
-                                                : 'bg-brand-purple text-white shadow-[0_0_15px_rgba(168,85,247,0.3)] hover:shadow-[0_0_25px_rgba(168,85,247,0.5)] hover:bg-indigo-500'
+                                                ? 'bg-[#100b1a] border border-white/5 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.5)] hover:border-brand-blue/30 transition-all text-brand-text-muted hover:text-brand-text' 
+                                                : 'bg-brand-blue text-white shadow-[0_0_15px_rgba(59,130,246,0.3)] hover:shadow-[0_0_25px_rgba(59,130,246,0.5)] hover:bg-indigo-500'
                                         }`}>
                                             {product.is_active ? <XCircle className="w-4 h-4" /> : <CheckCircle className="w-4 h-4" />}
                                             {product.is_active ? 'Désactiver' : 'Activer'}
@@ -145,7 +145,7 @@ export default function AdminProductsPage() {
 
                                     <form action={deleteProduct.bind(null, product.id)}>
                                         <button
-                                            className="p-2 rounded-lg transition-colors bg-[#100b1a] border border-white/5 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.5)] hover:border-brand-purple/30 transition-all text-brand-text-muted hover:text-brand-text hover:border-white/20"
+                                            className="p-2 rounded-lg transition-colors bg-[#100b1a] border border-white/5 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.5)] hover:border-brand-blue/30 transition-all text-brand-text-muted hover:text-brand-text hover:border-white/20"
                                             onClick={(e) => {
                                                 if (!confirm("Voulez-vous vraiment supprimer ce produit ? Cela ne remboursera pas les clients existants.")) {
                                                     e.preventDefault();

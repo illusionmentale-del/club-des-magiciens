@@ -132,7 +132,7 @@ export default function AdminLibraryPage() {
                 <header className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
                     <div>
                         <h1 className="text-3xl font-bold flex items-center gap-2">
-                            <span className="text-brand-purple">📚</span> L'Atelier des Magiciens
+                            <span className="text-brand-blue">📚</span> L'Atelier des Magiciens
                         </h1>
                         <p className="text-brand-text-muted">Gestion de la Bibliothèque Adulte</p>
                     </div>
@@ -146,7 +146,7 @@ export default function AdminLibraryPage() {
                         </button>
                         <Link
                             href={`/admin/adults/library/new?audience=adults&week=${maxWeek + 1}`}
-                            className="bg-brand-purple hover:bg-indigo-500 text-white px-6 py-3 rounded-[16px] font-bold flex items-center gap-2 transition-all shadow-[0_0_15px_rgba(168,85,247,0.3)] hover:shadow-[0_0_25px_rgba(168,85,247,0.5)]"
+                            className="bg-brand-blue hover:bg-indigo-500 text-white px-6 py-3 rounded-[16px] font-bold flex items-center gap-2 transition-all shadow-[0_0_15px_rgba(59,130,246,0.3)] hover:shadow-[0_0_25px_rgba(59,130,246,0.5)]"
                         >
                             <Calendar className="w-5 h-5" />
                             Nouvelle Semaine
@@ -165,7 +165,7 @@ export default function AdminLibraryPage() {
                             placeholder="Rechercher un atelier..."
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
-                            className="w-full bg-black/40 border border-white/10 rounded-[16px] pl-10 pr-4 py-3 text-white focus:outline-none focus:border-purple-500"
+                            className="w-full bg-black/40 border border-white/10 rounded-[16px] pl-10 pr-4 py-3 text-white focus:outline-none focus:border-blue-500"
                         />
                     </div>
                 </div>
@@ -179,14 +179,14 @@ export default function AdminLibraryPage() {
                             <div key={week} className="space-y-4">
                                 <div className="flex items-center justify-between border-b border-white/10 pb-2">
                                     <h2 className="text-xl font-bold flex items-center gap-3">
-                                        <span className="bg-brand-purple/20 text-brand-purple w-8 h-8 rounded-[12px] flex items-center justify-center text-sm border border-brand-purple/30">
+                                        <span className="bg-brand-blue/20 text-brand-blue w-8 h-8 rounded-[12px] flex items-center justify-center text-sm border border-brand-blue/30">
                                             {week}
                                         </span>
                                         Catégorie {week === '0' ? 'Intro / Général' : week}
                                     </h2>
                                     <Link
                                         href={`/admin/adults/library/new?audience=adults&week=${week}`}
-                                        className="text-xs font-bold text-gray-400 hover:text-brand-purple transition-colors flex items-center gap-1 uppercase tracking-wider"
+                                        className="text-xs font-bold text-gray-400 hover:text-brand-blue transition-colors flex items-center gap-1 uppercase tracking-wider"
                                     >
                                         <Plus className="w-3 h-3" />
                                         Ajouter du contenu
@@ -214,7 +214,7 @@ export default function AdminLibraryPage() {
                                             {/* Info */}
                                             <div className="flex-1 min-w-0">
                                                 <div className="flex items-center gap-2 mb-0.5">
-                                                    <h3 className="font-bold text-sm text-white truncate group-hover:text-purple-400 transition-colors">{item.title}</h3>
+                                                    <h3 className="font-bold text-sm text-white truncate group-hover:text-blue-400 transition-colors">{item.title}</h3>
                                                     <span className="text-[9px] px-1.5 py-0.5 rounded border border-white/10 text-gray-400 uppercase tracking-widest bg-black/20">
                                                         {item.type}
                                                     </span>
@@ -265,7 +265,7 @@ export default function AdminLibraryPage() {
                                 <p className="text-sm mt-1">Commencez par créer la première vidéo !</p>
                                 <Link
                                     href="/admin/adults/library/new?audience=adults&week=1"
-                                    className="inline-flex items-center gap-2 mt-6 bg-brand-purple hover:bg-indigo-500 text-white px-6 py-3 rounded-[16px] font-bold transition-all shadow-[0_0_15px_rgba(168,85,247,0.3)] hover:shadow-[0_0_25px_rgba(168,85,247,0.5)]"
+                                    className="inline-flex items-center gap-2 mt-6 bg-brand-blue hover:bg-indigo-500 text-white px-6 py-3 rounded-[16px] font-bold transition-all shadow-[0_0_15px_rgba(59,130,246,0.3)] hover:shadow-[0_0_25px_rgba(59,130,246,0.5)]"
                                 >
                                     <Plus className="w-5 h-5" />
                                     Ajouter une Vidéo

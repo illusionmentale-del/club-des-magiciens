@@ -27,11 +27,11 @@ export default async function AdultMasterclassSettingsPage() {
         .order("title");
 
     return (
-        <div className="space-y-10 selection:bg-brand-purple/30">
+        <div className="space-y-10 selection:bg-brand-blue/30">
             <div>
                 <div className="flex items-center gap-3 mb-2">
-                    <div className="w-10 h-10 bg-[#100b1a] border border-white/5 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.5)] hover:border-brand-purple/30 transition-all rounded-xl flex items-center justify-center shadow-md">
-                        <Sparkles className="w-6 h-6 text-brand-purple" />
+                    <div className="w-10 h-10 bg-[#100b1a] border border-white/5 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.5)] hover:border-brand-blue/30 transition-all rounded-xl flex items-center justify-center shadow-md">
+                        <Sparkles className="w-6 h-6 text-brand-blue" />
                     </div>
                     <div>
                         <h1 className="text-3xl font-black text-white uppercase tracking-tighter">Page Mes Formations</h1>

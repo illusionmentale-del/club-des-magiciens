@@ -85,7 +85,7 @@ export default function PushAdminPage() {
     return (
         <div className="space-y-8 max-w-4xl mx-auto">
             <div className="mb-10 text-center flex flex-col items-center">
-                <div className="w-16 h-16 bg-[#100b1a] border border-white/5 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.5)] hover:border-brand-purple/30 transition-all rounded-[24px] flex items-center justify-center mb-6 shadow-md">
+                <div className="w-16 h-16 bg-[#100b1a] border border-white/5 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.5)] hover:border-brand-blue/30 transition-all rounded-[24px] flex items-center justify-center mb-6 shadow-md">
                     <BellRing className="w-8 h-8 text-white relative z-10" />
                 </div>
                 <h1 className="text-4xl font-black uppercase tracking-widest text-white mb-3">Envoi Rapide Push</h1>
@@ -106,7 +106,7 @@ export default function PushAdminPage() {
                             <select
                                 value={targetAudience}
                                 onChange={(e) => setTargetAudience(e.target.value)}
-                                className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-brand-purple/50 transition-all font-medium appearance-none"
+                                className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-brand-blue/50 transition-all font-medium appearance-none"
                             >
                                 <option value="all">Tous (Adultes + Enfants)</option>
                                 <option value="adults">Uniquement les Adultes (L'Atelier)</option>
@@ -121,7 +121,7 @@ export default function PushAdminPage() {
                                 value={title}
                                 maxLength={50}
                                 onChange={(e) => setTitle(e.target.value)}
-                                className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-brand-text-muted/50 focus:outline-none focus:border-brand-purple/50 transition-all font-bold"
+                                className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-brand-text-muted/50 focus:outline-none focus:border-brand-blue/50 transition-all font-bold"
                                 placeholder="🔴 Le Live Démarre !"
                             />
                             <p className="text-[10px] text-right text-white/30 mt-1">{title.length} / 50</p>
@@ -134,7 +134,7 @@ export default function PushAdminPage() {
                                 maxLength={100}
                                 onChange={(e) => setMessage(e.target.value)}
                                 rows={2}
-                                className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-brand-text-muted/50 focus:outline-none focus:border-brand-purple/50 transition-all text-sm resize-none"
+                                className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-brand-text-muted/50 focus:outline-none focus:border-brand-blue/50 transition-all text-sm resize-none"
                                 placeholder="Jérémy est en direct pour le débriefing d'hier. Rejoignez le chat !"
                             />
                             <p className="text-[10px] text-right text-white/30 mt-1">{message.length} / 100</p>
@@ -146,7 +146,7 @@ export default function PushAdminPage() {
                                 type="text"
                                 value={url}
                                 onChange={(e) => setUrl(e.target.value)}
-                                className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white/70 placeholder-brand-text-muted/50 focus:outline-none focus:border-brand-purple/50 transition-all font-mono text-sm"
+                                className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white/70 placeholder-brand-text-muted/50 focus:outline-none focus:border-brand-blue/50 transition-all font-mono text-sm"
                                 placeholder="/dashboard/lives"
                             />
                             <p className="text-[10px] text-brand-text-muted mt-1 ml-1">Où l'élève est envoyé quand il clique sur la notification (ex: /kids/lives ou /dashboard/masterclass).</p>
@@ -156,7 +156,7 @@ export default function PushAdminPage() {
                             <button
                                 onClick={handleSendPush}
                                 disabled={isSending}
-                                className="w-full py-4 rounded-[16px] font-bold uppercase tracking-widest text-sm bg-brand-purple hover:bg-indigo-500 text-white shadow-[0_0_15px_rgba(168,85,247,0.3)] hover:shadow-[0_0_25px_rgba(168,85,247,0.5)] border-transparent flex items-center justify-center transition-all shadow-lg disabled:opacity-50"
+                                className="w-full py-4 rounded-[16px] font-bold uppercase tracking-widest text-sm bg-brand-blue hover:bg-indigo-500 text-white shadow-[0_0_15px_rgba(59,130,246,0.3)] hover:shadow-[0_0_25px_rgba(59,130,246,0.5)] border-transparent flex items-center justify-center transition-all shadow-lg disabled:opacity-50"
                             >
                                 {isSending ? <Loader2 className="w-5 h-5 animate-spin mx-auto" /> : (
                                     <>
@@ -211,7 +211,7 @@ export default function PushAdminPage() {
                         </div>
                     )}
 
-                    <div className="flex items-start gap-3 p-4 bg-[#100b1a] border border-white/5 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.5)] hover:border-brand-purple/50 transition-all rounded-[24px]">
+                    <div className="flex items-start gap-3 p-4 bg-[#100b1a] border border-white/5 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.5)] hover:border-brand-blue/50 transition-all rounded-[24px]">
                         <AlertTriangle className="w-5 h-5 text-brand-text-muted shrink-0 mt-0.5" />
                         <div className="text-[11px] font-light text-brand-text-muted leading-relaxed">
                             <strong className="text-brand-text font-bold block mb-1">Rappel Apple (iOS)</strong>
@@ -268,14 +268,14 @@ export default function PushAdminPage() {
                                         </td>
                                         <td className="py-3 px-4 text-sm text-gray-300">
                                             <div className="flex items-center gap-2">
-                                                <span className="font-bold text-brand-purple">{sub.devices} appareil(s)</span>
+                                                <span className="font-bold text-brand-blue">{sub.devices} appareil(s)</span>
                                                 <span className="text-xs opacity-50">({sub.platforms.join(', ')})</span>
                                             </div>
                                         </td>
                                         <td className="py-3 px-4 text-xs">
                                             <div className="flex flex-col gap-1">
                                                 {sub.access?.adults ? <span className="text-magic-royal">✅ L'Atelier (Adultes)</span> : <span className="text-gray-600">❌ L'Atelier</span>}
-                                                {sub.access?.kids ? <span className="text-brand-purple">✅ Le Club (Enfants)</span> : <span className="text-gray-600">❌ Le Club</span>}
+                                                {sub.access?.kids ? <span className="text-brand-blue">✅ Le Club (Enfants)</span> : <span className="text-gray-600">❌ Le Club</span>}
                                             </div>
                                         </td>
                                     </tr>

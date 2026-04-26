@@ -31,18 +31,18 @@ export default async function AdminCourseManager(props: CourseManagerProps) {
         .order("position", { ascending: true });
 
     return (
-        <div className="space-y-8 selection:bg-brand-purple/30">
+        <div className="space-y-8 selection:bg-brand-blue/30">
             {/* Header */}
             <div>
-                <Link href="/admin/adults/settings/masterclass" className="inline-flex items-center text-sm font-bold uppercase tracking-widest text-gray-500 hover:text-brand-purple transition-colors mb-6">
+                <Link href="/admin/adults/settings/masterclass" className="inline-flex items-center text-sm font-bold uppercase tracking-widest text-gray-500 hover:text-brand-blue transition-colors mb-6">
                     <ArrowLeft className="w-4 h-4 mr-2" />
                     Retour au constructeur du Hub
                 </Link>
 
                 <div className="flex items-center justify-between">
                     <div className="flex items-center gap-4">
-                        <div className="w-14 h-14 bg-brand-purple/10 rounded-2xl flex items-center justify-center border border-brand-purple/30 shadow-lg shadow-brand-purple/10">
-                            <BookOpen className="w-8 h-8 text-brand-purple" />
+                        <div className="w-14 h-14 bg-brand-blue/10 rounded-2xl flex items-center justify-center border border-brand-blue/30 shadow-lg shadow-brand-blue/10">
+                            <BookOpen className="w-8 h-8 text-brand-blue" />
                         </div>
                         <div>
                             <h1 className="text-3xl font-black text-white tracking-tighter flex items-center gap-2">
@@ -63,7 +63,7 @@ export default async function AdminCourseManager(props: CourseManagerProps) {
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm bg-white/5 p-4 rounded-xl">
                     <div>
                         <span className="block text-[10px] uppercase text-gray-500 font-bold mb-1">ID Formation</span>
-                        <code className="text-xs text-brand-purple">{course.id}</code>
+                        <code className="text-xs text-brand-blue">{course.id}</code>
                     </div>
                     <div>
                         <span className="block text-[10px] uppercase text-gray-500 font-bold mb-1">Audience</span>
