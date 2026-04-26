@@ -14,7 +14,7 @@ function SubmitButton() {
         <button
             type="submit"
             disabled={pending}
-            className="bg-magic-royal text-black px-6 py-3 rounded-xl font-bold hover:bg-magic-gold transition-all disabled:opacity-50 flex items-center gap-2 uppercase tracking-wide text-sm"
+            className="bg-magic-royal text-black px-6 py-3 rounded-xl font-bold hover:bg-brand-purple transition-all disabled:opacity-50 flex items-center gap-2 uppercase tracking-wide text-sm"
         >
             <Send className="w-4 h-4" />
             {pending ? "..." : "Publier"}

@@ -17,7 +17,7 @@ export default function AdultsAdminLayout({
     children: React.ReactNode
 }) {
     return (
-        <div className="flex min-h-screen w-full bg-[#000000] text-[#f5f5f7] font-sans selection:bg-brand-royal/30">
+        <div className="flex min-h-screen w-full bg-[#000000] text-[#f5f5f7] font-sans selection:bg-brand-purple/30">
             {/* Mobile Nav */}
             <AdminAdultsMobileNav />
 
@@ -34,7 +34,7 @@ export default function AdultsAdminLayout({
 
                 <nav className="flex-1 p-4 space-y-2 overflow-y-auto">
                     <Link href="/admin/adults/dashboard" className="flex items-center gap-3 px-4 py-3 text-sm font-bold uppercase tracking-widest text-brand-text-muted hover:text-white hover:bg-white/5 rounded-xl transition-all group">
-                        <LayoutDashboard className="w-5 h-5 group-hover:text-brand-royal transition-colors" />
+                        <LayoutDashboard className="w-5 h-5 group-hover:text-brand-purple transition-colors" />
                         Dashboard
                     </Link>
 
@@ -112,7 +112,7 @@ export default function AdultsAdminLayout({
             {/* Main Content */}
             <main className="flex-1 md:ml-64 flex flex-col min-h-screen relative">
                 {/* Page Background Glow */}
-                <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-brand-royal/5 blur-[150px] rounded-full pointer-events-none"></div>
+                <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-brand-purple/5 blur-[150px] rounded-full pointer-events-none"></div>
 
                 <header className="h-16 md:h-20 border-b border-white/5 bg-black/60 backdrop-blur-2xl sticky top-0 z-40 px-4 md:px-8">
                     <div className="flex items-center justify-between w-full max-w-7xl mx-auto h-full">

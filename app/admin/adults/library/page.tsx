@@ -158,7 +158,7 @@ export default function AdminLibraryPage() {
                                                     <div className="flex items-center justify-center h-full text-gray-600 text-[10px]">No Image</div>
                                                 )}
                                                 {item.is_main && (
-                                                    <div className="absolute top-1 left-1 bg-yellow-500 text-black text-[8px] font-bold px-1 rounded">STAR</div>
+                                                    <div className="absolute top-1 left-1 bg-brand-purple text-black text-[8px] font-bold px-1 rounded">STAR</div>
                                                 )}
                                             </div>
 

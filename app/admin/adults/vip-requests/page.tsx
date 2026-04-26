@@ -33,7 +33,7 @@ export default async function AdultVIPRequestsPage() {
                         Vérifiez le contexte pour vous assurer de la légitimité de la demande avant de valider.
                     </p>
                     <div className="flex items-center gap-3 mt-2 bg-[#2c2c2e] border border-white/5 text-[#f5f5f7] px-5 py-4 rounded-[24px] text-sm w-fit shadow-md">
-                        <ShieldAlert className="w-5 h-5 text-yellow-500" />
+                        <ShieldAlert className="w-5 h-5 text-brand-purple" />
                         Cliquez sur 'Approuver' pour générer automatiquement un accès complet et envoyer l'email d'invitation.
                     </div>
                 </header>

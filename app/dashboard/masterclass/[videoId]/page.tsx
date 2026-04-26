@@ -145,17 +145,17 @@ export default async function KidsVideoPlayerPage({ params }: { params: { videoI
                 {/* Video Player Container */}
                 <div className="bg-black border border-white/10 rounded-none overflow-hidden shadow-2xl mb-8 relative">
                     {isLockedPremium ? (
-                        <div className="relative pt-[56.25%] w-full bg-black/80 flex flex-col items-center justify-center p-8 text-center border-y border-brand-royal/30">
+                        <div className="relative pt-[56.25%] w-full bg-black/80 flex flex-col items-center justify-center p-8 text-center border-y border-brand-purple/30">
                             <div className="absolute inset-0 flex flex-col items-center justify-center">
-                                <div className="w-20 h-20 bg-brand-royal/20 rounded-full flex items-center justify-center mb-6 border border-brand-royal/40 shadow-[0_0_30px_rgba(250,204,21,0.3)]">
-                                    <Lock className="w-10 h-10 text-brand-royal" />
+                                <div className="w-20 h-20 bg-brand-purple/20 rounded-full flex items-center justify-center mb-6 border border-brand-purple/40 shadow-[0_0_30px_rgba(94,92,230,0.3)]">
+                                    <Lock className="w-10 h-10 text-brand-purple" />
                                 </div>
                                 <h2 className="text-2xl md:text-3xl font-black uppercase text-white mb-2">Secret Verrouillé</h2>
                                 <p className="text-brand-text-muted mb-8 max-w-md">
                                     Pour regarder <strong className="text-white">{video.title}</strong>, tu dois posséder ce secret dans ta collection.
                                 </p>
 
-                                <CheckoutButton itemId={libraryItem?.id} space="adults" className="bg-magic-royal hover:bg-amber-400 text-black font-serif uppercase tracking-widest text-sm py-4 px-8 rounded-none flex items-center gap-3 transition-colors">
+                                <CheckoutButton itemId={libraryItem?.id} space="adults" className="bg-magic-royal hover:bg-brand-purple text-black font-serif uppercase tracking-widest text-sm py-4 px-8 rounded-none flex items-center gap-3 transition-colors">
                                     <ShoppingBag className="w-5 h-5" />
                                     Acheter pour débloquer {libraryItem?.price_label ? `(${libraryItem.price_label})` : ''}
                                 </CheckoutButton>

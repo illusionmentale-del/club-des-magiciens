@@ -107,7 +107,7 @@ export default function NewsletterAdminPage() {
                             <select
                                 value={targetAudience}
                                 onChange={(e) => setTargetAudience(e.target.value)}
-                                className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-brand-royal/50 focus:ring-1 focus:ring-brand-royal/50 transition-all font-medium appearance-none"
+                                className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-brand-purple/50 focus:ring-1 focus:ring-brand-purple/50 transition-all font-medium appearance-none"
                             >
                                 <option value="all">Tous (Adultes + Enfants)</option>
                                 <option value="adults">Uniquement les Adultes (L'Atelier)</option>
@@ -122,7 +122,7 @@ export default function NewsletterAdminPage() {
                                 type="text"
                                 value={subject}
                                 onChange={(e) => setSubject(e.target.value)}
-                                className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-brand-text-muted/50 focus:outline-none focus:border-brand-royal/50 focus:ring-1 focus:ring-brand-royal/50 transition-all font-bold"
+                                className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-brand-text-muted/50 focus:outline-none focus:border-brand-purple/50 focus:ring-1 focus:ring-brand-purple/50 transition-all font-bold"
                                 placeholder="La Masterclass de Février est en ligne 🎩"
                             />
                         </div>
@@ -142,7 +142,7 @@ export default function NewsletterAdminPage() {
                                 value={content}
                                 onChange={(e) => setContent(e.target.value)}
                                 rows={template === 'classic' ? 12 : 4}
-                                className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-4 text-white placeholder-brand-text-muted/50 focus:outline-none focus:border-brand-royal/50 focus:ring-1 focus:ring-brand-royal/50 transition-all text-sm leading-relaxed resize-y font-mono"
+                                className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-4 text-white placeholder-brand-text-muted/50 focus:outline-none focus:border-brand-purple/50 focus:ring-1 focus:ring-brand-purple/50 transition-all text-sm leading-relaxed resize-y font-mono"
                                 placeholder={`Bonjour [Prénom],\n\nVoici le texte de votre e-mail...`}
                             />
                         </div>

@@ -16,10 +16,10 @@ export default function AdminAdultsMobileNav() {
         <div className="md:hidden bg-brand-bg/80 backdrop-blur-md border-b border-white/5 sticky top-0 z-50">
             <div className="flex items-center justify-between p-4">
                 <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 flex flex-shrink-0 items-center justify-center rounded-lg bg-brand-royal/20 text-brand-royal">
+                    <div className="w-8 h-8 flex flex-shrink-0 items-center justify-center rounded-lg bg-brand-purple/20 text-brand-purple">
                         <Users className="w-4 h-4" />
                     </div>
-                    <span className="font-black text-sm uppercase tracking-widest">Club <span className="text-brand-royal">Adultes</span></span>
+                    <span className="font-black text-sm uppercase tracking-widest">Club <span className="text-brand-purple">Adultes</span></span>
                 </div>
                 <button onClick={() => setIsOpen(true)} className="p-2 text-white bg-white/5 rounded-lg">
                     <Menu className="w-5 h-5" />
@@ -38,11 +38,11 @@ export default function AdminAdultsMobileNav() {
                         </div>
 
                         <nav className="space-y-1 flex-1">
-                            <Link href="/admin/adults/dashboard" onClick={close} className={`flex items-center gap-3 px-4 py-3 font-bold uppercase tracking-widest text-[10px] rounded-xl ${isActive('/admin/adults/dashboard') ? 'text-brand-royal bg-brand-royal/10' : 'text-gray-400 hover:bg-white/5'}`}>
+                            <Link href="/admin/adults/dashboard" onClick={close} className={`flex items-center gap-3 px-4 py-3 font-bold uppercase tracking-widest text-[10px] rounded-xl ${isActive('/admin/adults/dashboard') ? 'text-brand-purple bg-brand-purple/10' : 'text-gray-400 hover:bg-white/5'}`}>
                                 <LayoutDashboard className="w-4 h-4" /> Dashboard
                             </Link>
                             
-                            <div className="my-4 border-t border-white/5 px-4"><span className="text-[10px] font-black text-brand-royal uppercase tracking-widest">Contenu</span></div>
+                            <div className="my-4 border-t border-white/5 px-4"><span className="text-[10px] font-black text-brand-purple uppercase tracking-widest">Contenu</span></div>
                             <Link href="/admin/adults/library" onClick={close} className="flex items-center gap-3 px-4 py-2 font-bold uppercase tracking-widest text-[10px] text-gray-400 hover:bg-white/5 rounded-xl"><Video className="w-4 h-4" /> Vidéos & Ateliers</Link>
                             <Link href="/admin/adults/settings/masterclass" onClick={close} className="flex items-center gap-3 px-4 py-2 font-bold uppercase tracking-widest text-[10px] text-gray-400 hover:bg-white/5 rounded-xl"><Sparkles className="w-4 h-4" /> Page "Mes Formations"</Link>
                             <Link href="/admin/adults/products" onClick={close} className="flex items-center gap-3 px-4 py-2 font-bold uppercase tracking-widest text-[10px] text-gray-400 hover:bg-white/5 rounded-xl"><ShoppingBag className="w-4 h-4" /> Boutique</Link>

@@ -53,7 +53,7 @@ export default function AdultMenuToggles({ initialSettings }: AdultMenuTogglesPr
             <CardHeader className="border-b border-white/5 bg-white/[0.02]">
                 <CardTitle className="text-xl font-black uppercase tracking-tighter flex items-center justify-between text-white">
                     <div className="flex items-center gap-3">
-                        <List className="text-magic-gold" />
+                        <List className="text-brand-purple" />
                         Visibilité du Menu (L'Atelier)
                     </div>
                 </CardTitle>
@@ -66,14 +66,14 @@ export default function AdultMenuToggles({ initialSettings }: AdultMenuTogglesPr
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {menus.map((menu) => (
-                        <div key={menu.key} className="flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-white/5 rounded-xl border border-white/5 gap-4 hover:border-magic-gold/30 transition-colors">
+                        <div key={menu.key} className="flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-white/5 rounded-xl border border-white/5 gap-4 hover:border-brand-purple/30 transition-colors">
                             <div>
                                 <p className="font-bold text-white uppercase tracking-widest text-xs mb-1">{menu.label}</p>
                                 <p className="text-[10px] text-slate-400">{menu.desc}</p>
                             </div>
                             <button
                                 onClick={() => handleToggle(menu.key)}
-                                className={`relative w-12 h-6 rounded-full p-1 transition-colors flex-shrink-0 ${toggles[menu.key] ? 'bg-magic-gold text-black' : 'bg-white/10'}`}
+                                className={`relative w-12 h-6 rounded-full p-1 transition-colors flex-shrink-0 ${toggles[menu.key] ? 'bg-brand-purple text-black' : 'bg-white/10'}`}
                             >
                                 <div className={`absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform shadow-sm ${toggles[menu.key] ? 'translate-x-6' : 'translate-x-0'}`} />
                             </button>
@@ -85,7 +85,7 @@ export default function AdultMenuToggles({ initialSettings }: AdultMenuTogglesPr
                     <Button
                         onClick={handleSave}
                         disabled={loading}
-                        className="bg-magic-gold text-black font-bold hover:bg-yellow-400"
+                        className="bg-brand-purple text-black font-bold hover:bg-brand-purple"
                     >
                         <Save className="w-4 h-4 mr-2" />
                         {loading ? "Enregistrement..." : "Enregistrer les menus"}

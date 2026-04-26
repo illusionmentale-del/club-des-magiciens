@@ -118,7 +118,7 @@ export default function NewProductPage() {
                         </div>
 
                         <div>
-                            <label className="block text-sm font-medium text-yellow-500 mb-1 flex items-center gap-2">
+                            <label className="block text-sm font-medium text-brand-purple mb-1 flex items-center gap-2">
                                 <AlertTriangle className="w-4 h-4" />
                                 ID Stripe (Price ID)
                             </label>
@@ -127,7 +127,7 @@ export default function NewProductPage() {
                                 type="text"
                                 required
                                 placeholder="price_..."
-                                className="w-full bg-yellow-500/10 border border-yellow-500/30 text-yellow-200 rounded-lg p-3 focus:border-yellow-500 outline-none font-mono"
+                                className="w-full bg-brand-purple/10 border border-brand-purple/30 text-yellow-200 rounded-lg p-3 focus:border-brand-purple outline-none font-mono"
                             />
                             <p className="text-xs text-gray-500 mt-1">Trouvez cet ID dans la section "Produits" de votre dashboard Stripe. Il commence par <code>price_</code>.</p>
                         </div>

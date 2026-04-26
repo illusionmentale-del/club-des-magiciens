@@ -78,7 +78,7 @@ export default function Sidebar({ isAdmin, socialLinks, logoUrl, hasKidsAccess, 
             <nav className="flex-1 p-4 space-y-2 overflow-y-auto font-medium">
                 <Link
                     href="/dashboard"
-                    className={`flex items-center gap-3 px-4 py-3 rounded-[12px] transition-all ${isActive('/dashboard') ? 'bg-white/10 text-[#f5f5f7]' : 'text-[#86868b] hover:bg-white/5 hover:text-[#f5f5f7]'}`}
+                    className={`flex items-center gap-3 px-4 py-3 rounded-[12px] transition-all ${isActive('/dashboard') ? 'bg-brand-purple/20 border border-brand-purple/30 text-brand-purple' : 'text-[#86868b] hover:bg-brand-purple/10 hover:text-brand-purple'}`}
                 >
                     <Star className="w-5 h-5" />
                     {uiLabels?.nav_actu || "L'Actu du Club"}
@@ -87,7 +87,7 @@ export default function Sidebar({ isAdmin, socialLinks, logoUrl, hasKidsAccess, 
                 {toggles?.enable_adults_program !== false && (
                     <Link
                         href="/dashboard/library"
-                        className={`flex items-center gap-3 px-4 py-3 rounded-[12px] transition-all ${isActive('/dashboard/library') ? 'bg-white/10 text-[#f5f5f7]' : 'text-[#86868b] hover:bg-white/5 hover:text-[#f5f5f7]'}`}
+                        className={`flex items-center gap-3 px-4 py-3 rounded-[12px] transition-all ${isActive('/dashboard/library') ? 'bg-brand-purple/20 border border-brand-purple/30 text-brand-purple' : 'text-[#86868b] hover:bg-brand-purple/10 hover:text-brand-purple'}`}
                     >
                         <BookOpen className="w-5 h-5" />
                         {uiLabels?.nav_videos || "Mes Vidéos"}
@@ -97,7 +97,7 @@ export default function Sidebar({ isAdmin, socialLinks, logoUrl, hasKidsAccess, 
                 {toggles?.enable_adults_masterclass !== false && (
                     <Link
                         href="/dashboard/masterclass"
-                        className={`flex items-center gap-3 px-4 py-3 rounded-[12px] transition-all ${isActive('/dashboard/masterclass') ? 'bg-white/10 text-[#f5f5f7]' : 'text-[#86868b] hover:bg-white/5 hover:text-[#f5f5f7]'}`}
+                        className={`flex items-center gap-3 px-4 py-3 rounded-[12px] transition-all ${isActive('/dashboard/masterclass') ? 'bg-brand-purple/20 border border-brand-purple/30 text-brand-purple' : 'text-[#86868b] hover:bg-brand-purple/10 hover:text-brand-purple'}`}
                     >
                         <Video className="w-5 h-5" />
                         {uiLabels?.nav_formations || "Mes Formations"}
@@ -106,7 +106,7 @@ export default function Sidebar({ isAdmin, socialLinks, logoUrl, hasKidsAccess, 
 
                 <Link
                     href="/dashboard/shop"
-                    className={`flex items-center gap-3 px-4 py-3 rounded-[12px] transition-all ${isActive('/dashboard/shop') ? 'bg-white/10 text-[#f5f5f7]' : 'text-[#86868b] hover:bg-white/5 hover:text-[#f5f5f7]'}`}
+                    className={`flex items-center gap-3 px-4 py-3 rounded-[12px] transition-all ${isActive('/dashboard/shop') ? 'bg-brand-purple/20 border border-brand-purple/30 text-brand-purple' : 'text-[#86868b] hover:bg-brand-purple/10 hover:text-brand-purple'}`}
                 >
                     <Sparkles className="w-5 h-5" />
                     {uiLabels?.nav_boutique || "La Boutique"}
@@ -115,7 +115,7 @@ export default function Sidebar({ isAdmin, socialLinks, logoUrl, hasKidsAccess, 
                 {toggles?.enable_adults_account !== false && (
                     <Link
                         href="/dashboard/account?view=settings"
-                        className={`flex items-center gap-3 px-4 py-3 rounded-[12px] transition-all ${(isActive('/dashboard/account') || searchParams?.get('view') === 'settings') ? 'bg-white/10 text-[#f5f5f7]' : 'text-[#86868b] hover:bg-white/5 hover:text-[#f5f5f7]'}`}
+                        className={`flex items-center gap-3 px-4 py-3 rounded-[12px] transition-all ${(isActive('/dashboard/account') || searchParams?.get('view') === 'settings') ? 'bg-brand-purple/20 border border-brand-purple/30 text-brand-purple' : 'text-[#86868b] hover:bg-brand-purple/10 hover:text-brand-purple'}`}
                     >
                         <Settings className="w-5 h-5" />
                         {uiLabels?.nav_settings || "Mes Paramètres"}
@@ -128,7 +128,7 @@ export default function Sidebar({ isAdmin, socialLinks, logoUrl, hasKidsAccess, 
                         <p className="px-4 text-[10px] font-bold text-[#86868b] uppercase tracking-widest mb-2">Passerelle</p>
                         <Link
                             href="/kids"
-                            className={`flex items-center gap-3 px-4 py-3 rounded-[12px] transition-all text-[#86868b] hover:bg-white/5 hover:text-[#f5f5f7]`}
+                            className={`flex items-center gap-3 px-4 py-3 rounded-[12px] transition-all text-[#86868b] hover:bg-brand-purple/10 hover:text-brand-purple`}
                         >
                             <div className="w-5 h-5 flex items-center justify-center">👶</div>
                             Espace Kids
@@ -142,7 +142,7 @@ export default function Sidebar({ isAdmin, socialLinks, logoUrl, hasKidsAccess, 
                         <p className="px-4 text-[10px] font-bold text-[#86868b] uppercase tracking-widest mb-2">Admin</p>
                         <Link
                             href="/admin"
-                            className={`flex items-center gap-3 px-4 py-3 rounded-[12px] transition-all ${isActive('/admin') ? 'bg-white/10 text-[#f5f5f7]' : 'text-[#86868b] hover:bg-white/5 hover:text-[#f5f5f7]'}`}
+                            className={`flex items-center gap-3 px-4 py-3 rounded-[12px] transition-all ${isActive('/admin') ? 'bg-brand-purple/20 border border-brand-purple/30 text-brand-purple' : 'text-[#86868b] hover:bg-brand-purple/10 hover:text-brand-purple'}`}
                         >
                             <Shield className="w-5 h-5" />
                             Accès Admin

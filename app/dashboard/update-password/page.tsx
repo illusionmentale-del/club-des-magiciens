@@ -46,7 +46,7 @@ export default function UpdatePasswordPage() {
     return (
         <div className="min-h-screen bg-magic-bg text-white flex flex-col items-center justify-center p-4">
             <div className="w-full max-w-md bg-magic-card border border-white/10 rounded-2xl p-8 shadow-2xl relative overflow-hidden">
-                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-purple-500 to-amber-500"></div>
+                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-purple-500 to-brand-purple"></div>
 
                 <div className="flex justify-center mb-6">
                     <div className="p-3 bg-purple-500/10 rounded-full">

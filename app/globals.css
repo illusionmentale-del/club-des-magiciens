@@ -18,11 +18,11 @@
   /* Electric Blue */
   --color-brand-purple: #5E5CE6;
   /* Royal Indigo */
-  --color-brand-gold: #f59e0b;
+  --color-brand-gold: #5E5CE6; /* Brand Purple */
   /* Premium Gold */
   --color-brand-cyan: #06b6d4;
   /* Cyan 500 */
-  --color-brand-royal: #f59e0b;
+  --color-brand-royal: #5E5CE6; /* Brand Purple */
   /* Gold Premium for Adults */
 
   --color-brand-text: #f8fafc;

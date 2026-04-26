@@ -20,7 +20,7 @@ export default function AdultProgression({
         <BentoHoverEffect>
             <section className="bg-[#1c1c1e] rounded-[32px] p-8 border border-white/5 shadow-xl sticky top-8 flex flex-col justify-between min-h-[300px]">
                 <h3 className="text-xl font-semibold flex items-center gap-3 text-white tracking-tight mb-8">
-                    <Award className="w-5 h-5 text-[#86868b]" />
+                    <Award className="w-5 h-5 text-brand-purple" />
                     Progression Globale
                 </h3>
 
@@ -34,13 +34,13 @@ export default function AdultProgression({
 
                     <div className="relative h-1.5 w-full bg-black rounded-full overflow-hidden mb-6">
                         <div
-                            className="absolute top-0 left-0 h-full bg-[#f5f5f7] transition-all duration-1000 ease-[0.16,1,0.3,1]"
+                            className="absolute top-0 left-0 h-full bg-brand-purple transition-all duration-1000 ease-[0.16,1,0.3,1]"
                             style={{ width: `${progressPercentage}%` }}
                         ></div>
                     </div>
                 </div>
 
-                <Link href="/dashboard/library" className="block w-full text-center py-4 text-sm font-medium text-black bg-[#f5f5f7] hover:bg-white rounded-full transition-all shadow-md hover:shadow-lg">
+                <Link href="/dashboard/library" className="block w-full text-center py-4 text-sm font-medium text-white bg-brand-purple hover:bg-indigo-500 shadow-lg shadow-brand-purple/20 rounded-full transition-all shadow-md hover:shadow-lg">
                     Reprendre ma session
                 </Link>
             </section>

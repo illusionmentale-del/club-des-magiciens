@@ -62,7 +62,7 @@ export default function AdultLabelsConfig({ initialSettings }: AdultLabelsConfig
             <CardHeader className="border-b border-white/5 bg-white/[0.02]">
                 <CardTitle className="text-xl font-black uppercase tracking-tighter flex items-center justify-between text-white">
                     <div className="flex items-center gap-3">
-                        <Type className="text-magic-gold" />
+                        <Type className="text-brand-purple" />
                         Personnalisation des Noms (Interface Adulte)
                     </div>
                 </CardTitle>
@@ -169,7 +169,7 @@ export default function AdultLabelsConfig({ initialSettings }: AdultLabelsConfig
                     <Button
                         onClick={handleSave}
                         disabled={loading}
-                        className="bg-magic-gold text-black font-bold hover:bg-yellow-400"
+                        className="bg-brand-purple text-black font-bold hover:bg-brand-purple"
                     >
                         <Save className="w-4 h-4 mr-2" />
                         {loading ? "Enregistrement..." : "Enregistrer les textes"}

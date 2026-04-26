@@ -18,7 +18,7 @@ export default function AdultNewsFeed({ items }: { items: NewsItem[] }) {
     return (
         <section className="bg-[#1c1c1e] rounded-[32px] p-6 md:p-8 border border-white/5 shadow-xl">
             <h3 className="text-xl font-semibold flex items-center gap-3 text-white tracking-tight mb-8">
-                <Bell className="w-5 h-5 text-[#86868b]" />
+                <Bell className="w-5 h-5 text-brand-purple" />
                 Dernières Nouveautés
             </h3>
 
@@ -57,7 +57,7 @@ export default function AdultNewsFeed({ items }: { items: NewsItem[] }) {
 
                                         {/* Info */}
                                         <div className="flex-1">
-                                            <h4 className="font-medium text-[#f5f5f7] group-hover:text-white transition-colors duration-300 line-clamp-1 text-base tracking-tight">{item.title}</h4>
+                                            <h4 className="font-medium text-[#f5f5f7] group-hover:text-brand-purple transition-colors duration-300 line-clamp-1 text-base tracking-tight">{item.title}</h4>
                                             <p className="text-sm text-[#86868b] mt-1 font-light">
                                                 {item.created_at ? (
                                                     `Ajouté le ${new Date(item.created_at).toLocaleDateString('fr-FR')}`

@@ -164,11 +164,11 @@ export default async function DashboardPage() {
                 <header className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 pt-8 pb-4 max-w-5xl mx-auto relative z-10">
                     <div className="flex-1">
                         <div className="flex items-center gap-2 text-[#86868b] mb-3">
-                            <Sparkles className="w-5 h-5 text-[#f5f5f7]" />
+                            <Sparkles className="w-5 h-5 text-brand-purple" />
                             <span className="text-xs font-bold uppercase tracking-[0.2em]">{uiLabelsMap.page_dashboard_title || "Le QG de la Magie"}</span>
                         </div>
                         <h1 className="text-4xl md:text-6xl font-semibold tracking-tight text-[#f5f5f7]">
-                            Bienvenue, <span className="text-white font-serif italic">{userName}</span>.
+                            Bienvenue, <span className="text-brand-purple font-serif italic">{userName}</span>.
                         </h1>
                         <p className="text-[#86868b] mt-3 text-xl font-light tracking-wide">
                             Prêt à découvrir de nouveaux secrets ?
@@ -223,7 +223,7 @@ export default async function DashboardPage() {
                                     </div>
                                     <Link
                                         href={promoConfig.link}
-                                        className="bg-[#f5f5f7] text-black hover:bg-white font-medium py-3 px-6 rounded-full transition-all whitespace-nowrap shadow-lg hover:shadow-xl hover:scale-105 relative z-10"
+                                        className="bg-brand-purple text-white hover:bg-indigo-500 shadow-[0_0_15px_rgba(168,85,247,0.3)] hover:shadow-[0_0_25px_rgba(168,85,247,0.5)] font-medium py-3 px-6 rounded-full transition-all whitespace-nowrap shadow-lg hover:shadow-xl hover:scale-105 relative z-10"
                                     >
                                         {promoConfig.buttonText}
                                     </Link>

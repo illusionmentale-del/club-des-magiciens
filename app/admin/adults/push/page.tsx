@@ -106,7 +106,7 @@ export default function PushAdminPage() {
                             <select
                                 value={targetAudience}
                                 onChange={(e) => setTargetAudience(e.target.value)}
-                                className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-brand-royal/50 transition-all font-medium appearance-none"
+                                className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-brand-purple/50 transition-all font-medium appearance-none"
                             >
                                 <option value="all">Tous (Adultes + Enfants)</option>
                                 <option value="adults">Uniquement les Adultes (L'Atelier)</option>
@@ -121,7 +121,7 @@ export default function PushAdminPage() {
                                 value={title}
                                 maxLength={50}
                                 onChange={(e) => setTitle(e.target.value)}
-                                className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-brand-text-muted/50 focus:outline-none focus:border-brand-royal/50 transition-all font-bold"
+                                className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-brand-text-muted/50 focus:outline-none focus:border-brand-purple/50 transition-all font-bold"
                                 placeholder="🔴 Le Live Démarre !"
                             />
                             <p className="text-[10px] text-right text-white/30 mt-1">{title.length} / 50</p>
@@ -134,7 +134,7 @@ export default function PushAdminPage() {
                                 maxLength={100}
                                 onChange={(e) => setMessage(e.target.value)}
                                 rows={2}
-                                className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-brand-text-muted/50 focus:outline-none focus:border-brand-royal/50 transition-all text-sm resize-none"
+                                className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-brand-text-muted/50 focus:outline-none focus:border-brand-purple/50 transition-all text-sm resize-none"
                                 placeholder="Jérémy est en direct pour le débriefing d'hier. Rejoignez le chat !"
                             />
                             <p className="text-[10px] text-right text-white/30 mt-1">{message.length} / 100</p>
@@ -146,7 +146,7 @@ export default function PushAdminPage() {
                                 type="text"
                                 value={url}
                                 onChange={(e) => setUrl(e.target.value)}
-                                className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white/70 placeholder-brand-text-muted/50 focus:outline-none focus:border-brand-royal/50 transition-all font-mono text-sm"
+                                className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white/70 placeholder-brand-text-muted/50 focus:outline-none focus:border-brand-purple/50 transition-all font-mono text-sm"
                                 placeholder="/dashboard/lives"
                             />
                             <p className="text-[10px] text-brand-text-muted mt-1 ml-1">Où l'élève est envoyé quand il clique sur la notification (ex: /kids/lives ou /dashboard/masterclass).</p>
@@ -268,7 +268,7 @@ export default function PushAdminPage() {
                                         </td>
                                         <td className="py-3 px-4 text-sm text-gray-300">
                                             <div className="flex items-center gap-2">
-                                                <span className="font-bold text-brand-royal">{sub.devices} appareil(s)</span>
+                                                <span className="font-bold text-brand-purple">{sub.devices} appareil(s)</span>
                                                 <span className="text-xs opacity-50">({sub.platforms.join(', ')})</span>
                                             </div>
                                         </td>

@@ -87,7 +87,7 @@ export default function CourseContentManager({ courseId, initialVideos }: { cour
         <div className="space-y-6">
             <div className="flex items-center justify-between bg-black/20 p-4 rounded-xl border border-white/5">
                 <h2 className="text-xl font-bold text-white uppercase tracking-widest text-sm">Programme Vidéo</h2>
-                <Button onClick={openAdd} className="bg-brand-royal text-black hover:bg-brand-royal/80 font-bold" disabled={isAdding || isEditing !== null}>
+                <Button onClick={openAdd} className="bg-brand-purple text-black hover:bg-brand-purple/80 font-bold" disabled={isAdding || isEditing !== null}>
                     <Plus className="w-4 h-4 mr-2" />
                     Ajouter un chapitre
                 </Button>
@@ -96,13 +96,13 @@ export default function CourseContentManager({ courseId, initialVideos }: { cour
             {/* List of Videos */}
             <div className="space-y-3">
                 {videos.map((video) => (
-                    <div key={video.id} className="bg-brand-card border border-white/5 rounded-xl p-4 flex flex-col md:flex-row gap-4 items-start md:items-center hover:border-brand-royal/20 transition-colors">
+                    <div key={video.id} className="bg-brand-card border border-white/5 rounded-xl p-4 flex flex-col md:flex-row gap-4 items-start md:items-center hover:border-brand-purple/20 transition-colors">
                         
                         <div className="flex items-center justify-center cursor-move text-gray-500 opacity-50 hover:opacity-100">
                             <GripVertical className="w-5 h-5" />
                         </div>
 
-                        <div className="w-16 h-12 bg-black/50 rounded-lg flex items-center justify-center border border-white/10 shrink-0 text-brand-royal">
+                        <div className="w-16 h-12 bg-black/50 rounded-lg flex items-center justify-center border border-white/10 shrink-0 text-brand-purple">
                             <Play className="w-5 h-5" />
                         </div>
 
@@ -131,12 +131,12 @@ export default function CourseContentManager({ courseId, initialVideos }: { cour
 
             {/* Edit / Add Form */}
             {(isAdding || isEditing) && (
-                <div className="bg-brand-bg border border-brand-royal/30 rounded-2xl p-6 space-y-4 shadow-2xl relative">
+                <div className="bg-brand-bg border border-brand-purple/30 rounded-2xl p-6 space-y-4 shadow-2xl relative">
                     <button onClick={cancelEdit} className="absolute top-4 right-4 text-gray-400 hover:text-white">
                         <X className="w-5 h-5" />
                     </button>
                     
-                    <h3 className="text-lg font-bold text-brand-royal mb-4 border-b border-white/10 pb-2">
+                    <h3 className="text-lg font-bold text-brand-purple mb-4 border-b border-white/10 pb-2">
                         {isAdding ? "Nouveau Chapitre" : "Modifier le Chapitre"}
                     </h3>
                     
@@ -147,7 +147,7 @@ export default function CourseContentManager({ courseId, initialVideos }: { cour
                                 type="text"
                                 value={formData.title}
                                 onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                                className="w-full bg-black/40 border border-white/10 rounded-lg p-3 text-white focus:outline-none focus:border-brand-royal/50"
+                                className="w-full bg-black/40 border border-white/10 rounded-lg p-3 text-white focus:outline-none focus:border-brand-purple/50"
                                 placeholder="Ex: Les bases de la Cartomagie"
                             />
                         </div>
@@ -157,7 +157,7 @@ export default function CourseContentManager({ courseId, initialVideos }: { cour
                                 type="text"
                                 value={formData.video_url}
                                 onChange={(e) => setFormData({ ...formData, video_url: e.target.value })}
-                                className="w-full bg-black/40 border border-white/10 rounded-lg p-3 text-white focus:outline-none focus:border-brand-royal/50"
+                                className="w-full bg-black/40 border border-white/10 rounded-lg p-3 text-white focus:outline-none focus:border-brand-purple/50"
                                 placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
                             />
                         </div>
@@ -166,7 +166,7 @@ export default function CourseContentManager({ courseId, initialVideos }: { cour
                             <textarea
                                 value={formData.description || ""}
                                 onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                                className="w-full bg-black/40 border border-white/10 rounded-lg p-3 text-white h-24 focus:outline-none focus:border-brand-royal/50"
+                                className="w-full bg-black/40 border border-white/10 rounded-lg p-3 text-white h-24 focus:outline-none focus:border-brand-purple/50"
                             />
                         </div>
                         <div className="space-y-2">
@@ -175,7 +175,7 @@ export default function CourseContentManager({ courseId, initialVideos }: { cour
                                 type="text"
                                 value={formData.resource_url || ""}
                                 onChange={(e) => setFormData({ ...formData, resource_url: e.target.value })}
-                                className="w-full bg-black/40 border border-white/10 rounded-lg p-3 text-white focus:outline-none focus:border-brand-royal/50"
+                                className="w-full bg-black/40 border border-white/10 rounded-lg p-3 text-white focus:outline-none focus:border-brand-purple/50"
                                 placeholder="https://..."
                             />
                         </div>
@@ -185,7 +185,7 @@ export default function CourseContentManager({ courseId, initialVideos }: { cour
                                 type="number"
                                 value={formData.position}
                                 onChange={(e) => setFormData({ ...formData, position: parseInt(e.target.value) || 0 })}
-                                className="w-full bg-black/40 border border-white/10 rounded-lg p-3 text-white focus:outline-none focus:border-brand-royal/50"
+                                className="w-full bg-black/40 border border-white/10 rounded-lg p-3 text-white focus:outline-none focus:border-brand-purple/50"
                             />
                         </div>
                     </div>
@@ -194,7 +194,7 @@ export default function CourseContentManager({ courseId, initialVideos }: { cour
                         <Button variant="outline" onClick={cancelEdit} className="border-white/10 text-white hover:bg-white/5">
                             Annuler
                         </Button>
-                        <Button onClick={handleSave} disabled={loading} className="bg-brand-royal text-black hover:bg-brand-royal/80 font-bold">
+                        <Button onClick={handleSave} disabled={loading} className="bg-brand-purple text-black hover:bg-brand-purple/80 font-bold">
                             <Save className="w-4 h-4 mr-2" />
                             {loading ? "Chargement..." : "Enregistrer"}
                         </Button>

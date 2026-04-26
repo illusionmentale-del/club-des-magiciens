@@ -67,7 +67,7 @@ export default function LivePage() {
                                 className="w-full h-full border-0 absolute inset-0"
                             ></iframe>
                             <div className="absolute bottom-4 left-4 bg-black/60 p-3 rounded-xl backdrop-blur-md text-xs text-gray-300 max-w-xs">
-                                💡 Si l'écran reste gris ou bloque la connexion, <a href={`https://zoom.us/j/${live.platform_id}`} target="_blank" rel="noopener noreferrer" className="text-amber-500 font-bold hover:underline">cliquez ici pour ouvrir Zoom directement</a>.
+                                💡 Si l'écran reste gris ou bloque la connexion, <a href={`https://zoom.us/j/${live.platform_id}`} target="_blank" rel="noopener noreferrer" className="text-brand-purple font-bold hover:underline">cliquez ici pour ouvrir Zoom directement</a>.
                             </div>
                         </div>
                     ) : (

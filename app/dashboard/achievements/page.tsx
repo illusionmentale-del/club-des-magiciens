@@ -69,9 +69,9 @@ export default async function AdultAchievementsPage() {
                 {/* Header */}
                 <header className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 pt-4 border-b border-white/5 pb-8 mb-12">
                     <div className="flex-1">
-                        <div className="flex items-center gap-2 text-magic-gold mb-2">
+                        <div className="flex items-center gap-2 text-brand-purple mb-2">
                             <Star className="w-5 h-5 fill-current animate-pulse" />
-                            <span className="text-xs font-bold uppercase tracking-widest text-magic-gold">Votre Parcours</span>
+                            <span className="text-xs font-bold uppercase tracking-widest text-brand-purple">Votre Parcours</span>
                         </div>
                         <h1 className="text-3xl md:text-5xl font-serif text-white tracking-tight mb-2">
                             Journal <span className="text-magic-royal">d'Apprentissage</span>
@@ -85,7 +85,7 @@ export default async function AdultAchievementsPage() {
                 {/* Milestones Stats */}
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                     <div className="bg-black border border-white/10 p-4 rounded-none flex flex-col items-center justify-center text-center shadow-2xl">
-                        <Trophy className="w-8 h-8 text-magic-gold mb-2" />
+                        <Trophy className="w-8 h-8 text-brand-purple mb-2" />
                         <div className="text-2xl font-black text-white">{completedQuestIds.size} / {quests.length}</div>
                         <div className="text-xs text-slate-400 uppercase tracking-widest font-bold mt-1">Succès Accompli(s)</div>
                     </div>
@@ -185,7 +185,7 @@ export default async function AdultAchievementsPage() {
                 {/* SECTION 2 : Les Titres et Trophées (Passive Badges) */}
                 <div className="pt-8">
                     <h2 className="text-2xl md:text-3xl font-serif text-white mb-6 flex items-center gap-3">
-                        <Medal className="text-magic-gold" /> Les Titres et Trophées
+                        <Medal className="text-brand-purple" /> Les Titres et Trophées
                     </h2>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         {quests.filter(q => !q.reward_type || q.reward_type === 'badge').map(quest => {
@@ -203,12 +203,12 @@ export default async function AdultAchievementsPage() {
                                 <div 
                                     key={quest.id} 
                                     className={`relative group h-full flex flex-col rounded-none overflow-hidden shadow-2xl cursor-default border
-                                        ${isUnlocked ? 'bg-black border-magic-gold/30 hover:border-magic-gold transition-all duration-300' 
+                                        ${isUnlocked ? 'bg-black border-brand-purple/30 hover:border-brand-purple transition-all duration-300' 
                                                      : 'bg-black border-white/10 hover:border-white/30 transition-all duration-500'}`}
                                 >
                                     <div className="p-6 flex flex-col items-center text-center h-full">
                                         <div className={`w-28 h-28 rounded-none flex items-center justify-center mb-4 relative overflow-hidden shadow-inner transition-all duration-500
-                                            ${isUnlocked ? 'bg-black border border-magic-gold/30' 
+                                            ${isUnlocked ? 'bg-black border border-brand-purple/30' 
                                                          : 'bg-black border border-white/10'}`}
                                         >
                                             {!isUnlocked && (
@@ -227,7 +227,7 @@ export default async function AdultAchievementsPage() {
                                                 return iconSrc ? (
                                                     <Image src={iconSrc} alt="" fill className="object-cover p-3 drop-shadow-[0_0_15px_rgba(251,191,36,0.3)]" />
                                                 ) : (
-                                                    <Medal className={`w-14 h-14 ${isUnlocked ? 'text-magic-gold drop-shadow-[0_0_15px_rgba(250,204,21,0.5)]' : 'text-gray-600'}`} />
+                                                    <Medal className={`w-14 h-14 ${isUnlocked ? 'text-brand-purple drop-shadow-[0_0_15px_rgba(94,92,230,0.5)]' : 'text-gray-600'}`} />
                                                 );
                                             })()}
                                         </div>
@@ -254,8 +254,8 @@ export default async function AdultAchievementsPage() {
 
                                         {quest.reward_xp > 0 && (
                                             <div className={`mt-auto px-4 py-1.5 rounded-none text-xs font-serif uppercase tracking-widest flex items-center gap-2 shadow-lg border transition-colors duration-500
-                                                ${isUnlocked ? 'bg-magic-gold/10 text-magic-gold border-magic-gold/30' 
-                                                            : 'bg-black border-white/10 text-gray-700 group-hover:text-magic-gold group-hover:border-magic-gold/20'}`}
+                                                ${isUnlocked ? 'bg-brand-purple/10 text-brand-purple border-brand-purple/30' 
+                                                            : 'bg-black border-white/10 text-gray-700 group-hover:text-brand-purple group-hover:border-brand-purple/20'}`}
                                             >
                                                 <Star className={`w-3.5 h-3.5 ${isUnlocked ? '' : 'grayscale opacity-50 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500'}`} />
                                                 {isUnlocked ? `+ ${quest.reward_xp} XP GAGNÉS` : `${quest.reward_xp} XP à gagner`}

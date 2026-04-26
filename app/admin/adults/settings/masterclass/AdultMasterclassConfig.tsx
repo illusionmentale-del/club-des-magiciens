@@ -74,7 +74,7 @@ export default function AdultMasterclassConfig({ initialSettings, libraryItems, 
             title: "Formation Intermédiaire",
             description: "Techniques avancées et perfectionnement.",
             level: "Pour aller plus loin",
-            color: "from-magic-royal to-amber-500",
+            color: "from-magic-royal to-brand-purple",
             buttonText: "Découvrir",
             courseId: ""
         },
