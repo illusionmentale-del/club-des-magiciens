@@ -49,7 +49,7 @@ export default function KidsProgression({
 
                 {/* XP with Stardust */}
                 <div className="flex items-center justify-center gap-3">
-                    <div className="w-8 h-8 relative drop-shadow-[0_0_10px_rgba(250,204,21,0.5)]">
+                    <div className="w-8 h-8 relative drop-shadow-[0_0_10px_rgba(94,92,230,0.5)]">
                         <Image src="/achievements/stardust.png" alt="Poussière d'étoile" fill className="object-contain" />
                     </div>
                     <div className="text-4xl font-semibold tracking-tight text-[#f5f5f7] transition-transform duration-500">
@@ -63,11 +63,11 @@ export default function KidsProgression({
                 <div className="mb-6 relative z-10">
                     <div className="flex justify-between text-[10px] font-bold uppercase tracking-widest mb-2 text-[#86868b]">
                         <span>{userGrade}</span>
-                        <span className="text-brand-gold">{nextGrade}</span>
+                        <span className="text-brand-purple">{nextGrade}</span>
                     </div>
                     <div className="relative h-2 w-full bg-[#000000] rounded-full overflow-hidden shadow-inner border border-white/5">
                         <div
-                            className="absolute top-0 left-0 h-full bg-gradient-to-r from-brand-purple to-brand-gold rounded-full transition-all duration-1000 ease-out"
+                            className="absolute top-0 left-0 h-full bg-gradient-to-r from-brand-purple to-brand-purple rounded-full transition-all duration-1000 ease-out"
                             style={{ width: `${progressPercentage}%` }}
                         >
                             <div className="absolute top-0 right-0 bottom-0 w-full bg-gradient-to-l from-white/30 to-transparent animate-pulse"></div>
@@ -78,9 +78,9 @@ export default function KidsProgression({
             )}
 
             {!nextThreshold && (
-                <div className="bg-brand-gold/10 border border-brand-gold/20 rounded-[16px] p-5 flex gap-4 items-start mb-6 relative z-10">
-                    <PartyPopper className="w-5 h-5 text-brand-gold shrink-0 mt-0.5 animate-bounce-slow" />
-                    <p className="text-sm text-brand-gold leading-relaxed font-semibold">
+                <div className="bg-brand-purple/10 border border-brand-purple/20 rounded-[16px] p-5 flex gap-4 items-start mb-6 relative z-10">
+                    <PartyPopper className="w-5 h-5 text-brand-purple shrink-0 mt-0.5 animate-bounce-slow" />
+                    <p className="text-sm text-brand-purple leading-relaxed font-semibold">
                         Incroyable ! Tu as atteint le grade ultime de la Magie !
                     </p>
                 </div>

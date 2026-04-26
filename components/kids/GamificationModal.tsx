@@ -67,7 +67,7 @@ export default function GamificationModal({ event, onClose }: GamificationModalP
                                 initial={{ scale: 0, rotate: -180 }}
                                 animate={{ scale: 1, rotate: 0 }}
                                 transition={{ delay: 0.2, type: "spring" }}
-                                className="w-24 h-24 rounded-full bg-gradient-to-br from-yellow-400 to-amber-600 flex items-center justify-center mb-6 shadow-[0_0_30px_rgba(251,191,36,0.6)] relative"
+                                className="w-24 h-24 rounded-full bg-gradient-to-br from-brand-purple to-indigo-500 flex items-center justify-center mb-6 shadow-[0_0_30px_rgba(94,92,230,0.6)] relative"
                             >
                                 <motion.div 
                                     animate={{ rotate: 360 }} 
@@ -120,7 +120,7 @@ export default function GamificationModal({ event, onClose }: GamificationModalP
                                 )}
 
                                 {event.gainedXP && event.gainedXP > 0 ? (
-                                    <div className="flex items-center justify-center gap-2 text-xl font-black text-brand-gold mt-4">
+                                    <div className="flex items-center justify-center gap-2 text-xl font-black text-brand-purple mt-4">
                                         <Sparkles className="w-6 h-6" />
                                         +{event.gainedXP} XP
                                     </div>

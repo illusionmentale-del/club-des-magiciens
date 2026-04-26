@@ -41,9 +41,9 @@ const slides = [
         title: "Les Ateliers 🎬",
         description: "Une fois par mois, retrouve un atelier complet sur un sujet spécifique (Magie des cartes, sculptures sur ballon...). Ici, ce sont des vidéos plus longues pour approfondir tes connaissances.",
         icon: Video,
-        color: "text-brand-gold",
-        bg: "bg-brand-gold/10",
-        border: "border-brand-gold/20"
+        color: "text-brand-purple",
+        bg: "bg-brand-purple/10",
+        border: "border-brand-purple/20"
     },
     {
         title: "La Boutique VIP 🎁",

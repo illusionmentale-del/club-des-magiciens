@@ -64,7 +64,7 @@ export default function ShopBuyWithXP({ itemId, xpPrice, trueXP, adultMode = fal
                         disabled={loading}
                         className={`w-full mt-2 font-bold py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 transition-all hover:scale-[1.02] disabled:opacity-50 text-sm border ${gradientBtn}`}
                     >
-                        {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Sparkles className="w-4 h-4 text-yellow-300" />}
+                        {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Sparkles className="w-4 h-4 text-indigo-300" />}
                         {labelUnlock}
                     </button>
                 )}

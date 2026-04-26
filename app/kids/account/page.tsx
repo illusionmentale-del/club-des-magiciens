@@ -74,8 +74,8 @@ export default async function KidsAccountPage({
                             <div className="mb-6">
                                 <BackButton className="md:hidden" />
                             </div>
-                            <div className="flex items-center gap-2 text-brand-gold mb-2">
-                                <Star className="w-5 h-5 fill-current animate-pulse text-brand-gold" />
+                            <div className="flex items-center gap-2 text-brand-purple mb-2">
+                                <Star className="w-5 h-5 fill-current animate-pulse text-brand-purple" />
                                 <span className="text-xs font-bold uppercase tracking-widest">Le Club des Petits Magiciens</span>
                             </div>
                             <h1 className="text-4xl md:text-6xl font-semibold tracking-tight text-white">
@@ -97,7 +97,7 @@ export default async function KidsAccountPage({
                                     href="/kids/achievements" 
                                     className="flex items-center justify-center md:justify-start gap-3 px-8 py-4 bg-[#1c1c1e] border border-brand-purple/50 text-white font-semibold shadow-[0_0_15px_rgba(168,85,247,0.3)] hover:shadow-[0_0_25px_rgba(168,85,247,0.5)] rounded-full hover:bg-brand-purple transition-all duration-300 text-sm uppercase tracking-widest hover:scale-105 active:scale-95"
                                 >
-                                    <Trophy className="w-5 h-5 text-brand-gold" />
+                                    <Trophy className="w-5 h-5 text-brand-purple" />
                                     Salle des Trophées
                                 </a>
                             </div>
@@ -146,12 +146,12 @@ export default async function KidsAccountPage({
 
                                 {/* Solde et Bouton pour dépenser */}
                                 <div className="mt-12 mb-8 w-full max-w-[400px] flex flex-col items-center">
-                                    <p className="mb-4 text-sm font-bold text-brand-gold uppercase tracking-widest">
+                                    <p className="mb-4 text-sm font-bold text-brand-purple uppercase tracking-widest">
                                         Solde actuel : <span className="text-2xl text-white font-black mx-2">{profile?.xp || 0}</span> Poussières d'étoiles 🌟
                                     </p>
                                     <a 
                                         href="/kids/shop"
-                                        className="w-full px-6 py-5 bg-brand-gold hover:bg-yellow-400 text-black font-semibold uppercase tracking-widest rounded-full transition-all shadow-xl hover:shadow-brand-gold/30 hover:scale-105 flex justify-center items-center gap-3 text-sm"
+                                        className="w-full px-6 py-5 bg-brand-purple hover:bg-indigo-500 text-black font-semibold uppercase tracking-widest rounded-full transition-all shadow-xl hover:shadow-brand-purple/30 hover:scale-105 flex justify-center items-center gap-3 text-sm"
                                     >
                                         <ShoppingBag className="w-5 h-5 shrink-0" />
                                         <span>Dépenser mes Poussières</span>

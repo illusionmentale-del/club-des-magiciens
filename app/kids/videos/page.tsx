@@ -82,8 +82,8 @@ export default async function KidsVideosPage({ searchParams }: { searchParams: P
                 <FadeInUp delay={0.1}>
                     <header className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 pt-4">
                         <div className="flex-1">
-                            <div className="flex items-center gap-2 text-brand-gold mb-2">
-                                <Star className="w-5 h-5 fill-current animate-pulse text-brand-gold" />
+                            <div className="flex items-center gap-2 text-brand-purple mb-2">
+                                <Star className="w-5 h-5 fill-current animate-pulse text-brand-purple" />
                                 <span className="text-xs font-bold uppercase tracking-widest">Le Club des Petits Magiciens</span>
                             </div>
                             <h1 className="text-4xl md:text-6xl font-semibold tracking-tight text-white">

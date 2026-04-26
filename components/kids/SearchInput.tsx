@@ -62,7 +62,7 @@ export default function SearchInput({
         <div className="relative w-full md:max-w-2xl mx-auto mb-8 animate-in fade-in slide-in-from-top-4 duration-500 flex flex-col md:flex-row gap-3">
             <div className="relative flex-1">
                 <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none">
-                    <Search className={`w-5 h-5 ${isPending ? 'text-brand-gold animate-pulse' : 'text-brand-text-muted'}`} />
+                    <Search className={`w-5 h-5 ${isPending ? 'text-brand-purple animate-pulse' : 'text-brand-text-muted'}`} />
                 </div>
                 <input 
                     type="text" 

@@ -62,7 +62,7 @@ export default async function KidsAchievementsPage() {
     }
 
     return (
-        <div className="min-h-screen bg-brand-bg text-brand-text p-4 md:p-8 pb-32 font-sans relative selection:bg-brand-gold/30">
+        <div className="min-h-screen bg-brand-bg text-brand-text p-4 md:p-8 pb-32 font-sans relative selection:bg-brand-purple/30">
             {/* Ambient Background Lights */}
             <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-brand-purple/10 via-brand-bg to-brand-bg pointer-events-none z-0"></div>
 
@@ -73,8 +73,8 @@ export default async function KidsAchievementsPage() {
                         <div className="mb-4">
                             <BackButton />
                         </div>
-                        <div className="flex items-center gap-2 text-brand-gold mb-2">
-                            <Trophy className="w-5 h-5 fill-current animate-pulse text-brand-gold" />
+                        <div className="flex items-center gap-2 text-brand-purple mb-2">
+                            <Trophy className="w-5 h-5 fill-current animate-pulse text-brand-purple" />
                             <span className="text-xs font-bold uppercase tracking-widest">Le Club des Petits Magiciens</span>
                         </div>
                         <h1 className="text-3xl md:text-5xl font-black text-white tracking-tight">
@@ -189,7 +189,7 @@ export default async function KidsAchievementsPage() {
                 {/* SECTION 2 : Le Panthéon des Succès (Passive Badges) */}
                 <div className="pt-8">
                     <h2 className="text-2xl md:text-3xl font-black text-white mb-6 flex items-center gap-3">
-                        <span className="text-brand-gold">🏆</span> Le Panthéon des Trophées
+                        <span className="text-brand-purple">🏆</span> Le Panthéon des Trophées
                     </h2>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         {quests.filter(q => !q.reward_type || q.reward_type === 'badge').map(quest => {
@@ -236,7 +236,7 @@ export default async function KidsAchievementsPage() {
                                                 return iconSrc ? (
                                                     <Image src={iconSrc} alt="" fill className="object-cover p-3 drop-shadow-[0_0_15px_rgba(168,85,247,0.5)]" />
                                                 ) : (
-                                                    <Medal className={`w-14 h-14 ${isUnlocked ? 'text-brand-gold drop-shadow-[0_0_15px_rgba(250,204,21,0.5)]' : 'text-gray-600'}`} />
+                                                    <Medal className={`w-14 h-14 ${isUnlocked ? 'text-brand-purple drop-shadow-[0_0_15px_rgba(94,92,230,0.5)]' : 'text-gray-600'}`} />
                                                 );
                                             })()}
                                         </div>

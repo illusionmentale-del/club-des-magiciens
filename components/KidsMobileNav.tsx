@@ -81,9 +81,9 @@ export default function KidsMobileNav({ logoUrl, isAdmin, hasPurchases, hasUnrea
                     <div className="min-w-0 pr-1">
                         <h2 className="font-bold text-[#f5f5f7] text-xs leading-tight line-clamp-1 group-hover:text-white transition-colors">{userName}</h2>
                         <div className="flex items-center gap-1.5 mt-0.5">
-                            <p className="text-[10px] text-brand-gold font-mono truncate max-w-[80px] sm:max-w-[120px]">{magicLevel}</p>
+                            <p className="text-[10px] text-brand-purple font-mono truncate max-w-[80px] sm:max-w-[120px]">{magicLevel}</p>
                             <div className="flex items-center gap-1 bg-[#1c1c1e] rounded-full px-1.5 py-0.5 border border-white/5 shrink-0">
-                                <Sparkles className="w-2.5 h-2.5 text-brand-gold" />
+                                <Sparkles className="w-2.5 h-2.5 text-brand-purple" />
                                 <span className="text-[9px] font-bold text-white leading-none">{xpBalance} XP</span>
                             </div>
                         </div>
@@ -124,9 +124,9 @@ export default function KidsMobileNav({ logoUrl, isAdmin, hasPurchases, hasUnrea
                                 <div className="min-w-0 pr-1">
                                     <h2 className="font-bold text-[#f5f5f7] text-xs leading-tight line-clamp-1 group-hover:text-white transition-colors">{userName}</h2>
                                     <div className="flex items-center gap-1.5 mt-0.5">
-                                        <p className="text-[10px] text-brand-gold uppercase tracking-widest font-bold truncate max-w-[60px]">{magicLevel}</p>
+                                        <p className="text-[10px] text-brand-purple uppercase tracking-widest font-bold truncate max-w-[60px]">{magicLevel}</p>
                                         <div className="flex items-center gap-1 bg-[#000000] rounded-full px-1.5 py-0.5 border border-white/5 shrink-0">
-                                            <Sparkles className="w-2.5 h-2.5 text-brand-gold" />
+                                            <Sparkles className="w-2.5 h-2.5 text-brand-purple" />
                                             <span className="text-[9px] font-bold text-white leading-none">{xpBalance} XP</span>
                                         </div>
                                     </div>
@@ -207,7 +207,7 @@ export default function KidsMobileNav({ logoUrl, isAdmin, hasPurchases, hasUnrea
                             {enableShop && (
                                 <Link href="/kids/shop" onClick={close} className={`group flex items-center gap-3 px-4 py-3 rounded-[16px] transition-all duration-300 ease-[0.16,1,0.3,1] ${isActive('/kids/shop') ? 'bg-[#000000] border border-white/5 shadow-md' : 'hover:bg-white/5'}`}>
                                     <div className="flex items-center gap-4">
-                                        <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-colors ${isActive('/kids/shop') ? 'bg-gradient-to-br from-brand-gold to-yellow-500 text-black shadow-lg shadow-brand-gold/20' : 'bg-[#000000] text-[#86868b] group-hover:bg-white/10 group-hover:text-white border border-white/5'}`}>
+                                        <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-colors ${isActive('/kids/shop') ? 'bg-gradient-to-br from-brand-purple to-indigo-500 text-black shadow-lg shadow-brand-purple/20' : 'bg-[#000000] text-[#86868b] group-hover:bg-white/10 group-hover:text-white border border-white/5'}`}>
                                             <Store className="w-5 h-5" />
                                         </div>
                                         <div>
@@ -224,12 +224,12 @@ export default function KidsMobileNav({ logoUrl, isAdmin, hasPurchases, hasUnrea
                             {hasPurchases && (
                                 <Link href="/kids/purchases" onClick={close} className={`group flex items-center gap-3 px-4 py-3 rounded-[16px] transition-all duration-300 ease-[0.16,1,0.3,1] ${isActive('/kids/purchases') ? 'bg-[#000000] border border-white/5 shadow-md' : 'hover:bg-white/5'}`}>
                                     <div className="flex items-center gap-4">
-                                        <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-colors ${isActive('/kids/purchases') ? 'bg-brand-gold text-black shadow-lg' : 'bg-[#000000] text-brand-gold border border-brand-gold/20 group-hover:bg-brand-gold/10'}`}>
+                                        <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-colors ${isActive('/kids/purchases') ? 'bg-brand-purple text-black shadow-lg' : 'bg-[#000000] text-brand-purple border border-brand-purple/20 group-hover:bg-brand-purple/10'}`}>
                                             <Package className="w-5 h-5" />
                                         </div>
                                         <div>
-                                            <div className={`font-semibold ${isActive('/kids/purchases') ? 'text-brand-gold' : 'text-brand-gold/80 group-hover:text-brand-gold'}`}>Mes Vidéos</div>
-                                            <div className="text-[10px] text-brand-gold/50 font-normal mt-0.5">Tes tours débloqués</div>
+                                            <div className={`font-semibold ${isActive('/kids/purchases') ? 'text-brand-purple' : 'text-brand-purple/80 group-hover:text-brand-purple'}`}>Mes Vidéos</div>
+                                            <div className="text-[10px] text-brand-purple/50 font-normal mt-0.5">Tes tours débloqués</div>
                                         </div>
                                     </div>
                                 </Link>

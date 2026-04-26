@@ -61,7 +61,7 @@ export default async function KidsPurchasesPage() {
     return (
         <div className="max-w-7xl mx-auto space-y-8 pb-20">
             {/* Header section */}
-            <div className="relative overflow-hidden rounded-[2.5rem] bg-gradient-to-br from-brand-purple/20 via-brand-bg to-brand-gold/10 border border-white/10 p-8 md:p-12 shadow-[0_0_50px_rgba(168,85,247,0.15)] flex flex-col md:flex-row items-center gap-8 justify-between">
+            <div className="relative overflow-hidden rounded-[2.5rem] bg-gradient-to-br from-brand-purple/20 via-brand-bg to-brand-purple/10 border border-white/10 p-8 md:p-12 shadow-[0_0_50px_rgba(168,85,247,0.15)] flex flex-col md:flex-row items-center gap-8 justify-between">
                 <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-brand-purple/20 blur-[120px] rounded-full pointer-events-none -translate-y-1/2 translate-x-1/3"></div>
 
                 <div className="relative z-10 max-w-2xl text-center md:text-left">
@@ -70,7 +70,7 @@ export default async function KidsPurchasesPage() {
                         Trésors Magiques
                     </div>
                     <h1 className="text-4xl md:text-5xl font-black text-white uppercase tracking-tight leading-[1.1] mb-6">
-                        Mes <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-purple to-brand-gold">Vidéos Secrètes</span>
+                        Mes <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-purple to-brand-purple">Vidéos Secrètes</span>
                     </h1>
                     <p className="text-lg text-brand-text-muted leading-relaxed font-medium">
                         Retrouve ici toutes les vidéos que tu as achetées dans la boutique et celles que Jérémy t'a débloquées.
@@ -134,7 +134,7 @@ export default async function KidsPurchasesPage() {
                         <p className="text-brand-text-muted max-w-md mx-auto mb-8">
                             Mais attends... Si tu n'as pas encore de trésors ici, c'est parce que de grands secrets t'attendent dans la Boutique !
                         </p>
-                        <Link href="/kids/shop" className="bg-brand-gold text-black font-black uppercase tracking-widest py-4 px-8 rounded-xl hover:scale-105 transition-transform flex items-center gap-3">
+                        <Link href="/kids/shop" className="bg-brand-purple text-black font-black uppercase tracking-widest py-4 px-8 rounded-xl hover:scale-105 transition-transform flex items-center gap-3">
                             Découvir La Boutique
                         </Link>
                     </div>

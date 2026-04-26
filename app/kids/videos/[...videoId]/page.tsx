@@ -224,17 +224,17 @@ export default async function KidsVideoPlayerPage({ params }: { params: Promise<
                             </div>
                         </div>
                     ) : isLockedPremium ? (
-                        <div className="relative pt-[56.25%] w-full bg-black/80 flex flex-col items-center justify-center p-8 text-center border-y border-brand-gold/30">
+                        <div className="relative pt-[56.25%] w-full bg-black/80 flex flex-col items-center justify-center p-8 text-center border-y border-brand-purple/30">
                             <div className="absolute inset-0 flex flex-col items-center justify-center">
-                                <div className="w-20 h-20 bg-brand-gold/20 rounded-full flex items-center justify-center mb-6 border border-brand-gold/40 shadow-[0_0_30px_rgba(250,204,21,0.3)]">
-                                    <Lock className="w-10 h-10 text-brand-gold" />
+                                <div className="w-20 h-20 bg-brand-purple/20 rounded-full flex items-center justify-center mb-6 border border-brand-purple/40 shadow-[0_0_30px_rgba(94,92,230,0.3)]">
+                                    <Lock className="w-10 h-10 text-brand-purple" />
                                 </div>
                                 <h2 className="text-2xl md:text-3xl font-black uppercase text-white mb-2">Secret Verrouillé</h2>
                                 <p className="text-brand-text-muted mb-8 max-w-md">
                                     Pour regarder <strong className="text-white">{libraryItem?.title || video?.title}</strong>, tu dois posséder ce secret dans ta collection.
                                 </p>
 
-                                <CheckoutButton itemId={libraryItem?.id} space="kids" className="bg-gradient-to-r from-brand-gold to-yellow-500 text-black font-black py-4 px-8 rounded-xl flex items-center gap-3 hover:scale-105 transition-transform shadow-[0_10px_30px_rgba(250,204,21,0.4)]">
+                                <CheckoutButton itemId={libraryItem?.id} space="kids" className="bg-gradient-to-r from-brand-purple to-indigo-500 text-black font-black py-4 px-8 rounded-xl flex items-center gap-3 hover:scale-105 transition-transform shadow-[0_10px_30px_rgba(94,92,230,0.4)]">
                                     <ShoppingBag className="w-5 h-5" />
                                     Acheter pour débloquer {libraryItem?.price_label ? `(${libraryItem.price_label})` : ''}
                                 </CheckoutButton>

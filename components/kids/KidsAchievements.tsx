@@ -14,7 +14,7 @@ export default function KidsAchievements({ recentValids, completedQuests }: { re
     return (
         <section className="bg-[#1c1c1e] border border-white/5 rounded-[32px] p-8 mt-8 shadow-xl hover:shadow-2xl hover:border-white/10 transition-all duration-500 ease-[0.16,1,0.3,1]">
             <h3 className="text-sm font-semibold text-[#86868b] uppercase tracking-widest mb-6 flex items-center gap-2">
-                <Trophy className="w-4 h-4 text-brand-gold" />
+                <Trophy className="w-4 h-4 text-brand-purple" />
                 Derniers Succès
             </h3>
 
@@ -34,13 +34,13 @@ export default function KidsAchievements({ recentValids, completedQuests }: { re
                 ))}
                 
                 {completedQuests && completedQuests.slice(0, 3).map((q: any) => (
-                    <div key={Math.random()} className="flex items-center gap-4 bg-[#2c2c2e]/30 p-4 rounded-[20px] border border-brand-gold/10 hover:bg-[#2c2c2e]/50 transition-colors">
-                        <div className="w-10 h-10 rounded-[12px] bg-brand-gold/10 flex items-center justify-center shrink-0 border border-brand-gold/20">
-                            <Trophy className="w-5 h-5 text-brand-gold" />
+                    <div key={Math.random()} className="flex items-center gap-4 bg-[#2c2c2e]/30 p-4 rounded-[20px] border border-brand-purple/10 hover:bg-[#2c2c2e]/50 transition-colors">
+                        <div className="w-10 h-10 rounded-[12px] bg-brand-purple/10 flex items-center justify-center shrink-0 border border-brand-purple/20">
+                            <Trophy className="w-5 h-5 text-brand-purple" />
                         </div>
                         <div className="flex-1">
                             <p className="text-[15px] font-medium text-[#f5f5f7] line-clamp-1">{q.gamification_quests?.title || "Quête Accompli"}</p>
-                            <p className="text-[10px] text-brand-gold font-medium uppercase tracking-widest mt-1">
+                            <p className="text-[10px] text-brand-purple font-medium uppercase tracking-widest mt-1">
                                 + {q.gamification_quests?.reward_xp} XP / Éclats
                             </p>
                         </div>

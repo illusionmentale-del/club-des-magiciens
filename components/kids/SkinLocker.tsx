@@ -74,12 +74,12 @@ export default function SkinLocker({ skins, unlockedSkinIds = [], equippedSkinId
 
     if (!skins || skins.length === 0) return null;
 
-    const accentColor = adultMode ? "text-magic-royal" : "text-pink-400";
-    const previewRing = adultMode ? "border-magic-royal shadow-[0_0_40px_rgba(0,102,255,0.4)]" : "border-brand-purple/50 shadow-[0_0_40px_rgba(168,85,247,0.4)]";
-    const btnEquippedBg = adultMode ? "bg-magic-royal/20 text-magic-royal border border-magic-royal/30" : "bg-pink-500/20 text-pink-400 border border-pink-500/30";
+    const accentColor = adultMode ? "text-brand-purple" : "text-pink-400";
+    const previewRing = adultMode ? "border-brand-purple shadow-[0_0_40px_rgba(0,102,255,0.4)]" : "border-brand-purple/50 shadow-[0_0_40px_rgba(168,85,247,0.4)]";
+    const btnEquippedBg = adultMode ? "bg-brand-purple/20 text-brand-purple border border-brand-purple/30" : "bg-pink-500/20 text-pink-400 border border-pink-500/30";
     const btnEquipBg = adultMode ? "bg-white/10 hover:bg-white/20 text-white" : "bg-white/10 hover:bg-white/20 text-white";
-    const equippedRing = adultMode ? "border-magic-royal shadow-[0_0_20px_rgba(0,102,255,0.3)]" : "border-pink-500 shadow-[0_0_20px_rgba(236,72,153,0.3)]";
-    const avatarRing = adultMode ? "hover:border-magic-royal/50 hover:shadow-[0_0_20px_rgba(0,102,255,0.5)]" : "hover:border-brand-purple/50 hover:shadow-[0_0_20px_rgba(168,85,247,0.5)]";
+    const equippedRing = adultMode ? "border-brand-purple shadow-[0_0_20px_rgba(0,102,255,0.3)]" : "border-pink-500 shadow-[0_0_20px_rgba(236,72,153,0.3)]";
+    const avatarRing = adultMode ? "hover:border-brand-purple/50 hover:shadow-[0_0_20px_rgba(0,102,255,0.5)]" : "hover:border-brand-purple/50 hover:shadow-[0_0_20px_rgba(168,85,247,0.5)]";
 
     const CATEGORIES = ["Magiciens", "Familiers", "Collection Nox", "Emblèmes"];
     
@@ -132,9 +132,9 @@ export default function SkinLocker({ skins, unlockedSkinIds = [], equippedSkinId
                             <button 
                                 onClick={confirmPurchase}
                                 disabled={loadingMap[previewSkin.id] || (trueXP || 0) < previewSkin.price_xp}
-                                className={`w-full font-black uppercase tracking-widest py-3 px-4 rounded-xl flex items-center justify-center gap-2 transition-transform shadow-[0_10px_30px_rgba(250,204,21,0.3)] disabled:opacity-50 ${
+                                className={`w-full font-black uppercase tracking-widest py-3 px-4 rounded-xl flex items-center justify-center gap-2 transition-transform shadow-[0_10px_30px_rgba(94,92,230,0.3)] disabled:opacity-50 ${
                                     (trueXP || 0) >= previewSkin.price_xp 
-                                        ? 'bg-gradient-to-r from-yellow-500 to-amber-500 text-black hover:scale-[1.02]' 
+                                        ? 'bg-gradient-to-r from-brand-purple to-indigo-500 text-black hover:scale-[1.02]' 
                                         : 'bg-gray-800 text-gray-500 border border-gray-700 shadow-none'
                                 }`}
                             >
@@ -172,7 +172,7 @@ export default function SkinLocker({ skins, unlockedSkinIds = [], equippedSkinId
                             onClick={() => setActiveTab(cat)}
                             className={`px-4 py-2 rounded-full text-sm font-bold transition-all ${
                                 isActive 
-                                ? (adultMode ? 'bg-magic-royal text-white shadow-[0_0_15px_rgba(0,102,255,0.4)]' : 'bg-brand-purple text-white shadow-[0_0_15px_rgba(168,85,247,0.4)]')
+                                ? (adultMode ? 'bg-brand-purple text-white shadow-[0_0_15px_rgba(0,102,255,0.4)]' : 'bg-brand-purple text-white shadow-[0_0_15px_rgba(168,85,247,0.4)]')
                                 : 'bg-white/5 text-brand-text-muted hover:bg-white/10 hover:text-white'
                             }`}
                         >
@@ -230,7 +230,7 @@ export default function SkinLocker({ skins, unlockedSkinIds = [], equippedSkinId
                                         disabled={isLoading}
                                         className={`w-full font-bold py-2 rounded-xl text-xs flex items-center justify-center gap-1 flex-wrap transition-transform ${
                                             canAfford 
-                                                ? 'bg-gradient-to-r from-yellow-500 to-amber-500 text-black hover:scale-105' 
+                                                ? 'bg-gradient-to-r from-brand-purple to-indigo-500 text-black hover:scale-105' 
                                                 : 'bg-brand-surface text-brand-text border border-white/10 hover:bg-white/10'
                                         }`}
                                     >

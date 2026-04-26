@@ -16,7 +16,7 @@ export default function KidsNewsFeed({ items }: { items: NewsItem[] }) {
     return (
         <section>
             <h3 className="text-sm font-semibold text-[#86868b] uppercase tracking-widest mb-6 flex items-center gap-2">
-                <Bell className="w-4 h-4 text-brand-gold" />
+                <Bell className="w-4 h-4 text-brand-purple" />
                 Les Nouveautés de la semaine
             </h3>
 
@@ -48,7 +48,7 @@ export default function KidsNewsFeed({ items }: { items: NewsItem[] }) {
                                                 {item.type === 'pdf' && <FileText className="w-6 h-6 text-[#86868b]" />}
                                                 {item.type === 'trick' && <Wand2 className="w-6 h-6 text-[#86868b]" />}
                                                 {item.type === 'illusion' && <Sparkles className="w-6 h-6 text-[#86868b]" />}
-                                                {item.type === 'tips' && <Lightbulb className="w-6 h-6 text-brand-gold" />}
+                                                {item.type === 'tips' && <Lightbulb className="w-6 h-6 text-brand-purple" />}
                                                 {item.type === 'game' && <Dices className="w-6 h-6 text-[#86868b]" />}
                                                 {item.type === 'product' && <ShoppingBag className="w-6 h-6 text-brand-purple" />}
                                                 {item.type === 'custom_link' && <ArrowRight className="w-6 h-6 text-[#86868b]" />}
@@ -64,7 +64,7 @@ export default function KidsNewsFeed({ items }: { items: NewsItem[] }) {
                                         <p className="text-[11px] text-[#86868b] mt-1.5 flex items-center gap-2 truncate font-medium">
                                             {item.week_number ? (
                                                 <>
-                                                    <span className="inline-block w-1.5 h-1.5 rounded-full bg-brand-gold"></span>
+                                                    <span className="inline-block w-1.5 h-1.5 rounded-full bg-brand-purple"></span>
                                                     Ajouté à ton espace Semaine {item.week_number}
                                                 </>
                                             ) : (

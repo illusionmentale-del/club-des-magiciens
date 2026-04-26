@@ -61,9 +61,9 @@ export default async function KidsShopPage() {
     const unlockedSkinIds = unlockedSkins?.map(s => s.skin_id) || [];
 
     return (
-        <div className="min-h-screen bg-[#000000] text-[#f5f5f7] p-4 md:p-8 pb-32 font-sans relative selection:bg-brand-gold/30">
+        <div className="min-h-screen bg-[#000000] text-[#f5f5f7] p-4 md:p-8 pb-32 font-sans relative selection:bg-brand-purple/30">
             {/* Ambient Background Lights (Homogenized with Home) */}
-            <div className="absolute top-0 left-0 w-full md:w-1/2 h-[50vh] bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] from-brand-gold/10 via-[#000000]/0 to-[#000000]/0 pointer-events-none z-0"></div>
+            <div className="absolute top-0 left-0 w-full md:w-1/2 h-[50vh] bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] from-brand-purple/10 via-[#000000]/0 to-[#000000]/0 pointer-events-none z-0"></div>
 
             {/* Main Wrapper Container */}
             <div className="max-w-5xl mx-auto relative z-10 space-y-12">
@@ -75,12 +75,12 @@ export default async function KidsShopPage() {
                             <div className="mb-6">
                                 <BackButton className="md:hidden" />
                             </div>
-                            <div className="flex items-center gap-2 text-brand-gold mb-2">
-                                <Star className="w-5 h-5 fill-current animate-pulse text-brand-gold" />
+                            <div className="flex items-center gap-2 text-brand-purple mb-2">
+                                <Star className="w-5 h-5 fill-current animate-pulse text-brand-purple" />
                                 <span className="text-xs font-bold uppercase tracking-widest">Le Club des Petits Magiciens</span>
                             </div>
                             <h1 className="text-4xl md:text-6xl font-semibold tracking-tight text-white">
-                                La <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-gold to-yellow-500">Boutique</span>
+                                La <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-purple to-indigo-500">Boutique</span>
                             </h1>
                             <p className="text-[#86868b] mt-3 text-lg md:text-xl font-light">
                                 Découvre des accessoires magiques et des formations vidéo exclusives.
@@ -111,7 +111,7 @@ export default async function KidsShopPage() {
                                     <div key={item.id} className="relative group h-full flex flex-col hover:-translate-y-2 transition-transform duration-500 ease-[0.16,1,0.3,1]">
                                         <div className="relative bg-[#1c1c1e] border border-white/5 rounded-[32px] overflow-hidden shadow-xl group-hover:shadow-2xl group-hover:border-white/10 flex flex-col h-full transition-all duration-500">
                                             {/* Glow effect */}
-                                            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-brand-gold/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"></div>
+                                            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-brand-purple/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"></div>
 
                                             {/* Thumbnail */}
                                             <div className="relative aspect-video bg-[#000000] overflow-hidden shrink-0 border-b border-white/5">
@@ -137,7 +137,7 @@ export default async function KidsShopPage() {
                                                         </div>
                                                     ) : (
                                                         <div className="bg-black/60 backdrop-blur-md text-white px-3 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest flex items-center gap-1.5 shadow-lg border border-white/10">
-                                                            <Lock className="w-4 h-4 text-brand-gold" />
+                                                            <Lock className="w-4 h-4 text-brand-purple" />
                                                             Verrouillé
                                                         </div>
                                                     )}
@@ -145,7 +145,7 @@ export default async function KidsShopPage() {
 
                                                 {/* Price Tag (if locked) */}
                                                 {!isUnlocked && item.price_label && (
-                                                    <div className="absolute bottom-4 left-4 bg-brand-gold text-black font-bold uppercase tracking-widest text-xs px-4 py-2 rounded-xl shadow-xl transform -rotate-2">
+                                                    <div className="absolute bottom-4 left-4 bg-brand-purple text-black font-bold uppercase tracking-widest text-xs px-4 py-2 rounded-xl shadow-xl transform -rotate-2">
                                                         {item.price_label}
                                                     </div>
                                                 )}
@@ -153,7 +153,7 @@ export default async function KidsShopPage() {
 
                                             {/* Content */}
                                             <div className="p-8 flex flex-col flex-1 relative z-10">
-                                                <h3 className="text-xl font-semibold text-[#f5f5f7] mb-3 leading-tight tracking-tight group-hover:text-brand-gold transition-colors">
+                                                <h3 className="text-xl font-semibold text-[#f5f5f7] mb-3 leading-tight tracking-tight group-hover:text-brand-purple transition-colors">
                                                     {item.title}
                                                 </h3>
                                                 <p className="text-sm text-[#86868b] font-light mb-8 flex-1 line-clamp-3">
@@ -168,7 +168,7 @@ export default async function KidsShopPage() {
                                                     </Link>
                                                 ) : (
                                                     <div className="space-y-3 mt-auto">
-                                                        <CheckoutButton itemId={item.id} space="kids" className="w-full bg-brand-gold hover:bg-yellow-400 text-black font-semibold uppercase tracking-widest text-[11px] py-4 px-4 rounded-full flex items-center justify-center gap-2 hover:scale-105 transition-transform shadow-lg hover:shadow-brand-gold/30">
+                                                        <CheckoutButton itemId={item.id} space="kids" className="w-full bg-brand-purple hover:bg-indigo-500 text-black font-semibold uppercase tracking-widest text-[11px] py-4 px-4 rounded-full flex items-center justify-center gap-2 hover:scale-105 transition-transform shadow-lg hover:shadow-brand-purple/30">
                                                             <ShoppingBag className="w-4 h-4" />
                                                             Obtenir
                                                         </CheckoutButton>

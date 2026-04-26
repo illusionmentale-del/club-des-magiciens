@@ -103,8 +103,8 @@ export default async function KidsProgramPage({ searchParams }: { searchParams: 
                 <FadeInUp delay={0.1}>
                     <header className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 pt-4">
                         <div className="flex-1">
-                            <div className="flex items-center gap-2 text-brand-gold mb-2">
-                                <Star className="w-5 h-5 fill-current animate-pulse text-brand-gold" />
+                            <div className="flex items-center gap-2 text-brand-purple mb-2">
+                                <Star className="w-5 h-5 fill-current animate-pulse text-brand-purple" />
                                 <span className="text-xs font-bold uppercase tracking-widest">Le Club des Petits Magiciens</span>
                             </div>
                             <h1 className="text-4xl md:text-6xl font-semibold tracking-tight text-white">
@@ -167,7 +167,7 @@ export default async function KidsProgramPage({ searchParams }: { searchParams: 
                                                     <span className={`bg-white/5 text-[#86868b] border border-white/10 text-[10px] font-bold px-2.5 py-1 rounded-md inline-flex items-center gap-1 uppercase tracking-widest`}>
                                                         {item.type === 'pdf' ? 'Document' : item.type === 'activity' ? 'Activité' : item.type === 'game' ? 'Jeu' : item.type === 'illusion' ? 'Illusion' : 'Vidéo'}
                                                     </span>
-                                                    {item.is_main && <span className="bg-brand-gold/10 text-brand-gold border border-brand-gold/20 text-[10px] font-bold px-2.5 py-1 rounded-md inline-flex items-center gap-1 uppercase tracking-widest"><Star className="w-3 h-3 fill-current" /> Principal</span>}
+                                                    {item.is_main && <span className="bg-brand-purple/10 text-brand-purple border border-brand-purple/20 text-[10px] font-bold px-2.5 py-1 rounded-md inline-flex items-center gap-1 uppercase tracking-widest"><Star className="w-3 h-3 fill-current" /> Principal</span>}
                                                     {item.week_number && <span className="text-[10px] text-[#86868b] font-mono font-bold uppercase">Semaine {item.week_number}</span>}
                                                 </div>
                                                 <div className="flex items-center gap-2 text-[10px] sm:text-xs font-semibold text-brand-purple uppercase tracking-widest opacity-0 -translate-x-4 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300">
@@ -253,7 +253,7 @@ export default async function KidsProgramPage({ searchParams }: { searchParams: 
                                                                 <div className="flex-1 flex flex-col justify-center">
                                                                     <div className="flex items-center gap-3 mb-2">
                                                                         <h3 className="text-xl font-semibold text-[#f5f5f7] tracking-tight">{item.title || "Mission Mystère"}</h3>
-                                                                        {item.is_main && <span className="bg-brand-gold/10 text-brand-gold border border-brand-gold/20 text-[9px] font-bold px-2 py-0.5 rounded-md uppercase tracking-widest">Principal</span>}
+                                                                        {item.is_main && <span className="bg-brand-purple/10 text-brand-purple border border-brand-purple/20 text-[9px] font-bold px-2 py-0.5 rounded-md uppercase tracking-widest">Principal</span>}
                                                                     </div>
                                                                     <p className="text-sm text-[#86868b] font-light line-clamp-2 mb-4">
                                                                         {item.description || "Le secret n'a pas encore été révélé..."}
@@ -271,7 +271,7 @@ export default async function KidsProgramPage({ searchParams }: { searchParams: 
                                                                             Voir
                                                                         </Link>
                                                                         {isCurrent && item.is_main && (
-                                                                            <div className="px-4 py-3 rounded-full bg-brand-gold/10 border border-brand-gold/20 text-brand-gold flex items-center justify-center">
+                                                                            <div className="px-4 py-3 rounded-full bg-brand-purple/10 border border-brand-purple/20 text-brand-purple flex items-center justify-center">
                                                                                 <Trophy className="w-4 h-4" />
                                                                             </div>
                                                                         )}

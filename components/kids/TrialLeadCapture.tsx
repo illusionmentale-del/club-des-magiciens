@@ -56,7 +56,7 @@ export default function TrialLeadCapture() {
 
     return (
         <div className="mt-12 bg-gradient-to-br from-brand-card to-black p-8 md:p-10 rounded-3xl border border-brand-purple/40 shadow-[0_0_50px_rgba(124,58,237,0.15)] relative overflow-hidden group">
-            <div className="absolute top-0 right-0 w-64 h-64 bg-brand-gold/10 rounded-full blur-[80px] pointer-events-none group-hover:bg-brand-gold/20 transition-all duration-500"></div>
+            <div className="absolute top-0 right-0 w-64 h-64 bg-brand-purple/10 rounded-full blur-[80px] pointer-events-none group-hover:bg-brand-purple/20 transition-all duration-500"></div>
             <div className="absolute bottom-0 left-0 w-64 h-64 bg-brand-purple/10 rounded-full blur-[80px] pointer-events-none group-hover:bg-brand-purple/20 transition-all duration-500"></div>
             
             <div className="relative z-10 flex flex-col items-center">

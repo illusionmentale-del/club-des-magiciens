@@ -303,7 +303,7 @@ export default async function KidsHomePage({ searchParams }: { searchParams: Pro
                 <FadeInUp delay={0.1}>
                     <header className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 pt-4">
                         <div className="flex-1">
-                            <div className="flex items-center gap-2 text-brand-gold mb-2">
+                            <div className="flex items-center gap-2 text-brand-purple mb-2">
                                 <Sparkles className="w-5 h-5 animate-pulse" />
                                 <span className="text-xs font-bold uppercase tracking-widest">Le Club des Petits Magiciens</span>
                             </div>
@@ -352,25 +352,25 @@ export default async function KidsHomePage({ searchParams }: { searchParams: Pro
                             <FadeInUp delay={0.4}>
                                 <section>
                                     <h3 className="text-sm font-semibold text-[#86868b] uppercase tracking-widest mb-6 flex items-center gap-2">
-                                        <Package className="w-4 h-4 text-brand-gold" />
+                                        <Package className="w-4 h-4 text-brand-purple" />
                                         La Boutique Magique
                                     </h3>
                                     <div className="group bg-[#1c1c1e] border border-white/5 rounded-[32px] p-8 flex flex-col sm:flex-row items-center gap-8 shadow-xl hover:shadow-2xl hover:border-white/10 transition-all duration-500 ease-[0.16,1,0.3,1] relative overflow-hidden">
                                         {/* Glow effect */}
-                                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-brand-gold/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"></div>
+                                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-brand-purple/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"></div>
 
-                                        <div className="w-20 h-20 bg-brand-gold/10 rounded-[24px] flex items-center justify-center shrink-0 border border-brand-gold/20 relative z-10 group-hover:scale-110 transition-transform duration-500 ease-[0.16,1,0.3,1]">
-                                            <ShoppingBag className="w-10 h-10 text-brand-gold" />
+                                        <div className="w-20 h-20 bg-brand-purple/10 rounded-[24px] flex items-center justify-center shrink-0 border border-brand-purple/20 relative z-10 group-hover:scale-110 transition-transform duration-500 ease-[0.16,1,0.3,1]">
+                                            <ShoppingBag className="w-10 h-10 text-brand-purple" />
                                         </div>
                                         <div className="flex-1 text-center sm:text-left relative z-10">
-                                            <h4 className="text-2xl font-semibold text-[#f5f5f7] mb-2 tracking-tight group-hover:text-brand-gold transition-colors">
+                                            <h4 className="text-2xl font-semibold text-[#f5f5f7] mb-2 tracking-tight group-hover:text-brand-purple transition-colors">
                                                 {hasPurchases ? `Tu as déjà ${purchaseCount} vidéos !` : "Découvre les secrets du Club !"}
                                             </h4>
                                             <p className="text-[#86868b] font-light text-sm">Équipe-toi avec le meilleur matériel de magicien pro.</p>
                                         </div>
                                         <Link
                                             href="/kids/shop"
-                                            className="bg-brand-gold hover:bg-yellow-400 text-black font-semibold text-sm py-4 px-8 rounded-full transition-all shadow-lg hover:shadow-brand-gold/20 hover:scale-105 whitespace-nowrap relative z-10"
+                                            className="bg-brand-purple hover:bg-indigo-500 text-black font-semibold text-sm py-4 px-8 rounded-full transition-all shadow-lg hover:shadow-brand-purple/20 hover:scale-105 whitespace-nowrap relative z-10"
                                         >
                                             Faire un tour à la boutique
                                         </Link>

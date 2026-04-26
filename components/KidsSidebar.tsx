@@ -77,9 +77,9 @@ export default function KidsSidebar({ socialLinks, logoUrl, isAdmin, hasPurchase
                     <div className="w-full text-center px-1 mt-1">
                         <h2 className="font-bold text-[#f5f5f7] text-base leading-tight group-hover:text-white transition-colors truncate">{userName}</h2>
                         <div className="flex flex-col items-center justify-center gap-1.5 mt-2">
-                            <p className="text-[10px] text-brand-gold uppercase tracking-widest font-bold truncate">{magicLevel}</p>
+                            <p className="text-[10px] text-brand-purple uppercase tracking-widest font-bold truncate">{magicLevel}</p>
                             <div className="flex items-center gap-1.5 bg-[#000000] rounded-full px-2.5 py-1 border border-white/10 shrink-0">
-                                <Sparkles className="w-3 h-3 text-brand-gold" />
+                                <Sparkles className="w-3 h-3 text-brand-purple" />
                                 <span className="text-[10px] font-bold text-white leading-none">{xpBalance} XP</span>
                             </div>
                         </div>
@@ -165,7 +165,7 @@ export default function KidsSidebar({ socialLinks, logoUrl, isAdmin, hasPurchase
                 {enableShop && (
                     <Link href="/kids/shop" className={`group flex items-center gap-3 px-4 py-3 rounded-[16px] transition-all duration-300 ease-[0.16,1,0.3,1] ${isActive('/kids/shop') ? 'bg-[#1c1c1e] border border-white/5 shadow-md' : 'hover:bg-white/5'}`}>
                         <div className="flex items-center gap-4">
-                            <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-colors ${isActive('/kids/shop') ? 'bg-gradient-to-br from-brand-gold to-yellow-500 text-black shadow-lg shadow-brand-gold/20' : 'bg-[#1c1c1e] text-[#86868b] group-hover:bg-white/10 group-hover:text-white border border-white/5'}`}>
+                            <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-colors ${isActive('/kids/shop') ? 'bg-gradient-to-br from-brand-purple to-indigo-500 text-black shadow-lg shadow-brand-purple/20' : 'bg-[#1c1c1e] text-[#86868b] group-hover:bg-white/10 group-hover:text-white border border-white/5'}`}>
                                 <Store className="w-5 h-5" />
                             </div>
                             <div>
@@ -182,12 +182,12 @@ export default function KidsSidebar({ socialLinks, logoUrl, isAdmin, hasPurchase
                 {hasPurchases && (
                     <Link href="/kids/purchases" className={`group flex items-center gap-3 px-4 py-3 rounded-[16px] transition-all duration-300 ease-[0.16,1,0.3,1] ${isActive('/kids/purchases') ? 'bg-[#1c1c1e] border border-white/5 shadow-md' : 'hover:bg-white/5'}`}>
                         <div className="flex items-center gap-4">
-                            <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-colors ${isActive('/kids/purchases') ? 'bg-brand-gold text-black shadow-lg' : 'bg-brand-gold/10 text-brand-gold border border-brand-gold/20 group-hover:bg-brand-gold/20'}`}>
+                            <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-colors ${isActive('/kids/purchases') ? 'bg-brand-purple text-black shadow-lg' : 'bg-brand-purple/10 text-brand-purple border border-brand-purple/20 group-hover:bg-brand-purple/20'}`}>
                                 <Package className="w-5 h-5" />
                             </div>
                             <div>
-                                <div className={`font-semibold ${isActive('/kids/purchases') ? 'text-brand-gold' : 'text-brand-gold/80 group-hover:text-brand-gold'}`}>Mes Vidéos</div>
-                                <div className="text-[10px] text-brand-gold/50 font-normal mt-0.5">Tes tours débloqués</div>
+                                <div className={`font-semibold ${isActive('/kids/purchases') ? 'text-brand-purple' : 'text-brand-purple/80 group-hover:text-brand-purple'}`}>Mes Vidéos</div>
+                                <div className="text-[10px] text-brand-purple/50 font-normal mt-0.5">Tes tours débloqués</div>
                             </div>
                         </div>
                     </Link>
