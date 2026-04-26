@@ -75,21 +75,21 @@ export default function KidsMobileNav({ logoUrl, isAdmin, hasPurchases, hasUnrea
 
     return (
         <div className={`${isForcedDesktop ? 'hidden' : (isForcedMobile ? 'block' : 'md:hidden')} bg-[#000000] border-b border-white/5 sticky top-0 z-50`}>
-            <div className="flex items-center justify-between p-4">
-                <Link href="/kids/account" className="flex items-center gap-3 group">
+            <div className="flex items-center justify-between p-4 gap-2">
+                <Link href="/kids/account" className="flex items-center gap-3 group flex-1 min-w-0">
                     <MagicAvatar imageUrl={avatarUrl} levelName={magicLevel} size="sm" />
-                    <div className="min-w-0 pr-1">
-                        <h2 className="font-bold text-[#f5f5f7] text-xs leading-tight line-clamp-1 group-hover:text-white transition-colors">{userName}</h2>
+                    <div className="flex-1 min-w-0">
+                        <h2 className="font-bold text-[#f5f5f7] text-xs leading-tight truncate group-hover:text-white transition-colors">{userName}</h2>
                         <div className="flex items-center gap-1.5 mt-0.5">
-                            <p className="text-[10px] text-brand-purple font-mono truncate max-w-[80px] sm:max-w-[120px]">{magicLevel}</p>
+                            <p className="text-[10px] text-brand-purple font-mono truncate flex-1 min-w-[50px]">{magicLevel}</p>
                             <div className="flex items-center gap-1 bg-[#1c1c1e] rounded-full px-1.5 py-0.5 border border-white/5 shrink-0">
-                                <Sparkles className="w-2.5 h-2.5 text-brand-purple" />
-                                <span className="text-[9px] font-bold text-white leading-none">{xpBalance} XP</span>
+                                <Sparkles className="w-2.5 h-2.5 text-brand-purple shrink-0" />
+                                <span className="text-[9px] font-bold text-white leading-none whitespace-nowrap">{xpBalance} XP</span>
                             </div>
                         </div>
                     </div>
                 </Link>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 shrink-0">
                     {(hasUnreadFormation || hasUnreadAtelier) && (
                         <div className="w-2.5 h-2.5 rounded-full bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.8)] animate-pulse"></div>
                     )}
