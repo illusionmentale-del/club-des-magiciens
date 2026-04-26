@@ -86,7 +86,7 @@ export default function KidsMasterclassConfig({ initialSettings, libraryItems }:
                 <Button
                     onClick={handleSave}
                     disabled={loading}
-                    className="w-full bg-brand-gold text-black hover:bg-brand-gold/80"
+                    className="w-full bg-brand-purple text-black hover:bg-brand-purple/80"
                 >
                     <Save className="w-4 h-4 mr-2" />
                     {loading ? "Enregistrement..." : "Enregistrer"}

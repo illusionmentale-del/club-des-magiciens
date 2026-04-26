@@ -111,7 +111,7 @@ export default function KidsHomeConfig({ initialSettings, libraryItems }: KidsHo
                 <Button
                     onClick={handleSave}
                     disabled={loading}
-                    className="w-full bg-brand-gold text-black hover:bg-brand-gold/80"
+                    className="w-full bg-brand-purple text-black hover:bg-brand-purple/80"
                 >
                     <Save className="w-4 h-4 mr-2" />
                     {loading ? "Enregistrement..." : "Enregistrer"}
@@ -259,7 +259,7 @@ export default function KidsHomeConfig({ initialSettings, libraryItems }: KidsHo
                                 <Separator className="my-6 bg-white/5" />
 
                                 <div className="space-y-4">
-                                    <h3 className="text-sm font-bold text-black uppercase tracking-widest bg-brand-gold p-2 rounded-[12px] border border-brand-gold shadow-[0_0_15px_rgba(255,215,0,0.3)]">
+                                    <h3 className="text-sm font-bold text-black uppercase tracking-widest bg-brand-purple p-2 rounded-[12px] border border-brand-purple shadow-[0_0_15px_rgba(255,215,0,0.3)]">
                                         Contenu Personnalisé
                                     </h3>
 

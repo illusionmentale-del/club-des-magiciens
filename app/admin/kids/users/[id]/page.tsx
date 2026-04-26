@@ -248,7 +248,7 @@ export default function AdminUserDetailPage() {
                             <div className="w-full grid grid-cols-2 gap-2 text-left bg-black/20 p-4 rounded-xl">
                                 <div>
                                     <div className="text-[10px] text-gray-500 uppercase">Grade</div>
-                                    <div className="font-bold text-yellow-400">{profile.magic_level || "Apprenti"}</div>
+                                    <div className="font-bold text-cyan-400">{profile.magic_level || "Apprenti"}</div>
                                 </div>
                                 <div>
                                     <div className="text-[10px] text-gray-500 uppercase">XP</div>
@@ -373,7 +373,7 @@ export default function AdminUserDetailPage() {
                                                     alert("Erreur: " + e.message);
                                                 }
                                             }}
-                                            className="bg-yellow-500 hover:bg-yellow-400 text-black font-bold px-4 rounded-lg text-xs tracking-widest uppercase transition-colors"
+                                            className="bg-yellow-500 hover:bg-cyan-400 text-black font-bold px-4 rounded-lg text-xs tracking-widest uppercase transition-colors"
                                         >
                                             Ajouter
                                         </button>

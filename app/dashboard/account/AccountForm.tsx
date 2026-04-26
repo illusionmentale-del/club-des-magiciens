@@ -17,7 +17,7 @@ function SubmitButton({ theme, isKidProfile }: { theme: 'light' | 'dark', isKidP
             disabled={pending}
             className={`w-full py-4 font-semibold rounded-full transition-all disabled:opacity-50 flex justify-center items-center shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 ${
                 isKidProfile
-                    ? 'bg-gradient-to-r from-purple-600 to-pink-500 text-white shadow-purple-500/20'
+                    ? 'bg-gradient-to-r from-brand-purple to-indigo-500 text-white shadow-brand-purple/20'
                     : 'bg-[#f5f5f7] hover:bg-white text-black'
             }`}
         >

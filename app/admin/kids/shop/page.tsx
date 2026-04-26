@@ -54,7 +54,7 @@ export default async function AdminShopPage() {
 
             <div className="bg-brand-card border border-white/5 rounded-[24px] overflow-hidden shadow-2xl">
                 <div className="p-6 border-b border-white/5 bg-white/5 flex items-center gap-3">
-                    <Lock className="w-5 h-5 text-brand-gold" />
+                    <Lock className="w-5 h-5 text-brand-purple" />
                     <h2 className="text-xl font-bold text-white">Gestion des accès payants</h2>
                 </div>
 

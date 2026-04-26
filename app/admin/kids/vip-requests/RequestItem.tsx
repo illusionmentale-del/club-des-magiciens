@@ -53,7 +53,7 @@ export default function RequestItem({ request }: { request: any }) {
 
                 <div className="bg-black/30 rounded-[16px] p-4 border border-white/5 space-y-2">
                     <p className="text-sm text-brand-text-muted font-bold uppercase tracking-widest flex items-center gap-2">
-                        <MapPin className="w-4 h-4 text-brand-gold" />
+                        <MapPin className="w-4 h-4 text-brand-purple" />
                         Où / Quand m'avez-vous vu ?
                     </p>
                     <p className="text-white italic">"{request.context}"</p>

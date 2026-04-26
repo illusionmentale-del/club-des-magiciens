@@ -107,7 +107,7 @@ export default function AdminNewsPage() {
                                     <span className={`text-xs px-2 py-0.5 rounded-full ${item.type === 'event' ? 'bg-green-500/20 text-green-400' : 'bg-blue-500/20 text-blue-400'}`}>
                                         {item.type}
                                     </span>
-                                    <span className={`text-xs px-2 py-0.5 rounded-full border border-white/10 ${item.audience === 'kids' ? 'text-purple-400' : item.audience === 'all' ? 'text-yellow-400' : 'text-gray-400'}`}>
+                                    <span className={`text-xs px-2 py-0.5 rounded-full border border-white/10 ${item.audience === 'kids' ? 'text-purple-400' : item.audience === 'all' ? 'text-cyan-400' : 'text-gray-400'}`}>
                                         {item.audience === 'kids' ? 'Enfants' : item.audience === 'all' ? 'Tout le monde' : 'Adultes'}
                                     </span>
                                     <span className="text-xs text-gray-500">{new Date(item.created_at).toLocaleDateString()}</span>

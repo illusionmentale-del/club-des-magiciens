@@ -43,13 +43,13 @@ export default async function KidsDashboardPage() {
                     </CardContent>
                 </Card>
 
-                <Card className="bg-[#100b1a] border border-white/10 hover:border-brand-gold/50 transition-all shadow-[0_20px_50px_-15px_rgba(0,0,0,0.5)] rounded-[24px]">
+                <Card className="bg-[#100b1a] border border-white/10 hover:border-brand-purple/50 transition-all shadow-[0_20px_50px_-15px_rgba(0,0,0,0.5)] rounded-[24px]">
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                         <CardTitle className="text-xs font-bold uppercase tracking-wider text-brand-text-muted">Taux d'Activité</CardTitle>
-                        <Sparkles className="h-5 w-5 text-brand-gold" />
+                        <Sparkles className="h-5 w-5 text-brand-purple" />
                     </CardHeader>
                     <CardContent>
-                        <div className="text-3xl font-black text-brand-gold">
+                        <div className="text-3xl font-black text-brand-purple">
                             {stats.totalKids > 0 ? Math.round((stats.activeKidsCount / stats.totalKids) * 100) : 0}%
                         </div>
                         <p className="text-xs text-brand-text-muted mt-1">d'élèves se connectant réguliérement</p>
@@ -122,7 +122,7 @@ export default async function KidsDashboardPage() {
                     <CardContent className="p-0">
                         {stats.ghostKids.length === 0 ? (
                             <div className="p-8 text-center text-brand-text-muted text-sm flex flex-col items-center">
-                                <Sparkles className="w-8 h-8 text-brand-gold mb-3 opacity-50" />
+                                <Sparkles className="w-8 h-8 text-brand-purple mb-3 opacity-50" />
                                 Super ! Tous vos élèves sont actifs.
                             </div>
                         ) : (

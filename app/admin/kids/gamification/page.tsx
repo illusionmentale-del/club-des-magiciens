@@ -207,7 +207,7 @@ export default function AdminGamificationPage() {
                 <header className="flex items-center justify-between mb-8">
                     <div>
                         <h1 className="text-3xl font-bold flex items-center gap-2">
-                            <span className="text-yellow-400"><Trophy /></span> Gamification
+                            <span className="text-cyan-400"><Trophy /></span> Gamification
                         </h1>
                         <p className="text-gray-400">Gestion des Missions et Récompenses</p>
                     </div>
@@ -227,7 +227,7 @@ export default function AdminGamificationPage() {
                         </button>
                     )}
                     {activeTab === 'skins' && (
-                        <button onClick={() => setShowSkinForm(!showSkinForm)} className="bg-pink-600 hover:bg-pink-500 text-white px-6 py-3 rounded-[16px] font-bold flex items-center gap-2 transition-all shadow-lg">
+                        <button onClick={() => setShowSkinForm(!showSkinForm)} className="bg-indigo-600 hover:bg-brand-purple text-white px-6 py-3 rounded-[16px] font-bold flex items-center gap-2 transition-all shadow-lg">
                             <Plus className="w-5 h-5" /> Nouvel Avatar
                         </button>
                     )}
@@ -247,7 +247,7 @@ export default function AdminGamificationPage() {
                         Niveaux (Grades)
                     </button>
                     <button
-                        className={`font-bold pb-4 -mb-4 px-4 ${activeTab === 'skins' ? 'text-pink-400 border-b-2 border-pink-400' : 'text-gray-500 hover:text-white'}`}
+                        className={`font-bold pb-4 -mb-4 px-4 ${activeTab === 'skins' ? 'text-brand-purple border-b-2 border-brand-purple' : 'text-gray-500 hover:text-white'}`}
                         onClick={() => setActiveTab('skins')}
                     >
                         Avatars (Skins)
@@ -332,7 +332,7 @@ export default function AdminGamificationPage() {
 
                                             {newQuest.reward_type === 'badge' && (
                                                 <div className="flex items-center gap-2 border-l border-white/10 pl-4">
-                                                    <span className="text-yellow-400 font-bold">⭐</span>
+                                                    <span className="text-cyan-400 font-bold">⭐</span>
                                                     <input
                                                         type="number"
                                                         placeholder="0"
@@ -340,7 +340,7 @@ export default function AdminGamificationPage() {
                                                         value={newQuest.reward_xp || ""}
                                                         onChange={e => setNewQuest({ ...newQuest, reward_xp: e.target.value })}
                                                     />
-                                                    <span className="text-yellow-400 font-bold">XP Bonus</span>
+                                                    <span className="text-cyan-400 font-bold">XP Bonus</span>
                                                 </div>
                                             )}
 
@@ -362,9 +362,9 @@ export default function AdminGamificationPage() {
 
                                             {newQuest.reward_type === 'avatar' && (
                                                 <div className="flex items-center gap-2 border-l border-white/10 pl-4">
-                                                    <span className="text-pink-400 font-bold">🎭</span>
+                                                    <span className="text-brand-purple font-bold">🎭</span>
                                                     <select
-                                                        className="bg-black/40 border border-pink-500/50 rounded-[12px] p-2 text-white outline-none"
+                                                        className="bg-black/40 border border-brand-purple/50 rounded-[12px] p-2 text-white outline-none"
                                                         value={newQuest.reward_item_id || ""}
                                                         onChange={e => setNewQuest({ ...newQuest, reward_item_id: e.target.value })}
                                                     >
@@ -404,7 +404,7 @@ export default function AdminGamificationPage() {
                                                 🎯 {quest.trigger_type === 'videos_watched' ? 'Vidéos vues' : quest.trigger_type === 'subscription_months' ? "Mois d'abonnement" : quest.trigger_type === 'shop_purchases' ? "Achats Boutique" : 'Total XP'} : <span className="text-green-400">{quest.trigger_value}</span>
                                             </span>
                                             {quest.reward_xp > 0 && (
-                                                <span className="text-xs uppercase font-bold bg-yellow-500/10 px-2.5 py-1 rounded-[8px] text-yellow-400 flex items-center gap-1">
+                                                <span className="text-xs uppercase font-bold bg-yellow-500/10 px-2.5 py-1 rounded-[8px] text-cyan-400 flex items-center gap-1">
                                                     ⭐ +{quest.reward_xp} XP
                                                 </span>
                                             )}
@@ -464,7 +464,7 @@ export default function AdminGamificationPage() {
                                            <h3 className="font-bold text-white text-lg">{lvl.name}</h3>
                                        </div>
                                        <div className="flex items-center gap-4">
-                                           <span className="text-yellow-400 font-bold bg-yellow-500/10 px-3 py-1 rounded-[12px]">⭐ {lvl.xp_threshold} XP</span>
+                                           <span className="text-cyan-400 font-bold bg-yellow-500/10 px-3 py-1 rounded-[12px]">⭐ {lvl.xp_threshold} XP</span>
                                            <button onClick={() => handleDeleteLevel(lvl.id)} className="text-gray-500 hover:text-red-400 p-2">
                                                <Trash2 className="w-4 h-4" />
                                            </button>
@@ -480,23 +480,23 @@ export default function AdminGamificationPage() {
                 {activeTab === 'skins' && (
                     <>
                         {showSkinForm && (
-                            <div className="bg-magic-card border border-pink-500/30 rounded-[24px] p-6 mb-8 animate-in slide-in-from-top-4">
+                            <div className="bg-magic-card border border-brand-purple/30 rounded-[24px] p-6 mb-8 animate-in slide-in-from-top-4">
                                 <h2 className="font-bold text-lg mb-4 text-pink-300">Ajouter un Avatar (Skin)</h2>
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                                     <input
                                         placeholder="Nom du Skin (Ex: Le Petit Ninja)"
-                                        className="bg-black/40 border border-white/10 rounded-[12px] p-3 text-white outline-none focus:border-pink-500"
+                                        className="bg-black/40 border border-white/10 rounded-[12px] p-3 text-white outline-none focus:border-brand-purple"
                                         value={newSkin.name}
                                         onChange={e => setNewSkin({ ...newSkin, name: e.target.value })}
                                     />
                                     <input
                                         placeholder="URL de l'image (https://...)"
-                                        className="bg-black/40 border border-white/10 rounded-[12px] p-3 text-white outline-none focus:border-pink-500"
+                                        className="bg-black/40 border border-white/10 rounded-[12px] p-3 text-white outline-none focus:border-brand-purple"
                                         value={newSkin.image_url}
                                         onChange={e => setNewSkin({ ...newSkin, image_url: e.target.value })}
                                     />
                                     <select
-                                        className="bg-black/40 border border-white/10 rounded-[12px] p-3 text-white outline-none focus:border-pink-500 md:col-span-2"
+                                        className="bg-black/40 border border-white/10 rounded-[12px] p-3 text-white outline-none focus:border-brand-purple md:col-span-2"
                                         value={newSkin.target_audience}
                                         onChange={e => setNewSkin({ ...newSkin, target_audience: e.target.value })}
                                     >
@@ -505,7 +505,7 @@ export default function AdminGamificationPage() {
                                         <option value="all">Pour tous</option>
                                     </select>
                                     <div className="flex items-center gap-2 bg-white/5 p-3 rounded-[12px] border border-white/5">
-                                        <span className="text-yellow-400 font-bold">⭐ Prix en Éclats :</span>
+                                        <span className="text-cyan-400 font-bold">⭐ Prix en Éclats :</span>
                                         <input
                                             type="number"
                                             placeholder="Prix (0 pour gratuit)"
@@ -517,7 +517,7 @@ export default function AdminGamificationPage() {
                                     <label className="flex items-center gap-3 bg-white/5 p-3 rounded-[12px] border border-white/5 cursor-pointer">
                                         <input
                                             type="checkbox"
-                                            className="w-5 h-5 accent-pink-500"
+                                            className="w-5 h-5 accent-brand-purple"
                                             checked={newSkin.is_default}
                                             onChange={e => setNewSkin({ ...newSkin, is_default: e.target.checked })}
                                         />
@@ -526,7 +526,7 @@ export default function AdminGamificationPage() {
                                 </div>
                                 <div className="flex justify-end gap-2">
                                     <button onClick={() => setShowSkinForm(false)} className="px-4 py-2 text-gray-400 hover:text-white">Annuler</button>
-                                    <button onClick={handleCreateSkin} className="bg-pink-600 hover:bg-pink-500 text-white px-6 py-2 rounded-[12px] font-bold flex items-center gap-2">
+                                    <button onClick={handleCreateSkin} className="bg-indigo-600 hover:bg-brand-purple text-white px-6 py-2 rounded-[12px] font-bold flex items-center gap-2">
                                         <Save className="w-4 h-4" /> Mettre en vente
                                     </button>
                                 </div>
@@ -535,7 +535,7 @@ export default function AdminGamificationPage() {
 
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                             {skins.map((skin) => (
-                                <div key={skin.id} className="bg-brand-card/50 border border-white/5 rounded-[24px] p-4 flex flex-col items-center text-center relative hover:border-pink-500/30 transition-colors">
+                                <div key={skin.id} className="bg-brand-card/50 border border-white/5 rounded-[24px] p-4 flex flex-col items-center text-center relative hover:border-brand-purple/30 transition-colors">
                                     <button onClick={() => handleDeleteSkin(skin.id)} className="absolute top-2 right-2 p-2 bg-black/50 rounded-full text-gray-400 hover:text-red-400 transition-colors z-10">
                                         <Trash2 className="w-4 h-4" />
                                     </button>
@@ -555,9 +555,9 @@ export default function AdminGamificationPage() {
                                         {skin.is_default ? (
                                             <span className="text-green-400 bg-green-500/10 px-3 py-1 rounded-full border border-green-500/20">Gratuit de base</span>
                                         ) : skin.price_xp === 0 ? (
-                                            <span className="text-pink-400 bg-pink-500/10 px-3 py-1 rounded-full border border-pink-500/20">Gratuit/Cadeau</span>
+                                            <span className="text-brand-purple bg-brand-purple/10 px-3 py-1 rounded-full border border-brand-purple/20">Gratuit/Cadeau</span>
                                         ) : (
-                                            <span className="text-yellow-400 bg-yellow-500/10 px-3 py-1 rounded-full flex items-center justify-center gap-1 border border-yellow-500/20">
+                                            <span className="text-cyan-400 bg-yellow-500/10 px-3 py-1 rounded-full flex items-center justify-center gap-1 border border-yellow-500/20">
                                                 ⭐ {skin.price_xp} Éclats
                                             </span>
                                         )}
