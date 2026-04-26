@@ -4,30 +4,27 @@ import Link from "next/link";
 import { ArrowLeft, Save, ShoppingBag, Info, AlertTriangle } from "lucide-react";
 import { createProduct } from "../actions";
 import { useSearchParams } from "next/navigation";
-import { useAdmin } from "@/app/admin/AdminContext";
 
 export default function NewProductPage() {
     const searchParams = useSearchParams();
-    const { audience } = useAdmin(); // We can default space to this, but let user choose.
-
-    // Default space from URL or Context
-    const defaultSpace = searchParams.get('space') || audience || 'adults';
+    // Default space to adults
+    const defaultSpace = searchParams.get('space') || 'adults';
 
     return (
-        <div className="min-h-screen bg-magic-bg text-white p-8 font-sans">
+        <div className="min-h-screen bg-black text-brand-text p-8 font-sans">
             <header className="flex items-center justify-between mb-8 max-w-3xl mx-auto">
-                <Link href="/admin/adults/products" className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors">
+                <Link href="/admin/adults/products" className="flex items-center gap-2 text-brand-text-muted hover:text-white transition-colors">
                     <ArrowLeft className="w-5 h-5" />
                     Annuler
                 </Link>
                 <h1 className="text-3xl font-bold flex items-center gap-3">
-                    <ShoppingBag className="w-8 h-8 text-magic-purple" />
+                    <ShoppingBag className="w-8 h-8 text-brand-purple" />
                     Nouveau Produit
                 </h1>
             </header>
 
             <div className="max-w-3xl mx-auto">
-                <form action={createProduct} className="bg-magic-card border border-white/10 p-8 rounded-2xl shadow-2xl space-y-8">
+                <form action={createProduct} className="bg-[#100b1a] border border-white/5 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.5)] p-8 rounded-2xl space-y-8">
 
                     {/* INFO BLOCK */}
                     <div className="bg-blue-500/10 border border-blue-500/20 p-4 rounded-xl flex items-start gap-4">
@@ -138,7 +135,7 @@ export default function NewProductPage() {
                                 name="is_active"
                                 id="is_active"
                                 defaultChecked
-                                className="w-5 h-5 text-magic-purple rounded border-gray-600 bg-black/40 focus:ring-magic-purple"
+                                className="w-5 h-5 text-brand-purple rounded border-gray-600 bg-black/40 focus:ring-brand-purple"
                             />
                             <label htmlFor="is_active" className="text-white font-medium select-none cursor-pointer">Activer le produit immédiatement</label>
                         </div>
@@ -148,7 +145,7 @@ export default function NewProductPage() {
                     <div className="pt-6 border-t border-white/10 flex justify-end">
                         <button
                             type="submit"
-                            className="bg-green-600 hover:bg-green-500 text-white px-8 py-3 rounded-xl font-bold flex items-center gap-2 transition-all shadow-lg hover:shadow-green-500/20 transform hover:-translate-y-1"
+                            className="bg-brand-purple hover:bg-indigo-500 text-white px-8 py-3 rounded-xl font-bold flex items-center gap-2 transition-all shadow-[0_0_15px_rgba(168,85,247,0.3)] hover:shadow-[0_0_25px_rgba(168,85,247,0.5)] transform hover:-translate-y-1"
                         >
                             <Save className="w-5 h-5" />
                             Enregistrer le Produit
