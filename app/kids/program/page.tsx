@@ -218,7 +218,7 @@ export default async function KidsProgramPage({ searchParams }: { searchParams: 
                                                     w-12 h-12 rounded-[16px] flex items-center justify-center font-bold text-sm
                                                     ${isLocked ? 'bg-[#2c2c2e]/50 border border-white/5 text-[#86868b]' : ''}
                                                     ${isCurrent ? 'bg-brand-purple text-white shadow-lg' : ''}
-                                                    ${isCompleted ? 'bg-green-500/10 text-green-400 border border-green-500/20' : ''}
+                                                    ${isCompleted ? 'bg-[#2c2c2e]/50 text-[#86868b] border border-white/5' : ''}
                                                 `}>
                                                             {isLocked && <Lock className="w-5 h-5" />}
                                                             {isCurrent && <Star className="w-6 h-6 fill-current animate-pulse" />}
@@ -229,7 +229,7 @@ export default async function KidsProgramPage({ searchParams }: { searchParams: 
                                                                 Semaine {week}
                                                             </h2>
                                                             {isCurrent && <span className="text-[10px] text-brand-purple font-bold uppercase tracking-widest">En cours</span>}
-                                                            {isCompleted && <span className="text-[10px] text-green-400 font-bold uppercase tracking-widest">Terminée</span>}
+                                                            {isCompleted && <span className="text-[10px] text-[#86868b] font-bold uppercase tracking-widest">Terminée</span>}
                                                             {isLocked && <span className="text-[10px] text-[#86868b] font-bold uppercase tracking-widest">À venir</span>}
                                                         </div>
                                                     </div>
