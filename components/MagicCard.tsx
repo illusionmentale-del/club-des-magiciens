@@ -107,7 +107,7 @@ export default function MagicCard({ user, profile, isKid = false, lifetimeXP, av
 
     if (isKid) {
         if (isLegendary) {
-            cardBorder = "border-[#FFD700]/60 ring-1 ring-[#FFD700]/30 shadow-[0_0_30px_rgba(255,215,0,0.3)]";
+            cardBorder = "border-cyan-400/50 ring-1 ring-brand-purple/40 shadow-[0_0_30px_rgba(94,92,230,0.4)]";
         } else if (rarityStyle === "silver" || rarityStyle === "diamond") {
             cardBorder = "border-cyan-400/50 shadow-[inset_0_0_20px_rgba(34,211,238,0.2)] ring-1 ring-cyan-400/20";
         }
@@ -124,7 +124,7 @@ export default function MagicCard({ user, profile, isKid = false, lifetimeXP, av
                 {/* Glow Behind Card */}
                 <div className={cn(
                     "absolute -inset-4 rounded-[2rem] opacity-0 blur-2xl transition duration-1000 pointer-events-none group-hover/card:opacity-50",
-                    isLegendary ? "bg-gradient-to-r from-amber-400 via-yellow-500 to-amber-600" :
+                    isLegendary ? "bg-gradient-to-r from-brand-purple via-indigo-500 to-cyan-400" :
                     rarityStyle === "silver" || rarityStyle === "diamond" ? "bg-gradient-to-r from-cyan-400 to-blue-500" :
                         isKid ? "bg-gradient-to-r from-brand-purple to-blue-500" : "bg-white/10"
                 )}></div>
@@ -165,7 +165,7 @@ export default function MagicCard({ user, profile, isKid = false, lifetimeXP, av
                             <div
                                 className="absolute inset-0 mix-blend-color-dodge opacity-60 pointer-events-none transition-all duration-100"
                                 style={{
-                                    background: `linear-gradient(115deg, transparent 20%, rgba(255,215,0,0.8) 40%, rgba(255,100,0,0.6) 45%, rgba(255,255,0,0.6) 50%, rgba(255,215,0,0.8) 55%, transparent 70%)`,
+                                    background: `linear-gradient(115deg, transparent 20%, rgba(94,92,230,0.8) 40%, rgba(34,211,238,0.6) 45%, rgba(94,92,230,0.6) 50%, rgba(94,92,230,0.8) 55%, transparent 70%)`,
                                     backgroundPosition: `${mousePosition.percentageX * 2}% ${mousePosition.percentageY * 2}%`,
                                     backgroundSize: '300% 300%'
                                 }}
@@ -185,13 +185,13 @@ export default function MagicCard({ user, profile, isKid = false, lifetimeXP, av
 
                             {/* Card Header */}
                             <div className="flex justify-between items-start">
-                                <div className={cn("px-3 py-1 rounded-t-lg rounded-br-lg text-[10px] sm:text-xs font-bold tracking-widest uppercase border", isLegendary ? "bg-amber-500/20 text-[#FFD700] border-[#FFD700]/30" : isKid ? "bg-brand-purple/20 text-purple-300 border-purple-500/30" : "bg-white/5 text-gray-300 border-white/10")}>
+                                <div className={cn("px-3 py-1 rounded-t-lg rounded-br-lg text-[10px] sm:text-xs font-bold tracking-widest uppercase border", isLegendary ? "bg-brand-purple/30 text-cyan-300 border-cyan-400/40" : isKid ? "bg-brand-purple/20 text-purple-300 border-purple-500/30" : "bg-white/5 text-gray-300 border-white/10")}>
                                     {computedLevel}
                                 </div>
                                 {isKid && (
                                     <div className="flex items-center gap-1 bg-black/40 px-3 py-1 rounded-full border border-white/10 backdrop-blur-md">
-                                        <Sparkles className={cn("w-3 h-3", isLegendary ? "text-[#FFD700]" : "text-white/70")} />
-                                        <span className={cn("text-xs font-bold", isLegendary ? "text-[#FFD700]" : "text-white/90")}>{xp} XP</span>
+                                        <Sparkles className={cn("w-3 h-3", isLegendary ? "text-cyan-400" : "text-white/70")} />
+                                        <span className={cn("text-xs font-bold", isLegendary ? "text-cyan-400" : "text-white/90")}>{xp} XP</span>
                                     </div>
                                 )}
                             </div>
@@ -204,7 +204,7 @@ export default function MagicCard({ user, profile, isKid = false, lifetimeXP, av
 
                                 <div className={cn(
                                     "relative w-28 h-28 md:w-36 md:h-36 rounded-full p-1.5 shadow-2xl flex-shrink-0 z-10 transition-transform duration-500",
-                                    isLegendary ? "bg-gradient-to-tr from-amber-500 via-yellow-200 to-orange-500" :
+                                    isLegendary ? "bg-gradient-to-tr from-cyan-400 via-brand-purple to-indigo-500" :
                                     rarityStyle === "silver" || rarityStyle === "diamond" ? "bg-gradient-to-tr from-cyan-400 to-blue-500" :
                                         isKid ? "bg-gradient-to-tr from-blue-500 via-purple-400 to-brand-purple" : "bg-gradient-to-br from-gray-700 via-gray-600 to-black/80"
                                 )}>
@@ -226,7 +226,7 @@ export default function MagicCard({ user, profile, isKid = false, lifetimeXP, av
                                 {/* Subtle internal reflection */}
                                 <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
 
-                                <h2 className={cn("font-serif text-lg md:text-xl font-black text-center mb-1 drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)] truncate", isLegendary ? "text-[#FFD700]" : "text-white")}>
+                                <h2 className={cn("font-serif text-lg md:text-xl font-black text-center mb-1 drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)] truncate", isLegendary ? "text-cyan-300" : "text-white")}>
                                     {profile?.username || "Le Mystérieux"}
                                 </h2>
 
@@ -249,11 +249,11 @@ export default function MagicCard({ user, profile, isKid = false, lifetimeXP, av
                                     <div className="mb-3 px-2 flex flex-col gap-1.5">
                                         <div className="flex justify-between text-[8px] md:text-[9px] font-bold text-white/50 uppercase tracking-widest mb-1">
                                             <span>Vers {xp >= 2000 ? "le Max" : "le Prochain Rang"}</span>
-                                            <span className={isLegendary ? "text-amber-400" : "text-white"}>{xp} / {nextRankXpCap} XP</span>
+                                            <span className={isLegendary ? "text-cyan-400" : "text-white"}>{xp} / {nextRankXpCap} XP</span>
                                         </div>
                                         <div className="h-2 w-full bg-white/10 rounded-full border border-white/5 relative z-0">
                                             <div
-                                                className={cn("h-full absolute left-0 top-0 rounded-full transition-all duration-1000 z-10", isLegendary ? "bg-gradient-to-r from-amber-600 to-yellow-400" : isKid ? "bg-gradient-to-r from-purple-600 to-cyan-400" : "bg-gradient-to-r from-blue-600 to-cyan-400")}
+                                                className={cn("h-full absolute left-0 top-0 rounded-full transition-all duration-1000 z-10", isLegendary ? "bg-gradient-to-r from-brand-purple to-cyan-400" : isKid ? "bg-gradient-to-r from-purple-600 to-cyan-400" : "bg-gradient-to-r from-blue-600 to-cyan-400")}
                                                 style={{ width: `${Math.max(Math.min((xp / nextRankXpCap) * 100, 100), 2)}%` }}
                                             >
                                                 <div className="absolute inset-0 bg-white/30 rounded-full w-full animate-[pulse_2s_infinite]"></div>
@@ -298,22 +298,22 @@ export default function MagicCard({ user, profile, isKid = false, lifetimeXP, av
                         <div className={cn("w-full h-full absolute top-0 left-0 bg-gradient-to-b from-transparent to-black/60 z-0 pointer-events-none")} />
 
                         {/* Central Glow */}
-                        <div className={cn("w-48 h-48 rounded-full blur-3xl absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-50 pointer-events-none", isLegendary ? "bg-amber-600" : isKid ? "bg-purple-600" : "bg-white/10")} />
+                        <div className={cn("w-48 h-48 rounded-full blur-3xl absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-50 pointer-events-none", isLegendary ? "bg-cyan-500" : isKid ? "bg-brand-purple" : "bg-white/10")} />
 
                         <div className="relative z-10 flex flex-col items-center p-3 text-center h-full justify-center w-full">
                             <div className="flex-1 flex flex-col items-center justify-center w-full mt-4">
 
                                 {/* Geometric Emblem */}
                                 <div className="relative w-20 h-20 mb-6 flex items-center justify-center">
-                                    <div className={cn("absolute inset-0 rotate-45 border shadow-[inset_0_0_10px_rgba(255,255,255,0.1)]", isLegendary ? "border-amber-500/30" : isKid ? "border-purple-500/30" : "border-white/10")} />
-                                    <div className={cn("absolute inset-2 rotate-12 border", isLegendary ? "border-amber-500/20" : isKid ? "border-purple-500/20" : "border-white/5")} />
-                                    <Star className={cn("w-10 h-10 drop-shadow-2xl relative z-10", isLegendary ? "text-[#FFD700] fill-amber-500/20" : isKid ? "text-purple-400 fill-purple-500/20" : "text-white/40 fill-white/5")} />
+                                    <div className={cn("absolute inset-0 rotate-45 border shadow-[inset_0_0_10px_rgba(255,255,255,0.1)]", isLegendary ? "border-cyan-400/40" : isKid ? "border-brand-purple/30" : "border-white/10")} />
+                                    <div className={cn("absolute inset-2 rotate-12 border", isLegendary ? "border-cyan-400/30" : isKid ? "border-brand-purple/20" : "border-white/5")} />
+                                    <Star className={cn("w-10 h-10 drop-shadow-2xl relative z-10", isLegendary ? "text-cyan-400 fill-cyan-400/20" : isKid ? "text-brand-purple fill-brand-purple/20" : "text-white/40 fill-white/5")} />
                                 </div>
 
                                 <h3 className="text-xl font-black uppercase tracking-widest text-white mb-2 drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)] leading-tight">
                                     {isKid ? "Le Club des" : "L'Atelier des"}
                                     <br />
-                                    <span className={cn("text-lg", isLegendary ? "text-amber-400" : isKid ? "text-purple-400" : "text-gray-300")}>
+                                    <span className={cn("text-lg", isLegendary ? "text-cyan-400" : isKid ? "text-brand-purple" : "text-gray-300")}>
                                         {isKid ? "Petits Magiciens" : "Magiciens"}
                                     </span>
                                 </h3>
@@ -339,7 +339,7 @@ export default function MagicCard({ user, profile, isKid = false, lifetimeXP, av
                                         <div className="flex-1 h-px bg-white"></div>
                                     </div>
                                     <div className="text-[10px] text-white/50 font-mono tracking-widest flex items-center gap-2">
-                                        <span className={cn("w-1.5 h-1.5 rounded-full animate-pulse", isLegendary ? "bg-amber-400" : isKid ? "bg-purple-400" : "bg-blue-400")}></span>
+                                        <span className={cn("w-1.5 h-1.5 rounded-full animate-pulse", isLegendary ? "bg-cyan-400" : isKid ? "bg-brand-purple" : "bg-blue-400")}></span>
                                         ID-M-{user.id.slice(0, 8).toUpperCase()}
                                     </div>
                                 </div>

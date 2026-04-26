@@ -145,8 +145,8 @@ export default async function KidsAccountPage({
                                 </div>
 
                                 {/* Solde et Bouton pour dépenser */}
-                                <div className="mt-12 mb-8 w-full max-w-[400px] flex flex-col items-center">
-                                    <p className="mb-4 text-sm font-bold text-brand-purple uppercase tracking-widest">
+                                <div className="mt-12 mb-8 w-full max-w-lg flex flex-col items-center">
+                                    <p className="mb-4 text-sm md:text-base font-bold text-brand-purple uppercase tracking-widest flex items-center justify-center whitespace-nowrap">
                                         Solde actuel : <span className="text-2xl text-white font-black mx-2">{profile?.xp || 0}</span> Poussières d'étoiles 🌟
                                     </p>
                                     <a 

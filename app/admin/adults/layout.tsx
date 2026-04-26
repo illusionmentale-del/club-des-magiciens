@@ -23,14 +23,14 @@ export default function AdultsAdminLayout({
 
             {/* Custom Sidebar for Adults */}
             <aside className="fixed inset-y-0 left-0 z-50 w-64 bg-[#000000] border-r border-white/5 hidden md:flex flex-col">
-                <div className="flex items-center h-20 px-6 border-b border-white/5 bg-[#000000]">
+                <Link href="/dashboard" className="flex items-center h-20 px-6 border-b border-white/5 bg-[#000000] hover:bg-white/5 transition-colors cursor-pointer">
                     <div className="w-10 h-10 bg-[#1c1c1e] rounded-xl flex items-center justify-center mr-3 border border-white/5">
                         <Users className="w-6 h-6 text-[#f5f5f7]" />
                     </div>
                     <span className="font-semibold text-lg tracking-tight whitespace-nowrap text-white">
                         L'Atelier <span className="text-[#86868b] font-light">Admin</span>
                     </span>
-                </div>
+                </Link>
 
                 <nav className="flex-1 p-4 space-y-2 overflow-y-auto">
                     <Link href="/admin/adults/dashboard" className="flex items-center gap-3 px-4 py-3 text-sm font-bold uppercase tracking-widest text-brand-text-muted hover:text-white hover:bg-white/5 rounded-xl transition-all group">
