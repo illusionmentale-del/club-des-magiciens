@@ -118,12 +118,12 @@ function LoginFormContent() {
                 </form>
             </div>
 
-            <div className="text-center mt-8">
+            <div className="w-full text-center mt-8 relative z-10">
                 <a 
                     href="mailto:contact@clubdespetitsmagiciens.fr?subject=Besoin%20d'aide%20-%20Club%20des%20petits%20magiciens" 
-                    className="text-sm font-bold text-brand-text-muted hover:text-brand-purple transition-colors inline-block"
+                    className="inline-flex items-center justify-center px-6 py-2.5 rounded-full border border-white/10 bg-white/5 text-sm font-medium text-gray-400 hover:text-white hover:bg-white/10 transition-all"
                 >
-                    Besoin d'aide ? Clique ici (réponse sous 24h) 🧙‍♂️
+                    J'ai besoin d'aide
                 </a>
             </div>
         </div>
