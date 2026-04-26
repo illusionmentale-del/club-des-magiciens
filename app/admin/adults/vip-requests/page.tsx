@@ -50,10 +50,12 @@ export default async function AdultVIPRequestsPage() {
 
                 {requests && requests.length === 0 && (
                     <FadeInUp delay={0.2}>
-                        <div className="text-center p-16 border border-white/5 bg-[#100b1a] shadow-[0_20px_50px_-15px_rgba(0,0,0,0.5)] hover:border-brand-purple/30 transition-all rounded-[32px] shadow-2xl">
-                            <Star className="w-12 h-12 text-brand-text-muted mx-auto mb-4 opacity-50" />
-                            <h3 className="text-2xl font-semibold text-brand-text mb-2 tracking-tight">Aucune demande en attente</h3>
-                            <p className="text-brand-text-muted font-light">Toutes les demandes d'accès ont été traitées.</p>
+                        <div className="flex flex-col items-center justify-center py-16 bg-[#100b1a] rounded-3xl border border-dashed border-brand-purple/30 shadow-[0_0_30px_rgba(168,85,247,0.05)]">
+                            <div className="w-24 h-24 bg-brand-purple/10 rounded-full flex items-center justify-center mb-6 shadow-[0_0_20px_rgba(168,85,247,0.2)]">
+                                <Star className="w-12 h-12 text-brand-purple" />
+                            </div>
+                            <h3 className="text-2xl font-black text-white mb-2 tracking-tight">Aucune demande en attente</h3>
+                            <p className="text-brand-text-muted text-lg">Toutes les demandes d'accès ont été traitées.</p>
                         </div>
                     </FadeInUp>
                 )}

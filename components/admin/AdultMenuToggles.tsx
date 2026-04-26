@@ -49,8 +49,8 @@ export default function AdultMenuToggles({ initialSettings }: AdultMenuTogglesPr
     ];
 
     return (
-        <Card className="bg-black/50 border-white/5 shadow-2xl overflow-hidden mt-12 backdrop-blur-md">
-            <CardHeader className="border-b border-white/5 bg-white/[0.02]">
+        <Card className="bg-[#100b1a] border border-white/5 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.5)] hover:border-brand-purple/30 transition-all overflow-hidden rounded-3xl mt-12 backdrop-blur-md">
+            <CardHeader className="border-b border-white/5 bg-transparent p-8">
                 <CardTitle className="text-xl font-black uppercase tracking-tighter flex items-center justify-between text-white">
                     <div className="flex items-center gap-3">
                         <List className="text-brand-purple" />
@@ -85,9 +85,9 @@ export default function AdultMenuToggles({ initialSettings }: AdultMenuTogglesPr
                     <Button
                         onClick={handleSave}
                         disabled={loading}
-                        className="bg-brand-purple text-black font-bold hover:bg-brand-purple"
+                        className="w-full sm:w-auto bg-brand-purple hover:bg-indigo-500 text-white font-bold rounded-2xl shadow-[0_0_15px_rgba(168,85,247,0.3)] hover:shadow-[0_0_25px_rgba(168,85,247,0.5)] transition-all h-12 px-8"
                     >
-                        <Save className="w-4 h-4 mr-2" />
+                        <Save className="w-5 h-5 mr-2" />
                         {loading ? "Enregistrement..." : "Enregistrer les menus"}
                     </Button>
                 </div>

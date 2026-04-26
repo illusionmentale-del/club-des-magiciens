@@ -33,7 +33,7 @@ export default function AdminUsersClient({ profiles }: AdminUsersClientProps) {
     const activeProfiles = filteredProfiles.filter(p => !p.deleted_at);
     const deletedProfiles = filteredProfiles.filter(p => p.deleted_at);
 
-    const btnColor = 'bg-[#f5f5f7] text-[#1c1c1e] hover:bg-white rounded-[16px]';
+    const btnColor = 'bg-[#100b1a] border border-white/5 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.5)] hover:border-brand-purple/50 text-white rounded-2xl shadow-[0_0_15px_rgba(168,85,247,0.3)] hover:shadow-[0_0_25px_rgba(168,85,247,0.5)] transition-all';
 
     return (
         <div className={`w-full text-white transition-colors duration-500`}>

@@ -211,7 +211,7 @@ export default function PushAdminPage() {
                         </div>
                     )}
 
-                    <div className="flex items-start gap-3 p-4 bg-[#100b1a] bg-[#100b1a] border border-white/5 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.5)] hover:border-brand-purple/30 transition-all rounded-[24px]">
+                    <div className="flex items-start gap-3 p-4 bg-[#100b1a] border border-white/5 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.5)] hover:border-brand-purple/50 transition-all rounded-[24px]">
                         <AlertTriangle className="w-5 h-5 text-brand-text-muted shrink-0 mt-0.5" />
                         <div className="text-[11px] font-light text-brand-text-muted leading-relaxed">
                             <strong className="text-brand-text font-bold block mb-1">Rappel Apple (iOS)</strong>

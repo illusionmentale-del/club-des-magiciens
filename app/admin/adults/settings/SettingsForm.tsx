@@ -16,7 +16,7 @@ export default function SettingsForm({ settings }: SettingsFormProps) {
     };
 
     return (
-        <div className="min-h-screen transition-colors duration-500 bg-magic-bg">
+        <div className="min-h-screen transition-colors duration-500">
             <div className="p-8">
                 <div className="max-w-2xl mx-auto">
                     {/* Header */}
@@ -25,14 +25,16 @@ export default function SettingsForm({ settings }: SettingsFormProps) {
                             <Link href="/admin" className="p-2 rounded-lg transition-colors bg-white/5 hover:bg-white/10 text-white">
                                 <ArrowLeft />
                             </Link>
-                            <h1 className="text-3xl font-bold flex items-center gap-2 text-white">
-                                <Shield className="w-8 h-8 text-blue-400" />
-                                Paramètres de la Vitrine <span className="text-sm font-normal text-slate-400 mt-2 ml-2">(Logo, Textes, RS)</span>
+                            <h1 className="text-3xl font-bold flex items-center gap-2 text-white tracking-tight">
+                                <div className="p-2 bg-brand-purple/10 rounded-lg border border-brand-purple/20">
+                                    <Shield className="w-6 h-6 text-brand-purple" />
+                                </div>
+                                Paramètres de la Vitrine <span className="text-sm font-normal text-brand-text-muted mt-2 ml-2 tracking-normal">(Logo, Textes, RS)</span>
                             </h1>
                         </div>
                     </header>
 
-                    <div className="bg-magic-card border border-white/10 p-8 rounded-2xl shadow-xl transition-all duration-500">
+                    <div className="bg-[#100b1a] border border-white/5 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.5)] hover:border-brand-purple/30 p-8 rounded-3xl transition-all duration-500">
                         <form action={updateSettings} className="space-y-8">
                             <input type="hidden" name="context" value="adult" />
 
@@ -42,7 +44,7 @@ export default function SettingsForm({ settings }: SettingsFormProps) {
                             </section>
 
                             <section className="space-y-4">
-                                <h2 className="text-xl font-bold text-magic-royal border-b border-white/10 pb-2">Textes Généraux</h2>
+                                <h2 className="text-xl font-bold text-brand-purple border-b border-white/10 pb-2">Textes Généraux</h2>
 
                                 <div>
                                     <label className="block text-sm font-medium text-gray-400 mb-1">Titre Principal Dashboard</label>
@@ -50,7 +52,7 @@ export default function SettingsForm({ settings }: SettingsFormProps) {
                                         type="text"
                                         name="dashboard_title"
                                         defaultValue={getValue("dashboard_title")}
-                                        className="w-full bg-black/50 border border-white/10 text-white rounded-xl p-3 focus:ring-2 focus:ring-magic-purple outline-none transition-all"
+                                        className="w-full bg-black/50 border border-white/10 text-white rounded-xl p-3 focus:ring-2 focus:ring-brand-purple outline-none transition-all"
                                     />
                                 </div>
 
@@ -60,13 +62,13 @@ export default function SettingsForm({ settings }: SettingsFormProps) {
                                         name="welcome_message"
                                         rows={3}
                                         defaultValue={getValue("welcome_message")}
-                                        className="w-full bg-black/50 border border-white/10 text-white rounded-xl p-3 focus:ring-2 focus:ring-magic-purple outline-none transition-all"
+                                        className="w-full bg-black/50 border border-white/10 text-white rounded-xl p-3 focus:ring-2 focus:ring-brand-purple outline-none transition-all"
                                     />
                                 </div>
                             </section>
 
                             <section className="space-y-4">
-                                <h2 className="text-xl font-bold text-magic-royal border-b border-white/10 pb-2">Sections</h2>
+                                <h2 className="text-xl font-bold text-brand-purple border-b border-white/10 pb-2">Sections</h2>
 
                                 <div>
                                     <label className="block text-sm font-medium text-gray-400 mb-1">Titre Section News</label>
@@ -90,7 +92,7 @@ export default function SettingsForm({ settings }: SettingsFormProps) {
                             </section>
 
                             <section className="space-y-4">
-                                <h2 className="text-xl font-bold text-magic-royal border-b border-white/10 pb-2">Réseaux Sociaux (Barre Latérale)</h2>
+                                <h2 className="text-xl font-bold text-brand-purple border-b border-white/10 pb-2">Réseaux Sociaux (Barre Latérale)</h2>
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     {['youtube', 'instagram', 'facebook', 'tiktok'].map((social) => (
                                         <div key={social}>
@@ -107,7 +109,7 @@ export default function SettingsForm({ settings }: SettingsFormProps) {
                             </section>
 
                             <section className="space-y-4">
-                                <h2 className="text-xl font-bold text-magic-royal border-b border-white/10 pb-2">Contenu Multimédia</h2>
+                                <h2 className="text-xl font-bold text-brand-purple border-b border-white/10 pb-2">Contenu Multimédia</h2>
 
                                 <div>
                                     <label className="block text-sm font-medium text-gray-400 mb-1">ID Vidéo YouTube à la une</label>
@@ -131,7 +133,7 @@ export default function SettingsForm({ settings }: SettingsFormProps) {
                                 </div>
                             </section>
 
-                            <div className="pt-4 sticky bottom-4 z-10 bg-magic-card/90 backdrop-blur pb-2">
+                            <div className="pt-4 sticky bottom-4 z-10 bg-[#100b1a]/90 backdrop-blur pb-2">
                                 <SubmitButton label="Sauvegarder" />
                             </div>
 

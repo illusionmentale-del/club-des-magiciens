@@ -71,7 +71,7 @@ export default function LegalPagesAdmin() {
 
     if (pages.length === 0) {
         return (
-            <div className="bg-brand-card border border-white/5 rounded-[24px] p-8 text-center max-w-2xl mx-auto mt-12">
+            <div className="bg-[#100b1a] border border-white/5 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.5)] rounded-3xl p-8 text-center max-w-2xl mx-auto mt-12">
                 <AlertCircle className="w-12 h-12 text-yellow-500 mx-auto mb-4" />
                 <h2 className="text-xl font-bold text-white mb-2">Base de données non initialisée</h2>
                 <p className="text-brand-text-muted mb-4">
@@ -100,8 +100,8 @@ export default function LegalPagesAdmin() {
                         <button
                             key={page.id}
                             onClick={() => handleSelectPage(page.id)}
-                            className={`px-4 py-2 text-sm font-bold rounded-[12px] whitespace-nowrap transition-all ${selectedPageId === page.id
-                                ? "bg-[#f5f5f7] text-[#1c1c1e] shadow-lg"
+                            className={`px-4 py-2 text-sm font-bold rounded-xl whitespace-nowrap transition-all ${selectedPageId === page.id
+                                ? "bg-brand-purple text-white shadow-[0_0_15px_rgba(168,85,247,0.4)]"
                                 : "text-brand-text-muted hover:text-white hover:bg-white/5"
                                 }`}
                         >
@@ -113,7 +113,7 @@ export default function LegalPagesAdmin() {
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 h-full">
                 {/* Éditeur */}
-                <div className="flex flex-col gap-4 bg-brand-card border border-white/5 rounded-[24px] p-6 shadow-xl">
+                <div className="flex flex-col gap-4 bg-[#100b1a] border border-white/5 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.5)] hover:border-brand-purple/30 transition-all overflow-hidden rounded-3xl p-8">
                     <div className="flex items-center justify-between mb-2">
                         <h2 className="font-bold text-white flex items-center gap-2">
                             <FileText className="w-4 h-4 text-white" />
@@ -122,8 +122,8 @@ export default function LegalPagesAdmin() {
                         <button
                             onClick={handleSave}
                             disabled={isSaving}
-                            className={`flex items-center gap-2 px-4 py-2 text-sm font-bold rounded-[16px] transition-all ${saveStatus === 'success' ? 'bg-green-500/20 text-green-400 border border-green-500/30' :
-                                'bg-[#f5f5f7] text-[#1c1c1e] hover:bg-white shadow-lg'
+                            className={`flex items-center gap-2 px-6 py-2 text-sm font-bold rounded-2xl transition-all h-10 ${saveStatus === 'success' ? 'bg-green-500/20 text-green-400 border border-green-500/30' :
+                                'bg-brand-purple hover:bg-indigo-500 text-white shadow-[0_0_15px_rgba(168,85,247,0.3)] hover:shadow-[0_0_25px_rgba(168,85,247,0.5)]'
                                 }`}
                         >
                             {isSaving ? (
@@ -150,16 +150,16 @@ export default function LegalPagesAdmin() {
                 </div>
 
                 {/* Aperçu en direct */}
-                <div className="flex flex-col bg-white rounded-[24px] p-8 shadow-xl border border-gray-200 overflow-hidden text-gray-900">
-                    <div className="border-b border-gray-200 pb-4 mb-6">
-                        <span className="text-[10px] font-black uppercase tracking-widest text-[#86868b] mb-1 block">Aperçu en direct</span>
+                <div className="flex flex-col bg-[#100b1a] border border-white/5 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.5)] transition-all overflow-hidden rounded-3xl p-8 text-white">
+                    <div className="border-b border-white/10 pb-4 mb-6">
+                        <span className="text-[10px] font-black uppercase tracking-widest text-brand-purple mb-1 block">Aperçu en direct</span>
                         <h2 className="text-2xl font-black">{selectedPage?.title}</h2>
                     </div>
 
                     {/* Conteneur stylisé pour que l'HTML s'affiche proprement */}
                     <div
-                        className="prose prose-sm md:prose-base max-w-none prose-headings:font-black prose-headings:text-gray-900 prose-a:text-[#1c1c1e] overflow-y-auto h-[450px]"
-                        dangerouslySetInnerHTML={{ __html: content || "<p class='text-gray-400 italic'>L'aperçu apparaîtra ici...</p>" }}
+                        className="prose prose-sm md:prose-base max-w-none prose-headings:font-black prose-headings:text-white prose-a:text-brand-purple prose-strong:text-white text-gray-300 overflow-y-auto h-[450px]"
+                        dangerouslySetInnerHTML={{ __html: content || "<p class='text-gray-500 italic'>L'aperçu apparaîtra ici...</p>" }}
                     />
                 </div>
             </div>

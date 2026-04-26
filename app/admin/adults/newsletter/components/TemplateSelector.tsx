@@ -12,7 +12,6 @@ interface Props {
 
 export function TemplateSelector({ selected, onSelect }: Props) {
     const pathname = usePathname();
-    const isAdults = pathname?.includes('/adults/');
 
     const templates = [
         {
@@ -48,23 +47,23 @@ export function TemplateSelector({ selected, onSelect }: Props) {
                             key={t.id}
                             onClick={() => onSelect(t.id)}
                             type="button"
-                            className={`p-4 rounded-[24px] border text-left flex flex-col items-start gap-4 transition-all relative overflow-hidden group ${isSelected
-                                    ? (isAdults ? 'bg-[#100b1a] border border-white/5 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.5)] hover:border-brand-purple/30 transition-all border-[#f5f5f7] shadow-lg' : 'bg-brand-purple/10 border-brand-purple shadow-[0_0_20px_rgba(234,179,8,0.15)]')
-                                    : 'bg-black/20 border-white/5 hover:border-brand-purple/30 hover:bg-black/40'
+                            className={`p-4 rounded-3xl border text-left flex flex-col items-start gap-4 transition-all relative overflow-hidden group ${isSelected
+                                    ? 'bg-brand-purple/10 border-brand-purple shadow-[0_0_20px_rgba(168,85,247,0.3)]'
+                                    : 'bg-black/20 border-white/5 hover:border-brand-purple/30 hover:bg-black/40 shadow-md hover:shadow-[0_0_15px_rgba(168,85,247,0.15)]'
                                 }`}
                         >
                             {isSelected && (
-                                <div className={`absolute top-3 right-3 w-5 h-5 rounded-full flex items-center justify-center ${isAdults ? 'bg-[#f5f5f7]' : 'bg-brand-purple'}`}>
-                                    <Check className="w-3 h-3 text-black" />
+                                <div className={`absolute top-3 right-3 w-5 h-5 rounded-full flex items-center justify-center bg-brand-purple shadow-[0_0_10px_rgba(168,85,247,0.5)]`}>
+                                    <Check className="w-3 h-3 text-white" />
                                 </div>
                             )}
 
-                            <div className={`p-3 rounded-[16px] ${isSelected ? (isAdults ? 'bg-white/10' : 'bg-brand-purple/20') : 'bg-white/5 group-hover:bg-white/10'}`}>
-                                <Icon className={`w-6 h-6 ${isSelected ? (isAdults ? 'text-brand-text' : 'text-brand-purple') : 'text-brand-text-muted'}`} />
+                            <div className={`p-3 rounded-2xl ${isSelected ? 'bg-brand-purple/20' : 'bg-white/5 group-hover:bg-white/10 transition-colors'}`}>
+                                <Icon className={`w-6 h-6 ${isSelected ? 'text-brand-purple drop-shadow-[0_0_8px_rgba(168,85,247,0.8)]' : 'text-brand-text-muted'}`} />
                             </div>
 
                             <div>
-                                <h3 className={`font-bold text-sm mb-1 ${isSelected ? (isAdults ? 'text-brand-text' : 'text-brand-purple') : 'text-white'}`}>{t.name}</h3>
+                                <h3 className={`font-bold text-sm mb-1 ${isSelected ? 'text-brand-purple' : 'text-white'}`}>{t.name}</h3>
                                 <p className="text-xs text-brand-text-muted/80">{t.description}</p>
                             </div>
                         </button>

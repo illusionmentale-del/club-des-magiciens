@@ -58,8 +58,8 @@ export default function AdultLabelsConfig({ initialSettings }: AdultLabelsConfig
     };
 
     return (
-        <Card className="bg-black/50 border-white/5 shadow-2xl overflow-hidden mt-12 backdrop-blur-md">
-            <CardHeader className="border-b border-white/5 bg-white/[0.02]">
+        <Card className="bg-[#100b1a] border border-white/5 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.5)] hover:border-brand-purple/30 transition-all overflow-hidden rounded-3xl mt-12 backdrop-blur-md">
+            <CardHeader className="border-b border-white/5 bg-transparent p-8">
                 <CardTitle className="text-xl font-black uppercase tracking-tighter flex items-center justify-between text-white">
                     <div className="flex items-center gap-3">
                         <Type className="text-brand-purple" />
@@ -73,7 +73,7 @@ export default function AdultLabelsConfig({ initialSettings }: AdultLabelsConfig
                 </p>
 
                 <div className="space-y-6">
-                    <h3 className="text-sm font-bold uppercase tracking-widest text-magic-royal border-b border-white/10 pb-2">Menu Latéral (Navigation)</h3>
+                    <h3 className="text-sm font-bold uppercase tracking-widest text-brand-purple border-b border-white/10 pb-2">Menu Latéral (Navigation)</h3>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div className="space-y-2">
                             <label className="text-xs font-bold text-slate-400 uppercase tracking-widest">Lien Accueil</label>
@@ -81,7 +81,7 @@ export default function AdultLabelsConfig({ initialSettings }: AdultLabelsConfig
                                 type="text"
                                 value={labels.nav_actu}
                                 onChange={(e) => handleChange('nav_actu', e.target.value)}
-                                className="w-full bg-[#111] border border-white/10 rounded-lg p-3 text-white text-sm focus:border-magic-royal/50 outline-none"
+                                className="w-full bg-[#111] border border-white/10 rounded-lg p-3 text-white text-sm focus:border-brand-purple/50 outline-none"
                             />
                         </div>
                         <div className="space-y-2">
@@ -90,7 +90,7 @@ export default function AdultLabelsConfig({ initialSettings }: AdultLabelsConfig
                                 type="text"
                                 value={labels.nav_videos}
                                 onChange={(e) => handleChange('nav_videos', e.target.value)}
-                                className="w-full bg-[#111] border border-white/10 rounded-lg p-3 text-white text-sm focus:border-magic-royal/50 outline-none"
+                                className="w-full bg-[#111] border border-white/10 rounded-lg p-3 text-white text-sm focus:border-brand-purple/50 outline-none"
                             />
                         </div>
                         <div className="space-y-2">
@@ -99,7 +99,7 @@ export default function AdultLabelsConfig({ initialSettings }: AdultLabelsConfig
                                 type="text"
                                 value={labels.nav_formations}
                                 onChange={(e) => handleChange('nav_formations', e.target.value)}
-                                className="w-full bg-[#111] border border-white/10 rounded-lg p-3 text-white text-sm focus:border-magic-royal/50 outline-none"
+                                className="w-full bg-[#111] border border-white/10 rounded-lg p-3 text-white text-sm focus:border-brand-purple/50 outline-none"
                             />
                         </div>
                         <div className="space-y-2">
@@ -108,7 +108,7 @@ export default function AdultLabelsConfig({ initialSettings }: AdultLabelsConfig
                                 type="text"
                                 value={labels.nav_boutique}
                                 onChange={(e) => handleChange('nav_boutique', e.target.value)}
-                                className="w-full bg-[#111] border border-white/10 rounded-lg p-3 text-white text-sm focus:border-magic-royal/50 outline-none"
+                                className="w-full bg-[#111] border border-white/10 rounded-lg p-3 text-white text-sm focus:border-brand-purple/50 outline-none"
                             />
                         </div>
                         <div className="space-y-2">
@@ -117,14 +117,14 @@ export default function AdultLabelsConfig({ initialSettings }: AdultLabelsConfig
                                 type="text"
                                 value={labels.nav_settings}
                                 onChange={(e) => handleChange('nav_settings', e.target.value)}
-                                className="w-full bg-[#111] border border-white/10 rounded-lg p-3 text-white text-sm focus:border-magic-royal/50 outline-none"
+                                className="w-full bg-[#111] border border-white/10 rounded-lg p-3 text-white text-sm focus:border-brand-purple/50 outline-none"
                             />
                         </div>
                     </div>
                 </div>
 
                 <div className="space-y-6">
-                    <h3 className="text-sm font-bold uppercase tracking-widest text-magic-royal border-b border-white/10 pb-2">Titres de Pages</h3>
+                    <h3 className="text-sm font-bold uppercase tracking-widest text-brand-purple border-b border-white/10 pb-2">Titres de Pages</h3>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div className="space-y-2">
                             <label className="text-xs font-bold text-slate-400 uppercase tracking-widest">Titre Accueil (QG)</label>
@@ -132,7 +132,7 @@ export default function AdultLabelsConfig({ initialSettings }: AdultLabelsConfig
                                 type="text"
                                 value={labels.page_dashboard_title}
                                 onChange={(e) => handleChange('page_dashboard_title', e.target.value)}
-                                className="w-full bg-[#111] border border-white/10 rounded-lg p-3 text-white text-sm focus:border-magic-royal/50 outline-none"
+                                className="w-full bg-[#111] border border-white/10 rounded-lg p-3 text-white text-sm focus:border-brand-purple/50 outline-none"
                             />
                         </div>
                         <div className="space-y-2">
@@ -141,7 +141,7 @@ export default function AdultLabelsConfig({ initialSettings }: AdultLabelsConfig
                                 type="text"
                                 value={labels.page_videos_title}
                                 onChange={(e) => handleChange('page_videos_title', e.target.value)}
-                                className="w-full bg-[#111] border border-white/10 rounded-lg p-3 text-white text-sm focus:border-magic-royal/50 outline-none"
+                                className="w-full bg-[#111] border border-white/10 rounded-lg p-3 text-white text-sm focus:border-brand-purple/50 outline-none"
                             />
                         </div>
                         <div className="space-y-2">
@@ -150,7 +150,7 @@ export default function AdultLabelsConfig({ initialSettings }: AdultLabelsConfig
                                 type="text"
                                 value={labels.page_formations_subtitle}
                                 onChange={(e) => handleChange('page_formations_subtitle', e.target.value)}
-                                className="w-full bg-[#111] border border-white/10 rounded-lg p-3 text-white text-sm focus:border-magic-royal/50 outline-none"
+                                className="w-full bg-[#111] border border-white/10 rounded-lg p-3 text-white text-sm focus:border-brand-purple/50 outline-none"
                             />
                         </div>
                         <div className="space-y-2">
@@ -159,7 +159,7 @@ export default function AdultLabelsConfig({ initialSettings }: AdultLabelsConfig
                                 type="text"
                                 value={labels.page_formations_title}
                                 onChange={(e) => handleChange('page_formations_title', e.target.value)}
-                                className="w-full bg-[#111] border border-white/10 rounded-lg p-3 text-white text-sm focus:border-magic-royal/50 outline-none"
+                                className="w-full bg-[#111] border border-white/10 rounded-lg p-3 text-white text-sm focus:border-brand-purple/50 outline-none"
                             />
                         </div>
                     </div>
@@ -169,9 +169,9 @@ export default function AdultLabelsConfig({ initialSettings }: AdultLabelsConfig
                     <Button
                         onClick={handleSave}
                         disabled={loading}
-                        className="bg-brand-purple text-black font-bold hover:bg-brand-purple"
+                        className="w-full sm:w-auto bg-brand-purple hover:bg-indigo-500 text-white font-bold rounded-2xl shadow-[0_0_15px_rgba(168,85,247,0.3)] hover:shadow-[0_0_25px_rgba(168,85,247,0.5)] transition-all h-12 px-8"
                     >
-                        <Save className="w-4 h-4 mr-2" />
+                        <Save className="w-5 h-5 mr-2" />
                         {loading ? "Enregistrement..." : "Enregistrer les textes"}
                     </Button>
                 </div>

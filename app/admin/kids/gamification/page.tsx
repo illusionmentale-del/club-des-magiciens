@@ -212,22 +212,22 @@ export default function AdminGamificationPage() {
                         <p className="text-gray-400">Gestion des Missions et Récompenses</p>
                     </div>
                     {activeTab === 'badges' && (
-                        <button onClick={() => setShowForm(!showForm)} className="bg-purple-600 hover:bg-purple-500 text-white px-6 py-3 rounded-[16px] font-bold flex items-center gap-2 transition-all shadow-lg">
+                        <button onClick={() => setShowForm(!showForm)} className="bg-purple-600 hover:bg-purple-500 text-white px-6 py-3 rounded-2xl font-bold flex items-center gap-2 transition-all shadow-[0_0_15px_rgba(147,51,234,0.4)] hover:shadow-[0_0_25px_rgba(147,51,234,0.6)]">
                             <Plus className="w-5 h-5" /> Nouveau Badge
                         </button>
                     )}
                     {activeTab === 'quests' && (
-                        <button onClick={() => setShowQuestForm(!showQuestForm)} className="bg-green-600 hover:bg-green-500 text-white px-6 py-3 rounded-[16px] font-bold flex items-center gap-2 transition-all shadow-lg">
+                        <button onClick={() => setShowQuestForm(!showQuestForm)} className="bg-green-600 hover:bg-green-500 text-white px-6 py-3 rounded-2xl font-bold flex items-center gap-2 transition-all shadow-[0_0_15px_rgba(22,163,74,0.4)] hover:shadow-[0_0_25px_rgba(22,163,74,0.6)]">
                             <Plus className="w-5 h-5" /> Nouveau Succès
                         </button>
                     )}
                     {activeTab === 'levels' && (
-                        <button onClick={() => setShowLevelForm(!showLevelForm)} className="bg-blue-600 hover:bg-blue-500 text-white px-6 py-3 rounded-[16px] font-bold flex items-center gap-2 transition-all shadow-lg">
+                        <button onClick={() => setShowLevelForm(!showLevelForm)} className="bg-blue-600 hover:bg-blue-500 text-white px-6 py-3 rounded-2xl font-bold flex items-center gap-2 transition-all shadow-[0_0_15px_rgba(37,99,235,0.4)] hover:shadow-[0_0_25px_rgba(37,99,235,0.6)]">
                             <Plus className="w-5 h-5" /> Nouveau Niveau
                         </button>
                     )}
                     {activeTab === 'skins' && (
-                        <button onClick={() => setShowSkinForm(!showSkinForm)} className="bg-indigo-600 hover:bg-brand-purple text-white px-6 py-3 rounded-[16px] font-bold flex items-center gap-2 transition-all shadow-lg">
+                        <button onClick={() => setShowSkinForm(!showSkinForm)} className="bg-brand-purple hover:bg-indigo-500 text-white px-6 py-3 rounded-2xl font-bold flex items-center gap-2 transition-all shadow-[0_0_15px_rgba(168,85,247,0.4)] hover:shadow-[0_0_25px_rgba(168,85,247,0.6)]">
                             <Plus className="w-5 h-5" /> Nouvel Avatar
                         </button>
                     )}
@@ -263,7 +263,7 @@ export default function AdminGamificationPage() {
                 {activeTab === 'quests' && (
                     <>
                         {showQuestForm && (
-                            <div className="bg-magic-card border border-green-500/30 rounded-[24px] p-6 mb-8 animate-in slide-in-from-top-4">
+                            <div className="bg-[#100b1a] border border-green-500/30 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.5)] rounded-3xl p-8 mb-8 animate-in slide-in-from-top-4">
                                 <h2 className="font-bold text-lg mb-4 text-green-300">Créer un Succès</h2>
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                                     <input
@@ -389,7 +389,7 @@ export default function AdminGamificationPage() {
 
                         <div className="grid grid-cols-1 gap-4">
                             {loading ? <div className="text-center py-8">Chargement...</div> : quests.map(quest => (
-                                <div key={quest.id} className="bg-[#1a1025] border border-green-500/20 rounded-[16px] p-5 flex items-center gap-6 hover:border-green-500/40 transition-colors relative overflow-hidden">
+                                <div key={quest.id} className="bg-[#100b1a] shadow-[0_20px_50px_-15px_rgba(0,0,0,0.5)] border border-white/5 rounded-2xl p-5 flex items-center gap-6 hover:border-green-500/50 transition-all relative overflow-hidden">
                                     <div className="absolute top-0 left-0 w-2 h-full bg-green-500"></div>
                                     {quest.icon_url && (
                                         <div className="w-14 h-14 flex-shrink-0 bg-black/50 rounded-[16px] flex items-center justify-center p-2 relative overflow-hidden border border-white/10">
@@ -428,7 +428,7 @@ export default function AdminGamificationPage() {
                 {activeTab === 'levels' && (
                     <>
                         {showLevelForm && (
-                            <div className="bg-magic-card border border-blue-500/30 rounded-[24px] p-6 mb-8 animate-in slide-in-from-top-4">
+                            <div className="bg-[#100b1a] border border-blue-500/30 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.5)] rounded-3xl p-8 mb-8 animate-in slide-in-from-top-4">
                                 <h2 className="font-bold text-lg mb-4 text-blue-300">Créer un Niveau</h2>
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                                     <input
@@ -453,7 +453,7 @@ export default function AdminGamificationPage() {
                                 </div>
                             </div>
                         )}
-                        <div className="bg-brand-card/50 border border-white/5 rounded-[24px] md:p-8">
+                        <div className="bg-[#100b1a] border border-white/5 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.5)] rounded-3xl md:p-8">
                            <div className="grid grid-cols-1 gap-2 max-w-xl mx-auto">
                                {levels.map((lvl, index) => (
                                    <div key={lvl.id} className="flex items-center justify-between p-4 bg-black/40 border border-white/5 rounded-[16px]">
@@ -480,7 +480,7 @@ export default function AdminGamificationPage() {
                 {activeTab === 'skins' && (
                     <>
                         {showSkinForm && (
-                            <div className="bg-magic-card border border-brand-purple/30 rounded-[24px] p-6 mb-8 animate-in slide-in-from-top-4">
+                            <div className="bg-[#100b1a] border border-brand-purple/30 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.5)] rounded-3xl p-8 mb-8 animate-in slide-in-from-top-4">
                                 <h2 className="font-bold text-lg mb-4 text-pink-300">Ajouter un Avatar (Skin)</h2>
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                                     <input
@@ -535,7 +535,7 @@ export default function AdminGamificationPage() {
 
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                             {skins.map((skin) => (
-                                <div key={skin.id} className="bg-brand-card/50 border border-white/5 rounded-[24px] p-4 flex flex-col items-center text-center relative hover:border-brand-purple/30 transition-colors">
+                                <div key={skin.id} className="bg-[#100b1a] shadow-[0_20px_50px_-15px_rgba(0,0,0,0.5)] border border-white/5 rounded-3xl p-4 flex flex-col items-center text-center relative hover:border-brand-purple/50 transition-all">
                                     <button onClick={() => handleDeleteSkin(skin.id)} className="absolute top-2 right-2 p-2 bg-black/50 rounded-full text-gray-400 hover:text-red-400 transition-colors z-10">
                                         <Trash2 className="w-4 h-4" />
                                     </button>
@@ -572,7 +572,7 @@ export default function AdminGamificationPage() {
                 {activeTab === 'badges' && (
                     <>
                     {showForm && (
-                        <div className="bg-magic-card border border-purple-500/30 rounded-[24px] p-6 mb-8 animate-in slide-in-from-top-4">
+                        <div className="bg-[#100b1a] border border-purple-500/30 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.5)] rounded-3xl p-8 mb-8 animate-in slide-in-from-top-4">
                         <h2 className="font-bold text-lg mb-4 text-purple-300">Créer un Badge</h2>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                             <input
@@ -641,7 +641,7 @@ export default function AdminGamificationPage() {
                     {loading ? (
                         <div className="text-center py-8 text-gray-500 col-span-2">Chargement...</div>
                     ) : badges.map(badge => (
-                        <div key={badge.id} className="bg-magic-card border border-white/5 rounded-[16px] p-4 flex items-center gap-4 hover:border-white/20 transition-colors">
+                        <div key={badge.id} className="bg-[#100b1a] border border-white/5 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.5)] rounded-2xl p-4 flex items-center gap-4 hover:border-purple-500/30 transition-all">
                             <div className="w-16 h-16 bg-black/50 rounded-[12px] flex items-center justify-center relative overflow-hidden">
                                 {badge.image_url ? (
                                     <Image src={badge.image_url} alt={badge.name} fill className="object-contain p-2" />

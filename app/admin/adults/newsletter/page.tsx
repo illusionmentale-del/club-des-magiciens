@@ -167,7 +167,7 @@ export default function NewsletterAdminPage() {
                         <button
                             onClick={() => handleSendAction(true)}
                             disabled={isTesting || isSending}
-                            className="px-6 py-3 rounded-[16px] font-bold uppercase tracking-widest text-xs bg-[#100b1a] bg-[#100b1a] border border-white/5 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.5)] hover:border-brand-purple/30 transition-all text-brand-text-muted hover:text-brand-text flex items-center justify-center transition-all min-w-[150px] disabled:opacity-50"
+                            className="px-6 py-3 rounded-[16px] font-bold uppercase tracking-widest text-xs bg-[#100b1a] border border-white/5 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.5)] hover:border-brand-purple/50 text-brand-text-muted hover:text-white flex items-center justify-center transition-all min-w-[150px] disabled:opacity-50"
                         >
                             {isTesting ? <Loader2 className="w-5 h-5 animate-spin mx-auto" /> : "S'envoyer un Test"}
                         </button>
