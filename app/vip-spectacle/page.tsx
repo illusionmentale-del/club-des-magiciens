@@ -10,12 +10,12 @@ export const metadata: Metadata = {
 
 export default function VIPRequestPage() {
     return (
-        <div className="min-h-[80vh] flex items-center justify-center relative p-4 mb-20 mt-10">
+        <div className="min-h-[100dvh] bg-brand-bg flex items-center justify-center relative p-4 mb-20 mt-10">
             {/* Background Ambience */}
-            <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] bg-brand-purple/20 blur-[150px] rounded-full pointer-events-none mix-blend-screen"></div>
-            <div className="absolute top-[20%] right-[-10%] w-[40%] h-[40%] bg-brand-blue/10 blur-[120px] rounded-full pointer-events-none mix-blend-screen"></div>
+            <div className="absolute top-[20%] left-[10%] w-[500px] h-[500px] bg-brand-purple/5 blur-[150px] rounded-full pointer-events-none fixed mix-blend-screen"></div>
+            <div className="absolute top-[40%] right-[10%] w-[400px] h-[400px] bg-brand-purple/10 blur-[120px] rounded-full pointer-events-none fixed mix-blend-screen"></div>
 
-            <div className="max-w-md w-full relative z-10 bg-brand-card/80 backdrop-blur-xl border border-brand-purple/30 rounded-3xl p-8 shadow-2xl">
+            <div className="max-w-md w-full relative z-10 bg-[#0a0a0a] border border-white/10 rounded-[24px] p-8 shadow-2xl">
                 {/* Virtual VIP Card */}
                 <div className="flex justify-center mb-8 relative">
                     <div className="absolute inset-0 bg-brand-purple/20 blur-xl rounded-full"></div>
