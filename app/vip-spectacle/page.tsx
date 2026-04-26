@@ -45,7 +45,7 @@ export default function VIPRequestPage() {
                     </div>
                     
                     <h1 className="relative z-10 text-4xl md:text-5xl font-bold tracking-tighter text-white leading-[1.1]">
-                        Accès <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-purple to-purple-400">Privilège</span>
+                        Club des Petits <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-purple to-purple-400">Magiciens</span>
                     </h1>
                 </div>
                 

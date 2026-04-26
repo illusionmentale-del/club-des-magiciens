@@ -110,7 +110,7 @@ export default function VIPAdultForm() {
             <button 
                 type="submit" 
                 disabled={pending}
-                className="relative overflow-hidden w-full bg-brand-blue hover:bg-brand-blue/80 text-white font-bold py-4 px-6 rounded-xl transition-all shadow-lg hover:shadow-[0_0_20px_rgba(59,130,246,0.4)] flex items-center justify-center gap-2 mt-6 disabled:opacity-75 disabled:cursor-wait"
+                className="relative overflow-hidden w-full bg-brand-purple hover:bg-brand-purple/80 text-white font-bold py-4 px-6 rounded-xl transition-all shadow-lg hover:shadow-[0_0_20px_rgba(168,85,247,0.4)] flex items-center justify-center gap-2 mt-6 disabled:opacity-75 disabled:cursor-wait"
             >
                 {/* Shimmer Effect */}
                 {!pending && (
