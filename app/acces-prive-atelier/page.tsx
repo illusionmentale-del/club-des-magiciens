@@ -50,11 +50,12 @@ export default function VIPAdultRequestPage() {
                         </div>
                     </div>
                     
-                    <div className="text-center mb-10">
-                        <h1 className="text-3xl font-bold text-white mb-4 tracking-tight">Accès Privilège</h1>
-                        <p className="text-gray-400 text-sm leading-relaxed max-w-sm mx-auto font-light">
-                            Remplissez ce formulaire pour recevoir votre accès gratuit aux formations fondamentales de l'Atelier.
-                        </p>
+                    <h1 className="text-3xl font-black text-white text-center mb-4 tracking-tight">Accès Privilège</h1>
+                    
+                    <div className="flex flex-wrap justify-center gap-x-4 gap-y-2 mb-8 text-[11px] font-medium text-gray-400">
+                        <div className="flex items-center gap-1.5"><span className="text-brand-blue">✓</span> Masterclass exclusives</div>
+                        <div className="flex items-center gap-1.5"><span className="text-brand-blue">✓</span> Secrets professionnels</div>
+                        <div className="flex items-center gap-1.5"><span className="text-brand-blue">✓</span> Sans abonnement</div>
                     </div>
 
                     <VIPAdultForm />

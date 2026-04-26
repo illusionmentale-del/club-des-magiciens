@@ -15,9 +15,9 @@ function SubmitButton() {
         <button
             type="submit"
             disabled={pending}
-            className="w-full py-4 bg-white hover:bg-gray-200 text-black font-bold rounded-xl transition-all shadow-md hover:shadow-[0_0_20px_rgba(59,130,246,0.3)] disabled:opacity-50 disabled:cursor-not-allowed flex justify-center items-center"
+            className="w-full py-4 bg-gradient-to-r from-brand-blue to-cyan-500 hover:scale-[1.02] text-white font-black uppercase tracking-widest rounded-2xl transition-all shadow-lg hover:shadow-brand-blue/50 disabled:opacity-50 disabled:cursor-not-allowed flex justify-center items-center"
         >
-            {pending ? <Loader2 className="w-6 h-6 animate-spin text-black" /> : <span className="text-lg">Accéder à l'Atelier</span>}
+            {pending ? <Loader2 className="w-6 h-6 animate-spin" /> : <span className="text-lg">Accéder à l'Atelier</span>}
         </button>
     );
 }
@@ -32,8 +32,8 @@ function LoginFormContent() {
 
     return (
         <div className="w-full max-w-md z-10">
-            <div className="text-center mb-10">
-                <div className="relative w-40 h-20 mx-auto mb-6">
+            <div className="text-center mb-8 relative">
+                <div className="relative w-40 h-20 mx-auto mb-4 drop-shadow-[0_0_15px_rgba(59,130,246,0.5)]">
                     <Image
                         src="/logo.png"
                         alt="L'Atelier des Magiciens"
@@ -42,72 +42,72 @@ function LoginFormContent() {
                         priority
                     />
                 </div>
-                <h1 className="text-3xl font-bold text-white tracking-tight">
+                <h1 className="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-brand-blue to-cyan-400 uppercase tracking-tighter drop-shadow-sm">
                     L'Atelier des Magiciens
                 </h1>
-                <p className="text-gray-400 mt-3 font-light">Connectez-vous à votre espace membre</p>
+                <p className="text-brand-text-muted font-bold mt-2">Connectez-vous à votre espace membre</p>
             </div>
 
-            <div className="bg-[#0a0a0a] border border-white/10 rounded-[24px] p-8 md:p-10 shadow-2xl relative overflow-hidden">
+            <div className="bg-brand-card border-2 border-brand-blue/30 rounded-3xl p-8 shadow-2xl backdrop-blur-xl relative overflow-hidden group">
+                <div className="absolute inset-0 bg-gradient-to-br from-brand-blue/5 to-cyan-400/5 pointer-events-none"></div>
+
                 <form action={formAction} className="space-y-6 relative">
                     <input type="hidden" name="audience" value="adults" />
                     <input type="hidden" name="redirect" value={redirectUrl} />
-                    
-                    <div>
-                        <label className="block text-sm text-gray-300 mb-2 font-medium">Identifiant ou Email</label>
+
+                    <div className="space-y-2">
+                        <label className="block text-xs font-black uppercase tracking-widest text-brand-blue ml-1">Identifiant ou Email</label>
                         <div className="relative group/input">
-                            <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500 transition-colors group-focus-within/input:text-brand-blue" />
+                            <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-brand-blue transition-transform group-focus-within/input:scale-110" />
                             <input
                                 name="identifier"
                                 type="text"
-                                className="w-full pl-12 pr-4 py-4 bg-black/50 border border-white/10 rounded-xl focus:ring-1 focus:ring-brand-blue/50 focus:border-brand-blue focus:outline-none transition-all placeholder:text-gray-600 text-white"
+                                className="w-full pl-12 pr-4 py-4 bg-brand-bg/50 border-2 border-brand-border rounded-2xl focus:border-brand-blue focus:ring-4 focus:ring-brand-blue/20 focus:outline-none transition-all placeholder:text-gray-500 font-bold text-lg"
                                 placeholder="votre@email.com"
                                 required
                             />
                         </div>
                     </div>
 
-                    <div>
-                        <div className="flex justify-between mb-2">
-                            <label className="block text-sm text-gray-300 font-medium">Mot de passe</label>
-                            <Link href="/login/forgot-password" className="text-sm text-gray-400 hover:text-white transition-colors font-light">
+                    <div className="space-y-2">
+                        <div className="flex justify-between items-center ml-1">
+                            <label className="block text-xs font-black uppercase tracking-widest text-brand-blue">Mot de passe</label>
+                            <Link href="/login/forgot-password" title="Récupérer mon accès" className="text-[10px] font-black uppercase tracking-wider text-cyan-400 hover:text-brand-blue transition-colors">
                                 Oublié ?
                             </Link>
                         </div>
                         <div className="relative group/input">
-                            <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500 transition-colors group-focus-within/input:text-brand-blue" />
+                            <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-brand-blue transition-transform group-focus-within/input:scale-110" />
                             <input
                                 name="password"
                                 type="password"
-                                className="w-full pl-12 pr-4 py-4 bg-black/50 border border-white/10 rounded-xl focus:ring-1 focus:ring-brand-blue/50 focus:border-brand-blue focus:outline-none transition-all placeholder:text-gray-600 text-white"
+                                className="w-full pl-12 pr-4 py-4 bg-brand-bg/50 border-2 border-brand-border rounded-2xl focus:border-brand-blue focus:ring-4 focus:ring-brand-blue/20 focus:outline-none transition-all placeholder:text-gray-500 font-bold text-lg"
                                 placeholder="••••••••"
                                 required
                             />
                         </div>
                     </div>
 
-                    <div className="flex items-center gap-3 mt-4">
+                    <div className="flex items-center gap-3 ml-1">
                         <input
                             type="checkbox"
                             id="remember"
                             name="remember"
-                            className="w-5 h-5 rounded-[6px] border-white/10 bg-black/50 text-brand-blue focus:ring-brand-blue/50 focus:ring-offset-0 focus:ring-1"
+                            className="w-5 h-5 rounded border-2 border-brand-blue/50 bg-brand-bg/50 text-brand-blue focus:ring-brand-blue/20 focus:ring-4 focus:outline-none transition-all cursor-pointer accent-brand-blue"
                         />
-                        <label htmlFor="remember" className="text-sm text-gray-300 select-none cursor-pointer font-light">
+                        <label htmlFor="remember" className="text-xs font-black uppercase tracking-widest text-brand-blue cursor-pointer select-none">
                             Rester connecté
                         </label>
                     </div>
 
                     {state?.error && (
-                        <div className="p-4 bg-red-500/10 text-red-400 rounded-[16px] text-sm border border-red-500/20 flex items-center gap-3">
+                        <div className="p-4 bg-red-500/20 text-red-300 rounded-2xl text-sm border-2 border-red-500/30 flex items-center gap-3 font-bold animate-shake">
                             <AlertCircle className="w-5 h-5 shrink-0" />
                             {state.error}
                         </div>
                     )}
 
-                    <div className="pt-4">
-                        <SubmitButton />
-                    </div>
+                    <SubmitButton />
                 </form>
             </div>
         </div>
@@ -116,15 +116,16 @@ function LoginFormContent() {
 
 export default function AdultLoginPage() {
     return (
-        <div className="min-h-[100dvh] bg-brand-bg text-white flex flex-col p-4 relative overflow-y-auto">
-            {/* Subtle central glow */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-brand-blue/5 blur-[150px] rounded-full pointer-events-none fixed"></div>
-            
-            <div className="flex-1 flex flex-col justify-center items-center w-full max-w-md mx-auto py-8">
-                <Suspense fallback={<Loader2 className="w-8 h-8 animate-spin text-gray-400" />}>
-                    <LoginFormContent />
-                </Suspense>
+        <div className="min-h-[100dvh] bg-brand-bg text-white flex flex-col items-center justify-center p-4 relative overflow-hidden">
+            {/* Colorful Background Elements for Adults */}
+            <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
+                <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-brand-blue/30 rounded-full blur-[100px] animate-pulse"></div>
+                <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-cyan-500/20 rounded-full blur-[100px] animate-pulse" style={{ animationDelay: "1s" }}></div>
             </div>
+
+            <Suspense fallback={<Loader2 className="w-12 h-12 animate-spin text-brand-blue z-10" />}>
+                <LoginFormContent />
+            </Suspense>
         </div>
     );
 }
