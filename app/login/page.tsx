@@ -15,7 +15,7 @@ function SubmitButton() {
         <button
             type="submit"
             disabled={pending}
-            className="w-full py-3.5 bg-white hover:bg-gray-200 text-black font-bold rounded-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed flex justify-center items-center gap-2 shadow-[0_4px_14px_0_rgba(255,255,255,0.1)]"
+            className="w-full py-3.5 bg-white hover:bg-gray-200 text-black font-bold rounded-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed flex justify-center items-center gap-2 shadow-[0_4px_14px_0_rgba(255,255,255,0.1)] hover:shadow-[0_0_20px_rgba(168,85,247,0.3)]"
         >
             {pending ? <Loader2 className="w-5 h-5 animate-spin" /> : <span className="flex items-center gap-2">Se connecter <ArrowRight className="w-4 h-4" /></span>}
         </button>
@@ -44,7 +44,7 @@ function LoginFormContent() {
                 </div>
             </div>
 
-            <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-8 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.8)]">
+            <div className="bg-[#0a0a0a] border border-white/10 rounded-[24px] p-8 shadow-2xl relative overflow-hidden">
                 <h2 className="text-2xl font-bold text-center mb-8">Connexion</h2>
 
                 <form action={formAction} className="space-y-6">
@@ -56,7 +56,7 @@ function LoginFormContent() {
                             <input
                                 name="identifier"
                                 type="text"
-                                className="w-full pl-10 pr-4 py-3 bg-black border border-white/10 rounded-xl focus:border-white focus:ring-1 focus:ring-white focus:outline-none transition-all placeholder:text-gray-600"
+                                className="w-full pl-10 pr-4 py-3 bg-black/50 border border-white/10 rounded-xl focus:border-brand-purple focus:ring-1 focus:ring-brand-purple/50 focus:outline-none transition-all placeholder:text-gray-600 text-white"
                                 placeholder="lemagicien"
                                 required
                             />
@@ -75,7 +75,7 @@ function LoginFormContent() {
                             <input
                                 name="password"
                                 type="password"
-                                className="w-full pl-10 pr-4 py-3 bg-black border border-white/10 rounded-xl focus:border-white focus:ring-1 focus:ring-white focus:outline-none transition-all placeholder:text-gray-600"
+                                className="w-full pl-10 pr-4 py-3 bg-black/50 border border-white/10 rounded-xl focus:border-brand-purple focus:ring-1 focus:ring-brand-purple/50 focus:outline-none transition-all placeholder:text-gray-600 text-white"
                                 placeholder="••••••••"
                                 required
                             />
@@ -110,9 +110,9 @@ function LoginFormContent() {
 
 export default function LoginPage() {
     return (
-        <div className="min-h-[100dvh] bg-black text-white flex flex-col p-4 relative overflow-y-auto">
+        <div className="min-h-[100dvh] bg-brand-bg text-white flex flex-col p-4 relative overflow-y-auto">
             {/* Subtle central glow */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-lg h-full max-h-lg bg-white/5 blur-[120px] rounded-full pointer-events-none fixed"></div>
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-brand-purple/5 blur-[150px] rounded-full pointer-events-none fixed"></div>
 
             <div className="flex-1 flex flex-col justify-center items-center w-full max-w-md mx-auto py-8">
                 <Suspense fallback={<Loader2 className="w-8 h-8 animate-spin text-magic-purple" />}>

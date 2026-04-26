@@ -37,9 +37,9 @@ export default async function AdultsPricingPage() {
     };
 
     return (
-        <div className="min-h-screen bg-[#000000] text-[#f5f5f7] font-sans selection:bg-white/30 relative overflow-hidden">
+        <div className="min-h-screen bg-brand-bg text-[#f5f5f7] font-sans selection:bg-brand-purple/30 relative overflow-hidden">
             {/* Ambient Background */}
-            <div className="absolute top-[-20%] left-1/2 -translate-x-1/2 w-[80%] h-[80%] bg-white/5 blur-[150px] rounded-full pointer-events-none mix-blend-screen"></div>
+            <div className="absolute top-[-20%] left-1/2 -translate-x-1/2 w-[80%] h-[80%] bg-brand-purple/5 blur-[150px] rounded-full pointer-events-none mix-blend-screen"></div>
 
             {/* Simple Header */}
             <header className="absolute top-0 w-full p-6 flex justify-between items-center z-20">
@@ -87,7 +87,7 @@ export default async function AdultsPricingPage() {
                 <FadeInUp delay={0.2}>
                     <section className="relative z-20 mb-24 max-w-4xl mx-auto">
                         <BentoHoverEffect>
-                            <div className="relative bg-[#1c1c1e] border border-white/5 rounded-[32px] overflow-hidden shadow-2xl backdrop-blur-sm aspect-video flex flex-col items-center justify-center group cursor-pointer hover:border-white/20 transition-all duration-700">
+                            <div className="relative bg-[#0a0a0a] border border-white/10 rounded-[32px] overflow-hidden shadow-2xl backdrop-blur-sm aspect-video flex flex-col items-center justify-center group cursor-pointer hover:border-brand-purple/50 hover:shadow-[0_0_30px_rgba(168,85,247,0.15)] transition-all duration-700">
                                 <div className="absolute inset-0 bg-[url('/bg-noise.png')] opacity-20 mix-blend-overlay"></div>
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent z-10"></div>
                                 
@@ -104,7 +104,7 @@ export default async function AdultsPricingPage() {
                 {/* Social Proof dynamique */}
                 <FadeInUp delay={0.3}>
                     <div className="flex flex-col items-center justify-center mb-24 relative z-10 w-full mx-auto">
-                        <div className="relative text-sm md:text-base font-medium text-[#86868b] text-center bg-[#1c1c1e] border border-white/5 rounded-full px-12 py-5 shadow-lg flex items-center justify-center gap-4 hover:border-white/20 transition-colors cursor-pointer">
+                        <div className="relative text-sm md:text-base font-medium text-[#86868b] text-center bg-[#0a0a0a] border border-white/10 rounded-full px-12 py-5 shadow-lg flex items-center justify-center gap-4 hover:border-brand-purple/30 transition-colors cursor-pointer">
                             <Star className="w-5 h-5 text-[#f5f5f7]" />
                             <span>
                                 Rejoignez déjà l'élite de <span className="text-[#f5f5f7] text-2xl font-semibold mx-1">300</span> maîtres
@@ -118,7 +118,7 @@ export default async function AdultsPricingPage() {
                 <FadeInUp delay={0.4}>
                     <div className="relative z-10 max-w-xl mx-auto">
                         <BentoHoverEffect>
-                            <div className="bg-[#1c1c1e] border border-white/5 rounded-[40px] p-10 md:p-14 flex flex-col relative overflow-hidden transition-all duration-700 hover:shadow-2xl group shadow-xl">
+                            <div className="bg-[#0a0a0a] border border-white/10 rounded-[40px] p-10 md:p-14 flex flex-col relative overflow-hidden transition-all duration-700 hover:shadow-[0_0_40px_rgba(168,85,247,0.15)] hover:border-brand-purple/50 group shadow-xl">
                                 <div className="mb-8 text-center">
                                     <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-sm font-semibold text-[#f5f5f7] w-fit mb-6">
                                         <ShieldCheck className="w-4 h-4" />
@@ -138,7 +138,7 @@ export default async function AdultsPricingPage() {
 
                                 <ul className="space-y-8 mb-12 flex-1">
                                     <li className="flex items-start gap-5">
-                                        <div className="w-12 h-12 rounded-full bg-black flex items-center justify-center shrink-0 border border-white/5 group-hover:border-white/20 transition-colors">
+                                        <div className="w-12 h-12 rounded-full bg-black flex items-center justify-center shrink-0 border border-white/5 group-hover:border-brand-purple/50 transition-colors">
                                             <PlayCircle className="w-6 h-6 text-[#f5f5f7]" />
                                         </div>
                                         <div className="mt-1">
@@ -147,7 +147,7 @@ export default async function AdultsPricingPage() {
                                         </div>
                                     </li>
                                     <li className="flex items-start gap-5">
-                                        <div className="w-12 h-12 rounded-full bg-black flex items-center justify-center shrink-0 border border-white/5 group-hover:border-white/20 transition-colors">
+                                        <div className="w-12 h-12 rounded-full bg-black flex items-center justify-center shrink-0 border border-white/5 group-hover:border-brand-purple/50 transition-colors">
                                             <Sparkles className="w-6 h-6 text-[#f5f5f7]" />
                                         </div>
                                         <div className="mt-1">
@@ -156,7 +156,7 @@ export default async function AdultsPricingPage() {
                                         </div>
                                     </li>
                                     <li className="flex items-start gap-5">
-                                        <div className="w-12 h-12 rounded-full bg-black flex items-center justify-center shrink-0 border border-white/5 group-hover:border-white/20 transition-colors">
+                                        <div className="w-12 h-12 rounded-full bg-black flex items-center justify-center shrink-0 border border-white/5 group-hover:border-brand-purple/50 transition-colors">
                                             <BookOpen className="w-6 h-6 text-[#f5f5f7]" />
                                         </div>
                                         <div className="mt-1">
@@ -172,7 +172,7 @@ export default async function AdultsPricingPage() {
                                     space="adults"
                                     userLoggedIn={!!user}
                                     buttonText="Rejoindre l'Atelier"
-                                    className="bg-[#f5f5f7] hover:bg-white text-black font-semibold text-lg py-5 rounded-full w-full shadow-lg hover:shadow-xl transition-all hover:scale-[1.02]"
+                                    className="bg-white hover:bg-gray-200 text-black font-semibold text-lg py-5 rounded-full w-full shadow-lg hover:shadow-[0_0_20px_rgba(168,85,247,0.3)] transition-all hover:scale-[1.02]"
                                 />
                             </div>
                         </BentoHoverEffect>
@@ -181,7 +181,7 @@ export default async function AdultsPricingPage() {
 
                 <FadeInUp delay={0.5}>
                     <div className="mt-20 text-center">
-                        <div className="inline-flex flex-col items-center justify-center p-8 bg-[#1c1c1e] border border-white/5 rounded-[32px] max-w-3xl mx-auto shadow-xl">
+                        <div className="inline-flex flex-col items-center justify-center p-8 bg-[#0a0a0a] border border-white/10 rounded-[32px] max-w-3xl mx-auto shadow-xl">
                             <h3 className="text-xl font-semibold text-[#f5f5f7] mb-4">Informations Légales & Droit de Rétractation</h3>
                             <p className="text-[#86868b] text-sm leading-relaxed text-justify md:text-center font-light">
                                 Conformément à l'Article L221-18 du Code de la consommation, vous bénéficiez d'un délai de rétractation de 14 jours.
@@ -199,7 +199,7 @@ export default async function AdultsPricingPage() {
                         <h3 className="text-3xl font-semibold text-center text-[#f5f5f7] mb-12 tracking-tight">Questions Fréquentes</h3>
 
                         <div className="space-y-4">
-                            <details className="group bg-[#1c1c1e] border border-white/5 rounded-[24px] [&_summary::-webkit-details-marker]:hidden transition-all duration-300">
+                            <details className="group bg-[#0a0a0a] border border-white/10 rounded-[24px] [&_summary::-webkit-details-marker]:hidden transition-all duration-300 open:border-brand-purple/50 hover:border-brand-purple/30">
                                 <summary className="flex items-center justify-between p-6 md:p-8 font-medium cursor-pointer text-[#f5f5f7] text-lg">
                                     Que contient exactement le catalogue des Masterclass ?
                                     <span className="transition duration-300 group-open:rotate-180 text-[#86868b]">
@@ -211,7 +211,7 @@ export default async function AdultsPricingPage() {
                                 </div>
                             </details>
 
-                            <details className="group bg-[#1c1c1e] border border-white/5 rounded-[24px] [&_summary::-webkit-details-marker]:hidden transition-all duration-300">
+                            <details className="group bg-[#0a0a0a] border border-white/10 rounded-[24px] [&_summary::-webkit-details-marker]:hidden transition-all duration-300 open:border-brand-purple/50 hover:border-brand-purple/30">
                                 <summary className="flex items-center justify-between p-6 md:p-8 font-medium cursor-pointer text-[#f5f5f7] text-lg">
                                     Puis-je résilier facilement ?
                                     <span className="transition duration-300 group-open:rotate-180 text-[#86868b]">
@@ -223,7 +223,7 @@ export default async function AdultsPricingPage() {
                                 </div>
                             </details>
                             
-                            <details className="group bg-[#1c1c1e] border border-white/5 rounded-[24px] [&_summary::-webkit-details-marker]:hidden transition-all duration-300">
+                            <details className="group bg-[#0a0a0a] border border-white/10 rounded-[24px] [&_summary::-webkit-details-marker]:hidden transition-all duration-300 open:border-brand-purple/50 hover:border-brand-purple/30">
                                 <summary className="flex items-center justify-between p-6 md:p-8 font-medium cursor-pointer text-[#f5f5f7] text-lg">
                                     Est-ce que mon paiement est sécurisé ?
                                     <span className="transition duration-300 group-open:rotate-180 text-[#86868b]">

@@ -41,8 +41,8 @@ export default async function KidsPricingPage() {
     };
 
     return (
-        <div className="min-h-screen bg-black text-white font-sans selection:bg-brand-purple/30 relative overflow-hidden">
-            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-white/[0.02] via-black to-black pointer-events-none z-0"></div>
+        <div className="min-h-screen bg-brand-bg text-white font-sans selection:bg-brand-purple/30 relative overflow-hidden">
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-brand-purple/10 via-brand-bg to-brand-bg pointer-events-none z-0"></div>
 
             {/* Simple Header */}
             <header className="absolute top-0 w-full p-6 flex justify-between items-center z-20">
@@ -89,7 +89,7 @@ export default async function KidsPricingPage() {
 
                 {/* Video Teaser Block */}
                 <section className="relative z-20 mb-16 max-w-4xl mx-auto">
-                    <div className="relative bg-[#050505] border border-white/10 rounded-2xl overflow-hidden shadow-2xl backdrop-blur-sm aspect-video flex flex-col items-center justify-center group cursor-pointer hover:border-brand-purple/30 transition-colors">
+                    <div className="relative bg-[#0a0a0a] border border-white/10 rounded-2xl overflow-hidden shadow-2xl backdrop-blur-sm aspect-video flex flex-col items-center justify-center group cursor-pointer hover:border-brand-purple/30 hover:shadow-[0_0_30px_rgba(168,85,247,0.15)] transition-all">
                         {/* 
                             TODO: Remplacer ceci par le vrai lecteur Bunny Stream.
                             Pour l'instant, c'est un espace réservé visuellement attrayant.
@@ -106,7 +106,7 @@ export default async function KidsPricingPage() {
                 {/* Social Proof dynamique */}
                 <div className="flex flex-col items-center justify-center mt-8 mb-8 relative z-10 w-full mx-auto animate-in slide-in-from-bottom-4 duration-700">
                     <div className="relative group cursor-pointer inline-block">
-                        <div className="relative text-sm md:text-base font-bold text-gray-200 text-center bg-black border-y border-brand-purple/30 px-12 py-4 shadow-lg flex items-center justify-center gap-4">
+                        <div className="relative text-sm md:text-base font-bold text-gray-200 text-center bg-[#0a0a0a] border-y border-brand-purple/30 px-12 py-4 shadow-lg flex items-center justify-center gap-4">
                             <Sparkles className="w-5 h-5 text-brand-gold animate-pulse" />
                             <span>
                                 Rejoins déjà plus de <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-gold to-yellow-300 text-xl font-black mx-1 drop-shadow-[0_0_10px_rgba(252,211,77,0.5)]">100</span> apprentis magiciens !
@@ -120,7 +120,7 @@ export default async function KidsPricingPage() {
                 <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 items-stretch max-w-5xl mx-auto pt-4">
 
                     {/* MONTHLY PLAN */}
-                    <div className="bg-[#050505] border border-white/5 rounded-2xl p-8 md:p-10 flex flex-col relative overflow-hidden transition-all hover:bg-[#080808] hover:border-brand-blue/20 mt-8 md:mt-12 group">
+                    <div className="bg-[#0a0a0a] border border-white/10 rounded-2xl p-8 md:p-10 flex flex-col relative overflow-hidden transition-all hover:bg-[#0a0a0a] hover:border-brand-purple/50 hover:shadow-[0_0_30px_rgba(168,85,247,0.15)] mt-8 md:mt-12 group">
                         <div className="mb-6">
                             <h2 className="text-2xl font-black text-white mb-2">Abonnement Mensuel</h2>
                             <p className="text-gray-400 font-medium mb-4">Idéal pour découvrir le club à son rythme.</p>
@@ -263,7 +263,7 @@ export default async function KidsPricingPage() {
                 </div>
 
                 <div className="mt-16 text-center">
-                    <div className="inline-flex flex-col items-center justify-center p-6 bg-[#0A0A0E] border border-white/5 rounded-2xl max-w-3xl mx-auto shadow-lg">
+                    <div className="inline-flex flex-col items-center justify-center p-6 bg-[#0a0a0a] border border-white/10 rounded-2xl max-w-3xl mx-auto shadow-lg">
                         <h3 className="text-xl font-bold text-white mb-3">Informations Légales & Droit de Rétractation</h3>
                         <p className="text-gray-400 text-sm leading-relaxed text-justify md:text-center">
                             Conformément à l'Article L221-18 du Code de la consommation, vous bénéficiez d'un délai de rétractation de 14 jours.
@@ -279,7 +279,7 @@ export default async function KidsPricingPage() {
                     <h3 className="text-3xl font-black text-center text-white mb-8">Questions Fréquentes</h3>
 
                     <div className="space-y-4">
-                        <details className="group bg-[#0A0A0E] border border-white/5 rounded-2xl [&_summary::-webkit-details-marker]:hidden transition-all duration-300 open:border-brand-purple/30 ring-1 ring-white/5 hover:ring-white/10">
+                        <details className="group bg-[#0a0a0a] border border-white/10 rounded-2xl [&_summary::-webkit-details-marker]:hidden transition-all duration-300 open:border-brand-purple/50 hover:border-brand-purple/30">
                             <summary className="flex items-center justify-between p-6 font-bold cursor-pointer text-white text-lg">
                                 Mon enfant a-t-il besoin de matériel spécifique ?
                                 <span className="transition duration-300 group-open:rotate-180 text-brand-purple">
@@ -291,7 +291,7 @@ export default async function KidsPricingPage() {
                             </div>
                         </details>
 
-                        <details className="group bg-[#0A0A0E] border border-white/5 rounded-2xl [&_summary::-webkit-details-marker]:hidden transition-all duration-300 open:border-brand-purple/30 ring-1 ring-white/5 hover:ring-white/10">
+                        <details className="group bg-[#0a0a0a] border border-white/10 rounded-2xl [&_summary::-webkit-details-marker]:hidden transition-all duration-300 open:border-brand-purple/50 hover:border-brand-purple/30">
                             <summary className="flex items-center justify-between p-6 font-bold cursor-pointer text-white text-lg">
                                 Est-ce compliqué d'annuler si ça ne lui plaît plus ?
                                 <span className="transition duration-300 group-open:rotate-180 text-brand-purple">
@@ -303,7 +303,7 @@ export default async function KidsPricingPage() {
                             </div>
                         </details>
 
-                        <details className="group bg-[#0A0A0E] border border-white/5 rounded-2xl [&_summary::-webkit-details-marker]:hidden transition-all duration-300 open:border-brand-purple/30 ring-1 ring-white/5 hover:ring-white/10">
+                        <details className="group bg-[#0a0a0a] border border-white/10 rounded-2xl [&_summary::-webkit-details-marker]:hidden transition-all duration-300 open:border-brand-purple/50 hover:border-brand-purple/30">
                             <summary className="flex items-center justify-between p-6 font-bold cursor-pointer text-white text-lg">
                                 Est-ce que mon paiement est sécurisé ?
                                 <span className="transition duration-300 group-open:rotate-180 text-brand-purple">
