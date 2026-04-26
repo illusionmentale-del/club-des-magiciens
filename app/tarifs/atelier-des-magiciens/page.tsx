@@ -37,10 +37,9 @@ export default async function AdultsPricingPage() {
     };
 
     return (
-        <div className="min-h-screen bg-brand-bg text-[#f5f5f7] font-sans selection:bg-brand-blue/30 relative overflow-hidden">
-            {/* Ambient Background - Enhanced Glow */}
-            <div className="absolute top-[-20%] left-1/2 -translate-x-1/2 w-[100%] h-[100%] bg-brand-blue/5 blur-[200px] rounded-full pointer-events-none mix-blend-screen animate-pulse duration-[8000ms]"></div>
-            <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-blue-500/5 blur-[150px] rounded-full pointer-events-none mix-blend-screen"></div>
+        <div className="min-h-screen bg-black text-[#f5f5f7] font-sans selection:bg-brand-blue/30 relative overflow-hidden">
+            {/* Ambient Background - Very Subtle Glow */}
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-brand-blue/5 blur-[200px] rounded-full pointer-events-none mix-blend-screen"></div>
 
             {/* Simple Header */}
             <header className="absolute top-0 w-full p-6 flex justify-between items-center z-20">
