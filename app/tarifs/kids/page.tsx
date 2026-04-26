@@ -70,7 +70,7 @@ export default async function KidsPricingPage() {
                 )}
             </header>
 
-            <div className="relative z-10 max-w-5xl mx-auto px-4 pt-32 pb-24">
+            <div className="relative z-10 max-w-5xl mx-auto px-4 pt-32 pb-12 md:pb-24">
                 {/* Hero Section */}
                 <div className="text-center space-y-6 mb-16 relative">
                     <div className="relative z-10 inline-flex items-center gap-2 px-5 py-2 border border-brand-purple/30 bg-brand-purple/5 rounded-full text-brand-purple text-[11px] font-bold tracking-[0.2em] uppercase backdrop-blur-xl shadow-[0_0_20px_rgba(168,85,247,0.15)] mb-4 cursor-default">
@@ -240,7 +240,7 @@ export default async function KidsPricingPage() {
                     Paiement 100% sécurisé via Stripe. Annulable à tout moment en 1 clic.
                 </p>
 
-                <div className="w-full text-center mt-12 pb-12 relative z-10">
+                <div className="w-full text-center mt-8 md:mt-12 pb-4 md:pb-12 relative z-10">
                     <a 
                         href="mailto:contact@clubdespetitsmagiciens.fr?subject=Besoin%20d'aide%20-%20Club%20des%20petits%20magiciens" 
                         className="inline-flex items-center justify-center px-6 py-2.5 rounded-full border border-white/10 bg-white/5 text-sm font-medium text-gray-400 hover:text-white hover:bg-white/10 transition-all"
