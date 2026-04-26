@@ -38,16 +38,16 @@ export default function UserRow({ profile, isProtected, basePath }: UserRowProps
     };
 
     return (
-        <div className={`${basePath?.includes('adults') ? 'bg-[#1c1c1e]' : 'bg-[#100b1a]'} border border-white/10 rounded-[24px] p-6 flex flex-col md:flex-row gap-6 items-start md:items-center transition-all shadow-[0_10px_30px_-10px_rgba(0,0,0,0.5)]`}>
+        <div className="bg-[#100b1a] border border-white/5 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.5)] hover:border-brand-purple/30 rounded-3xl p-6 flex flex-col md:flex-row gap-6 items-start md:items-center transition-all">
             {/* INFO */}
             <div className="flex items-center gap-4 min-w-[250px]">
                 {basePath ? (
                     <Link href={`${basePath}/${profile.id}`} className="flex items-center gap-4 hover:opacity-80 transition-opacity w-full">
-                        <div className={`w-12 h-12 rounded-full flex items-center justify-center font-bold text-xl relative ${profile.role === 'admin' ? 'bg-red-500 text-white shadow-lg shadow-red-500/30' : (basePath?.includes('adults') ? 'bg-[#f5f5f7] text-[#1c1c1e]' : 'bg-magic-purple text-white')}`}>
+                        <div className={`w-12 h-12 rounded-full flex items-center justify-center font-bold text-xl relative ${profile.role === 'admin' ? 'bg-red-500 text-white shadow-lg shadow-red-500/30' : 'bg-brand-purple text-white shadow-[0_0_15px_rgba(168,85,247,0.3)]'}`}>
                             {profile.username?.[0]?.toUpperCase() || profile.full_name?.[0]?.toUpperCase() || <User />}
                         </div>
                         <div>
-                            <div className={`font-bold text-lg flex items-center gap-2 transition-colors ${basePath?.includes('adults') ? 'group-hover:text-[#f5f5f7]' : 'group-hover:text-magic-gold'}`}>
+                            <div className={`font-bold text-lg flex items-center gap-2 transition-colors group-hover:text-brand-purple`}>
                                 {profile.username || profile.full_name || "Sans Pseudo"}
                                 {profile.role === 'admin' && <Crown className="w-4 h-4 text-yellow-400" />}
                             </div>
@@ -57,7 +57,7 @@ export default function UserRow({ profile, isProtected, basePath }: UserRowProps
                     </Link>
                 ) : (
                     <>
-                        <div className={`w-12 h-12 rounded-full flex items-center justify-center font-bold text-xl relative ${profile.role === 'admin' ? 'bg-red-500 text-white shadow-lg shadow-red-500/30' : (basePath?.includes('adults') ? 'bg-[#f5f5f7] text-[#1c1c1e]' : 'bg-magic-purple text-white')}`}>
+                        <div className={`w-12 h-12 rounded-full flex items-center justify-center font-bold text-xl relative ${profile.role === 'admin' ? 'bg-red-500 text-white shadow-lg shadow-red-500/30' : 'bg-brand-purple text-white shadow-[0_0_15px_rgba(168,85,247,0.3)]'}`}>
                             {profile.username?.[0]?.toUpperCase() || profile.full_name?.[0]?.toUpperCase() || <User />}
                         </div>
                         <div>
@@ -80,7 +80,7 @@ export default function UserRow({ profile, isProtected, basePath }: UserRowProps
                             key={profile.access_level}
                             name="access_level"
                             defaultValue={profile.access_level || 'adult'}
-                            className={`bg-black/50 border border-white/20 rounded-[12px] px-4 py-2 text-sm appearance-none cursor-pointer transition-colors focus:outline-none pr-8 disabled:opacity-50 disabled:cursor-not-allowed ${basePath?.includes('adults') ? 'hover:border-white focus:border-white' : 'hover:border-magic-purple focus:border-magic-purple'}`}
+                            className={`bg-black/50 border border-white/10 rounded-[12px] px-4 py-2 text-sm appearance-none cursor-pointer transition-colors focus:outline-none pr-8 disabled:opacity-50 disabled:cursor-not-allowed hover:border-brand-purple focus:border-brand-purple focus:ring-1 focus:ring-brand-purple`}
                             onChange={(e) => e.target.form?.requestSubmit()}
                         >
                             <option value="adult">Adulte / Standard</option>
@@ -94,13 +94,13 @@ export default function UserRow({ profile, isProtected, basePath }: UserRowProps
             {/* TAGS */}
             <div className="flex-1 flex flex-wrap gap-2 items-center">
                 {profile.tags?.map((tag: string) => (
-                    <span key={tag} className={`${basePath?.includes('adults') ? 'bg-[#1c1c1e] text-[#86868b] border border-white/5' : 'bg-blue-500/20 text-blue-300'} text-xs px-2 py-1 rounded-[8px] flex items-center gap-1`}>
+                    <span key={tag} className={`bg-brand-purple/20 border border-brand-purple/30 text-brand-purple text-xs px-2 py-1 rounded-[8px] flex items-center gap-1`}>
                         {tag}
-                        <form action={removeTag.bind(null, profile.id, tag)}><button className={`${basePath?.includes('adults') ? 'hover:text-[#f5f5f7]' : 'hover:text-red-400'}`}><X className="w-3 h-3" /></button></form>
+                        <form action={removeTag.bind(null, profile.id, tag)}><button className={`hover:text-white`}><X className="w-3 h-3" /></button></form>
                     </span>
                 ))}
                 <form action={addTag.bind(null, profile.id)} className="flex items-center">
-                    <input name="new_tag" placeholder="+ Tag" className="bg-transparent border-b border-white/20 text-xs w-16 focus:w-24 transition-all focus:border-magic-purple outline-none px-1 py-1" />
+                    <input name="new_tag" placeholder="+ Tag" className="bg-transparent border-b border-white/10 text-xs w-16 focus:w-24 transition-all focus:border-brand-purple outline-none px-1 py-1" />
                 </form>
             </div>
 
@@ -111,7 +111,7 @@ export default function UserRow({ profile, isProtected, basePath }: UserRowProps
                         <button
                             onClick={handleDelete}
                             disabled={isDeleting}
-                            className={`${basePath?.includes('adults') ? 'text-[#86868b] hover:text-[#f5f5f7]' : 'text-red-400 hover:text-red-300'} text-sm flex items-center justify-end gap-2 w-full transition-colors`}
+                            className={`text-gray-400 hover:text-red-400 text-sm flex items-center justify-end gap-2 w-full transition-colors`}
                         >
                             <Trash2 className="w-4 h-4" /> {isDeleting ? '...' : 'Supprimer'}
                         </button>
@@ -120,7 +120,7 @@ export default function UserRow({ profile, isProtected, basePath }: UserRowProps
                             <button
                                 onClick={handleResendEmail}
                                 disabled={isResending}
-                                className={`${basePath?.includes('adults') ? 'text-[#86868b] hover:text-[#f5f5f7]' : 'text-blue-400 hover:text-blue-300'} text-sm flex items-center justify-end gap-2 w-full transition-colors`}
+                                className={`text-gray-400 hover:text-blue-400 text-sm flex items-center justify-end gap-2 w-full transition-colors`}
                                 title="Renvoyer l'email de bienvenue"
                             >
                                 <Mail className="w-4 h-4" /> {isResending ? '...' : 'Renvoyer Email'}

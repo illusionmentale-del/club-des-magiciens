@@ -33,7 +33,7 @@ export default function AdminUsersClient({ profiles }: AdminUsersClientProps) {
     const activeProfiles = filteredProfiles.filter(p => !p.deleted_at);
     const deletedProfiles = filteredProfiles.filter(p => p.deleted_at);
 
-    const btnColor = 'bg-[#100b1a] border border-white/5 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.5)] hover:border-brand-purple/50 text-white rounded-2xl shadow-[0_0_15px_rgba(168,85,247,0.3)] hover:shadow-[0_0_25px_rgba(168,85,247,0.5)] transition-all';
+    const btnColor = 'bg-brand-purple hover:bg-indigo-500 text-white rounded-2xl shadow-[0_0_15px_rgba(168,85,247,0.4)] hover:shadow-[0_0_25px_rgba(168,85,247,0.6)] transition-all';
 
     return (
         <div className={`w-full text-white transition-colors duration-500`}>
@@ -42,7 +42,7 @@ export default function AdminUsersClient({ profiles }: AdminUsersClientProps) {
                     <div className="flex items-center gap-4">
                         <div>
                             <h1 className="text-3xl font-bold">Gestion des Élèves (Adultes)</h1>
-                            <div className={`text-sm px-2 py-0.5 rounded inline-block mt-1 uppercase font-bold tracking-wider bg-[#100b1a] border border-white/5 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.5)] hover:border-brand-purple/30 transition-all text-brand-text-muted`}>
+                            <div className={`text-sm px-2 py-0.5 rounded inline-block mt-1 uppercase font-bold tracking-wider bg-white/5 text-brand-purple border border-white/10 shadow-[0_0_10px_rgba(168,85,247,0.2)] transition-all`}>
                                 Vue Business
                             </div>
                         </div>
