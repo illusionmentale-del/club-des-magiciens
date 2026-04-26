@@ -30,8 +30,8 @@ export default function VIPRequestPage() {
                             </div>
                         </div>
                         
-                        {/* Bottom content */}
-                        <div className="relative z-10 flex flex-col text-left">
+                        {/* Centered content */}
+                        <div className="relative z-10 flex flex-col items-center justify-center flex-1 mt-2">
                             <span className="text-xl font-medium tracking-tight text-white/90">Pass Magique</span>
                             <span className="text-[10px] tracking-widest text-gray-500 uppercase mt-1">Accès offert</span>
                         </div>

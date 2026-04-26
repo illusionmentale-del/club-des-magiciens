@@ -19,15 +19,7 @@ export default function VIPAdultRequestPage() {
                 <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-brand-blue/10 blur-[100px] rounded-full mix-blend-screen -translate-x-1/3 translate-y-1/3"></div>
             </div>
 
-            {/* Header */}
-            <header className="w-full p-6 relative z-10 flex justify-center">
-                <Link href="/" className="group flex items-center gap-3">
-                    <div className="relative w-12 h-12 flex items-center justify-center bg-black border border-white/10 rounded-xl overflow-hidden group-hover:border-brand-blue/50 transition-colors shadow-[0_0_15px_rgba(255,255,255,0.05)]">
-                        <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                        <Image src="/images/logo.png" alt="L'Atelier Logo" width={32} height={32} className="object-contain filter invert opacity-90" />
-                    </div>
-                </Link>
-            </header>
+
 
             <main className="flex-1 flex items-center justify-center relative p-4 mb-12 mt-4 z-10">
                 <div className="max-w-md w-full relative bg-[#0a0a0a] border border-white/10 rounded-[24px] p-8 md:p-10 shadow-2xl overflow-hidden">
@@ -46,8 +38,8 @@ export default function VIPAdultRequestPage() {
                                 </div>
                             </div>
                             
-                            {/* Bottom content */}
-                            <div className="relative z-10 flex flex-col text-left">
+                            {/* Centered content */}
+                            <div className="relative z-10 flex flex-col items-center justify-center flex-1 mt-2">
                                 <span className="text-xl font-medium tracking-tight text-white/90">Invité Prestige</span>
                                 <span className="text-[10px] tracking-widest text-gray-500 uppercase mt-1">Accès offert</span>
                             </div>
