@@ -28,6 +28,7 @@ function SubmitButton({ theme, isKidProfile }: { theme: 'light' | 'dark', isKidP
 
 export default function AccountForm({ user, profile, theme = 'dark', isKidProfile = false }: { user: any, profile: any, theme?: 'light' | 'dark', isKidProfile?: boolean }) {
     const [state, formAction] = useActionState(updateProfile, null);
+    const [deleteAccount, setDeleteAccount] = useState(false);
     const [level, setLevel] = useState(profile?.magic_level || "Apprenti");
     const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
 
@@ -126,23 +127,46 @@ export default function AccountForm({ user, profile, theme = 'dark', isKidProfil
                     <CreditCard className={`w-5 h-5 text-red-500`} />
                     Abonnement
                 </h2>
-                <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
-                    <div>
+                <div className="flex flex-col md:flex-row items-start justify-between gap-6">
+                    <div className="flex-1">
                         <p className={`text-base font-medium ${theme === 'light' ? 'text-gray-900' : 'text-white'} mb-1`}>
                             Gérer mon abonnement
                         </p>
-                        <p className={`text-sm ${theme === 'light' ? 'text-gray-500' : 'text-[#86868b] font-light'} max-w-md`}>
+                        <p className={`text-sm ${theme === 'light' ? 'text-gray-500' : 'text-[#86868b] font-light'} max-w-md mb-4`}>
                             Conformément à nos conditions, votre abonnement est sans engagement. Vous pouvez l'annuler à tout moment sur simple demande.
                         </p>
+                        <label className="flex items-center gap-3 cursor-pointer group">
+                            <div className="relative flex items-center justify-center">
+                                <input 
+                                    type="checkbox" 
+                                    className="peer sr-only"
+                                    checked={deleteAccount}
+                                    onChange={(e) => setDeleteAccount(e.target.checked)}
+                                />
+                                <div className={`w-5 h-5 border-2 rounded transition-all duration-200 ${deleteAccount ? 'bg-red-500 border-red-500' : 'border-red-500/30 group-hover:border-red-500/60'}`}></div>
+                                {deleteAccount && <Check className="absolute w-3.5 h-3.5 text-white pointer-events-none" strokeWidth={3} />}
+                            </div>
+                            <span className={`text-sm font-medium ${deleteAccount ? 'text-red-400' : (theme === 'light' ? 'text-gray-600' : 'text-[#86868b]')} transition-colors`}>
+                                Supprimer mon compte (Action irréversible)
+                            </span>
+                        </label>
                     </div>
                     <a
+                        onClick={(e) => {
+                            if (deleteAccount) {
+                                const confirmed = window.confirm("Toutes les données concernant votre compte seront supprimées de manière irréversible. Êtes-vous sûr de vouloir continuer ?");
+                                if (!confirmed) {
+                                    e.preventDefault();
+                                }
+                            }
+                        }}
                         href={isKidProfile 
-                            ? "mailto:contact@clubdespetitsmagiciens.fr?subject=Demande%20d'annulation%20d'abonnement" 
-                            : "mailto:contact@atelierdesmagiciens.fr?subject=Demande%20d'annulation%20d'abonnement"
+                            ? `mailto:contact@clubdespetitsmagiciens.fr?subject=Demande%20d'annulation%20d'abonnement${deleteAccount ? '%20et%20suppression%20de%20compte' : ''}` 
+                            : `mailto:contact@atelierdesmagiciens.fr?subject=Demande%20d'annulation%20d'abonnement${deleteAccount ? '%20et%20suppression%20de%20compte' : ''}`
                         }
-                        className="shrink-0 px-6 py-3 font-semibold rounded-xl border border-red-500/30 text-red-500 hover:bg-red-500 hover:text-white transition-all duration-300"
+                        className="shrink-0 px-6 py-3 mt-2 md:mt-0 font-semibold rounded-xl border border-red-500/30 text-red-500 hover:bg-red-500 hover:text-white transition-all duration-300 shadow-lg hover:shadow-red-500/20"
                     >
-                        Annuler mon abonnement
+                        {deleteAccount ? "Annuler et Supprimer" : "Annuler mon abonnement"}
                     </a>
                 </div>
             </section>
