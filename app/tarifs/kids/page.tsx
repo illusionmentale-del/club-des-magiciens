@@ -123,8 +123,7 @@ export default async function KidsPricingPage() {
                     {/* MONTHLY PLAN */}
                     <div className="bg-[#0a0a0a] border border-white/10 rounded-2xl p-8 md:p-10 flex flex-col relative overflow-hidden transition-all hover:bg-[#0a0a0a] hover:border-brand-purple/50 hover:shadow-[0_0_30px_rgba(168,85,247,0.15)] mt-8 md:mt-12 group">
                         <div className="mb-6">
-                            <h2 className="text-2xl font-black text-white mb-2">Abonnement Mensuel</h2>
-                            <p className="text-gray-400 font-medium mb-4">Idéal pour découvrir le club à son rythme.</p>
+                            <h2 className="text-2xl font-black text-white mb-3">Abonnement Mensuel</h2>
                             <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-xs font-bold text-gray-300 w-fit">
                                 <ShieldCheck className="w-4 h-4 text-brand-blue" />
                                 100% Sans Engagement
@@ -218,7 +217,7 @@ export default async function KidsPricingPage() {
                                 </span>
                             </summary>
                             <div className="px-6 pb-6 text-gray-400 text-sm leading-relaxed animate-in slide-in-from-top-1 duration-300">
-                                Non, c'est ultra simple. Sur l'abonnement mensuel, tu es 100% libre. Tu peux annuler à tout moment sur simple demande par mail, sans aucune justification.
+                                Non, c'est ultra simple. Sur l'abonnement mensuel, vous êtes 100% libre. Vous pouvez annuler à tout moment sur simple demande par mail, sans aucune justification.
                             </div>
                         </details>
 
@@ -230,7 +229,7 @@ export default async function KidsPricingPage() {
                                 </span>
                             </summary>
                             <div className="px-6 pb-6 text-gray-400 text-sm leading-relaxed animate-in slide-in-from-top-1 duration-300">
-                                Oui. Nous utilisons Stripe, le leader mondial du paiement en ligne (utilisé par Amazon, Google, etc.). Nous n'avons jamais accès à tes coordonnées bancaires.
+                                Oui. Nous utilisons Stripe, le leader mondial du paiement en ligne (utilisé par Amazon, Google, etc.). Nous n'avons jamais accès à vos coordonnées bancaires.
                             </div>
                         </details>
                     </div>
@@ -242,10 +241,10 @@ export default async function KidsPricingPage() {
 
                 <div className="w-full text-center mt-8 md:mt-12 pb-4 md:pb-12 relative z-10">
                     <a 
-                        href="mailto:contact@clubdespetitsmagiciens.fr?subject=Besoin%20d'aide%20-%20Club%20des%20petits%20magiciens" 
+                        href="mailto:contact@clubdespetitsmagiciens.fr?subject=Question%20-%20Club%20des%20petits%20magiciens" 
                         className="inline-flex items-center justify-center px-6 py-2.5 rounded-full border border-white/10 bg-white/5 text-sm font-medium text-gray-400 hover:text-white hover:bg-white/10 transition-all"
                     >
-                        J'ai besoin d'aide
+                        Poser une question
                     </a>
                 </div>
             </div>

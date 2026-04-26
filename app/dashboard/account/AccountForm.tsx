@@ -3,7 +3,7 @@
 import { useActionState } from "react";
 import { useFormStatus } from "react-dom";
 import { updateProfile } from "./actions";
-import { User, MapPin, Wand2, Lock, AlertCircle, Check, Sparkles } from "lucide-react";
+import { User, MapPin, Wand2, Lock, AlertCircle, Check, Sparkles, CreditCard } from "lucide-react";
 import { useState } from "react";
 
 import AvatarUpload from "@/components/AvatarUpload";
@@ -117,6 +117,33 @@ export default function AccountForm({ user, profile, theme = 'dark', isKidProfil
                     <div className="col-span-full">
                         <p className={`text-sm mt-2 ${theme === 'light' ? 'text-gray-500' : 'text-[#86868b] font-light'}`}>Votre email : {user.email}</p>
                     </div>
+                </div>
+            </section>
+
+            {/* Subscription Section */}
+            <section className={`${cardClass} p-8 md:p-10 border-red-500/20 hover:border-red-500/40`}>
+                <h2 className={`text-xl font-semibold mb-6 flex items-center gap-3 ${titleClass} tracking-tight`}>
+                    <CreditCard className={`w-5 h-5 text-red-500`} />
+                    Abonnement
+                </h2>
+                <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+                    <div>
+                        <p className={`text-base font-medium ${theme === 'light' ? 'text-gray-900' : 'text-white'} mb-1`}>
+                            Gérer mon abonnement
+                        </p>
+                        <p className={`text-sm ${theme === 'light' ? 'text-gray-500' : 'text-[#86868b] font-light'} max-w-md`}>
+                            Conformément à nos conditions, votre abonnement est sans engagement. Vous pouvez l'annuler à tout moment sur simple demande.
+                        </p>
+                    </div>
+                    <a
+                        href={isKidProfile 
+                            ? "mailto:contact@clubdespetitsmagiciens.fr?subject=Demande%20d'annulation%20d'abonnement" 
+                            : "mailto:contact@atelierdesmagiciens.fr?subject=Demande%20d'annulation%20d'abonnement"
+                        }
+                        className="shrink-0 px-6 py-3 font-semibold rounded-xl border border-red-500/30 text-red-500 hover:bg-red-500 hover:text-white transition-all duration-300"
+                    >
+                        Annuler mon abonnement
+                    </a>
                 </div>
             </section>
 

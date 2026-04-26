@@ -254,10 +254,10 @@ export default async function AdultsPricingPage() {
 
                 <div className="w-full text-center mt-8 md:mt-12 pb-4 md:pb-12 relative z-10">
                     <a 
-                        href="mailto:contact@atelierdesmagiciens.fr?subject=Besoin%20d'aide%20-%20Atelier%20des%20Magiciens" 
+                        href="mailto:contact@atelierdesmagiciens.fr?subject=Question%20-%20Atelier%20des%20Magiciens" 
                         className="inline-flex items-center justify-center px-6 py-2.5 rounded-full border border-white/10 bg-white/5 text-sm font-medium text-gray-400 hover:text-white hover:bg-white/10 transition-all"
                     >
-                        J'ai besoin d'aide
+                        Poser une question
                     </a>
                 </div>
             </div>
