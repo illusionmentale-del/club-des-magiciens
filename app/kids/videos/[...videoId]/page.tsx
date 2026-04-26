@@ -266,7 +266,7 @@ export default async function KidsVideoPlayerPage({ params }: { params: Promise<
 
                     <div className="flex flex-wrap gap-4 text-sm font-bold tracking-wide">
                         <div className="flex items-center gap-3 bg-white/5 text-gray-300 py-2.5 px-5 rounded-xl border border-white/5 shadow-inner">
-                            <Calendar className="w-4 h-4 text-brand-blue" />
+                            <Calendar className="w-4 h-4 text-brand-purple" />
                             <span>{formatDate(displayDate)}</span>
                         </div>
 

@@ -183,7 +183,7 @@ export default function KidsMobileNav({ logoUrl, isAdmin, hasPurchases, hasUnrea
                             {enableMasterclass && (
                                 <Link href="/kids/videos" onClick={() => setIsOpen(false)} className={`group flex items-center gap-3 px-4 py-3 rounded-[16px] transition-all duration-300 ease-[0.16,1,0.3,1] ${isActive('/kids/videos') ? 'bg-[#1c1c1e] border border-white/5 shadow-md' : 'hover:bg-white/5'}`}>
                                     <div className="flex items-center gap-4">
-                                        <div className={`relative w-10 h-10 rounded-xl flex items-center justify-center transition-colors ${isActive('/kids/videos') ? 'bg-gradient-to-br from-brand-blue to-cyan-500 text-white shadow-lg shadow-brand-blue/20' : 'bg-[#1c1c1e] text-[#86868b] group-hover:bg-white/10 group-hover:text-white border border-white/5'}`}>
+                                        <div className={`relative w-10 h-10 rounded-xl flex items-center justify-center transition-colors ${isActive('/kids/videos') ? 'bg-gradient-to-br from-brand-purple to-indigo-500 text-white shadow-lg shadow-brand-purple/20' : 'bg-[#1c1c1e] text-[#86868b] group-hover:bg-white/10 group-hover:text-white border border-white/5'}`}>
                                             <Video className="w-5 h-5" />
                                             {hasUnreadAtelier && (
                                                 <span className="absolute -top-1 -right-1 flex h-3 w-3">

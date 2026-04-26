@@ -73,7 +73,7 @@ export default async function KidsVideosPage({ searchParams }: { searchParams: P
     return (
         <div className="min-h-screen bg-[#000000] text-[#f5f5f7] p-4 md:p-8 pb-32 font-sans relative selection:bg-brand-purple/30">
             {/* Ambient Background Lights (Homogenized with Home) */}
-            <div className="absolute top-0 left-0 w-full md:w-1/2 h-[50vh] bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] from-brand-blue/10 via-[#000000]/0 to-[#000000]/0 pointer-events-none z-0"></div>
+            <div className="absolute top-0 left-0 w-full md:w-1/2 h-[50vh] bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] from-brand-purple/10 via-[#000000]/0 to-[#000000]/0 pointer-events-none z-0"></div>
 
             {/* Main Wrapper Container */}
             <div className="max-w-5xl mx-auto relative z-10 space-y-12">
@@ -87,7 +87,7 @@ export default async function KidsVideosPage({ searchParams }: { searchParams: P
                                 <span className="text-xs font-bold uppercase tracking-widest">Le Club des Petits Magiciens</span>
                             </div>
                             <h1 className="text-4xl md:text-6xl font-semibold tracking-tight text-white">
-                                Les <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-blue to-cyan-500">Ateliers</span>
+                                Les <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-purple to-indigo-500">Ateliers</span>
                             </h1>
                             <p className="text-[#86868b] mt-3 text-lg md:text-xl font-light">
                                 {pageConfig.description || "Des ateliers sur des thèmes précis pour approfondir ta magie !"}
@@ -112,7 +112,7 @@ export default async function KidsVideosPage({ searchParams }: { searchParams: P
                             </h2>
                             <div className="group bg-[#1c1c1e] border border-white/5 rounded-[32px] overflow-hidden flex flex-col md:flex-row shadow-xl hover:shadow-2xl hover:border-white/10 transition-all duration-500 ease-[0.16,1,0.3,1] relative">
                                 {/* Glow effect */}
-                                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-brand-blue/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"></div>
+                                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-brand-purple/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"></div>
 
                                 {/* Featured Image */}
                                 <div className="w-full md:w-1/2 md:aspect-auto aspect-video relative shrink-0">
@@ -132,7 +132,7 @@ export default async function KidsVideosPage({ searchParams }: { searchParams: P
                                     <div className="absolute inset-0 bg-gradient-to-t from-[#1c1c1e] via-transparent to-transparent md:bg-gradient-to-r" />
 
                                     <Link href={`/kids/videos/${featuredVideo.id}`} className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                                        <div className="w-20 h-20 bg-brand-blue/90 text-white rounded-full flex items-center justify-center shadow-[0_0_30px_rgba(59,130,246,0.5)] transform scale-50 group-hover:scale-100 transition-all duration-300">
+                                        <div className="w-20 h-20 bg-brand-purple/90 text-white rounded-full flex items-center justify-center shadow-[0_0_30px_rgba(168,85,247,0.5)] transform scale-50 group-hover:scale-100 transition-all duration-300">
                                             <Play className="w-8 h-8 ml-2" />
                                         </div>
                                     </Link>
@@ -151,7 +151,7 @@ export default async function KidsVideosPage({ searchParams }: { searchParams: P
 
                                     <Link
                                         href={`/kids/videos/${featuredVideo.id}`}
-                                        className="inline-flex items-center gap-2 bg-brand-blue text-white px-8 py-4 rounded-full font-semibold uppercase tracking-widest text-sm hover:bg-cyan-500 transition-all self-start shadow-[0_0_20px_rgba(59,130,246,0.3)] hover:scale-105"
+                                        className="inline-flex items-center gap-2 bg-brand-purple text-white px-8 py-4 rounded-full font-semibold uppercase tracking-widest text-sm hover:bg-indigo-500 transition-all self-start shadow-[0_0_20px_rgba(168,85,247,0.3)] hover:scale-105"
                                     >
                                         <Play className="w-4 h-4" />
                                         Visionner
@@ -182,19 +182,19 @@ export default async function KidsVideosPage({ searchParams }: { searchParams: P
                                                 )}
                                                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60"></div>
                                                 <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                                                    <div className="w-12 h-12 bg-brand-blue/90 rounded-full flex items-center justify-center shadow-lg border border-white/20 scale-90 group-hover:scale-100 transition-all duration-300">
+                                                    <div className="w-12 h-12 bg-brand-purple/90 rounded-full flex items-center justify-center shadow-lg border border-white/20 scale-90 group-hover:scale-100 transition-all duration-300">
                                                         <Play className="w-5 h-5 text-white ml-1" />
                                                     </div>
                                                 </div>
                                             </div>
                                             <div className="flex-1 flex flex-col justify-center py-2 h-full">
-                                                <h3 className="text-xl md:text-2xl font-semibold text-[#f5f5f7] mb-2 leading-tight group-hover:text-brand-blue transition-colors tracking-tight">{video.title}</h3>
+                                                <h3 className="text-xl md:text-2xl font-semibold text-[#f5f5f7] mb-2 leading-tight group-hover:text-brand-purple transition-colors tracking-tight">{video.title}</h3>
                                                 <p className="text-sm text-[#86868b] font-light line-clamp-2 md:line-clamp-3 mb-4">{video.description}</p>
                                                 <div className="mt-auto flex items-center justify-between">
                                                     <div className="flex items-center gap-3">
-                                                        <span className="bg-brand-blue/10 text-brand-blue border border-brand-blue/20 text-[10px] font-bold px-2.5 py-1 rounded-md inline-flex items-center gap-1 uppercase tracking-widest">Atelier</span>
+                                                        <span className="bg-brand-purple/10 text-brand-purple border border-brand-purple/20 text-[10px] font-bold px-2.5 py-1 rounded-md inline-flex items-center gap-1 uppercase tracking-widest">Atelier</span>
                                                     </div>
-                                                    <div className="flex items-center gap-2 text-[10px] sm:text-xs font-semibold text-brand-blue uppercase tracking-widest opacity-0 -translate-x-4 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300">
+                                                    <div className="flex items-center gap-2 text-[10px] sm:text-xs font-semibold text-brand-purple uppercase tracking-widest opacity-0 -translate-x-4 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300">
                                                         Visionner <Play className="w-3 h-3" />
                                                     </div>
                                                 </div>
@@ -215,14 +215,14 @@ export default async function KidsVideosPage({ searchParams }: { searchParams: P
                             <>
                                 <div className="flex items-center justify-between mb-8">
                                     <h2 className="text-2xl font-semibold text-[#f5f5f7] flex items-center gap-3 tracking-tight">
-                                        <Sparkles className="w-6 h-6 text-brand-blue" />
+                                        <Sparkles className="w-6 h-6 text-brand-purple" />
                                         Tous les Ateliers
                                     </h2>
                                 </div>
 
                                 {sortedVideos.length === 0 ? (
                                     <div className="relative group/box">
-                                        <div className="absolute -inset-1 bg-gradient-to-r from-brand-blue to-cyan-500 rounded-[32px] opacity-0 blur-xl group-hover/box:opacity-20 transition duration-1000 pointer-events-none"></div>
+                                        <div className="absolute -inset-1 bg-gradient-to-r from-brand-purple to-indigo-500 rounded-[32px] opacity-0 blur-xl group-hover/box:opacity-20 transition duration-1000 pointer-events-none"></div>
                                         <div className="relative bg-[#1c1c1e] border border-white/5 p-16 rounded-[32px] text-center flex flex-col items-center justify-center shadow-xl">
                                             <div className="w-20 h-20 bg-[#2c2c2e]/50 border border-white/5 rounded-[20px] flex items-center justify-center mb-6 text-[#86868b]">
                                                 <FolderOpen className="w-10 h-10" />
