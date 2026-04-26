@@ -39,7 +39,7 @@ function LoginFormContent() {
                 </div>
                 
                 <h1 className="relative z-10 text-5xl md:text-6xl font-bold tracking-tighter text-white leading-[1.1] mb-4">
-                    Bienvenue à <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-blue to-cyan-400">l'Atelier</span> 🎩
+                    Bienvenue à <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-blue to-cyan-400">l'Atelier</span>
                 </h1>
                 
                 <p className="text-xl text-gray-400 font-light">Prêt à perfectionner votre art ?</p>

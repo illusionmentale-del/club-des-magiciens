@@ -61,7 +61,7 @@ export default function VIPAdultRequestPage() {
                         </div>
                         
                         <h1 className="relative z-10 text-4xl md:text-5xl font-bold tracking-tighter text-white leading-[1.1]">
-                            Invité de <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-blue to-cyan-400">Prestige</span> 🌟
+                            Invité de <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-blue to-cyan-400">Prestige</span>
                         </h1>
                     </div>
                     
