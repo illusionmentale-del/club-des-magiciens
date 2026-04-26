@@ -38,7 +38,7 @@ export default function RequestItemAdult({ request }: { request: any }) {
     if (request.status !== 'en_attente') return null;
 
     return (
-        <div className="bg-[#1c1c1e] border border-white/5 rounded-[32px] p-6 md:p-8 shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-8 hover:border-white/10 transition-colors">
+        <div className="bg-[#1c1c1e] border border-white/5 rounded-[32px] p-6 md:p-8 shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-8 hover:border-brand-purple/30 transition-colors">
             <div className="space-y-6 flex-1">
                 <div className="flex items-center gap-4 relative">
                     <div className="w-14 h-14 bg-[#2c2c2e] flex items-center justify-center text-[#f5f5f7] font-semibold text-xl rounded-full shadow-md">
@@ -69,7 +69,7 @@ export default function RequestItemAdult({ request }: { request: any }) {
                 <button 
                     onClick={handleApprove}
                     disabled={isApproving || isRejecting}
-                    className="flex-1 md:flex-none flex items-center justify-center gap-2 bg-[#f5f5f7] hover:bg-white text-black px-6 py-4 rounded-full font-medium transition-all disabled:opacity-50 shadow-md hover:shadow-lg hover:scale-105"
+                    className="flex-1 md:flex-none flex items-center justify-center gap-2 bg-brand-purple hover:bg-indigo-500 text-black shadow-lg hover:shadow-brand-purple/30 hover:scale-105 px-6 py-4 rounded-full font-medium transition-all disabled:opacity-50 shadow-md hover:shadow-lg hover:scale-105"
                 >
                     {isApproving ? "Création..." : (
                         <>

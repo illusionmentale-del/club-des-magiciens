@@ -43,19 +43,19 @@ export default function AdultsAdminLayout({
                     <p className="px-4 text-[10px] font-black text-[#86868b] uppercase tracking-widest mb-4">Gestion du Contenu</p>
 
                     <Link href="/admin/adults/library" className="flex items-center gap-3 px-4 py-3 text-sm font-bold uppercase tracking-widest text-brand-text-muted hover:text-white hover:bg-white/5 rounded-xl transition-all group">
-                        <Video className="w-5 h-5 group-hover:text-white transition-colors" />
+                        <Video className="w-5 h-5 group-hover:text-brand-purple transition-colors" />
                         Vidéos & Ateliers
                     </Link>
                     <Link href="/admin/adults/settings/masterclass" className="flex items-center gap-3 px-4 py-3 text-sm font-bold uppercase tracking-widest text-brand-text-muted hover:text-white hover:bg-white/5 rounded-xl transition-all group">
-                        <Sparkles className="w-5 h-5 group-hover:text-white transition-colors" />
+                        <Sparkles className="w-5 h-5 group-hover:text-brand-purple transition-colors" />
                         Page "Mes Formations"
                     </Link>
                     <Link href="/admin/adults/products" className="flex items-center gap-3 px-4 py-3 text-sm font-bold uppercase tracking-widest text-brand-text-muted hover:text-white hover:bg-white/5 rounded-xl transition-all group">
-                        <ShoppingBag className="w-5 h-5 group-hover:text-white transition-colors" />
+                        <ShoppingBag className="w-5 h-5 group-hover:text-brand-purple transition-colors" />
                         La Boutique
                     </Link>
                     <Link href="/admin/adults/lives" className="flex items-center gap-3 px-4 py-3 text-sm font-bold uppercase tracking-widest text-brand-text-muted hover:text-white hover:bg-white/5 rounded-xl transition-all group">
-                        <Video className="w-5 h-5 group-hover:text-white transition-colors" />
+                        <Video className="w-5 h-5 group-hover:text-brand-purple transition-colors" />
                         Diffusions Live
                     </Link>
 
@@ -63,23 +63,23 @@ export default function AdultsAdminLayout({
                     <p className="px-4 text-[10px] font-black text-[#86868b] uppercase tracking-widest mb-4">Suivi & Communauté</p>
 
                     <Link href="/admin/adults/inbox" className="flex items-center gap-3 px-4 py-3 text-sm font-bold uppercase tracking-widest text-brand-text-muted hover:text-white hover:bg-white/5 rounded-xl transition-all group">
-                        <MessageCircle className="w-5 h-5 group-hover:text-white transition-colors" />
+                        <MessageCircle className="w-5 h-5 group-hover:text-brand-purple transition-colors" />
                         Questions Élèves
                     </Link>
                     <Link href="/admin/adults/users" className="flex items-center gap-3 px-4 py-3 text-sm font-bold uppercase tracking-widest text-brand-text-muted hover:text-white hover:bg-white/5 rounded-xl transition-all group">
-                        <Users className="w-5 h-5 group-hover:text-white transition-colors" />
+                        <Users className="w-5 h-5 group-hover:text-brand-purple transition-colors" />
                         Liste des Élèves
                     </Link>
                     <Link href="/admin/adults/newsletter" className="flex items-center gap-3 px-4 py-3 text-sm font-bold uppercase tracking-widest text-brand-text-muted hover:text-white hover:bg-white/5 rounded-xl transition-all group">
-                        <Mail className="w-5 h-5 group-hover:text-white transition-colors" />
+                        <Mail className="w-5 h-5 group-hover:text-brand-purple transition-colors" />
                         Newsletter
                     </Link>
                     <Link href="/admin/adults/push" className="flex items-center gap-3 px-4 py-3 text-sm font-bold uppercase tracking-widest text-brand-text-muted hover:text-white hover:bg-white/5 rounded-xl transition-all group">
-                        <MessageCircle className="w-5 h-5 group-hover:text-white transition-colors" />
+                        <MessageCircle className="w-5 h-5 group-hover:text-brand-purple transition-colors" />
                         Envoi Rapide Push
                     </Link>
                     <Link href="/admin/adults/vip-requests" className="flex items-center gap-3 px-4 py-3 text-sm font-bold uppercase tracking-widest text-brand-text-muted hover:text-white hover:bg-white/5 rounded-xl transition-all group">
-                        <Sparkles className="w-5 h-5 group-hover:text-white transition-colors" />
+                        <Sparkles className="w-5 h-5 group-hover:text-brand-purple transition-colors" />
                         Accès Privilège
                     </Link>
 
@@ -88,15 +88,15 @@ export default function AdultsAdminLayout({
 
 
                     <Link href="/admin/adults/analytics" className="flex items-center gap-3 px-4 py-3 text-sm font-bold uppercase tracking-widest text-brand-text-muted hover:text-white hover:bg-white/5 rounded-xl transition-all group">
-                        <BarChart className="w-5 h-5 group-hover:text-white transition-colors" />
+                        <BarChart className="w-5 h-5 group-hover:text-brand-purple transition-colors" />
                         Analytics
                     </Link>
                     <Link href="/admin/adults/settings" className="flex items-center gap-3 px-4 py-3 text-sm font-bold uppercase tracking-widest text-brand-text-muted hover:text-white hover:bg-white/5 rounded-xl transition-all group">
-                        <Settings className="w-5 h-5 group-hover:text-white transition-colors" />
+                        <Settings className="w-5 h-5 group-hover:text-brand-purple transition-colors" />
                         Vitrine & Identité
                     </Link>
                     <Link href="/admin/adults/legal" className="flex items-center gap-3 px-4 py-3 text-sm font-bold uppercase tracking-widest text-brand-text-muted hover:text-white hover:bg-white/5 rounded-xl transition-all group">
-                        <BookOpen className="w-5 h-5 group-hover:text-white transition-colors" />
+                        <BookOpen className="w-5 h-5 group-hover:text-brand-purple transition-colors" />
                         Textes Légaux
                     </Link>
                 </nav>

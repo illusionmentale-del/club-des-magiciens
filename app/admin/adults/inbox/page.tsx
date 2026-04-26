@@ -123,7 +123,7 @@ export default async function AdminAdultsInbox({
                         const course = sourceCourses.find(c => c.id === comment.course_id);
 
                         return (
-                            <div key={comment.id} className="bg-[#1c1c1e] border border-white/5 rounded-[24px] p-6 relative overflow-hidden group hover:border-white/10 transition-colors">
+                            <div key={comment.id} className="bg-[#1c1c1e] border border-white/5 rounded-[24px] p-6 relative overflow-hidden group hover:border-brand-purple/30 transition-colors">
                                 <div className="absolute top-0 left-0 w-1 h-full bg-[#f5f5f7]"></div>
 
                                 <div className="flex flex-col lg:flex-row gap-6">

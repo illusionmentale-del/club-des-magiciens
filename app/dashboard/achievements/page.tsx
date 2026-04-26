@@ -232,7 +232,7 @@ export default async function AdultAchievementsPage() {
                                             })()}
                                         </div>
 
-                                        <h3 className={`text-lg font-serif mb-2 leading-tight transition-colors duration-500 ${isUnlocked ? 'text-white' : 'text-gray-500 group-hover:text-white'}`}>
+                                        <h3 className={`text-lg font-serif mb-2 leading-tight transition-colors duration-500 ${isUnlocked ? 'text-white' : 'text-gray-500 group-hover:text-brand-purple'}`}>
                                             {quest.title}
                                         </h3>
                                         

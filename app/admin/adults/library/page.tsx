@@ -149,7 +149,7 @@ export default function AdminLibraryPage() {
 
                                 <div className="grid grid-cols-1 gap-3">
                                     {weekItems.map((item) => (
-                                        <div key={item.id} className="bg-[#1c1c1e] border border-white/5 rounded-[24px] p-3 flex items-center gap-4 hover:border-white/10 transition-colors group">
+                                        <div key={item.id} className="bg-[#1c1c1e] border border-white/5 rounded-[24px] p-3 flex items-center gap-4 hover:border-brand-purple/30 transition-colors group">
                                             {/* Thumbnail */}
                                             <div className="w-24 aspect-video bg-black/50 rounded-lg overflow-hidden relative shrink-0 border border-white/5">
                                                 {item.thumbnail_url ? (
@@ -165,7 +165,7 @@ export default function AdminLibraryPage() {
                                             {/* Info */}
                                             <div className="flex-1 min-w-0">
                                                 <div className="flex items-center gap-2 mb-0.5">
-                                                    <h3 className="font-bold text-sm text-[#f5f5f7] truncate group-hover:text-white transition-colors">{item.title}</h3>
+                                                    <h3 className="font-bold text-sm text-[#f5f5f7] truncate group-hover:text-brand-purple transition-colors">{item.title}</h3>
                                                     <span className="text-[9px] px-1.5 py-0.5 rounded border border-white/10 text-gray-400 uppercase tracking-widest bg-black/20">
                                                         {item.type}
                                                     </span>

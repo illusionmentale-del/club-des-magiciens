@@ -78,8 +78,9 @@ export default async function AdultLibraryPage() {
     }
 
     return (
-        <div className="min-h-screen bg-[#000000] text-[#f5f5f7] p-4 md:p-8 pb-32 font-sans overflow-hidden relative selection:bg-white/30">
-
+        <div className="min-h-screen bg-[#000000] text-[#f5f5f7] p-4 md:p-8 pb-32 font-sans overflow-hidden relative selection:bg-brand-purple/30">
+            {/* Ambient Background Lights (Kids Theme) */}
+            <div className="absolute top-0 left-0 w-full md:w-1/2 h-[50vh] bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] from-brand-purple/10 via-[#000000]/0 to-[#000000]/0 pointer-events-none z-0"></div>
             {/* Main Wrapper Container */}
             <div className="max-w-5xl mx-auto relative z-10">
                 <BackButton />
@@ -103,7 +104,7 @@ export default async function AdultLibraryPage() {
                         {(weeksData[currentWeek] && weeksData[currentWeek].length > 0) && (
                             <Link 
                                 href={`/watch/${weeksData[currentWeek][0].id}`}
-                                className="bg-[#f5f5f7] text-black hover:bg-white px-8 py-4 rounded-full font-medium transition-all shadow-md hover:shadow-lg hover:scale-105 flex items-center gap-3 w-full md:w-auto mt-6 md:mt-0 justify-center group"
+                                className="bg-brand-purple text-white hover:bg-indigo-500 shadow-[0_0_15px_rgba(168,85,247,0.3)] hover:shadow-[0_0_25px_rgba(168,85,247,0.5)] px-8 py-4 rounded-full font-medium transition-all shadow-md hover:shadow-lg hover:scale-105 flex items-center gap-3 w-full md:w-auto mt-6 md:mt-0 justify-center group"
                             >
                                 <Play className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                                 Reprendre ma formation
@@ -133,7 +134,7 @@ export default async function AdultLibraryPage() {
                                                 ? 'bg-[#000000] border-white/5 opacity-60'
                                                 : isCurrent
                                                     ? 'bg-[#1c1c1e] border-white/20 shadow-2xl z-10'
-                                                    : 'bg-[#1c1c1e] border-transparent hover:border-white/10'
+                                                    : 'bg-[#1c1c1e] border-transparent hover:border-brand-purple/30'
                                             }
                                     `}
                                     >
@@ -187,7 +188,7 @@ export default async function AdultLibraryPage() {
                                                             href={mainItem ? `/watch/${mainItem.id}` : '#'}
                                                             className={`
                                                         flex-1 items-center justify-center gap-2 px-6 py-3 rounded-full font-medium transition-all flex border
-                                                        ${isCurrent ? 'bg-[#f5f5f7] text-black hover:bg-white shadow-md' : 'bg-transparent border-white/10 hover:border-white/30 text-[#f5f5f7] hover:bg-white/5'}
+                                                        ${isCurrent ? 'bg-brand-purple text-white hover:bg-indigo-500 shadow-[0_0_15px_rgba(168,85,247,0.3)] hover:shadow-[0_0_25px_rgba(168,85,247,0.5)] shadow-md' : 'bg-transparent border-white/10 hover:border-white/30 text-[#f5f5f7] hover:bg-white/5'}
                                                     `}
                                                         >
                                                             <Play className="w-4 h-4 fill-current" />

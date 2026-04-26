@@ -18,7 +18,7 @@ function SubmitButton({ theme, isKidProfile }: { theme: 'light' | 'dark', isKidP
             className={`w-full py-4 font-semibold rounded-full transition-all disabled:opacity-50 flex justify-center items-center shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 ${
                 isKidProfile
                     ? 'bg-gradient-to-r from-brand-purple to-indigo-500 text-white shadow-brand-purple/20'
-                    : 'bg-[#f5f5f7] hover:bg-white text-black'
+                    : 'bg-brand-purple hover:bg-indigo-500 text-black shadow-lg hover:shadow-brand-purple/30 hover:scale-105'
             }`}
         >
             {pending ? "Enregistrement..." : "Enregistrer les modifications"}
@@ -100,7 +100,7 @@ export default function AccountForm({ user, profile, theme = 'dark', isKidProfil
             )}
 
             {/* Security Section */}
-            <section className={`${cardClass} p-8 md:p-10 ${theme === 'dark' ? 'hover:border-white/10' : ''} transition-all`}>
+            <section className={`${cardClass} p-8 md:p-10 ${theme === 'dark' ? 'hover:border-brand-purple/30' : ''} transition-all`}>
                 <h2 className={`text-xl font-semibold mb-6 flex items-center gap-3 ${titleClass} tracking-tight`}>
                     <Lock className={`w-5 h-5 ${iconClass}`} />
                     Sécurité & Connexion

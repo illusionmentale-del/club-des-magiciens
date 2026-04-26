@@ -158,7 +158,8 @@ export default async function DashboardPage() {
 
     return (
         <div className="min-h-screen bg-[#000000] text-[#f5f5f7] p-4 md:p-8 pb-32 font-sans selection:bg-magic-royal/30 overflow-hidden relative">
-
+            {/* Ambient Background Lights (Kids Theme) */}
+            <div className="absolute top-0 left-0 w-full md:w-1/2 h-[50vh] bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] from-brand-purple/10 via-[#000000]/0 to-[#000000]/0 pointer-events-none z-0"></div>
             {/* Premium Glass Header */}
             <FadeIn>
                 <header className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 pt-8 pb-4 max-w-5xl mx-auto relative z-10">

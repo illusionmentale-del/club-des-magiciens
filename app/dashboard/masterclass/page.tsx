@@ -99,8 +99,9 @@ export default async function AdultMasterclassPage() {
     });
 
     return (
-        <div className="min-h-screen bg-[#000000] text-[#f5f5f7] p-4 md:p-8 pb-32 font-sans relative selection:bg-white/30">
-
+        <div className="min-h-screen bg-[#000000] text-[#f5f5f7] p-4 md:p-8 pb-32 font-sans overflow-hidden relative selection:bg-brand-purple/30">
+            {/* Ambient Background Lights (Kids Theme) */}
+            <div className="absolute top-0 left-0 w-full md:w-1/2 h-[50vh] bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] from-brand-purple/10 via-[#000000]/0 to-[#000000]/0 pointer-events-none z-0"></div>
             {/* Main Wrapper Container */}
             <div className="max-w-5xl mx-auto relative z-10">
                 <BackButton />
@@ -128,7 +129,7 @@ export default async function AdultMasterclassPage() {
                     {formations.map((f, index) => (
                         <FadeInUp key={f.id} delay={0.2 + (index * 0.1)}>
                             <BentoHoverEffect>
-                                <div className="relative rounded-[32px] overflow-hidden border border-white/5 bg-[#1c1c1e] flex flex-col md:flex-row shadow-xl hover:border-white/10 transition-colors group">
+                                <div className="relative rounded-[32px] overflow-hidden border border-white/5 bg-[#1c1c1e] flex flex-col md:flex-row shadow-xl hover:border-brand-purple/30 transition-colors group">
                                     
                                     {/* Info Section */}
                                     <div className="w-full md:w-2/3 p-8 md:p-12 flex flex-col justify-center">
@@ -147,7 +148,7 @@ export default async function AdultMasterclassPage() {
                                             href={f.href}
                                             className={`inline-flex items-center justify-center gap-3 px-8 py-4 rounded-full font-medium transition-all self-start border ${
                                                 f.isUnlocked 
-                                                ? "bg-[#f5f5f7] text-black hover:bg-white border-transparent shadow-md hover:shadow-lg" 
+                                                ? "bg-brand-purple text-white hover:bg-indigo-500 shadow-[0_0_15px_rgba(168,85,247,0.3)] hover:shadow-[0_0_25px_rgba(168,85,247,0.5)] border-transparent shadow-md hover:shadow-lg" 
                                                 : "bg-transparent text-[#f5f5f7] hover:bg-white/5 border-white/10 hover:border-white/20"
                                             }`}
                                         >

@@ -24,12 +24,12 @@ export default function AdultAchievements({ recentValids }: { recentValids: any[
 
             <div className="space-y-3 mb-8">
                 {recentValids.slice(0, 3).map((progress) => (
-                    <div key={progress.course_id} className="flex items-start gap-4 p-4 rounded-2xl bg-black/20 hover:bg-[#2c2c2e] transition-colors duration-300 border border-transparent hover:border-white/10 group">
+                    <div key={progress.course_id} className="flex items-start gap-4 p-4 rounded-2xl bg-black/20 hover:bg-[#2c2c2e] transition-colors duration-300 border border-transparent hover:border-brand-purple/30 group">
                         <div className="mt-1">
-                            <CheckCircle2 className="w-5 h-5 text-brand-purple group-hover:text-white transition-colors duration-300" />
+                            <CheckCircle2 className="w-5 h-5 text-brand-purple group-hover:text-brand-purple transition-colors duration-300" />
                         </div>
                         <div>
-                            <p className="text-base font-medium text-[#f5f5f7] group-hover:text-white transition-colors duration-300 tracking-tight">
+                            <p className="text-base font-medium text-[#f5f5f7] group-hover:text-brand-purple transition-colors duration-300 tracking-tight">
                                 {progress.courses?.title || "Formation terminée"}
                             </p>
                             <p className="text-sm text-[#86868b] mt-1 font-light">
@@ -42,7 +42,7 @@ export default function AdultAchievements({ recentValids }: { recentValids: any[
 
             <BentoHoverEffect>
                 <Link href="/dashboard/achievements" className="w-full flex items-center justify-between py-4 px-6 rounded-full border border-white/10 hover:bg-[#2c2c2e] hover:border-white/20 transition-all duration-300 group">
-                    <span className="text-sm font-medium text-[#f5f5f7] group-hover:text-white tracking-tight">
+                    <span className="text-sm font-medium text-[#f5f5f7] group-hover:text-brand-purple tracking-tight">
                         Mon Journal Magique
                     </span>
                     <ArrowRight className="w-4 h-4 text-brand-purple group-hover:text-indigo-400 group-hover:translate-x-1 transition-transform" />

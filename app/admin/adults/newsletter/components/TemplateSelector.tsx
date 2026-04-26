@@ -50,7 +50,7 @@ export function TemplateSelector({ selected, onSelect }: Props) {
                             type="button"
                             className={`p-4 rounded-[24px] border text-left flex flex-col items-start gap-4 transition-all relative overflow-hidden group ${isSelected
                                     ? (isAdults ? 'bg-[#1c1c1e] border-[#f5f5f7] shadow-lg' : 'bg-brand-purple/10 border-brand-purple shadow-[0_0_20px_rgba(234,179,8,0.15)]')
-                                    : 'bg-black/20 border-white/5 hover:border-white/10 hover:bg-black/40'
+                                    : 'bg-black/20 border-white/5 hover:border-brand-purple/30 hover:bg-black/40'
                                 }`}
                         >
                             {isSelected && (

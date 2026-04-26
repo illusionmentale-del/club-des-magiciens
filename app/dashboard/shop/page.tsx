@@ -37,16 +37,17 @@ export default async function AdultShopPage() {
     const unlockedItemIds = new Set(purchases?.map(p => p.library_item_id) || []);
 
     return (
-        <div className="min-h-screen bg-[#000000] text-[#f5f5f7] p-4 md:p-8 pb-32 font-sans relative selection:bg-white/30">
-
+        <div className="min-h-screen bg-[#000000] text-[#f5f5f7] p-4 md:p-8 pb-32 font-sans overflow-hidden relative selection:bg-brand-purple/30">
+            {/* Ambient Background Lights (Kids Theme) */}
+            <div className="absolute top-0 left-0 w-full md:w-1/2 h-[50vh] bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] from-brand-purple/10 via-[#000000]/0 to-[#000000]/0 pointer-events-none z-0"></div>
             <div className="max-w-6xl mx-auto relative z-10">
                 <BackButton />
                 {/* Header */}
                 <FadeInUp delay={0.1}>
                     <header className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 pt-4 border-b border-white/5 pb-8 mb-8">
                         <div className="flex-1">
-                            <div className="flex items-center gap-2 text-[#86868b] mb-2">
-                                <Sparkles className="w-5 h-5 text-[#f5f5f7]" />
+                            <div className="flex items-center gap-2 text-brand-purple mb-2">
+                                <Sparkles className="w-5 h-5 fill-current animate-pulse text-brand-purple" />
                                 <span className="text-xs font-semibold uppercase tracking-[0.2em]">Nouveautés & Exclusivités</span>
                             </div>
                             <h1 className="text-4xl md:text-6xl font-semibold tracking-tight text-[#f5f5f7] mt-2">
@@ -68,7 +69,7 @@ export default async function AdultShopPage() {
                             return (
                                 <FadeInUp key={item.id} delay={0.2 + (index * 0.1)}>
                                     <div className="relative group h-full flex flex-col hover:-translate-y-2 transition-transform duration-500 ease-[0.16,1,0.3,1]">
-                                        <div className="relative bg-[#1c1c1e] border border-white/5 rounded-[32px] overflow-hidden shadow-xl flex flex-col h-full hover:shadow-2xl hover:border-white/10 transition-all">
+                                        <div className="relative bg-[#1c1c1e] border border-white/5 rounded-[32px] overflow-hidden shadow-xl flex flex-col h-full hover:shadow-2xl hover:border-brand-purple/30 transition-all">
                                             {/* Thumbnail */}
                                             <div className="relative aspect-video bg-black overflow-hidden m-2 rounded-[24px]">
                                                 {item.thumbnail_url ? (
@@ -111,7 +112,7 @@ export default async function AdultShopPage() {
 
                                             {/* Content */}
                                             <div className="p-6 md:p-8 flex flex-col flex-1 relative z-20">
-                                                <h3 className="text-2xl font-semibold text-[#f5f5f7] mb-3 tracking-tight group-hover:text-white transition-colors">
+                                                <h3 className="text-2xl font-semibold text-[#f5f5f7] mb-3 tracking-tight group-hover:text-brand-purple transition-colors">
                                                     {item.title}
                                                 </h3>
                                                 <p className="text-base text-[#86868b] mb-8 flex-1 line-clamp-3 font-light leading-relaxed">
@@ -120,12 +121,12 @@ export default async function AdultShopPage() {
 
                                                 {/* Action Button */}
                                                 {isUnlocked ? (
-                                                    <Link href={`/watch/${item.id}`} className="w-full bg-[#2c2c2e] hover:bg-white text-[#f5f5f7] hover:text-black font-medium text-base py-4 px-6 rounded-full flex items-center justify-center gap-2 transition-all shadow-sm hover:shadow-md">
+                                                    <Link href={`/watch/${item.id}`} className="w-full bg-[#2c2c2e]/50 hover:bg-white/10 text-white hover:text-white border border-white/5 font-medium text-base py-4 px-6 rounded-full flex items-center justify-center gap-2 transition-all shadow-sm hover:shadow-md">
                                                         <Play className="w-5 h-5" />
                                                         Accéder au contenu
                                                     </Link>
                                                 ) : (
-                                                    <CheckoutButton itemId={item.id} space="adults" className="w-full bg-[#f5f5f7] hover:bg-white text-black font-medium text-base py-4 px-6 rounded-full flex items-center justify-center gap-2 transition-all shadow-md hover:shadow-lg hover:scale-[1.02]">
+                                                    <CheckoutButton itemId={item.id} space="adults" className="w-full bg-brand-purple hover:bg-indigo-500 text-black shadow-lg hover:shadow-brand-purple/30 hover:scale-105 font-medium text-base py-4 px-6 rounded-full flex items-center justify-center gap-2 transition-all shadow-md hover:shadow-lg hover:scale-[1.02]">
                                                         <ShoppingBag className="w-5 h-5" />
                                                         Obtenir ce contenu
                                                     </CheckoutButton>

@@ -52,8 +52,9 @@ export default async function CatalogPage() {
     const purchasedIds = new Set(purchases?.map(p => p.product_id) || []);
 
     return (
-        <div className="min-h-screen bg-[#000000] text-[#f5f5f7] p-4 md:p-8 pb-32 font-sans relative selection:bg-white/30">
-
+        <div className="min-h-screen bg-[#000000] text-[#f5f5f7] p-4 md:p-8 pb-32 font-sans overflow-hidden relative selection:bg-brand-purple/30">
+            {/* Ambient Background Lights (Kids Theme) */}
+            <div className="absolute top-0 left-0 w-full md:w-1/2 h-[50vh] bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] from-brand-purple/10 via-[#000000]/0 to-[#000000]/0 pointer-events-none z-0"></div>
             <div className="max-w-6xl mx-auto relative z-10">
                 <BackButton />
                 {/* Header */}

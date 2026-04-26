@@ -30,7 +30,8 @@ export default async function AccountPage({
 
     return (
         <div className="min-h-screen bg-[#000000] text-[#f5f5f7] p-4 md:p-8 font-sans relative overflow-hidden flex flex-col items-center justify-center">
-
+            {/* Ambient Background Lights (Kids Theme) */}
+            <div className="absolute top-0 left-0 w-full md:w-1/2 h-[50vh] bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] from-brand-purple/10 via-[#000000]/0 to-[#000000]/0 pointer-events-none z-0"></div>
             <div className="relative z-10 w-full max-w-4xl mx-auto">
                 <div className="absolute -top-12 left-0">
                     <BackButton />

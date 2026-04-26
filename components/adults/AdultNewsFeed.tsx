@@ -37,7 +37,7 @@ export default function AdultNewsFeed({ items }: { items: NewsItem[] }) {
                                 <Link
                                     href={href}
                                     target={isExternal ? "_blank" : "_self"}
-                                    className="group block bg-black/20 hover:bg-[#2c2c2e] rounded-[24px] p-4 transition-colors duration-300 border border-transparent hover:border-white/10"
+                                    className="group block bg-black/20 hover:bg-[#2c2c2e] rounded-[24px] p-4 transition-colors duration-300 border border-transparent hover:border-brand-purple/30"
                                 >
                                     <div className="flex items-center gap-5">
                                         {/* Thumbnail / Icon */}

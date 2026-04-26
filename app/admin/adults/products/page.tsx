@@ -85,7 +85,7 @@ export default function AdminProductsPage() {
                 {/* List */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {filteredProducts.map((product) => (
-                        <div key={product.id} className={`${cardBgColor} border ${borderColor} rounded-[24px] overflow-hidden group hover:border-white/10 transition-colors flex flex-col`}>
+                        <div key={product.id} className={`${cardBgColor} border ${borderColor} rounded-[24px] overflow-hidden group hover:border-brand-purple/30 transition-colors flex flex-col`}>
                             {/* Image Header */}
                             <div className="h-40 bg-black/50 relative">
                                 {product.image_url ? (
