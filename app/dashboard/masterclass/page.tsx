@@ -110,8 +110,8 @@ export default async function AdultMasterclassPage() {
                 <FadeInUp delay={0.1}>
                     <header className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 pt-4 mb-12">
                         <div className="flex-1">
-                            <div className="flex items-center gap-2 text-[#86868b] mb-2">
-                                <Star className="w-5 h-5 fill-current text-[#f5f5f7]" />
+                            <div className="flex items-center gap-2 text-brand-purple mb-2">
+                                <Star className="w-5 h-5 fill-current animate-pulse text-brand-purple" />
                                 <span className="text-xs font-bold uppercase tracking-[0.2em]">{uiLabelsMap.page_formations_subtitle || "Apprentissage Structuré"}</span>
                             </div>
                             <h1 className="text-4xl md:text-6xl font-semibold tracking-tight text-[#f5f5f7] mt-2">
@@ -149,7 +149,7 @@ export default async function AdultMasterclassPage() {
                                             className={`inline-flex items-center justify-center gap-3 px-8 py-4 rounded-full font-medium transition-all self-start border ${
                                                 f.isUnlocked 
                                                 ? "bg-brand-purple text-white hover:bg-indigo-500 shadow-[0_0_15px_rgba(168,85,247,0.3)] hover:shadow-[0_0_25px_rgba(168,85,247,0.5)] border-transparent shadow-md hover:shadow-lg" 
-                                                : "bg-transparent text-[#f5f5f7] hover:bg-white/5 border-white/10 hover:border-white/20"
+                                                : "bg-[#2c2c2e]/50 border border-white/5 hover:bg-white/10 text-white"
                                             }`}
                                         >
                                             {f.isUnlocked ? <BookOpen className="w-5 h-5" /> : <Lock className="w-5 h-5" />}

@@ -88,8 +88,8 @@ export default async function AdultLibraryPage() {
                 <FadeInUp delay={0.1}>
                     <header className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 pt-4 mb-12">
                         <div className="flex-1">
-                            <div className="flex items-center gap-2 text-[#86868b] mb-2">
-                                <Star className="w-5 h-5 text-[#f5f5f7]" />
+                            <div className="flex items-center gap-2 text-brand-purple mb-2">
+                                <Star className="w-5 h-5 fill-current animate-pulse text-brand-purple" />
                                 <span className="text-xs font-bold uppercase tracking-[0.2em]">Le QG de la Magie</span>
                             </div>
                             <h1 className="text-4xl md:text-6xl font-semibold tracking-tight text-[#f5f5f7] mt-4">
@@ -142,10 +142,10 @@ export default async function AdultLibraryPage() {
                                         <div className="flex items-center justify-between mb-6">
                                             <div className="flex items-center gap-4">
                                                 <div className={`
-                                            w-12 h-12 flex items-center justify-center font-bold text-lg rounded-full border
-                                            ${isLocked ? 'bg-[#1c1c1e] border-white/5 text-[#86868b]' : ''}
-                                            ${isCurrent ? 'bg-white text-black border-transparent shadow-lg' : ''}
-                                            ${isCompleted ? 'bg-[#2c2c2e] text-[#f5f5f7] border-white/10' : ''}
+                                            w-12 h-12 flex items-center justify-center font-bold text-lg rounded-[16px] border
+                                            ${isLocked ? 'bg-[#2c2c2e]/50 border-white/5 text-[#86868b]' : ''}
+                                            ${isCurrent ? 'bg-brand-purple text-white border-transparent shadow-lg' : ''}
+                                            ${isCompleted ? 'bg-green-500/10 text-green-400 border-green-500/20' : ''}
                                         `}>
                                                     {isLocked && <Lock className="w-5 h-5" />}
                                                     {isCurrent && <Star className="w-6 h-6 fill-current animate-pulse" />}
@@ -155,8 +155,8 @@ export default async function AdultLibraryPage() {
                                                     <h2 className={`font-semibold tracking-tight text-2xl ${isLocked ? 'text-[#86868b]' : 'text-[#f5f5f7]'}`}>
                                                         Semaine {week}
                                                     </h2>
-                                                    {isCurrent && <span className="text-[10px] text-black bg-white px-2 py-0.5 rounded-full font-bold uppercase tracking-widest mt-1 inline-block">En cours</span>}
-                                                    {isCompleted && <span className="text-[10px] text-[#86868b] font-bold uppercase tracking-widest mt-1 inline-block">Terminée</span>}
+                                                    {isCurrent && <span className="text-[10px] text-brand-purple font-bold uppercase tracking-widest mt-1 inline-block">En cours</span>}
+                                                    {isCompleted && <span className="text-[10px] text-green-400 font-bold uppercase tracking-widest mt-1 inline-block">Terminée</span>}
                                                     {isLocked && <span className="text-[10px] text-[#86868b] font-bold uppercase tracking-widest mt-1 inline-block">À venir</span>}
                                                 </div>
                                             </div>
@@ -187,8 +187,8 @@ export default async function AdultLibraryPage() {
                                                         <Link
                                                             href={mainItem ? `/watch/${mainItem.id}` : '#'}
                                                             className={`
-                                                        flex-1 items-center justify-center gap-2 px-6 py-3 rounded-full font-medium transition-all flex border
-                                                        ${isCurrent ? 'bg-brand-purple text-white hover:bg-indigo-500 shadow-[0_0_15px_rgba(168,85,247,0.3)] hover:shadow-[0_0_25px_rgba(168,85,247,0.5)] shadow-md' : 'bg-transparent border-white/10 hover:border-white/30 text-[#f5f5f7] hover:bg-white/5'}
+                                                        flex-1 items-center justify-center gap-2 px-6 py-3 rounded-full text-xs font-semibold uppercase tracking-widest transition-all flex border
+                                                        ${isCurrent ? 'bg-brand-purple text-white hover:bg-indigo-500 shadow-[0_0_15px_rgba(168,85,247,0.3)] hover:shadow-[0_0_25px_rgba(168,85,247,0.5)] shadow-md' : 'bg-[#2c2c2e]/50 border border-white/5 hover:bg-white/10 text-white'}
                                                     `}
                                                         >
                                                             <Play className="w-4 h-4 fill-current" />
