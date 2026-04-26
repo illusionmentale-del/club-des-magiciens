@@ -10,6 +10,7 @@ import {
 import { Users, LayoutDashboard, BookOpen, ShoppingBag, BarChart, Settings, LogOut, Video, MessageCircle, Mail, Sparkles, Trophy } from "lucide-react"
 import Link from "next/link"
 import AdminAdultsMobileNav from "@/components/admin/AdminAdultsMobileNav"
+import AdminSidebarNav from "@/components/admin/AdminSidebarNav"
 
 export default function AdultsAdminLayout({
     children,
@@ -17,88 +18,67 @@ export default function AdultsAdminLayout({
     children: React.ReactNode
 }) {
     return (
-        <div className="flex min-h-screen w-full bg-[#000000] text-[#f5f5f7] font-sans selection:bg-brand-purple/30">
+        <div className="flex min-h-screen w-full bg-[#000000] text-brand-text font-sans selection:bg-brand-purple/30">
             {/* Mobile Nav */}
             <AdminAdultsMobileNav />
 
             {/* Custom Sidebar for Adults */}
             <aside className="fixed inset-y-0 left-0 z-50 w-64 bg-[#000000] border-r border-white/5 hidden md:flex flex-col">
                 <Link href="/dashboard" className="flex items-center h-20 px-6 border-b border-white/5 bg-[#000000] hover:bg-white/5 transition-colors cursor-pointer">
-                    <div className="w-10 h-10 bg-[#1c1c1e] rounded-xl flex items-center justify-center mr-3 border border-white/5">
-                        <Users className="w-6 h-6 text-[#f5f5f7]" />
+                    <div className="w-10 h-10 bg-[#100b1a] border border-white/5 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.5)] hover:border-brand-purple/30 transition-all rounded-xl flex items-center justify-center mr-3">
+                        <Users className="w-6 h-6 text-brand-text" />
                     </div>
                     <span className="font-semibold text-lg tracking-tight whitespace-nowrap text-white">
-                        L'Atelier <span className="text-[#86868b] font-light">Admin</span>
+                        L'Atelier <span className="text-brand-text-muted font-light">Admin</span>
                     </span>
                 </Link>
 
                 <nav className="flex-1 p-4 space-y-2 overflow-y-auto">
-                    <Link href="/admin/adults/dashboard" className="flex items-center gap-3 px-4 py-3 text-sm font-bold uppercase tracking-widest text-brand-text-muted hover:text-white hover:bg-white/5 rounded-xl transition-all group">
-                        <LayoutDashboard className="w-5 h-5 group-hover:text-brand-purple transition-colors" />
-                        Dashboard
-                    </Link>
+                    <AdminSidebarNav 
+                        audience="adults"
+                        items={[
+                            { href: "/admin/adults/dashboard", label: "Dashboard", icon: LayoutDashboard }
+                        ]} 
+                    />
 
                     <Separator className="my-6 bg-white/5" />
-                    <Separator className="my-6 bg-white/5" />
-                    <p className="px-4 text-[10px] font-black text-[#86868b] uppercase tracking-widest mb-4">Gestion du Contenu</p>
+                    <p className="px-4 text-[10px] font-black text-brand-text-muted uppercase tracking-widest mb-4">Gestion du Contenu</p>
 
-                    <Link href="/admin/adults/library" className="flex items-center gap-3 px-4 py-3 text-sm font-bold uppercase tracking-widest text-brand-text-muted hover:text-white hover:bg-white/5 rounded-xl transition-all group">
-                        <Video className="w-5 h-5 group-hover:text-brand-purple transition-colors" />
-                        Vidéos & Ateliers
-                    </Link>
-                    <Link href="/admin/adults/settings/masterclass" className="flex items-center gap-3 px-4 py-3 text-sm font-bold uppercase tracking-widest text-brand-text-muted hover:text-white hover:bg-white/5 rounded-xl transition-all group">
-                        <Sparkles className="w-5 h-5 group-hover:text-brand-purple transition-colors" />
-                        Page "Mes Formations"
-                    </Link>
-                    <Link href="/admin/adults/products" className="flex items-center gap-3 px-4 py-3 text-sm font-bold uppercase tracking-widest text-brand-text-muted hover:text-white hover:bg-white/5 rounded-xl transition-all group">
-                        <ShoppingBag className="w-5 h-5 group-hover:text-brand-purple transition-colors" />
-                        La Boutique
-                    </Link>
-                    <Link href="/admin/adults/lives" className="flex items-center gap-3 px-4 py-3 text-sm font-bold uppercase tracking-widest text-brand-text-muted hover:text-white hover:bg-white/5 rounded-xl transition-all group">
-                        <Video className="w-5 h-5 group-hover:text-brand-purple transition-colors" />
-                        Diffusions Live
-                    </Link>
+                    <AdminSidebarNav 
+                        audience="adults"
+                        items={[
+                            { href: "/admin/adults/library", label: "Vidéos & Ateliers", icon: Video },
+                            { href: "/admin/adults/settings/masterclass", label: "Page \"Mes Formations\"", icon: Sparkles },
+                            { href: "/admin/adults/products", label: "La Boutique", icon: ShoppingBag },
+                            { href: "/admin/adults/lives", label: "Diffusions Live", icon: Video }
+                        ]} 
+                    />
 
                     <Separator className="my-6 bg-white/5" />
-                    <p className="px-4 text-[10px] font-black text-[#86868b] uppercase tracking-widest mb-4">Suivi & Communauté</p>
+                    <p className="px-4 text-[10px] font-black text-brand-text-muted uppercase tracking-widest mb-4">Suivi & Communauté</p>
 
-                    <Link href="/admin/adults/inbox" className="flex items-center gap-3 px-4 py-3 text-sm font-bold uppercase tracking-widest text-brand-text-muted hover:text-white hover:bg-white/5 rounded-xl transition-all group">
-                        <MessageCircle className="w-5 h-5 group-hover:text-brand-purple transition-colors" />
-                        Questions Élèves
-                    </Link>
-                    <Link href="/admin/adults/users" className="flex items-center gap-3 px-4 py-3 text-sm font-bold uppercase tracking-widest text-brand-text-muted hover:text-white hover:bg-white/5 rounded-xl transition-all group">
-                        <Users className="w-5 h-5 group-hover:text-brand-purple transition-colors" />
-                        Liste des Élèves
-                    </Link>
-                    <Link href="/admin/adults/newsletter" className="flex items-center gap-3 px-4 py-3 text-sm font-bold uppercase tracking-widest text-brand-text-muted hover:text-white hover:bg-white/5 rounded-xl transition-all group">
-                        <Mail className="w-5 h-5 group-hover:text-brand-purple transition-colors" />
-                        Newsletter
-                    </Link>
-                    <Link href="/admin/adults/push" className="flex items-center gap-3 px-4 py-3 text-sm font-bold uppercase tracking-widest text-brand-text-muted hover:text-white hover:bg-white/5 rounded-xl transition-all group">
-                        <MessageCircle className="w-5 h-5 group-hover:text-brand-purple transition-colors" />
-                        Envoi Rapide Push
-                    </Link>
-                    <Link href="/admin/adults/vip-requests" className="flex items-center gap-3 px-4 py-3 text-sm font-bold uppercase tracking-widest text-brand-text-muted hover:text-white hover:bg-white/5 rounded-xl transition-all group">
-                        <Sparkles className="w-5 h-5 group-hover:text-brand-purple transition-colors" />
-                        Accès Privilège
-                    </Link>
+                    <AdminSidebarNav 
+                        audience="adults"
+                        items={[
+                            { href: "/admin/adults/inbox", label: "Questions Élèves", icon: MessageCircle },
+                            { href: "/admin/adults/users", label: "Liste des Élèves", icon: Users },
+                            { href: "/admin/adults/newsletter", label: "Newsletter", icon: Mail },
+                            { href: "/admin/adults/push", label: "Envoi Rapide Push", icon: MessageCircle },
+                            { href: "/admin/adults/vip-requests", label: "Accès Privilège", icon: Sparkles }
+                        ]} 
+                    />
 
                     <Separator className="my-6 bg-white/5" />
-                    <p className="px-4 text-[10px] font-black text-[#86868b] uppercase tracking-widest mb-4">Pilotage & Système</p>
+                    <p className="px-4 text-[10px] font-black text-brand-text-muted uppercase tracking-widest mb-4">Pilotage & Système</p>
 
-
-                    <Link href="/admin/adults/analytics" className="flex items-center gap-3 px-4 py-3 text-sm font-bold uppercase tracking-widest text-brand-text-muted hover:text-white hover:bg-white/5 rounded-xl transition-all group">
-                        <BarChart className="w-5 h-5 group-hover:text-brand-purple transition-colors" />
-                        Analytics
-                    </Link>
-                    <Link href="/admin/adults/settings" className="flex items-center gap-3 px-4 py-3 text-sm font-bold uppercase tracking-widest text-brand-text-muted hover:text-white hover:bg-white/5 rounded-xl transition-all group">
-                        <Settings className="w-5 h-5 group-hover:text-brand-purple transition-colors" />
-                        Vitrine & Identité
-                    </Link>
-                    <Link href="/admin/adults/legal" className="flex items-center gap-3 px-4 py-3 text-sm font-bold uppercase tracking-widest text-brand-text-muted hover:text-white hover:bg-white/5 rounded-xl transition-all group">
-                        <BookOpen className="w-5 h-5 group-hover:text-brand-purple transition-colors" />
-                        Textes Légaux
-                    </Link>
+                    <AdminSidebarNav 
+                        audience="adults"
+                        items={[
+                            { href: "/admin/adults/analytics", label: "Analytics", icon: BarChart },
+                            { href: "/admin/adults/settings", label: "Vitrine & Identité", icon: Settings },
+                            { href: "/admin/adults/legal", label: "Textes Légaux", icon: BookOpen }
+                        ]} 
+                    />
                 </nav>
 
                 <div className="p-4 border-t border-white/5 bg-black/20">
@@ -119,12 +99,12 @@ export default function AdultsAdminLayout({
                         <Breadcrumb>
                             <BreadcrumbList>
                                 <BreadcrumbItem>
-                                    <BreadcrumbLink href="/admin" className="text-[#86868b] hover:text-white transition-colors">Admin</BreadcrumbLink>
+                                    <BreadcrumbLink href="/admin" className="text-brand-text-muted hover:text-white transition-colors">Admin</BreadcrumbLink>
                                 </BreadcrumbItem>
                                 <BreadcrumbSeparator className="text-white/10" />
                                 <BreadcrumbItem>
-                                    <BreadcrumbPage className="text-[#f5f5f7] font-medium tracking-wide text-sm hidden md:block">Atelier</BreadcrumbPage>
-                                    <BreadcrumbPage className="text-[#f5f5f7] font-medium tracking-wide text-sm md:hidden">Atelier</BreadcrumbPage>
+                                    <BreadcrumbPage className="text-brand-text font-medium tracking-wide text-sm hidden md:block">Atelier</BreadcrumbPage>
+                                    <BreadcrumbPage className="text-brand-text font-medium tracking-wide text-sm md:hidden">Atelier</BreadcrumbPage>
                                 </BreadcrumbItem>
                             </BreadcrumbList>
                         </Breadcrumb>

@@ -329,7 +329,7 @@ export default function AdultHomeConfig({ initialSettings, availableCourses }: A
                                                             setNewsConfig([...newsConfig, { id: course.id, type: 'course' }]);
                                                         }
                                                     }}
-                                                    className={`p-4 rounded-xl border transition-all cursor-pointer flex items-center gap-3 ${isSelected ? 'bg-[#1c1c1e] border-white/50' : 'bg-[#111] border-white/10 hover:border-white/20'
+                                                    className={`p-4 rounded-xl border transition-all cursor-pointer flex items-center gap-3 ${isSelected ? 'bg-[#100b1a] border border-white/5 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.5)] hover:border-brand-purple/30 transition-all border-white/50' : 'bg-[#111] border-white/10 hover:border-white/20'
                                                         }`}
                                                 >
                                                     <div className={`w-5 h-5 rounded border flex items-center justify-center transition-all ${isSelected ? 'bg-[#f5f5f7] border-white/20' : 'bg-transparent border-white/20'

@@ -85,7 +85,7 @@ export default function PushAdminPage() {
     return (
         <div className="space-y-8 max-w-4xl mx-auto">
             <div className="mb-10 text-center flex flex-col items-center">
-                <div className="w-16 h-16 bg-[#1c1c1e] rounded-[24px] flex items-center justify-center mb-6 border border-white/5 shadow-md">
+                <div className="w-16 h-16 bg-[#100b1a] border border-white/5 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.5)] hover:border-brand-purple/30 transition-all rounded-[24px] flex items-center justify-center mb-6 shadow-md">
                     <BellRing className="w-8 h-8 text-white relative z-10" />
                 </div>
                 <h1 className="text-4xl font-black uppercase tracking-widest text-white mb-3">Envoi Rapide Push</h1>
@@ -156,7 +156,7 @@ export default function PushAdminPage() {
                             <button
                                 onClick={handleSendPush}
                                 disabled={isSending}
-                                className="w-full py-4 rounded-[16px] font-bold uppercase tracking-widest text-sm bg-[#f5f5f7] hover:bg-white text-[#1c1c1e] flex items-center justify-center transition-all shadow-lg disabled:opacity-50"
+                                className="w-full py-4 rounded-[16px] font-bold uppercase tracking-widest text-sm bg-brand-purple hover:bg-indigo-500 text-white shadow-[0_0_15px_rgba(168,85,247,0.3)] hover:shadow-[0_0_25px_rgba(168,85,247,0.5)] border-transparent flex items-center justify-center transition-all shadow-lg disabled:opacity-50"
                             >
                                 {isSending ? <Loader2 className="w-5 h-5 animate-spin mx-auto" /> : (
                                     <>
@@ -211,10 +211,10 @@ export default function PushAdminPage() {
                         </div>
                     )}
 
-                    <div className="flex items-start gap-3 p-4 bg-[#1c1c1e] border border-white/5 rounded-[24px]">
-                        <AlertTriangle className="w-5 h-5 text-[#86868b] shrink-0 mt-0.5" />
-                        <div className="text-[11px] font-light text-[#86868b] leading-relaxed">
-                            <strong className="text-[#f5f5f7] font-bold block mb-1">Rappel Apple (iOS)</strong>
+                    <div className="flex items-start gap-3 p-4 bg-[#100b1a] bg-[#100b1a] border border-white/5 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.5)] hover:border-brand-purple/30 transition-all rounded-[24px]">
+                        <AlertTriangle className="w-5 h-5 text-brand-text-muted shrink-0 mt-0.5" />
+                        <div className="text-[11px] font-light text-brand-text-muted leading-relaxed">
+                            <strong className="text-brand-text font-bold block mb-1">Rappel Apple (iOS)</strong>
                             Pour que les élèves reçoivent ces alertes sur iPhone, ils doivent au préalable enregistrer votre site sur leur écran d'accueil d'iPhone via Safari. Sur ordinateur ou Android, le bouton d'abonnement fonctionne tout seul.
                         </div>
                     </div>

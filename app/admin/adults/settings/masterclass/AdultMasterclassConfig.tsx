@@ -152,7 +152,7 @@ export default function AdultMasterclassConfig({ initialSettings, libraryItems, 
                         onClick={() => setActiveTab(tab.id)}
                         className={`w-full flex items-center gap-3 px-4 py-3 rounded-[16px] font-bold uppercase tracking-widest text-xs transition-all ${activeTab === tab.id
                             ? "bg-[#f5f5f7] text-[#1c1c1e] shadow-lg"
-                            : "text-[#86868b] hover:bg-white/5"
+                            : "text-brand-text-muted hover:bg-white/5"
                             }`}
                     >
                         <tab.icon className="w-4 h-4" />
@@ -174,9 +174,9 @@ export default function AdultMasterclassConfig({ initialSettings, libraryItems, 
 
             {/* Content Area */}
             <div className="lg:col-span-3">
-                <Card className="bg-[#1c1c1e] border-white/5 shadow-2xl overflow-hidden rounded-[32px]">
+                <Card className="bg-[#100b1a] border border-white/5 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.5)] hover:border-brand-purple/30 transition-all border-white/5 shadow-2xl overflow-hidden rounded-[32px]">
                     <CardHeader className="border-b border-white/5 bg-transparent p-8">
-                        <CardTitle className="text-xl font-black uppercase tracking-tighter flex items-center gap-3 text-[#f5f5f7]">
+                        <CardTitle className="text-xl font-black uppercase tracking-tighter flex items-center gap-3 text-brand-text">
                             <Sparkles className="text-white" /> Contenu à la Une
                         </CardTitle>
                     </CardHeader>
@@ -190,21 +190,21 @@ export default function AdultMasterclassConfig({ initialSettings, libraryItems, 
                                     <h3 className="text-lg font-bold text-white border-b border-white/10 pb-2">En-tête de la page</h3>
 
                                     <div className="space-y-4">
-                                        <label className="text-xs font-black uppercase tracking-widest text-[#86868b]">Titre de la page</label>
+                                        <label className="text-xs font-black uppercase tracking-widest text-brand-text-muted">Titre de la page</label>
                                         <input
                                             type="text"
                                             value={pageConfig.title}
                                             onChange={(e) => setPageConfig({ ...pageConfig, title: e.target.value })}
-                                            className="w-full bg-[#000000] border border-white/10 rounded-[16px] p-4 text-[#f5f5f7] focus:outline-none focus:border-white/50"
+                                            className="w-full bg-[#000000] border border-white/10 rounded-[16px] p-4 text-brand-text focus:outline-none focus:border-white/50"
                                             placeholder="Ex: Les Masterclass"
                                         />
                                     </div>
                                     <div className="space-y-4">
-                                        <label className="text-xs font-black uppercase tracking-widest text-[#86868b]">Phrase d'accroche</label>
+                                        <label className="text-xs font-black uppercase tracking-widest text-brand-text-muted">Phrase d'accroche</label>
                                         <textarea
                                             value={pageConfig.description}
                                             onChange={(e) => setPageConfig({ ...pageConfig, description: e.target.value })}
-                                            className="w-full h-24 bg-[#000000] border border-white/10 rounded-[16px] p-4 text-[#f5f5f7] placeholder:text-white/20 focus:outline-none focus:border-white/50 transition-all"
+                                            className="w-full h-24 bg-[#000000] border border-white/10 rounded-[16px] p-4 text-brand-text placeholder:text-white/20 focus:outline-none focus:border-white/50 transition-all"
                                             placeholder="Entrez la description pour la page..."
                                         />
                                     </div>
@@ -217,12 +217,12 @@ export default function AdultMasterclassConfig({ initialSettings, libraryItems, 
                                     <h3 className="text-lg font-bold text-white border-b border-white/10 pb-2">Atelier à la Une</h3>
 
                                     <div className="space-y-4">
-                                        <label className="text-xs font-black uppercase tracking-widest text-[#86868b]">Sélection de la vidéo</label>
-                                        <p className="text-[10px] text-[#86868b] -mt-2 mb-2">Choisissez la formation ou l'atelier à mettre en valeur en haut de la page.</p>
+                                        <label className="text-xs font-black uppercase tracking-widest text-brand-text-muted">Sélection de la vidéo</label>
+                                        <p className="text-[10px] text-brand-text-muted -mt-2 mb-2">Choisissez la formation ou l'atelier à mettre en valeur en haut de la page.</p>
                                         <select
                                             value={featuredConfig.id}
                                             onChange={(e) => setFeaturedConfig({ ...featuredConfig, id: e.target.value })}
-                                            className="w-full bg-[#000000] border border-white/10 rounded-[16px] p-4 text-[#f5f5f7] focus:outline-none focus:border-white/50 appearance-none"
+                                            className="w-full bg-[#000000] border border-white/10 rounded-[16px] p-4 text-brand-text focus:outline-none focus:border-white/50 appearance-none"
                                         >
                                             <option value="">-- Ne rien mettre à la une --</option>
                                             {libraryItems.map(item => (
@@ -234,22 +234,22 @@ export default function AdultMasterclassConfig({ initialSettings, libraryItems, 
                                     {featuredConfig.id && (
                                         <>
                                             <div className="space-y-4">
-                                                <label className="text-xs font-black uppercase tracking-widest text-[#86868b]">Titre promotionnel</label>
+                                                <label className="text-xs font-black uppercase tracking-widest text-brand-text-muted">Titre promotionnel</label>
                                                 <input
                                                     type="text"
                                                     value={featuredConfig.title}
                                                     onChange={(e) => setFeaturedConfig({ ...featuredConfig, title: e.target.value })}
-                                                    className="w-full bg-[#000000] border border-white/10 rounded-[16px] p-4 text-[#f5f5f7] focus:outline-none focus:border-white/50"
+                                                    className="w-full bg-[#000000] border border-white/10 rounded-[16px] p-4 text-brand-text focus:outline-none focus:border-white/50"
                                                     placeholder="Ex: Nouvel Atelier !"
                                                 />
                                             </div>
 
                                             <div className="space-y-4">
-                                                <label className="text-xs font-black uppercase tracking-widest text-[#86868b]">Description (Optionnel)</label>
+                                                <label className="text-xs font-black uppercase tracking-widest text-brand-text-muted">Description (Optionnel)</label>
                                                 <textarea
                                                     value={featuredConfig.description}
                                                     onChange={(e) => setFeaturedConfig({ ...featuredConfig, description: e.target.value })}
-                                                    className="w-full h-24 bg-[#000000] border border-white/10 rounded-[16px] p-4 text-[#f5f5f7] focus:outline-none focus:border-white/50"
+                                                    className="w-full h-24 bg-[#000000] border border-white/10 rounded-[16px] p-4 text-brand-text focus:outline-none focus:border-white/50"
                                                     placeholder="Quelques lignes pour donner envie..."
                                                 />
                                             </div>
@@ -276,7 +276,7 @@ export default function AdultMasterclassConfig({ initialSettings, libraryItems, 
                                 <div className="flex items-center justify-between border-b border-white/10 pb-4">
                                     <div>
                                         <h3 className="text-lg font-bold text-white">Cartes de Formation</h3>
-                                        <p className="text-[10px] text-[#86868b] mt-1 uppercase tracking-widest font-bold">Configurez les 3 grandes offres du portail</p>
+                                        <p className="text-[10px] text-brand-text-muted mt-1 uppercase tracking-widest font-bold">Configurez les 3 grandes offres du portail</p>
                                     </div>
                                     <Button
                                         onClick={() => setHubCards([...hubCards, { id: `card-${Date.now()}`, title: "Nouvelle Option", description: "", level: "Nouveau", color: "from-gray-600 to-gray-400", buttonText: "Découvrir", courseId: "" }])}
@@ -300,7 +300,7 @@ export default function AdultMasterclassConfig({ initialSettings, libraryItems, 
 
                                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                                 <div className="space-y-2">
-                                                    <label className="text-[10px] font-black uppercase tracking-widest text-[#86868b]">Titre</label>
+                                                    <label className="text-[10px] font-black uppercase tracking-widest text-brand-text-muted">Titre</label>
                                                     <input
                                                         type="text"
                                                         value={card.title}
@@ -314,7 +314,7 @@ export default function AdultMasterclassConfig({ initialSettings, libraryItems, 
                                                 </div>
 
                                                 <div className="space-y-2">
-                                                    <label className="text-[10px] font-black uppercase tracking-widest text-[#86868b]">Badge / Niveau</label>
+                                                    <label className="text-[10px] font-black uppercase tracking-widest text-brand-text-muted">Badge / Niveau</label>
                                                     <input
                                                         type="text"
                                                         value={card.level}
@@ -328,7 +328,7 @@ export default function AdultMasterclassConfig({ initialSettings, libraryItems, 
                                                 </div>
 
                                                 <div className="space-y-2 md:col-span-2">
-                                                    <label className="text-[10px] font-black uppercase tracking-widest text-[#86868b]">Description</label>
+                                                    <label className="text-[10px] font-black uppercase tracking-widest text-brand-text-muted">Description</label>
                                                     <textarea
                                                         value={card.description}
                                                         onChange={(e) => {
@@ -341,7 +341,7 @@ export default function AdultMasterclassConfig({ initialSettings, libraryItems, 
                                                 </div>
 
                                                 <div className="space-y-2">
-                                                    <label className="text-[10px] font-black uppercase tracking-widest text-[#86868b]">Dégradé de couleurs (Classes Tailwind)</label>
+                                                    <label className="text-[10px] font-black uppercase tracking-widest text-brand-text-muted">Dégradé de couleurs (Classes Tailwind)</label>
                                                     <input
                                                         type="text"
                                                         value={card.color}
@@ -355,7 +355,7 @@ export default function AdultMasterclassConfig({ initialSettings, libraryItems, 
                                                 </div>
 
                                                 <div className="space-y-2">
-                                                    <label className="text-[10px] font-black uppercase tracking-widest text-[#86868b]">Texte du bouton Action</label>
+                                                    <label className="text-[10px] font-black uppercase tracking-widest text-brand-text-muted">Texte du bouton Action</label>
                                                     <input
                                                         type="text"
                                                         value={card.buttonText}
@@ -369,8 +369,8 @@ export default function AdultMasterclassConfig({ initialSettings, libraryItems, 
                                                 </div>
 
                                                 <div className="space-y-2 md:col-span-2 pt-4 border-t border-white/5">
-                                                    <label className="text-[10px] font-black uppercase tracking-widest text-[#86868b]">Connexion au Contenu (Base de données)</label>
-                                                    <p className="text-[10px] text-[#86868b] -mt-1 leading-snug">
+                                                    <label className="text-[10px] font-black uppercase tracking-widest text-brand-text-muted">Connexion au Contenu (Base de données)</label>
+                                                    <p className="text-[10px] text-brand-text-muted -mt-1 leading-snug">
                                                         Sélectionnez la Formation dans la BDD pour ce bloc. S'il y a un lien, le visiteur sera redirigé vers ce parcours.
                                                     </p>
                                                     <div className="flex items-center gap-4">
@@ -394,7 +394,7 @@ export default function AdultMasterclassConfig({ initialSettings, libraryItems, 
                                                                 handleCreateCourse(index);
                                                             }}
                                                             variant="outline"
-                                                            className="shrink-0 border-white/20 text-[#f5f5f7] hover:bg-white/10 rounded-[16px]"
+                                                            className="shrink-0 border-white/20 text-brand-text hover:bg-white/10 rounded-[16px]"
                                                         >
                                                             <PlusCircle className="w-4 h-4 mr-2" />
                                                             Créer une nouvelle Formation

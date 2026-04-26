@@ -42,7 +42,7 @@ export default function AdminUsersClient({ profiles }: AdminUsersClientProps) {
                     <div className="flex items-center gap-4">
                         <div>
                             <h1 className="text-3xl font-bold">Gestion des Élèves (Adultes)</h1>
-                            <div className={`text-sm px-2 py-0.5 rounded inline-block mt-1 uppercase font-bold tracking-wider bg-[#1c1c1e] text-[#86868b] border border-white/5`}>
+                            <div className={`text-sm px-2 py-0.5 rounded inline-block mt-1 uppercase font-bold tracking-wider bg-[#100b1a] border border-white/5 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.5)] hover:border-brand-purple/30 transition-all text-brand-text-muted`}>
                                 Vue Business
                             </div>
                         </div>

@@ -30,12 +30,12 @@ export default async function AdultMasterclassSettingsPage() {
         <div className="space-y-10 selection:bg-brand-purple/30">
             <div>
                 <div className="flex items-center gap-3 mb-2">
-                    <div className="w-10 h-10 bg-[#1c1c1e] rounded-xl flex items-center justify-center border border-white/5 shadow-md">
+                    <div className="w-10 h-10 bg-[#100b1a] border border-white/5 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.5)] hover:border-brand-purple/30 transition-all rounded-xl flex items-center justify-center shadow-md">
                         <Sparkles className="w-6 h-6 text-brand-purple" />
                     </div>
                     <div>
                         <h1 className="text-3xl font-black text-white uppercase tracking-tighter">Page Mes Formations</h1>
-                        <p className="text-[#86868b] text-sm uppercase tracking-widest font-bold opacity-60">Personnalisez la page globale des formations adultes</p>
+                        <p className="text-brand-text-muted text-sm uppercase tracking-widest font-bold opacity-60">Personnalisez la page globale des formations adultes</p>
                     </div>
                 </div>
             </div>

@@ -6,6 +6,7 @@ import { cookies } from "next/headers";
 import { Separator } from "@/components/ui/separator";
 import GlobalPreview from "@/components/admin/GlobalPreview";
 import AdminKidsMobileNav from "@/components/admin/AdminKidsMobileNav";
+import AdminSidebarNav from "@/components/admin/AdminSidebarNav";
 import {
     Breadcrumb,
     BreadcrumbItem,
@@ -49,66 +50,50 @@ export default async function AdminLayout({
                 </Link>
 
                 <nav className="flex-1 p-4 space-y-2 overflow-y-auto">
-                    <Link href="/admin/kids/dashboard" className="flex items-center gap-3 px-4 py-3 text-sm font-bold uppercase tracking-widest text-brand-text-muted hover:text-white hover:bg-white/5 rounded-xl transition-all group">
-                        <LayoutDashboard className="w-5 h-5 group-hover:text-brand-purple transition-colors" />
-                        Tableau de bord
-                    </Link>
+                    <AdminSidebarNav 
+                        audience="kids"
+                        items={[
+                            { href: "/admin/kids/dashboard", label: "Tableau de bord", icon: LayoutDashboard }
+                        ]} 
+                    />
 
                     <Separator className="my-6 bg-white/5" />
                     <p className="px-4 text-[10px] font-black text-brand-purple uppercase tracking-widest mb-4">Gestion du Contenu</p>
 
-                    <Link href="/admin/kids/library" className="flex items-center gap-3 px-4 py-3 text-sm font-bold uppercase tracking-widest text-brand-text-muted hover:text-white hover:bg-white/5 rounded-xl transition-all group">
-                        <Film className="w-5 h-5 group-hover:text-brand-purple transition-colors" />
-                        Vidéos & Ateliers
-                    </Link>
-                    <Link href="/admin/kids/settings/masterclass" className="flex items-center gap-3 px-4 py-3 text-sm font-bold uppercase tracking-widest text-brand-text-muted hover:text-white hover:bg-white/5 rounded-xl transition-all group">
-                        <Sparkles className="w-5 h-5 group-hover:text-brand-purple transition-colors" />
-                        Page "Les Ateliers"
-                    </Link>
-                    <Link href="/admin/kids/shop" className="flex items-center gap-3 px-4 py-3 text-sm font-bold uppercase tracking-widest text-brand-text-muted hover:text-white hover:bg-white/5 rounded-xl transition-all group">
-                        <Lock className="w-5 h-5 group-hover:text-brand-purple transition-colors" />
-                        La Boutique
-                    </Link>
-                    <Link href="/admin/kids/lives" className="flex items-center gap-3 px-4 py-3 text-sm font-bold uppercase tracking-widest text-brand-text-muted hover:text-white hover:bg-white/5 rounded-xl transition-all group">
-                        <Calendar className="w-4 h-4 group-hover:text-brand-purple transition-colors" />
-                        Diffusions Live
-                    </Link>
+                    <AdminSidebarNav 
+                        audience="kids"
+                        items={[
+                            { href: "/admin/kids/library", label: "Vidéos & Ateliers", icon: Film },
+                            { href: "/admin/kids/settings/masterclass", label: "Page \"Les Ateliers\"", icon: Sparkles },
+                            { href: "/admin/kids/shop", label: "La Boutique", icon: Lock },
+                            { href: "/admin/kids/lives", label: "Diffusions Live", icon: Calendar }
+                        ]} 
+                    />
 
                     <Separator className="my-6 bg-white/5" />
                     <p className="px-4 text-[10px] font-black text-brand-cyan uppercase tracking-widest mb-4">Suivi & Communauté</p>
 
-                    <Link href="/admin/kids/inbox" className="flex items-center gap-3 px-4 py-3 text-sm font-bold uppercase tracking-widest text-brand-text-muted hover:text-white hover:bg-white/5 rounded-xl transition-all group">
-                        <MessageCircle className="w-5 h-5 group-hover:text-brand-purple transition-colors" />
-                        Questions Élèves
-                    </Link>
-                    <Link href="/admin/kids/vip-requests" className="flex items-center gap-3 px-4 py-3 text-sm font-bold uppercase tracking-widest text-brand-text-muted hover:text-white hover:bg-white/5 rounded-xl transition-all group relative">
-                        <Star className="w-5 h-5 group-hover:text-brand-purple transition-colors flex-shrink-0" />
-                        Demandes VIP
-                    </Link>
-                    <Link href="/admin/kids/users" className="flex items-center gap-3 px-4 py-3 text-sm font-bold uppercase tracking-widest text-brand-text-muted hover:text-white hover:bg-white/5 rounded-xl transition-all group">
-                        <Users className="w-5 h-5 group-hover:text-brand-purple transition-colors" />
-                        Liste des Élèves
-                    </Link>
-                    <Link href="/admin/kids/import" className="flex items-center gap-3 px-4 py-3 text-sm font-bold uppercase tracking-widest text-brand-text-muted hover:text-white hover:bg-white/5 rounded-xl transition-all group">
-                        <Users className="w-5 h-5 group-hover:text-brand-purple transition-colors" />
-                        Importation CSV
-                    </Link>
+                    <AdminSidebarNav 
+                        audience="kids"
+                        items={[
+                            { href: "/admin/kids/inbox", label: "Questions Élèves", icon: MessageCircle },
+                            { href: "/admin/kids/vip-requests", label: "Demandes VIP", icon: Star },
+                            { href: "/admin/kids/users", label: "Liste des Élèves", icon: Users },
+                            { href: "/admin/kids/import", label: "Importation CSV", icon: Users }
+                        ]} 
+                    />
 
                     <Separator className="my-6 bg-white/5" />
                     <p className="px-4 text-[10px] font-black text-brand-text-muted uppercase tracking-widest mb-4">Pilotage & Système</p>
 
-                    <Link href="/admin/kids/gamification" className="flex items-center gap-3 px-4 py-3 text-sm font-bold uppercase tracking-widest text-brand-text-muted hover:text-white hover:bg-white/5 rounded-xl transition-all group">
-                        <Trophy className="w-5 h-5 group-hover:text-brand-purple transition-colors" />
-                        Badges & Évolution
-                    </Link>
-                    <Link href="/admin/kids/settings" className="flex items-center gap-3 px-4 py-3 text-sm font-bold uppercase tracking-widest text-brand-text-muted hover:text-white hover:bg-white/5 rounded-xl transition-all group">
-                        <Settings className="w-5 h-5 group-hover:text-brand-purple transition-colors" />
-                        Vitrine & Identité
-                    </Link>
-                    <Link href="/admin/kids/legal" className="flex items-center gap-3 px-4 py-3 text-sm font-bold uppercase tracking-widest text-brand-text-muted hover:text-white hover:bg-white/5 rounded-xl transition-all group">
-                        <BookOpen className="w-5 h-5 group-hover:text-brand-purple transition-colors" />
-                        Textes Légaux
-                    </Link>
+                    <AdminSidebarNav 
+                        audience="kids"
+                        items={[
+                            { href: "/admin/kids/gamification", label: "Badges & Évolution", icon: Trophy },
+                            { href: "/admin/kids/settings", label: "Vitrine & Identité", icon: Settings },
+                            { href: "/admin/kids/legal", label: "Textes Légaux", icon: BookOpen }
+                        ]} 
+                    />
                 </nav>
 
                 <div className="p-4 border-t border-white/5 bg-black/20">

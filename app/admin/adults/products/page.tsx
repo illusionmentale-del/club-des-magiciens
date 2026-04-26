@@ -48,7 +48,7 @@ export default function AdminProductsPage() {
 
     const themeColor = audience === 'adults' ? 'bg-[#f5f5f7] text-[#1c1c1e]' : 'bg-purple-600 text-white';
     const borderColor = audience === 'adults' ? 'border-white/5' : 'border-purple-500/30';
-    const cardBgColor = audience === 'adults' ? 'bg-[#1c1c1e]' : 'bg-white/5';
+    const cardBgColor = audience === 'adults' ? 'bg-[#100b1a] border border-white/5 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.5)] hover:border-brand-purple/30 transition-all' : 'bg-white/5';
 
     return (
         <div className={`min-h-screen ${audience === 'adults' ? 'bg-black' : 'bg-[#0F1014]'} text-white p-8 transition-colors duration-500`}>
@@ -58,12 +58,12 @@ export default function AdminProductsPage() {
                     Retour au QG Admin
                 </Link>
                 <div className="flex items-center gap-3">
-                    <div className={`p-2 rounded-lg ${audience === 'adults' ? 'bg-[#1c1c1e] text-[#f5f5f7] border border-white/5 shadow-md' : 'bg-purple-500/20 text-purple-500'}`}>
+                    <div className={`p-2 rounded-lg ${audience === 'adults' ? 'bg-[#100b1a] border border-white/5 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.5)] hover:border-brand-purple/30 transition-all text-brand-text shadow-md' : 'bg-purple-500/20 text-purple-500'}`}>
                         <ShoppingBag className="w-6 h-6" />
                     </div>
                     <div>
                         <h1 className="text-3xl font-bold">Boutique ({audience === 'adults' ? 'Adulte' : 'Enfant'})</h1>
-                        <div className={`text-sm px-2 py-0.5 rounded inline-block mt-1 uppercase font-bold tracking-wider ${audience === 'adults' ? 'bg-[#1c1c1e] text-[#86868b] border border-white/5' : 'bg-purple-600/20 text-purple-400'}`}>
+                        <div className={`text-sm px-2 py-0.5 rounded inline-block mt-1 uppercase font-bold tracking-wider ${audience === 'adults' ? 'bg-[#100b1a] border border-white/5 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.5)] hover:border-brand-purple/30 transition-all text-brand-text-muted' : 'bg-purple-600/20 text-purple-400'}`}>
                             Mode {audience === 'adults' ? 'Adulte' : 'Enfant'}
                         </div>
                     </div>
@@ -104,7 +104,7 @@ export default function AdminProductsPage() {
                                     <span className={`px-2 py-1 rounded text-xs font-bold uppercase ${
                                         product.is_active 
                                             ? (audience === 'adults' ? 'bg-[#f5f5f7] text-black' : 'bg-green-500 text-white') 
-                                            : (audience === 'adults' ? 'bg-[#1c1c1e] text-[#86868b] border border-white/10' : 'bg-red-500 text-white')
+                                            : (audience === 'adults' ? 'bg-[#100b1a] border border-white/5 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.5)] hover:border-brand-purple/30 transition-all text-brand-text-muted border border-white/10' : 'bg-red-500 text-white')
                                     }`}>
                                         {product.is_active ? 'Actif' : 'Inactif'}
                                     </span>
@@ -114,21 +114,21 @@ export default function AdminProductsPage() {
                             <div className="p-6 flex-1 flex flex-col">
                                 <div className="flex justify-between items-start mb-2">
                                     <h3 className="text-xl font-bold line-clamp-1" title={product.title}>{product.title}</h3>
-                                    <span className={`font-mono text-lg font-bold ${audience === 'adults' ? 'text-[#f5f5f7]' : 'text-green-400'}`}>
+                                    <span className={`font-mono text-lg font-bold ${audience === 'adults' ? 'text-brand-text' : 'text-green-400'}`}>
                                         {(product.price / 100).toFixed(2)}€
                                     </span>
                                 </div>
 
-                                <p className={`${audience === 'adults' ? 'text-[#86868b]' : 'text-gray-400'} text-sm line-clamp-2 mb-4 flex-1`}>{product.description}</p>
+                                <p className={`${audience === 'adults' ? 'text-brand-text-muted' : 'text-gray-400'} text-sm line-clamp-2 mb-4 flex-1`}>{product.description}</p>
 
-                                <div className={`space-y-2 text-xs font-mono p-3 rounded-lg mb-4 ${audience === 'adults' ? 'text-[#86868b] bg-[#000000] border border-white/5' : 'text-gray-500 bg-black/20 border border-white/5'}`}>
+                                <div className={`space-y-2 text-xs font-mono p-3 rounded-lg mb-4 ${audience === 'adults' ? 'text-brand-text-muted bg-[#000000] border border-white/5' : 'text-gray-500 bg-black/20 border border-white/5'}`}>
                                     <div className="flex items-center gap-2">
                                         <Tag className="w-3 h-3" />
                                         Type: <span className="text-white uppercase">{product.type}</span>
                                     </div>
                                     <div className="flex items-center gap-2 truncate" title={product.stripe_price_id}>
                                         <Euro className="w-3 h-3" />
-                                        ID: <span className={`${audience === 'adults' ? 'text-[#f5f5f7]' : 'text-blue-400'} select-all`}>{product.stripe_price_id || 'N/A'}</span>
+                                        ID: <span className={`${audience === 'adults' ? 'text-brand-text' : 'text-blue-400'} select-all`}>{product.stripe_price_id || 'N/A'}</span>
                                     </div>
                                 </div>
 
@@ -136,7 +136,7 @@ export default function AdminProductsPage() {
                                     <form action={toggleProductStatus.bind(null, product.id, product.is_active)} className="flex-1">
                                         <button className={`w-full py-2 rounded-lg font-bold text-xs flex items-center justify-center gap-2 ${
                                             product.is_active 
-                                                ? (audience === 'adults' ? 'bg-[#1c1c1e] text-[#86868b] hover:text-[#f5f5f7] border border-white/5' : 'bg-red-500/10 text-red-400 hover:bg-red-500/20') 
+                                                ? (audience === 'adults' ? 'bg-[#100b1a] border border-white/5 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.5)] hover:border-brand-purple/30 transition-all text-brand-text-muted hover:text-brand-text' : 'bg-red-500/10 text-red-400 hover:bg-red-500/20') 
                                                 : (audience === 'adults' ? 'bg-[#f5f5f7] text-[#1c1c1e] hover:bg-white' : 'bg-green-500/10 text-green-400 hover:bg-green-500/20')
                                         }`}>
                                             {product.is_active ? <XCircle className="w-4 h-4" /> : <CheckCircle className="w-4 h-4" />}
@@ -146,7 +146,7 @@ export default function AdminProductsPage() {
 
                                     <form action={deleteProduct.bind(null, product.id)}>
                                         <button
-                                            className={`p-2 rounded-lg transition-colors ${audience === 'adults' ? 'bg-[#1c1c1e] text-[#86868b] hover:text-[#f5f5f7] border border-white/5 hover:border-white/20' : 'bg-white/5 text-gray-500 hover:text-red-500 hover:bg-red-500/10'}`}
+                                            className={`p-2 rounded-lg transition-colors ${audience === 'adults' ? 'bg-[#100b1a] border border-white/5 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.5)] hover:border-brand-purple/30 transition-all text-brand-text-muted hover:text-brand-text hover:border-white/20' : 'bg-white/5 text-gray-500 hover:text-red-500 hover:bg-red-500/10'}`}
                                             onClick={(e) => {
                                                 if (!confirm("Voulez-vous vraiment supprimer ce produit ? Cela ne remboursera pas les clients existants.")) {
                                                     e.preventDefault();

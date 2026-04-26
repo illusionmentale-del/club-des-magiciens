@@ -86,7 +86,7 @@ export default function NewsletterAdminPage() {
     return (
         <div className="space-y-8">
             <div className="mb-10 text-center flex flex-col items-center">
-                <div className="w-16 h-16 bg-[#1c1c1e] rounded-[24px] flex items-center justify-center mb-6 border border-white/5 shadow-md">
+                <div className="w-16 h-16 bg-[#100b1a] border border-white/5 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.5)] hover:border-brand-purple/30 transition-all rounded-[24px] flex items-center justify-center mb-6 shadow-md">
                     <Mail className="w-8 h-8 text-white relative z-10" />
                 </div>
                 <h1 className="text-4xl font-black uppercase tracking-widest text-white mb-3">Le Newsletter Builder</h1>
@@ -167,14 +167,14 @@ export default function NewsletterAdminPage() {
                         <button
                             onClick={() => handleSendAction(true)}
                             disabled={isTesting || isSending}
-                            className="px-6 py-3 rounded-[16px] font-bold uppercase tracking-widest text-xs bg-[#1c1c1e] border border-white/5 text-[#86868b] hover:text-[#f5f5f7] flex items-center justify-center transition-all min-w-[150px] disabled:opacity-50"
+                            className="px-6 py-3 rounded-[16px] font-bold uppercase tracking-widest text-xs bg-[#100b1a] bg-[#100b1a] border border-white/5 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.5)] hover:border-brand-purple/30 transition-all text-brand-text-muted hover:text-brand-text flex items-center justify-center transition-all min-w-[150px] disabled:opacity-50"
                         >
                             {isTesting ? <Loader2 className="w-5 h-5 animate-spin mx-auto" /> : "S'envoyer un Test"}
                         </button>
                         <button
                             onClick={() => handleSendAction(false)}
                             disabled={isTesting || isSending}
-                            className="px-8 py-3 rounded-[16px] font-bold uppercase tracking-widest text-sm bg-[#f5f5f7] hover:bg-white text-[#1c1c1e] flex items-center justify-center transition-all min-w-[200px] shadow-lg disabled:opacity-50"
+                            className="px-8 py-3 rounded-[16px] font-bold uppercase tracking-widest text-sm bg-brand-purple hover:bg-indigo-500 text-white shadow-[0_0_15px_rgba(168,85,247,0.3)] hover:shadow-[0_0_25px_rgba(168,85,247,0.5)] border-transparent flex items-center justify-center transition-all min-w-[200px] shadow-lg disabled:opacity-50"
                         >
                             {isSending ? <Loader2 className="w-5 h-5 animate-spin mx-auto" /> : (
                                 <>

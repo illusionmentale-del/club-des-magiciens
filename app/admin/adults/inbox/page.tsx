@@ -70,7 +70,7 @@ export default async function AdminAdultsInbox({
                     </h1>
                     <p className="text-gray-400 mt-2">Gérez les questions et commentaires des étudiants premium.</p>
                 </div>
-                <div className="bg-[#1c1c1e] border border-white/5 px-6 py-3 rounded-[24px] flex items-center gap-3 shadow-md">
+                <div className="bg-[#100b1a] bg-[#100b1a] border border-white/5 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.5)] hover:border-brand-purple/30 transition-all px-6 py-3 rounded-[24px] flex items-center gap-3 shadow-md">
                     <div className="w-3 h-3 rounded-full bg-red-500 animate-pulse"></div>
                     <span className="font-bold text-white tracking-widest uppercase">{currentTab === 'unread' ? comments.length : 'Archives'} Messages</span>
                 </div>
@@ -112,7 +112,7 @@ export default async function AdminAdultsInbox({
 
             <div className="grid grid-cols-1 gap-6">
                 {comments.length === 0 ? (
-                    <div className="bg-[#1c1c1e] border border-white/5 rounded-[32px] p-12 text-center text-gray-500 flex flex-col items-center">
+                    <div className="bg-[#100b1a] bg-[#100b1a] border border-white/5 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.5)] hover:border-brand-purple/30 transition-all rounded-[32px] p-12 text-center text-gray-500 flex flex-col items-center">
                         <MessageCircle className="w-16 h-16 text-white/5 mb-4" />
                         <p className="text-xl font-medium text-white mb-2">Inbox Vide</p>
                         <p>Aucun nouveau message d'adulte pour le moment. Beau travail !</p>
@@ -123,7 +123,7 @@ export default async function AdminAdultsInbox({
                         const course = sourceCourses.find(c => c.id === comment.course_id);
 
                         return (
-                            <div key={comment.id} className="bg-[#1c1c1e] border border-white/5 rounded-[24px] p-6 relative overflow-hidden group hover:border-brand-purple/30 transition-colors">
+                            <div key={comment.id} className="bg-[#100b1a] bg-[#100b1a] border border-white/5 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.5)] hover:border-brand-purple/30 transition-all rounded-[24px] p-6 relative overflow-hidden group hover:border-brand-purple/30 transition-colors">
                                 <div className="absolute top-0 left-0 w-1 h-full bg-[#f5f5f7]"></div>
 
                                 <div className="flex flex-col lg:flex-row gap-6">
