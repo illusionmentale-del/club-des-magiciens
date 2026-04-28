@@ -71,12 +71,19 @@ export async function internal_evaluateQuests(userId: string) {
         subscriptionMonths: 0
     };
 
-    const { count: libraryItemsCompletedCount } = await supabase
+    const { count: libraryItemsCount } = await supabase
         .from('library_progress')
         .select('*', { count: 'exact', head: true })
         .eq('user_id', userId)
+        .eq('status', 'completed');
+        
+    const { count: kidsVideoCount } = await supabase
+        .from('kids_video_progress')
+        .select('*', { count: 'exact', head: true })
+        .eq('user_id', userId)
         .eq('is_completed', true);
-    globalStats.videosWatchedCount = libraryItemsCompletedCount || 0;
+
+    globalStats.videosWatchedCount = (libraryItemsCount || 0) + (kidsVideoCount || 0);
 
     const { count: purchasedSkinsCount } = await supabase
         .from('user_unlocked_skins')

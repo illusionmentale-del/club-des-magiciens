@@ -38,7 +38,7 @@ export default function UpdatePasswordPage() {
         } else {
             setMessage({ type: "success", text: "Mot de passe mis à jour ! Redirection..." });
             setTimeout(() => {
-                router.push("/dashboard");
+                router.push("/");
             }, 2000);
         }
     };

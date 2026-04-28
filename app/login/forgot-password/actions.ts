@@ -7,7 +7,7 @@ export async function requestPasswordReset(prevState: any, formData: FormData) {
     const email = formData.get("email") as string;
     const supabase = await createClient();
     const { data: profile } = await supabase.from('profiles').select('access_level').eq('email', email).maybeSingle();
-    const redirectPath = profile?.access_level === 'kid' ? '/kids/account?view=settings' : '/dashboard/settings';
+    const redirectPath = '/update-password';
 
     const headerList = await headers();
     const host = headerList.get("host") || "clubdespetitsmagiciens.fr";
