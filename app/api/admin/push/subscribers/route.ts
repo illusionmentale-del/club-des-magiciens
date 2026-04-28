@@ -13,7 +13,7 @@ export async function GET() {
         // Fetch all subscriptions
         const { data: subs, error: subsError } = await supabase
             .from("push_subscriptions")
-            .select("user_id, platform, created_at");
+            .select("user_id, created_at");
 
         if (subsError) throw new Error(subsError.message);
         if (!subs || subs.length === 0) return NextResponse.json([]);
@@ -44,7 +44,7 @@ export async function GET() {
                     adults: profile?.has_adults_access
                 },
                 devices: userSubs.length,
-                platforms: [...new Set(userSubs.map(s => s.platform))]
+                platforms: ['Navigateur Web']
             };
         });
 
