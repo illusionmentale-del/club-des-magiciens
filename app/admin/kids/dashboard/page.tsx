@@ -19,9 +19,15 @@ export default async function KidsDashboardPage() {
 
     return (
         <div className="space-y-8 pb-12">
-            <div>
-                <h1 className="text-3xl font-black text-brand-text tracking-tighter uppercase">Tableau de Bord <span className="text-brand-purple">Kids</span></h1>
-                <p className="text-brand-text-muted mt-2">Visibilité en temps réel sur l'engagement et l'évolution des élèves.</p>
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                    <h1 className="text-3xl font-black text-brand-text tracking-tighter uppercase">Tableau de Bord <span className="text-brand-purple">Kids</span></h1>
+                    <p className="text-brand-text-muted mt-2">Visibilité en temps réel sur l'engagement et l'évolution des élèves.</p>
+                </div>
+                <Link href="/admin/kids/rayon-x" className="inline-flex items-center gap-2 px-6 py-3 bg-brand-purple hover:bg-brand-purple/80 text-white font-bold rounded-[16px] transition-all shadow-[0_0_20px_rgba(168,85,247,0.3)] hover:shadow-[0_0_30px_rgba(168,85,247,0.5)]">
+                    <Users className="w-5 h-5" />
+                    <span>Vue "Rayon X" des Élèves</span>
+                </Link>
             </div>
 
             {/* SECTION 1: Core KPIs */}
