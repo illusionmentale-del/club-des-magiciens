@@ -145,6 +145,7 @@ export async function POST(req: Request) {
                             Vous recevez cet e-mail car vous êtes inscrit(e) aux actualités de L'Atelier / Club des Magiciens communiquée lors de vos achats.<br/>
                             <a href="${process.env.NEXT_PUBLIC_BASE_URL || 'https://www.clubdespetitsmagiciens.fr'}/api/unsubscribe?email={{contact.email}}" style="color: #666; text-decoration: underline;">Se désabonner en 1 clic</a>
                         </p>
+                        <img src="${process.env.NEXT_PUBLIC_BASE_URL || 'https://www.clubdespetitsmagiciens.fr'}/api/track-email?e={{contact.email}}" width="1" height="1" alt="" style="display:none;" />
                 </div>
             `;
         };

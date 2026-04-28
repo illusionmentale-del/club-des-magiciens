@@ -2,6 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Users, Film, Trophy, Sparkles, Clock, AlertTriangle, PlayCircle, Star, Crown, Target, Image as ImageIcon } from "lucide-react";
 import { getKidsDashboardStats } from "./actions";
 import Image from "next/image";
+import Link from "next/link";
 
 export const dynamic = 'force-dynamic';
 
