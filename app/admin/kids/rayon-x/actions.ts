@@ -31,8 +31,15 @@ export async function getKidsUsersDetailed(): Promise<KidUserDetails[]> {
         return [];
     }
 
+    // Bypass RLS using service role client for sensitive logs and push
+    const { createClient: createAdminClient } = await import('@supabase/supabase-js');
+    const supabaseAdmin = createAdminClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        process.env.SUPABASE_SERVICE_ROLE_KEY!
+    );
+
     // 2. Fetch push subscriptions
-    const { data: pushSubs } = await supabase
+    const { data: pushSubs } = await supabaseAdmin
         .from("push_subscriptions")
         .select("user_id");
     
@@ -40,7 +47,7 @@ export async function getKidsUsersDetailed(): Promise<KidUserDetails[]> {
 
     // 3. Fetch latest email open logs for these users
     // user_xp_logs has action_type = 'email_opened'
-    const { data: emailLogs } = await supabase
+    const { data: emailLogs } = await supabaseAdmin
         .from("user_xp_logs")
         .select("user_id, created_at")
         .eq("action_type", "email_opened")
