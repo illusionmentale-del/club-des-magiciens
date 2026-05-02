@@ -67,11 +67,7 @@ export default function Sidebar({ isAdmin, socialLinks, logoUrl, hasKidsAccess, 
                     </div>
                 </Link>
 
-                <div className="flex items-center gap-4 text-[#86868b] mt-2">
-                    <a href={socialLinks?.youtube || "#"} target="_blank" className="hover:text-white transition-colors"><Youtube className="w-4 h-4" /></a>
-                    <a href={socialLinks?.instagram || "#"} target="_blank" className="hover:text-white transition-colors"><Instagram className="w-4 h-4" /></a>
-                    <a href={socialLinks?.facebook || "#"} target="_blank" className="hover:text-white transition-colors"><Facebook className="w-4 h-4" /></a>
-                </div>
+
             </div>
 
             {/* Navigation */}
