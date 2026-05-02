@@ -101,7 +101,9 @@ export async function GET(request: Request) {
                     react: NewContentKidEmail({
                         username: username,
                         contentTitles: itemTitles,
-                        loginUrl: `${siteUrl}/kids/program`
+                        loginUrl: `${siteUrl}/kids/program`,
+                        userId: profile.id,
+                        siteUrl: siteUrl
                     }),
                 });
             }
@@ -211,6 +213,7 @@ export async function GET(request: Request) {
                                 </div>
                                 <p>À très vite de l'autre côté du miroir,</p>
                                 <p>Jérémy Marouani</p>
+                                <img src="${siteUrl}/api/track-email?userId=${profile.id}" width="1" height="1" style="display:none;" alt="" />
                             </div>
                         `
                     });

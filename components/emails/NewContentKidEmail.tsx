@@ -17,12 +17,16 @@ interface NewContentKidEmailProps {
     username: string;
     contentTitles: string[];
     loginUrl: string;
+    userId?: string;
+    siteUrl?: string;
 }
 
 export const NewContentKidEmail = ({
     username,
     contentTitles = [],
     loginUrl,
+    userId,
+    siteUrl,
 }: NewContentKidEmailProps) => {
     const isPlural = contentTitles.length > 1;
 
@@ -96,6 +100,9 @@ export const NewContentKidEmail = ({
                             <em>L'équipe du Club des Petits Magiciens</em>
                         </Text>
                     </Container>
+                    {userId && siteUrl && (
+                        <Img src={`${siteUrl}/api/track-email?userId=${userId}`} width="1" height="1" alt="" style={{ display: 'none' }} />
+                    )}
                 </Body>
             </Tailwind>
         </Html>

@@ -24,6 +24,9 @@ export default async function DashboardLayout({
         if (!profile?.has_adults_access) {
             redirect("/kids");
         }
+
+        // SILENT TRACKING: Record the last adult login asynchronously
+        supabase.from('profiles').update({ last_adults_login: new Date().toISOString() }).eq('id', user.id).then();
     }
 
     let isAdmin = false;
